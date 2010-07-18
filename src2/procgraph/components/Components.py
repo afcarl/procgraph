@@ -3,7 +3,7 @@ from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import register_block_class
 
-class PairOperation(Block):
+class GenericOperation(Block):
     def init(self, f):
         if isinstance(f, str):
             f = eval(f)
@@ -20,8 +20,8 @@ class PairOperation(Block):
         for s in self.input_signals[2:]:
             res = self.f(res, self.get_input(s))
         self.set_output(0, res)
-
-class Plus(PairOperation):
+    
+class Plus(GenericOperation):
     def init(self):
         self.f = lambda x,y : x+y
 
@@ -79,6 +79,13 @@ class RandomGenerator(Generator):
         self.set_output(0, random.rand(1) * sqrt(variance) )
         
 register_block_class('rand', RandomGenerator)
+
+
+
+
+
+
+
         
         
         

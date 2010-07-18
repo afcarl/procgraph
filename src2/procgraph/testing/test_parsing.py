@@ -5,6 +5,7 @@ import traceback
 from pyparsing import ParseException
 from procgraph.core.model import create_from_parsing_results
 import procgraph.components.Components 
+import procgraph.components.debug_components 
 
 good_examples = [
 "u = -1",
@@ -48,7 +49,10 @@ b1.f [input_name] -> |test| -> [t] y [U], z [t] -> |test| -> res
 """
 # this is a comment
 u = 1
-"""
+""",
+" |generic in=0,out=2|  ",
+" |generic in=0 out=2|  " 
+
 ]
 
 
@@ -106,7 +110,27 @@ a, b -> |+| -> c  """,
 |constant value=12| -> [0]a  """, 
 
 """ # Referring to input/outputs using numbers  
-|constant value=12| -> [0]a[0] -> |gain|  """ 
+|constant value=12| -> [0]a[0] -> |gain|  """,
+
+""" # A block by itself should be fine  
+|generic in=0 out=0|  
+|generic in=0 out=2|  """,
+ 
+""" # Trying some named connections (1)  
+|generic out=1| -> |generic in=1|  """,
+
+""" # Trying some named connections (1)
+# Should be the same  
+|generic out=1| -> x
+x -> |generic in=1|  """,
+
+"""# Should be the same  as well
+|c1:constant value=1| -> |g1:generic in=1 out=1|
+g1.0 -> |g2:generic in=1|  """,
+
+"""# Should be the same  as well
+|g1:generic out=1|
+g1.0 -> |g2:generic in=1|  """
 
 ]
 
@@ -133,7 +157,21 @@ a -> |constant value=12|   """,
 a, b -> |gain|              """,
 
 """ # Cannot use output if terminating  
-|constant value=12| -> [0]a[0]  """ 
+|constant value=12| -> [0]a[0]  """,
+
+""" # Incompatible signals (anonymous) 
+# Here + takes two
+|constant value=12| -> |+ n=2| -> y """,
+
+""" # We don't want to connect blocks with no signals  
+|generic in=0 out=0| -> |generic in=0 out=2|  """,
+ 
+""" # It cannot be without input if one is needed   
+|generic in=1 out=0|  """,
+ 
+""" # Double definition   
+|generic out=1| -> a  
+|generic out=1| -> a""",
 
 
 ]
@@ -148,7 +186,8 @@ class SemanticsTest(unittest.TestCase):
             failed = False
             try:
                 model = create_from_parsing_results(parsed)
-                print "OOPS, we parsed something"
+                print "OOPS, we parsed something from:\n'%s'\n" % example
+                print parsed 
                 model.summary()
             except:
                 failed = True

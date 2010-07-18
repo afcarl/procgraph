@@ -34,6 +34,11 @@ class Block(object):
         pass
     
     # Used during initialization
+    def input_signals_defined(self):
+        return self.input_signals is not None
+    
+    def output_signals_defined(self):
+        return self.output_signals is not None
     
     def define_input_signals(self, signals):
         assert isinstance(signals, list)

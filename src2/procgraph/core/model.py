@@ -63,7 +63,7 @@ def instance_block(name, operation, config):
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
     # if the previous block did not define output signals
-    if previous_block.output_signals is None:
+    if not previous_block.output_signals_defined():
         # We define a bunch of anonymous signals
         n = len(previous_link.signals)
         previous_block.define_output_signals(map(str, range(n)))
@@ -85,7 +85,7 @@ def check_link_compatibility_input(previous_block, previous_link):
 def check_link_compatibility_output(block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
     # if the block did not define input signals
-    if block.input_signals is None:
+    if not block.input_signals_defined():
         # We define a bunch of anonymous signals
         n = len(previous_link.signals)
         block.define_input_signals(map(str, range(n)))
@@ -105,7 +105,9 @@ def check_link_compatibility_output(block, previous_link):
  
      
 def create_from_parsing_results(parsed_model):
-    
+    print "\n\n --- new model ----------------"
+    print "Parsed: %s" % parsed_model
+
     model = Model()
     
     # First we collect all the properties, to use
@@ -135,6 +137,7 @@ def create_from_parsing_results(parsed_model):
         previous_block = None
         previous_link = None
         
+        print "Looking at connection %s" % connection.elements
         for i, element in enumerate(connection.elements):
             if isinstance(element, ParsedSignalList):
                 # if this is not the last one, just save it, it will be
@@ -180,6 +183,8 @@ def create_from_parsing_results(parsed_model):
                 
                 model.name2block[element.name] = block
                 
+                print "Defined block %s = %s " % (element.name , block)
+                
                 if (previous_block is not None) and (previous_link is not None):
                     # normal connection between two blocks with named signals
                     
@@ -203,9 +208,37 @@ def create_from_parsing_results(parsed_model):
                 
                 elif previous_block is not None and previous_link is None:
                     # anonymous connection between two blocks
-                    # we cannot say anything before updat()ing the blocks
-                    # so we remember to do it later
-                    model.unresolved[previous_block] = block
+                    # if the previous block has already defined the output
+                    # AND we didn't define the input, then we copy that
+                    if previous_block.output_signals_defined() \
+                        and not block.input_signals_defined():
+                        block.define_input_signals()
+                    # If both have defined, we check they have the same
+                    # number of signals
+                    elif  previous_block.output_signals_defined() \
+                        and block.input_signals_defined():
+                        # check that they have the same number of signals
+                        num_out = len(previous_block.output_signals)
+                        num_in = len(block.input_signals) 
+                        if num_out != num_in:
+                            raise Exception('Tried to connect two blocks (%s \
+and %s) with incompatible signals; you must do this expliciyl.' % (previous_block, block))
+                        if num_out == 0:
+                            raise Exception('Tried to connect two blocks (%s, %s) w/no signals.'\
+                                            % (previous_block, block))
+                            
+                        # just create default connections
+                        for i in range(num_out):
+                            name = 'link_%s_to_%s_%d' % \
+                                (previous_block.name, block.name, i)
+                            BC = BlockConnection(previous_block, i,
+                                             block, i, name)
+                            model.name2block_connection[name] = BC
+                
+                    else:
+                        # we cannot say anything before updat()ing the blocks
+                        # so we remember to do it later
+                        model.unresolved[previous_block] = block
                 
                 elif previous_block is None and previous_link is not None:
                     # this is the first block with previous signals
@@ -222,13 +255,13 @@ def create_from_parsing_results(parsed_model):
                         # Check if it is using an explicit block name
                         if s.block_name is not None:
                             if not s.block_name in model.name2block:
-                                raise Exception('Link %s refers to unknown block "%s".' % 
-                                                (s, s.block_name))
+                                raise Exception('Link %s refers to unknown block "%s". We know %s.' % 
+                                                (s, s.block_name, model.name2block.keys()))
                             input_block = model.name2block[s.block_name]
-                            if not s.name in input_block.input_signals_name2id:
-                                raise Exception('Link %s refers to unknown property %s in block %s. ' % 
+                            if not input_block.valid_output(s.name):
+                                raise Exception('Link %s refers to unknown output %s in block %s. ' % 
                                                 (s, s.name, input_block))
-                            s.local_input = s.name
+                            s.local_input = input_block.canonicalize_output(s.name)
                         else:
                             if not s.name in model.name2block_connection:
                                 raise Exception('Link %s refers to unknown signal "%s". We know %s.' % \
@@ -245,14 +278,15 @@ def create_from_parsing_results(parsed_model):
                 
                 elif previous_block is None and previous_link is None:
                     # make sure it's a generator?
-                    if block.input_signals is None or len(block.input_signals) > 0:
+                    if (not block.input_signals_defined()) or len(block.input_signals) > 0:
                         raise Exception('The generator block %s should have defined 0 inputs.' % 
                                         block) 
                 
                 previous_link = None                    
                 previous_block = block
             # end if 
-                
+     
+    print "--------- end model ----------------\n"           
     return model
                 
                  

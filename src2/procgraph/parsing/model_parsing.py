@@ -19,7 +19,7 @@ class ParsedSignalList:
         self.signals = l
         
     def __repr__(self):
-        return 'Signals%s' % self.l
+        return 'Signals%s' % self.signals
     
     @staticmethod
     def from_tokens (original_string,location,tokens):
@@ -137,9 +137,9 @@ def parse_model(string):
     signals.setParseAction(ParsedSignalList.from_tokens)
     
     key = good_name
-    value = Word(alphanums) ^ integer ^ floatnumber
+    value = integer ^ floatnumber ^  Word(alphanums)
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
-    parameter_list =  delimitedList(key_value_pair)
+    parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
     parameter_list.setParseAction( lambda s,l,t: dict([(a[0],a[1]) for a in t ]))
     
     block = Suppress("|") + Optional(block_name("name") + Suppress(":")) + block_type("blocktype") + \
@@ -149,24 +149,23 @@ def parse_model(string):
     
     between = arrow + Optional( signals + arrow)
     
-    connection =  signals + arrow +  Optional( block + ZeroOrMore(between + block) ) \
+    # Different patterns
+    arrow_arrow =  signals + arrow +  Optional( block + ZeroOrMore(between + block) ) \
      + arrow +  signals
     source =   block + ZeroOrMore(between + block)  \
      + arrow +  signals
     sink =   signals + arrow + block + ZeroOrMore(between + block)  
     
     source_sink = block + ZeroOrMore(between + block)
-     
+    
+    # all of those are colled a connection
+    connection = arrow_arrow ^ source_sink ^ source ^ sink  
     connection.setParseAction(Connection.from_tokens)
-    source.setParseAction(Connection.from_tokens)
-    sink.setParseAction(Connection.from_tokens)
     
     assignment   = (key("key") + Suppress('=') + value("value"))
     assignment.setParseAction(ParsedAssignment.from_tokens) 
     
-    
-    
-    action = connection ^ source ^ sink ^ source_sink ^ assignment ^ comment
+    action = connection ^ assignment ^ comment
     
     newline = Suppress(lineEnd)
     
