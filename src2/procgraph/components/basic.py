@@ -45,7 +45,7 @@ register_block_class('constant', Constant)
 class Gain(Block):
 
     def init(self):
-        self.set_config_default('gain', 1)
+        #self.set_config_default('gain', 1)
         self.define_input_signals([0])
         self.define_output_signals([0])
     

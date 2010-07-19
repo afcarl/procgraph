@@ -1,6 +1,6 @@
 from procgraph.core.block import Block
 from procgraph.parsing.model_parsing import ParsedAssignment, Connection, ParsedBlock,\
-    ParsedSignalList, ParsedSignal
+    ParsedSignalList, ParsedSignal, parse_model
 
 from procgraph.components import *
 from procgraph.core.registrar import get_block_class
@@ -8,8 +8,10 @@ from procgraph.core.registrar import get_block_class
 
 class BlockConnection:
     def __init__(self, block1, block1_signal, block2, block2_signal, public_name=None ):
-        assert block1 is not None
+        assert isinstance( block1, Block)
         assert block1_signal is not None
+        assert block2 is None or isinstance( block2, Block)
+        
         self.block1 = block1
         self.block1_signal = block1_signal
         self.block2 = block2
@@ -39,10 +41,28 @@ class Model(Block):
     ''' A Model is a block. '''
     
     def __init__(self):
+        # As a block
+        Block.__init__(self, name=None, config={})
+        # we start with no input/output signals
+        self.define_input_signals([])
+        self.define_output_signals([])
+            
+    
         self.name2block = {}
         self.name2block_connection = {}
         # block -> block unresolved 
         self.unresolved = {}
+        
+        # list of blocks that act as generators (instance of Generator)
+        self.generators = []
+        
+        self.reset_execution()
+        
+        # hash name -> Block for blocks of type ModelInput
+        self.model_input_ports = {}
+        
+        
+        
         
     def summary(self):
         print "--- Model: %d blocks, %d connections" % \
@@ -52,6 +72,166 @@ class Model(Block):
             
         for name, conn in self.name2block_connection.items():
             print "- %s: %s" % (name, conn) 
+                
+    @staticmethod
+    def from_string(model_spec, properties = {}):
+        ''' Instances a model from a specification. Optional
+            attributes can be passed. Returns a Model object. '''
+        assert isinstance(model_spec, str)
+        assert isinstance(properties, dict)
+        
+        parsed_model = parse_model(model_spec)
+        
+        # Add the properties passed by argument to the ones parsed in the spec
+        for key, value in properties.items():
+            assignment = ParsedAssignment(key,value)
+            print parsed_model.__class__.__name__
+            parsed_model.append(assignment)
+        
+        model = create_from_parsing_results(parsed_model)
+        
+        return model
+       
+    def add_block(self, name, operation, params):
+        ''' Instances, configures, init(), and add a block to the model.
+            Returns the block instance. '''
+        block = instance_block(name, operation, params)
+        block.init()
+        self.name2block[name] = block
+        if isinstance(block, Generator):
+            self.generators.append(block)
+            
+        if isinstance(block, ModelInput):
+            self.model_input_ports[block.signal_name] = block
+            self.define_input_signals(self.input_signals + [block.signal_name])
+        
+        if isinstance(block, ModelOutput):
+            self.define_output_signals(self.output_signals + [block.signal_name])
+        
+        return block
+    
+    def from_outside_set_input(self, num_or_id, value, timestamp):
+        Block.from_outside_set_input(self, num_or_id, value, timestamp)
+        
+        signal_name = self.canonicalize_input(num_or_id)
+        input_block = self.model_input_ports[signal_name]
+        input_block.set_output(signal_name, value, timestamp)
+        self.blocks_to_update.append(input_block)
+    
+    def connect(self, block1, block1_signal, block2, block2_signal, public_name):
+        BC = BlockConnection( block1, block1_signal, block2, block2_signal, public_name=None)
+        if public_name in self.name2block_connection:
+            raise Exception('Signal "%s" already defined. ' % public_name)
+        self.name2block_connection[public_name] = BC
+
+    def has_more(self):
+        if self.blocks_to_update:
+            return True
+        
+        for generator in self.generators:
+            (has_next, timestamp) = generator.next_data_status() #@UnusedVariable
+            if has_next:
+                return True
+            
+        return False
+    
+    def reset_execution(self):
+        self.blocks_to_update = []
+    
+    def update(self):
+        # We keep a list of blocks to be updated.
+        # If the list is not empty, then pop one and update it.
+        if self.blocks_to_update:
+            # get one block
+            block = self.blocks_to_update.pop(0)
+            
+        else:
+            # look if we have any generators
+            # list of (generator, timestamp) 
+            generators_with_timestamps = [] 
+            for generator in self.generators:
+                (has_next, timestamp) = generator.next_data_status()
+                if has_next:
+                    generators_with_timestamps.append((generator, timestamp))
+        
+            if not generators_with_timestamps:
+                raise Exception("You asked me to update but nothing's left.")
+               
+            # now look for the smallest available timestamp
+            # (timestamp can be none)
+            def cmp(timestamp1, timestamp2):
+                if timestamp1 is None:
+                    return 1
+                elif timestamp2 is None:
+                    return -1
+                elif timestamp1 < timestamp2:
+                    return -1
+                elif timestamp2 < timestamp1:
+                    return 1
+                else:
+                    return 0
+                
+            generators_with_timestamps.sort( key = lambda x:x[1], cmp=cmp)
+            
+            block =  generators_with_timestamps[0][0]
+        
+        if block is None:
+            # We finished everything
+            raise Exception("You asked me to update but nothing's left.")
+            
+        # now we have a block (could be a generator)
+            
+        block.update()
+        
+        # print "processed %s, ts: %s" % (block, block.get_output_signals_timestamps())
+        
+        # check if the output signals were updated
+        for connection in self.__get_output_connections(block):
+            other = connection.block2
+            if other is None:
+                # XXX don't include dummy connection
+                continue
+            other_signal = connection.block2_signal
+            old_timestamp = other.get_input_timestamp(other_signal)
+            this_signal = connection.block1_signal
+            this_timestamp = block.get_output_timestamp(this_signal)
+            value  = block.get_output(this_signal)
+            
+            if value is not None and this_timestamp == 0:
+                raise Exception('Strange, value is not none by timestamp is 0'+
+                                ' for signal %s of %s.' % (this_signal, block))
+            
+            if this_timestamp > old_timestamp:
+                #print "updating input %s of %s with timestamp %s" % \
+                #    (other_signal, other, this_timestamp)
+                
+                other.from_outside_set_input(other_signal, value, 
+                                             this_timestamp)
+                
+                self.blocks_to_update.append(other)
+                
+                # If this is an output port, update the model
+                if isinstance(other, ModelOutput):
+                    #print "Updating output %s" %  other.signal_name
+                    self.set_output(other.signal_name, value, this_timestamp)
+            else:
+                pass
+                #print "Not updated %s because not %s > %s" % \
+                #    (other, this_timestamp, old_timestamp)
+        
+        
+    def __get_output_connections(self, block):
+        for block_connection in self.name2block_connection.values():
+            if block_connection.block1 == block:
+                yield block_connection
+    def __get_successors(self, block):
+        ''' Returns an iterable of all the blocks connected
+            to one of the outputs of the given block. '''
+        successors = set()
+        for block_connection in self.name2block_connection.values():
+            if block_connection.block1 == block:
+                successors.add(block_connection.block2)
+        return successors
     
 def instance_block(name, operation, config):
     ''' Instances a block '''
@@ -62,7 +242,7 @@ def instance_block(name, operation, config):
 
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
-    # if the previous block did not define output signals
+    # If the previous block did not define output signals
     if not previous_block.output_signals_defined():
         # We define a bunch of anonymous signals
         n = len(previous_link.signals)
@@ -113,6 +293,7 @@ def create_from_parsing_results(parsed_model):
     # First we collect all the properties, to use
     # in initialization.
     properties = {}
+    
     for element in parsed_model:
         if isinstance(element, ParsedAssignment):
             # if it is of the form  object.property = value
@@ -155,12 +336,8 @@ def create_from_parsing_results(parsed_model):
                         if s.local_output is not None:
                             raise Exception('Terminator connection %s cannot have a local output' %s)  
                         
-                        BC = BlockConnection(block1=previous_block, block1_signal=s.local_input,
+                        model.connect(block1=previous_block, block1_signal=s.local_input,
                                              block2=None, block2_signal=None, public_name=s.name)
-                        
-                        if s.name in model.name2block_connection:
-                            raise Exception('Signal "%s" already defined. ' % s.name)
-                        model.name2block_connection[s.name] = BC
              
                 
             if isinstance(element, ParsedBlock):
@@ -176,14 +353,10 @@ def create_from_parsing_results(parsed_model):
                     # delete so we can keep track of unused properties
                     del properties[element.name]
                 
-                block = instance_block(element.name, element.operation, \
-                                       element.config)
+                block = model.add_block(name=element.name, operation=element.operation, 
+                                params=element.config)
                 
-                block.init()
-                
-                model.name2block[element.name] = block
-                
-                print "Defined block %s = %s " % (element.name , block)
+                # print "Defined block %s = %s " % (element.name , block)
                 
                 if (previous_block is not None) and (previous_link is not None):
                     # normal connection between two blocks with named signals
@@ -199,13 +372,9 @@ def create_from_parsing_results(parsed_model):
             
                     # Finally we create the connection
                     for s in (previous_link.signals):
-                        BC = BlockConnection(previous_block, s.local_input,
+                        model.connect(previous_block, s.local_input,
                                              block, s.local_output, s.name)
                         
-                        if s.name in model.name2block_connection:
-                            raise Exception('Signal "%s" already defined. ' % s.name)
-                        model.name2block_connection[s.name] = BC
-                
                 elif previous_block is not None and previous_link is None:
                     # anonymous connection between two blocks
                     # if the previous block has already defined the output
@@ -231,9 +400,9 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                         for i in range(num_out):
                             name = 'link_%s_to_%s_%d' % \
                                 (previous_block.name, block.name, i)
-                            BC = BlockConnection(previous_block, i,
+                            model.connect(previous_block, i,
                                              block, i, name)
-                            model.name2block_connection[name] = BC
+                        
                 
                     else:
                         # we cannot say anything before updat()ing the blocks
@@ -272,9 +441,9 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                             
                         # make up a name    
                         name = "input_%s_for_%s" % (s.local_output, block)
-                        BC = BlockConnection(input_block, s.local_input,
+                        model.connect(input_block, s.local_input,
                                              block, s.local_output, name)
-                        model.name2block_connection[name] = BC
+                        
                 
                 elif previous_block is None and previous_link is None:
                     # make sure it's a generator?
@@ -285,7 +454,10 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                 previous_link = None                    
                 previous_block = block
             # end if 
-     
+    
+    if len(properties) > 0:
+        raise Exception('Unused properties: %s' % properties)
+        
     print "--------- end model ----------------\n"           
     return model
                 

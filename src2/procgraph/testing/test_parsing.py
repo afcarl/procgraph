@@ -4,7 +4,7 @@ from procgraph.parsing.model_parsing import parse_model
 import traceback
 from pyparsing import ParseException
 from procgraph.core.model import create_from_parsing_results
-import procgraph.components.Components 
+import procgraph.components.basic 
 import procgraph.components.debug_components 
 
 good_examples = [
@@ -51,7 +51,11 @@ b1.f [input_name] -> |test| -> [t] y [U], z [t] -> |test| -> res
 u = 1
 """,
 " |generic in=0,out=2|  ",
-" |generic in=0 out=2|  " 
+" |generic in=0 out=2|  ",
+# assignment with object
+""" 
+g1.in = 2
+""", 
 
 ]
 
@@ -62,7 +66,13 @@ bad_examples = [
 "|GENERATOR| --> result resu",
 "|GENERATOR GENERATOR| --> result resu",
 "result x --> |SINK|",
-"u -> |FUNCTION| |FUNCTION| --> result"]
+"u -> |FUNCTION| |FUNCTION| --> result",
+# invalid names
+".u = 2",
+".u.d = 2",
+"1u = 2"
+
+]
 
 
 
@@ -70,6 +80,7 @@ class SyntaxTest(unittest.TestCase):
     
     def testBadExamples(self):
         for example in bad_examples:
+            print ": %s" % example
             self.assertRaises( ParseException, parse_model, example)
             
             
@@ -91,129 +102,4 @@ class SyntaxTest(unittest.TestCase):
         if failed is not None:
             raise Exception('Failed "%s".' % failed)
             
-
-
-good_examples2 = [
-""" |rand| -> [0] res """,
-
-""" # Multiple inputs
-|constant value=12| -> a
-|constant value=13| -> b
-a, b -> |+| -> c  """,
-
-""" # Multiple inputs / anonymous
-|constant value=12| -> a -> |gain value=3| -> c
-|constant value=13| -> |gain value=-1| -> d
- c, d -> |+| -> result         """,
-
-""" # Referring to outputs using numbers  
-|constant value=12| -> [0]a  """, 
-
-""" # Referring to input/outputs using numbers  
-|constant value=12| -> [0]a[0] -> |gain|  """,
-
-""" # A block by itself should be fine  
-|generic in=0 out=0|  
-|generic in=0 out=2|  """,
- 
-""" # Trying some named connections (1)  
-|generic out=1| -> |generic in=1|  """,
-
-""" # Trying some named connections (1)
-# Should be the same  
-|generic out=1| -> x
-x -> |generic in=1|  """,
-
-"""# Should be the same  as well
-|c1:constant value=1| -> |g1:generic in=1 out=1|
-g1.0 -> |g2:generic in=1|  """,
-
-"""# Should be the same  as well
-|g1:generic out=1|
-g1.0 -> |g2:generic in=1|  """
-
-]
-
-bad_examples2 = [
-""" # Bad number of outputs  
-|constant value=12| -> a, b  """, 
-
-""" # Bad output name  
-|constant value=12| -> [inexistent]a  """, 
-
-""" # Bad output number  
-|constant value=12| -> [1]a  """, 
-
-""" # inexistent input
-invalid -> |gain|            """,
-
-""" # input to something with no input
-|constant value=12| -> a
-a -> |constant value=12|   """,
-
-""" # wrong number of inputs
-|constant value=12| -> a
-|constant value=12| -> b
-a, b -> |gain|              """,
-
-""" # Cannot use output if terminating  
-|constant value=12| -> [0]a[0]  """,
-
-""" # Incompatible signals (anonymous) 
-# Here + takes two
-|constant value=12| -> |+ n=2| -> y """,
-
-""" # We don't want to connect blocks with no signals  
-|generic in=0 out=0| -> |generic in=0 out=2|  """,
- 
-""" # It cannot be without input if one is needed   
-|generic in=1 out=0|  """,
- 
-""" # Double definition   
-|generic out=1| -> a  
-|generic out=1| -> a""",
-
-
-]
-
-
-class SemanticsTest(unittest.TestCase):
-    
-    def testBadExamples(self):
-        for example in bad_examples2:
-            #print 'trying """%s"""' % example
-            parsed = parse_model(example)
-            failed = False
-            try:
-                model = create_from_parsing_results(parsed)
-                print "OOPS, we parsed something from:\n'%s'\n" % example
-                print parsed 
-                model.summary()
-            except:
-                failed = True
-                
-            if not failed:
-                self.assertTrue(False)
-            
-            
-    def testExamples(self):
-        failed = None
-        for example in good_examples2:
-            
-            try:
-                parsed = parse_model(example)
-                model = create_from_parsing_results(parsed)
-                #model.summary()
-                #print "v   %s" % example
-#                print "      %s" % res.__repr__()
-            except Exception as e:
-                print 'Failed  """%s"""\n' % example
-                print "Error: %s " % e
-                traceback.print_exc()
-                failed = example
-                raise e
-                
-        if failed is not None:
-            raise Exception('Failed "%s".' % failed)
-            
-            
+     

@@ -40,7 +40,7 @@ class ParsedSignal:
             s += "[%s]" % self.local_input
         if self.block_name is not None:
             s += "%s." % self.block_name
-        s += self.name
+        s += str(self.name)
         if self.local_output is not None:
             s += "[%s]" % self.local_output
         s+=')'
@@ -123,20 +123,23 @@ def parse_model(string):
     
     arrow = Suppress(Regex(r'-+>'))
     
-    good_name =  Word(alphanums +'_' )
+    good_name =  Combine(Word(alphas)+Optional(Word(alphanums +'_')))
+    # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
+    # XXX: don't put '.' at the beginning
+    qualified_name = Combine( good_name +'.' + (integer ^ good_name ) )
 
     block_name = good_name
     block_type =   Word(alphanums +'_+-/*' )
      
     signal = Optional(Suppress('[') + (integer ^ good_name  )('local_input') + Suppress(']')) \
-            +  Optional(block_name('block_name') + Suppress(".")) + good_name('name') + \
+            +  Optional(block_name('block_name') + Suppress(".")) + (integer ^ good_name)('name') + \
             Optional(Suppress('[') +  (integer ^ good_name  )('local_output') + Suppress(']'))
     signal.setParseAction(ParsedSignal.from_tokens)
     
     signals = delimitedList(signal)
     signals.setParseAction(ParsedSignalList.from_tokens)
     
-    key = good_name
+    key = good_name ^ qualified_name
     value = integer ^ floatnumber ^  Word(alphanums)
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
     parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
@@ -174,6 +177,6 @@ def parse_model(string):
     ZeroOrMore(newline) + stringEnd 
     
 
-    return model.parseString(string)
+    return list(model.parseString(string))
 
 

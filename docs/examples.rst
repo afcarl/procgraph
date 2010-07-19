@@ -10,6 +10,14 @@ These could be, for example:
 Each source can produce more than one signal.
 Each signal has independent timestamp.
 
+
+The model can be run:
+- from external, push-style
+
+	model.push('input', rand(1))
+	
+- from 
+
 Signals:
 ^^^^^^^
 	name --
@@ -111,37 +119,46 @@ Syntax
 ======
 
 
-Basic operation:
+The basic operation looks like this:
 
-	u -> |operation| -> result
+	u --> |operation| --> result
 	
-Anonymous signals:
+The form can be chained:
 
-    u -> |operation| -> |operation2| -> result
+	u --> |filter| --> u1 --> |operation| --> result
+	
+Anonymous connections:
+
+    u --> |operation| --> |operation2| --> result
 
 Giving a name to the blocks:
 
-	u -> |op1 operation| ->  result
+	u --> |op1:operation| -->  result
 
-Using the name to set parameters:
+Blocks have parameters. There are two ways to set them. 
+Either in the block itself:
 
-	op1.param = xxx
+
+Or on a separate line
+
+	op1.param1 = 1
+	op1.param2 = 2
 
 Setting a parameter online:
 
-	u -> |op1 operation op:tan| -> result
+	u --> |op1 operation op:tan| --> result
 
 
 model 1
 
 
-y -> name(derivative) -> [y_dot, y_avg]
+y --> name(derivative) --> [y_dot, y_avg]
 
-	y_dot -> |expectation:e1| -> y_dot_mean
-	y_dot -> |expectation_mean:e2| -> y_dot_mean
+	y_dot --> |expectation:e1| --> y_dot_mean
+	y_dot --> |expectation_mean:e2| --> y_dot_mean
 
 
-log1(log_reader) -> *
+log1(log_reader) --> *
 
 log1: 
 	directory: pwd
@@ -161,7 +178,7 @@ sources have symbols
 Other examples from http://bloodgate.com/perl/graph/manual/features.html
 
 
-	[ Bonn ] { label: Berlin; } -> [ Berlin ]
+	[ Bonn ] { label: Berlin; } --> [ Berlin ]
 [ Potsdam ], [ Mannheim ] 
   --> { end: back,0; }
 [ Weimar ]
@@ -171,13 +188,13 @@ Other examples from http://bloodgate.com/perl/graph/manual/features.html
 
 model learning_example ------------------
 
-	y -> |whitening| -> y_white      
-	u -> |whitening| -> u_white
+	y --> |whitening| --> y_white      
+	u --> |whitening| --> u_white
 
-	[y_white, u_white] -> | Tlearner | -> T
+	[y_white, u_white] --> | Tlearner | --> T
                     
 
-	y_gx -> |op|{a:2} -> y_gx_sign
+	y_gx --> |op|{a:2} --> y_gx_sign
 
 
 model Tlearner -------------------
@@ -202,13 +219,13 @@ This can be created
 	x  --> |timestamp| --> t
 	
 	# create a delayed version of x
-	x ---> |delay| ---> x_old  -> |timestamp| -> t_old
+	x ---> |delay| ---> x_old  --> |timestamp| --> t_old
 	
 	# compute differences
-	[x, x_old] -> |-| -> x_inc  
-	[t, t_old] -> |-| -> t_inc 
+	[x, x_old] --> |-| --> x_inc  
+	[t, t_old] --> |-| --> t_inc 
 	
-	[x_inc, t_inc] -> |/| -> x_dot
+	[x_inc, t_inc] --> |/| --> x_dot
                 
 
 
@@ -217,13 +234,13 @@ Using more ASCII art:
     x --> |timestamp| --> t ------------------------>|
     |     +++++++++++                                |
 	|    +++++++             +++++++++++             |--->|/|-,
-	|--> |delay| -> x_old -> |timestamp| -> t_old -->|        |
+	|--> |delay| --> x_old --> |timestamp| --> t_old -->|        |
 	|    +++++++      |       +++++++++++
 	                |
 	
-	[x, x_old] -> |-| -> x_inc |
-	                           |-> |/| -> x_dot
-	[t, t_old] -> |-| -> t_inc |
+	[x, x_old] --> |-| --> x_inc |
+	                           |-> |/| --> x_dot
+	[t, t_old] --> |-| --> t_inc |
 
 
 
