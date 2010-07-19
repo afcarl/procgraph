@@ -285,8 +285,8 @@ def check_link_compatibility_output(block, previous_link):
  
      
 def create_from_parsing_results(parsed_model):
-    print "\n\n --- new model ----------------"
-    print "Parsed: %s" % parsed_model
+    # print "\n\n --- new model ----------------"
+    # print "Parsed: %s" % parsed_model
 
     model = Model()
     
@@ -318,7 +318,7 @@ def create_from_parsing_results(parsed_model):
         previous_block = None
         previous_link = None
         
-        print "Looking at connection %s" % connection.elements
+        # print "Looking at connection %s" % connection.elements
         for i, element in enumerate(connection.elements):
             if isinstance(element, ParsedSignalList):
                 # if this is not the last one, just save it, it will be
@@ -458,7 +458,7 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
     if len(properties) > 0:
         raise Exception('Unused properties: %s' % properties)
         
-    print "--------- end model ----------------\n"           
+    # print "--------- end model ----------------\n"           
     return model
                 
                  

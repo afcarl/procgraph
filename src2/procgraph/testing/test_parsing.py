@@ -55,7 +55,15 @@ u = 1
 # assignment with object
 """ 
 g1.in = 2
-""", 
+""",
+# quoted strings
+"""
+g1.in = "ciao"
+""" ,
+"""
+g1.in = "ci\\"a/o"
+""" 
+
 
 ]
 
@@ -70,7 +78,9 @@ bad_examples = [
 # invalid names
 ".u = 2",
 ".u.d = 2",
-"1u = 2"
+"1u = 2",
+# bad quotation
+""" a = "ci"ao" """
 
 ]
 

@@ -1,7 +1,7 @@
 from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore,\
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, Or,\
     ParserElement, Combine, nums, Literal, CaselessLiteral, col, lineno,\
-    restOfLine
+    restOfLine, QuotedString
 
 class Location:
     def __init__(self, string, character):
@@ -140,7 +140,9 @@ def parse_model(string):
     signals.setParseAction(ParsedSignalList.from_tokens)
     
     key = good_name ^ qualified_name
-    value = integer ^ floatnumber ^  Word(alphanums)
+    
+    quoted = QuotedString('"','\\',unquoteResults=True)
+    value = integer ^ floatnumber ^  Word(alphanums) ^ quoted
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
     parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
     parameter_list.setParseAction( lambda s,l,t: dict([(a[0],a[1]) for a in t ]))
