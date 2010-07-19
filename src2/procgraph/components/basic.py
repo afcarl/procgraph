@@ -4,11 +4,6 @@ from numpy import random
 from procgraph.core.registrar import register_block_class
 
 class GenericOperation(Block):
-    def init(self, f):
-        if isinstance(f, str):
-            f = eval(f)
-        self.f = f
-        self.define_output_signals([0])
         
     def update(self):
         assert self.input_signals is not None
@@ -24,13 +19,26 @@ class GenericOperation(Block):
 class Plus(GenericOperation):
     def init(self):
         self.f = lambda x,y : x+y
-
+        self.define_output_signals(['result'])
+    
 register_block_class('+', Plus)
     
 class Constant(Block):
+    ''' Creates a numerical constant that never changes.::
+    
+            |constant value=42 name=meaning| -> ...
+            
+        Two parameters
+        * value, necessary
+        * name, optional signal name (default: const)
+    ''' 
+        
     def init(self):
+        self.set_config_default('name', 'const')
+        
+        self.signal_name  = self.get_config('name')
         self.value = self.get_config('value')
-        self.define_output_signals([0])
+        self.define_output_signals([self.signal_name])
         self.define_input_signals([])
         
     def update(self):
@@ -46,8 +54,8 @@ class Gain(Block):
 
     def init(self):
         #self.set_config_default('gain', 1)
-        self.define_input_signals([0])
-        self.define_output_signals([0])
+        self.define_input_signals(['input'])
+        self.define_output_signals(['out'])
     
     def update(self):
         self.set_output(0, self.get_input(0) * self.get_config('gain') )
@@ -63,6 +71,7 @@ class Delay(Block):
         self.set_output(0, self.get_state(0))
         self.set_state(0, self.get_input(0))
 
+    
 register_block_class('delay', Delay)
     
 class RandomGenerator(Generator):    

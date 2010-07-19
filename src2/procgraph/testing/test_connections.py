@@ -81,8 +81,7 @@ a, b -> |gain|              """,
 |constant value=12| -> [0]a[0]  """,
 
 """ # Incompatible signals (anonymous) 
-# Here + takes two
-|constant value=12| -> |+ n=2| -> y """,
+|constant value=12| -> |generic in=2 out=1| -> y """,
 
 """ # We don't want to connect blocks with no signals  
 |generic in=0 out=0| -> |generic in=0 out=2|  """,

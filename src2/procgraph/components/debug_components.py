@@ -31,3 +31,48 @@ class Generic(Block):
 
 register_block_class('generic', Generic)
 
+
+class Identity(Block):
+    ''' This block outputs the inputs. This is an example 
+        of a block whose signal configuration is dynamics:
+        init() gets called twice. '''
+    
+    def init(self):
+        # say we are not ready if the inputs were not defined.
+        if not self.are_input_signals_defined():
+            return Block.INIT_NOT_FINISHED
+        
+        # output signals get the same name as the inputs
+        self.define_output_signals( self.get_input_signals_names() )
+        
+    def update(self):
+        # Just copy the input to the output
+        for i in range(self.num_input_signals()):
+            self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
+        
+        
+register_block_class('identity', Identity)
+        
+          
+
+class DoesNotDefineInput(Block):
+    ''' This (erroneous) block does not register inputs '''
+    
+    def init(self):
+        self.define_output_signals([])
+    
+register_block_class('DoesNotDefineInput', DoesNotDefineInput)
+
+
+class DoesNotDefineOutput(Block):
+    ''' This (erroneous) block does not register output '''
+    
+    def init(self):
+        self.define_input_signals([])
+        
+register_block_class('DoesNotDefineOutput', DoesNotDefineOutput)
+
+        
+    
+
+

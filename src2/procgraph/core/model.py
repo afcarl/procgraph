@@ -58,7 +58,7 @@ class Model(Block):
         
         self.reset_execution()
         
-        # hash name -> Block for blocks of type ModelInput
+        # hash signal name -> Block for blocks of type ModelInput
         self.model_input_ports = {}
         
         
@@ -96,17 +96,31 @@ class Model(Block):
         ''' Instances, configures, init(), and add a block to the model.
             Returns the block instance. '''
         block = instance_block(name, operation, params)
-        block.init()
+        
+        res = block.init()
+        # add it to the list if initialization is not complete
+        if res != Block.INIT_NOT_FINISHED:
+            if not self.are_input_signals_defined() or \
+                not self.are_output_signals_defined():
+                raise Exception(('Block %s did not define input/output signals' + 
+                                ' and did not return INIT_NOT_FINISHED') %
+                                block) 
+         
+        
+        
         self.name2block[name] = block
         if isinstance(block, Generator):
             self.generators.append(block)
             
         if isinstance(block, ModelInput):
             self.model_input_ports[block.signal_name] = block
-            self.define_input_signals(self.input_signals + [block.signal_name])
+            self.define_input_signals(self.get_input_signals_names() + 
+                                      [block.signal_name])
         
         if isinstance(block, ModelOutput):
-            self.define_output_signals(self.output_signals + [block.signal_name])
+            # XXX bug: output_signals -> output_signals
+            self.define_output_signals(self.get_output_signals_names() + 
+                                       [block.signal_name])
         
         return block
     
@@ -243,7 +257,7 @@ def instance_block(name, operation, config):
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
     # If the previous block did not define output signals
-    if not previous_block.output_signals_defined():
+    if not previous_block.are_output_signals_defined():
         # We define a bunch of anonymous signals
         n = len(previous_link.signals)
         previous_block.define_output_signals(map(str, range(n)))
@@ -256,7 +270,7 @@ def check_link_compatibility_input(previous_block, previous_link):
         if s.local_input is None:
             s.local_input = i
                     
-        if not previous_block.valid_output(s.local_input):
+        if not previous_block.is_valid_output_name(s.local_input):
             raise Exception('Could not find output name "%s"(%s) in %s' % \
                             (s.local_input, type(s.local_input), previous_block))
             
@@ -265,7 +279,7 @@ def check_link_compatibility_input(previous_block, previous_link):
 def check_link_compatibility_output(block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
     # if the block did not define input signals
-    if not block.input_signals_defined():
+    if not block.are_input_signals_defined():
         # We define a bunch of anonymous signals
         n = len(previous_link.signals)
         block.define_input_signals(map(str, range(n)))
@@ -277,7 +291,7 @@ def check_link_compatibility_output(block, previous_link):
         if s.local_output is  None:
             s.local_output = i
                     
-        if not block.valid_input(s.local_output):
+        if not block.is_valid_input_name(s.local_output):
             raise Exception('Could not find input name "%s" in %s' % \
                             s.local_output, s.block)
             
@@ -379,16 +393,17 @@ def create_from_parsing_results(parsed_model):
                     # anonymous connection between two blocks
                     # if the previous block has already defined the output
                     # AND we didn't define the input, then we copy that
-                    if previous_block.output_signals_defined() \
-                        and not block.input_signals_defined():
-                        block.define_input_signals()
+                    if previous_block.are_output_signals_defined() \
+                        and not block.are_input_signals_defined():
+                        names = previous_block.get_output_signals_names()
+                        block.define_input_signals(names)
                     # If both have defined, we check they have the same
                     # number of signals
-                    elif  previous_block.output_signals_defined() \
-                        and block.input_signals_defined():
+                    elif  previous_block.are_output_signals_defined() \
+                        and block.are_input_signals_defined():
                         # check that they have the same number of signals
-                        num_out = len(previous_block.output_signals)
-                        num_in = len(block.input_signals) 
+                        num_out = previous_block.num_output_signals()
+                        num_in = block.num_input_signals()
                         if num_out != num_in:
                             raise Exception('Tried to connect two blocks (%s \
 and %s) with incompatible signals; you must do this expliciyl.' % (previous_block, block))
@@ -427,7 +442,7 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                                 raise Exception('Link %s refers to unknown block "%s". We know %s.' % 
                                                 (s, s.block_name, model.name2block.keys()))
                             input_block = model.name2block[s.block_name]
-                            if not input_block.valid_output(s.name):
+                            if not input_block.is_valid_output_name(s.name):
                                 raise Exception('Link %s refers to unknown output %s in block %s. ' % 
                                                 (s, s.name, input_block))
                             s.local_input = input_block.canonicalize_output(s.name)
@@ -447,10 +462,32 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                 
                 elif previous_block is None and previous_link is None:
                     # make sure it's a generator?
-                    if (not block.input_signals_defined()) or len(block.input_signals) > 0:
+                    if not block.are_input_signals_defined():
+                        raise Exception('The block %s did not define signals and it has no input.'%
+                                       block) 
+                    if block.num_input_signals() > 0:
                         raise Exception('The generator block %s should have defined 0 inputs.' % 
                                         block) 
                 
+                # at this point the input should be defined
+                assert block.are_input_signals_defined()
+                # if it did not define outputs (init delayed)
+                if not block.are_output_signals_defined():
+                    # then we call init() again
+                    res = block.init()
+                    # it cannot return NOT_FINISHED again.
+                    if res == Block.INIT_NOT_FINISHED:
+                        raise Exception('Block %s cannot return NOT_FINISHED'+
+                                        'after inputs have been defined. ' % block)
+                    # now the outputs should be defined
+                    if not block.are_output_signals_defined():
+                        raise Exception(('Block %s still does not define outputs'+
+                                        ' after init() called twice. ') % block)
+                
+                # at this point input/output should be defined
+                assert block.are_input_signals_defined()
+                assert block.are_output_signals_defined()
+
                 previous_link = None                    
                 previous_block = block
             # end if 
