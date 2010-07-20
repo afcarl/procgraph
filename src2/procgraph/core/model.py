@@ -69,30 +69,8 @@ class Model(Block):
             
         for name, conn in self.name2block_connection.items():
             print "- %s: %s" % (name, conn) 
-                
-    @staticmethod
-    def from_string(model_spec, properties = {}):
-        ''' Instances a model from a specification. Optional
-            attributes can be passed. Returns a Model object. '''
-        assert isinstance(model_spec, str)
-        assert isinstance(properties, dict)
-        
-        parsed_models = parse_model(model_spec)
-        
-        if not len(parsed_models) == 1:
-            raise Exception("I don't support multiple models yet.")
-        
-        parsed_model = parsed_models[0]
-        
-        # Add the properties passed by argument to the ones parsed in the spec
-        for key, value in properties.items():
-            assignment = ParsedAssignment(key,value)
-            parsed_model.elements.append(assignment)
-        
-        model = create_from_parsing_results(parsed_model)
-        
-        return model
-       
+ 
+ 
     def add_block(self, name, operation, params):
         ''' Instances, configures, init(), and add a block to the model.
             Returns the block instance. '''

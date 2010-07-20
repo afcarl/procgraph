@@ -1,10 +1,12 @@
 import sys
-from procgraph.core.model import Model
+from procgraph.core.model import Model, create_from_parsing_results
 import os
 from procgraph.core.exceptions import UserError
 import glob
 import fnmatch
 from procgraph.core.registrar import register_block_class
+from procgraph.core.parsing import parse_model, ParsedAssignment
+from copy import deepcopy
 
 PATH_ENV_VAR = 'PROCGRAPH_PATH'
 
@@ -35,49 +37,62 @@ def pg_look_for_models(additional_paths=None):
                     all_files.append(os.path.join(root, f))
     for f in all_files:
         print "Loading %s" % f
-        pg_add_to_library(open(f).read())
-        
-def pg_add_to_library(model_spec, model_name=None):
-    ''' Adds a model, or models to the library.
-    model_spec might be either:
-    1) the spec for a model, in which case a model_name should be given
-    2) the spec for multiple models, in which case a model_name should not be given
-    '''
-    contains_multiple_models, name2spec = try_parse_multiple_models(model_spec)
-    
-    if contains_multiple_models and model_name is not None:
-        raise UserError('The spec you gave contains multiple models, '+
-                        ' name "%s" not necessary ' % model_name)
-        
-    if not contains_multiple_models and model_name is None:
-        raise UserError('I need a name for the model.')
-    
-    if not contains_multiple_models:
-        name2spec = {model_name: model_spec}
-        
-    for name, spec in name2spec.items():
-        register_block_class(name, ModelSpec(spec))
+        base,  = os.path.splitext(os.path.basename(f))
+        model_spec = open(f).read()
+        pg_add_models_to_library(model_spec)
 
-def try_parse_multiple_models(s): 
-    """    
-    Pass a string to this method and it will look whether it is composed
-    by multiple models. Multiple models look like this::
+def pg_add_models_to_library(pgfile, name=None):
+    models = parse_model(pgfile)
+    if models[0].name is None:
+        assert name is not None
+        models[0].name = name
+        
+    for model in models:
+        pg_add_parsed_model_to_library(model)
     
-        --- model <model name>
-        
-        model content
-        
-        --- model <model name>
-        
-        other 
-        
-    Returns (boolean, hash) tuple """
-    pass
 
+def pg_add_parsed_model_to_library(parsed_model):
+    assert parsed_model.name is not None
+    print "Registering model %s " % parsed_model.name
+    register_block_class(parsed_model.name, ModelSpec(parsed_model))
+    
 class ModelSpec():
     ''' Class used to register as a block type '''
-    def __init__(self, model_spec):
-        self.model_spec = model_spec
+    def __init__(self, parsed_model):
+        self.parsed_model = parsed_model
         
     def __call__(self, name, properties):
-        return Model.from_string(self.model_spec, properties)
+        
+        parsed_model = deepcopy(self.parsed_model)
+        
+        for key, value in properties.items():
+            assignment = ParsedAssignment(key,value)
+            parsed_model.elements.append(assignment)
+        
+        model = create_from_parsing_results(parsed_model)
+
+        return model
+               
+def model_from_string(model_spec, properties = {}):
+    ''' Instances a model from a specification. Optional
+        attributes can be passed. Returns a Model object. '''
+    assert isinstance(model_spec, str)
+    assert isinstance(properties, dict)
+    
+    parsed_models = parse_model(model_spec)
+    
+    if len(parsed_models) > 0:            
+        for support in parsed_models[1:]:
+            pg_add_parsed_model_to_library(support)
+
+    parsed_model = parsed_models[0]
+    
+    # Add the properties passed by argument to the ones parsed in the spec
+    for key, value in properties.items():
+        assignment = ParsedAssignment(key,value)
+        parsed_model.elements.append(assignment)
+    
+    model = create_from_parsing_results(parsed_model)
+    
+    return model
+   

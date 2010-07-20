@@ -1,6 +1,7 @@
 from procgraph.core.model import Model
 from procgraph.components.rawseeds import *
 from unittest import TestCase
+from procgraph.core.model_loader import model_from_string
 
 class PipelineTest(TestCase):
     
@@ -10,7 +11,7 @@ class PipelineTest(TestCase):
            |input name=x| -> |g1:gain| -> |output name=y|
         """
         gain = 3
-        model = Model.from_string(model_desc, {'g1.gain': gain})
+        model = model_from_string(model_desc, {'g1.gain': gain})
         
         model.summary()
         

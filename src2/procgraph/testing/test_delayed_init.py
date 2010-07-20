@@ -1,5 +1,6 @@
 from procgraph.core.model import Model
 from unittest import TestCase
+from procgraph.core.model_loader import model_from_string
 
 class DelayedTest(TestCase):
     
@@ -8,7 +9,7 @@ class DelayedTest(TestCase):
         model_desc = """
            |generic out=3| -> |identity| -> |identity| -> |block1:identity|
         """
-        model = Model.from_string(model_desc)
+        model = model_from_string(model_desc)
         
         block1 = model.name2block['block1']
         self.assertTrue(block1.are_output_signals_defined() )
@@ -21,11 +22,13 @@ class DelayedTest(TestCase):
             |DoesNotDefineOutput|
         """
         
-        self.assertRaises(Exception, Model.from_string, model_desc)
+        self.assertRaises(Exception, model_from_string, model_desc)
         
         
         model_desc = """ 
             |DoesNotDefineInput|
         """
         
-        self.assertRaises(Exception, Model.from_string, model_desc)
+        self.assertRaises(Exception, model_from_string, model_desc)
+        
+        

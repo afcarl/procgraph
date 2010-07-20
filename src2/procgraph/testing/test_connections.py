@@ -6,6 +6,7 @@ from procgraph.core.model import create_from_parsing_results, Model
 import procgraph.components.basic 
 import procgraph.components.debug_components 
 from procgraph.core.parsing import parse_model
+from procgraph.core.model_loader import model_from_string
 
 
 good_examples2 = [
@@ -149,9 +150,9 @@ class SemanticsTest(unittest.TestCase):
     def test_from_string_params(self):
         spec = '|constant value=1| -> |g1:generic|'
         # this should not work
-        self.assertRaises(Exception, Model.from_string, spec)
+        self.assertRaises(Exception, model_from_string, spec)
         # this should, instead
-        Model.from_string(spec, {'g1.in': 1})
+        model_from_string(spec, {'g1.in': 1})
         
     
     
@@ -164,7 +165,7 @@ class ParamsTest(unittest.TestCase):
            |input name=x| -> |g1:gain| -> |output name=y|
         """
         # g2.gain is unused
-        self.assertRaises(Exception, Model.from_string,
+        self.assertRaises(Exception, model_from_string,
                      model_desc, {'g2.gain': 2})
        
     
