@@ -1,6 +1,6 @@
 from procgraph.core.block import Block
-from procgraph.parsing.model_parsing import ParsedAssignment, Connection, ParsedBlock,\
-    ParsedSignalList, ParsedSignal, parse_model
+from procgraph.core.parsing import ParsedAssignment, Connection, ParsedBlock,\
+    ParsedSignalList, ParsedSignal, parse_model, ParsedModel
 
 from procgraph.components import *
 from procgraph.core.registrar import get_block_class
@@ -59,10 +59,7 @@ class Model(Block):
         self.reset_execution()
         
         # hash signal name -> Block for blocks of type ModelInput
-        self.model_input_ports = {}
-        
-        
-        
+        self.model_input_ports = {} 
         
     def summary(self):
         print "--- Model: %d blocks, %d connections" % \
@@ -80,13 +77,17 @@ class Model(Block):
         assert isinstance(model_spec, str)
         assert isinstance(properties, dict)
         
-        parsed_model = parse_model(model_spec)
+        parsed_models = parse_model(model_spec)
+        
+        if not len(parsed_models) == 1:
+            raise Exception("I don't support multiple models yet.")
+        
+        parsed_model = parsed_models[0]
         
         # Add the properties passed by argument to the ones parsed in the spec
         for key, value in properties.items():
             assignment = ParsedAssignment(key,value)
-            print parsed_model.__class__.__name__
-            parsed_model.append(assignment)
+            parsed_model.elements.append(assignment)
         
         model = create_from_parsing_results(parsed_model)
         
@@ -299,6 +300,8 @@ def check_link_compatibility_output(block, previous_link):
  
      
 def create_from_parsing_results(parsed_model):
+    assert isinstance(parsed_model, ParsedModel)
+    
     # print "\n\n --- new model ----------------"
     # print "Parsed: %s" % parsed_model
 
@@ -308,7 +311,7 @@ def create_from_parsing_results(parsed_model):
     # in initialization.
     properties = {}
     
-    for element in parsed_model:
+    for element in parsed_model.elements:
         if isinstance(element, ParsedAssignment):
             # if it is of the form  object.property = value
             if '.' in element.key:
@@ -321,7 +324,7 @@ def create_from_parsing_results(parsed_model):
             pass  
 
     # Then we instantiate all the blocks
-    connections = [x for x in parsed_model if isinstance(x, Connection)]
+    connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
     
     # Things for generating names for anonymous blocks
     num_anonymous_blocks = 0

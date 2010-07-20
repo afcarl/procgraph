@@ -1,11 +1,11 @@
 
 import unittest
-from procgraph.parsing.model_parsing import parse_model
 import traceback
 from pyparsing import ParseException
 from procgraph.core.model import create_from_parsing_results, Model
 import procgraph.components.basic 
 import procgraph.components.debug_components 
+from procgraph.core.parsing import parse_model
 
 
 good_examples2 = [
@@ -110,8 +110,9 @@ class SemanticsTest(unittest.TestCase):
             #print 'trying """%s"""' % example
             parsed = parse_model(example)
             failed = False
+            self.assertTrue( len(parsed) == 1)
             try:
-                model = create_from_parsing_results(parsed)
+                model = create_from_parsing_results(parsed[0])
                 print "OOPS, we parsed something from:\n'%s'\n" % example
                 print parsed 
                 model.summary()
@@ -130,7 +131,8 @@ class SemanticsTest(unittest.TestCase):
             
             try:
                 parsed = parse_model(example)
-                model = create_from_parsing_results(parsed)
+                self.assertTrue( len(parsed) == 1)
+                model = create_from_parsing_results(parsed[0])
                 #model.summary()
                 
 #                print "      %s" % res.__repr__()

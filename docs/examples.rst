@@ -1,6 +1,12 @@
 Overview
 ========
 
+
+Why:
+- usable from logs/realtime
+- signals with different rates, semantics for sync
+
+
 Sources
 ^^^^^^^
 These could be, for example:

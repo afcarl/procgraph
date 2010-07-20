@@ -1,11 +1,11 @@
 
 import unittest
-from procgraph.parsing.model_parsing import parse_model
 import traceback
 from pyparsing import ParseException
 from procgraph.core.model import create_from_parsing_results
 import procgraph.components.basic 
 import procgraph.components.debug_components 
+from procgraph.core.parsing import parse_model
 
 good_examples = [
 "u = -1",
@@ -90,8 +90,15 @@ class SyntaxTest(unittest.TestCase):
     
     def testBadExamples(self):
         for example in bad_examples:
-            print ": %s" % example
-            self.assertRaises( ParseException, parse_model, example)
+            failed = False
+            try:
+                parsed = parse_model(example)
+                print 'Oops, I parsed "%s" into "%s".' % (example, parsed)
+            except: 
+                failed = True
+                
+            if not failed:
+                self.assertTrue(False)
             
             
     def testExamples(self):
