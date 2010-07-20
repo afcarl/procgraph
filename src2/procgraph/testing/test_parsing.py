@@ -119,4 +119,3 @@ class SyntaxTest(unittest.TestCase):
         if failed is not None:
             raise Exception('Failed "%s".' % failed)
             
-     

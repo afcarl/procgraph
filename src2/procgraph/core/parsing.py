@@ -106,7 +106,7 @@ class ParsedModel:
         
     @staticmethod
     def from_named_model(original_string, location, tokens):
-        name = tokens['name']
+        name = tokens['model_name']
         elements = list(tokens['content'])
         return ParsedModel(name, elements)
     
@@ -200,8 +200,9 @@ def parse_model(string):
         ZeroOrMore( OneOrMore(newline) + action) + \
     ZeroOrMore(newline) 
     
-    named_model = Suppress(Literal('---') + Literal('model')) + \
-        good_name('model_name') +\
+    named_model = \
+    Suppress(Combine('---' + Optional(Word('-')))) + Suppress('model') + \
+        good_name('model_name') + newline + \
         model_content('content')
         
     named_model.setParseAction(ParsedModel.from_named_model)
@@ -209,7 +210,8 @@ def parse_model(string):
     anonymous_model = model_content.copy()
     anonymous_model.setParseAction(ParsedModel.from_anonymous_model)
     
-    pg_file = (anonymous_model ^ OneOrMore(Group(named_model))) +\
+    comments = ZeroOrMore( (comment + newline) ^ newline)
+    pg_file = comments + ( OneOrMore(Group(named_model)) ^ anonymous_model ) +\
         stringEnd 
     
     parsed = pg_file.parseString(string)
