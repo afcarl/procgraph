@@ -1,7 +1,7 @@
 from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore,\
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, Or,\
     ParserElement, Combine, nums, Literal, CaselessLiteral, col, lineno,\
-    restOfLine, QuotedString
+    restOfLine, QuotedString, ParseException
 
 class Location:
     def __init__(self, string, character):
@@ -219,10 +219,10 @@ def parse_model(string):
     pg_file = comments + ( OneOrMore(named_model) ^ anonymous_model ) +\
         stringEnd 
     
-    parsed = pg_file.parseString(string)
-    
-    print parsed
-    
-    return list(parsed)
-
+    try:
+        parsed = pg_file.parseString(string)
+        return list(parsed)
+    except ParseException as e:
+        raise SyntaxError('Error in parsing string: %s' % e)
+        
 

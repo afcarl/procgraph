@@ -6,6 +6,7 @@ from procgraph.core.model import create_from_parsing_results
 import procgraph.components.basic 
 import procgraph.components.debug_components 
 from procgraph.core.parsing import parse_model
+from procgraph.testing.utils import PGTestCase
 
 good_examples = \
 [
@@ -93,40 +94,14 @@ e = 2
 
 ]
           
- 
 
 
-
-class SyntaxTestMultiple(unittest.TestCase):
+class SyntaxTestMultiple(PGTestCase):
     
     def testBadExamples(self):
         for example in bad_examples:
-            failed = False
-            try:
-                parsed = parse_model(example)
-                print 'Oops, I parsed "%s" into "%s".' % (example, parsed)
-            except: 
-                failed = True
-                
-            if not failed:
-                self.assertTrue(False)
-            
+            self.check_syntax_error(example)
             
     def testExamples(self):
-        failed = None
         for example in good_examples:
-            
-            try:
-                res = parse_model(example)
-                #print list(res)
-                print "v   '''%s'''" % example
-#                print "      %s" % res.__repr__()
-            except Exception as e:
-                print "X   %s" % example
-                print "Error: %s " % e
-                traceback.print_exc()
-                failed = example
-                
-        if failed is not None:
-            raise Exception('Failed "%s".' % failed)
-            
+            self.check_syntax_ok(example)

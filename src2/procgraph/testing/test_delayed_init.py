@@ -1,8 +1,9 @@
 from procgraph.core.model import Model
 from unittest import TestCase
 from procgraph.core.model_loader import model_from_string
+from procgraph.testing.utils import PGTestCase
 
-class DelayedTest(TestCase):
+class DelayedTest(PGTestCase):
     
     def test_delayed(self):
 
@@ -22,13 +23,11 @@ class DelayedTest(TestCase):
             |DoesNotDefineOutput|
         """
         
-        self.assertRaises(Exception, model_from_string, model_desc)
+        self.check_semantic_error(model_desc)
         
         
         model_desc = """ 
             |DoesNotDefineInput|
         """
-        
-        self.assertRaises(Exception, model_from_string, model_desc)
-        
+        self.check_semantic_error(model_desc)
         

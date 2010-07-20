@@ -3,6 +3,7 @@ import unittest
 from procgraph.core.parsing import parse_model
 import traceback
 from procgraph.core.exceptions import SemanticError
+from procgraph.testing.utils import PGTestCase
 
 good_examples = [
 '''
@@ -21,6 +22,7 @@ good_examples = [
 ]
 
 bad_examples = [
+                # XXXXXXXXXXXXXXXXX how can it work?
 '''
 # recursive models
 --- model master
@@ -53,43 +55,14 @@ bad_examples = [
 
 
 
-class SemanticsTest(unittest.TestCase):
+class SemanticsTest(PGTestCase):
     
     def testExamples(self):
-        failed = None
         for example in good_examples:
-            
-            try:
-                model = model_from_string(example)
-            except Exception as e:
-                print 'Failed  """%s"""\n' % example
-                print "Error: %s " % e
-                traceback.print_exc()
-                failed = example
-                raise e
-                
-        if failed is not None:
-            raise Exception('Failed "%s".' % failed)
+            self.check_semantic_ok(example)
             
     
     def testBadExamples(self):
         for example in bad_examples:
-            # make sure we can parse it
-            parsed = parse_model(example)
-            
-            failed = False
-            try:
-                # try again
-                model = model_from_string(example)
-                print "OOPS, we parsed something from:\n'%s'\n" % example
-                print parsed 
-                model.summary()
-            except SemanticError as e:
-                failed = True
-                print "OK, failed with error %s" % e
-                 
-            if not failed:
-                self.assertTrue(False)
-            
-                
+            self.check_semantic_error(example)
                 

@@ -8,6 +8,7 @@ import procgraph.components.debug_components
 from procgraph.core.parsing import parse_model
 from procgraph.core.model_loader import model_from_string
 from procgraph.core.exceptions import SemanticError
+from procgraph.testing.utils import PGTestCase
 
 
 good_examples2 = [
@@ -105,48 +106,16 @@ g1.in = 2
 ]
 
 
-class SemanticsTest(unittest.TestCase):
+class SemanticsTest(PGTestCase):
     
     def testBadExamples(self):
         for example in bad_examples2:
-            #print 'trying """%s"""' % example
-            parsed = parse_model(example)
-            failed = False
-            self.assertTrue( len(parsed) == 1)
-            try:
-                model = create_from_parsing_results(parsed[0])
-                print "OOPS, we parsed something from:\n'%s'\n" % example
-                print parsed 
-                model.summary()
-            except:
-                failed = True
-                
-            if not failed:
-                self.assertTrue(False)
-            
+            self.check_semantic_error(example) 
             
     def testExamples(self):
-        failed = None
         for example in good_examples2:
-            
-            # print "E   '''%s'''" % example
-            
-            try:
-                parsed = parse_model(example)
-                self.assertTrue( len(parsed) == 1)
-                model = model_from_string(example)
-                
-#                print "      %s" % res.__repr__()
-            except Exception as e:
-                print 'Failed  """%s"""\n' % example
-                print "Error: %s " % e
-                traceback.print_exc()
-                failed = example
-                raise e
-                
-        if failed is not None:
-            raise Exception('Failed "%s".' % failed)
-            
+            self.check_semantic_ok(example)
+             
     def test_from_string_params(self):
         spec = '|constant value=1| -> |g1:generic|'
         # this should not work

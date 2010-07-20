@@ -295,7 +295,7 @@ def check_link_compatibility_output(block, previous_link):
                     
         if not block.is_valid_input_name(s.local_output):
             raise SemanticError('Could not find input name "%s" in %s' % \
-                            s.local_output, s.block)
+                            (s.local_output, block) )
             
         s.local_output = block.canonicalize_input(s.local_output)
  
@@ -327,7 +327,7 @@ def create_from_parsing_results(parsed_model, name=None):
                 properties[element.key] = element.value 
             pass  
 
-    print "Properties: %s" % properties
+    #print "Properties: %s" % properties
     
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]

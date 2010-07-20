@@ -35,7 +35,7 @@ def pg_look_for_models(additional_paths=None):
                 if fnmatch.fnmatch(f, '*.pg'):
                     all_files.append(os.path.join(root, f))
     for f in all_files:
-        print "Loading %s" % f
+        #print "Loading %s" % f
         base,  = os.path.splitext(os.path.basename(f))
         model_spec = open(f).read()
         pg_add_models_to_library(model_spec)
@@ -49,12 +49,11 @@ def pg_add_models_to_library(pgfile, name=None):
     for model in models:
         pg_add_parsed_model_to_library(model)
     
-
 def pg_add_parsed_model_to_library(parsed_model):
     assert parsed_model.name is not None
     if exists_block_class(parsed_model.name):
         raise SemanticError('I already have registered "%s". '%parsed_model.name)
-    print "Registering model '%s' " % parsed_model.name
+    # print "Registering model '%s' " % parsed_model.name
     
     register_block_class(parsed_model.name, ModelSpec(parsed_model))
     
@@ -98,11 +97,9 @@ def model_from_string(model_spec, name=None, properties = None):
     parsed_model = parsed_models[0]
     
     # Add the properties passed by argument to the ones parsed in the spec
-    print "Properties %s" % properties
     
     for key, value in properties.items():
         assignment = ParsedAssignment(key,value)
-        print "Adding %s" % assignment
         parsed_model.elements.append(assignment)
     
     model = create_from_parsing_results(parsed_model, name)

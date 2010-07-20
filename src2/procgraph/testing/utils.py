@@ -11,7 +11,7 @@ class PGTestCase(unittest.TestCase):
         parsed = parse_model(model_spec)
 
     
-    def check_semantics_ok(self, model_spec):
+    def check_semantic_ok(self, model_spec):
         ''' Tests that the given string can parse OK and we can create a model.
             Note that a syntax error is translated into a test Error, not failure.
             '''
@@ -24,13 +24,14 @@ class PGTestCase(unittest.TestCase):
             parsed = parse_model(model_spec)
             print "OOPS, we could parse '''%s'''" % model_spec
             print parsed
-        except SyntaxError:
+        except SyntaxError as e:
+            print "OK, syntax failed with error:  %s" % e
             failed = True
         
         if not failed:
             self.assertTrue(False)
 
-    def check_semantics_error(self, model_spec):
+    def check_semantic_error(self, model_spec):
         ''' Tests that the given string parses ok but gives a
             semantic error. '''
         # make sure we can parse it
@@ -45,7 +46,7 @@ class PGTestCase(unittest.TestCase):
             model.summary()
         except SemanticError as e:
             failed = True
-            print "OK, failed with error %s" % e
+            print "OK, semantics failed with error:  %s" % e
              
         if not failed:
             self.assertTrue(False)
