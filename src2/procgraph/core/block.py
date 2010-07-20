@@ -222,7 +222,15 @@ class Block(object):
     
     
     def __repr__(self):
-        s = 'Block:%s(' % self.__class__.__name__
+        s = 'B:%s:%s(' % (self.__class__.__name__, self.name)
+        s += self.get_io_repr()
+        s+= ')'
+        return s
+    
+        
+    def get_io_repr(self):
+        ''' Returns a representation of io ports for this block. '''
+        s =""
         if self.are_input_signals_defined():
             if self.__input_signals:
                 s += "in:%s" % ",".join(self.__input_signal_names)
@@ -239,7 +247,6 @@ class Block(object):
                 s += 'out:/'
         else:
             s += "out:?"
-        s+= ')'
         return s
     
     

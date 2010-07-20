@@ -4,6 +4,8 @@ from procgraph.core.parsing import ParsedAssignment, Connection, ParsedBlock,\
 
 from procgraph.components import *
 from procgraph.core.registrar import get_block_class
+from procgraph.core.exceptions import  SemanticError, BlockWriterError,\
+    ModelExecutionError
 
 
 class BlockConnection:
@@ -40,9 +42,21 @@ class BlockConnection:
 class Model(Block):
     ''' A Model is a block. '''
     
-    def __init__(self):
+    def __init__(self, name, model_name):
+        ''' Name is the personal name of this instance.
+            model_name is this model's name '''
+        if name is None:
+            name = 'unnamed-block'
+        
+        if model_name is None:
+            model_name = 'unnamed-model'
+        
+        self.model_name = model_name
+    
         # As a block
-        Block.__init__(self, name=None, config={})
+        Block.__init__(self, name=name, config={})
+    
+        
         # we start with no input/output signals
         self.define_input_signals([])
         self.define_output_signals([])
@@ -81,7 +95,7 @@ class Model(Block):
         if res != Block.INIT_NOT_FINISHED:
             if not self.are_input_signals_defined() or \
                 not self.are_output_signals_defined():
-                raise Exception(('Block %s did not define input/output signals' + 
+                raise BlockWriterError(('Block %s did not define input/output signals' + 
                                 ' and did not return INIT_NOT_FINISHED') %
                                 block) 
          
@@ -114,7 +128,7 @@ class Model(Block):
     def connect(self, block1, block1_signal, block2, block2_signal, public_name):
         BC = BlockConnection( block1, block1_signal, block2, block2_signal, public_name=None)
         if public_name in self.name2block_connection:
-            raise Exception('Signal "%s" already defined. ' % public_name)
+            raise SemanticError('Signal "%s" already defined. ' % public_name)
         self.name2block_connection[public_name] = BC
 
     def has_more(self):
@@ -148,7 +162,7 @@ class Model(Block):
                     generators_with_timestamps.append((generator, timestamp))
         
             if not generators_with_timestamps:
-                raise Exception("You asked me to update but nothing's left.")
+                raise ModelExecutionError("You asked me to update but nothing's left.")
                
             # now look for the smallest available timestamp
             # (timestamp can be none)
@@ -170,7 +184,7 @@ class Model(Block):
         
         if block is None:
             # We finished everything
-            raise Exception("You asked me to update but nothing's left.")
+            raise ModelExecutionError("You asked me to update but nothing's left.")
             
         # now we have a block (could be a generator)
             
@@ -191,7 +205,7 @@ class Model(Block):
             value  = block.get_output(this_signal)
             
             if value is not None and this_timestamp == 0:
-                raise Exception('Strange, value is not none by timestamp is 0'+
+                raise ModelExecutionError('Strange, value is not none by timestamp is 0'+
                                 ' for signal %s of %s.' % (this_signal, block))
             
             if this_timestamp > old_timestamp:
@@ -226,6 +240,15 @@ class Model(Block):
                 successors.add(block_connection.block2)
         return successors
     
+    
+    def __repr__(self):
+        s = 'M:%s:%s(' % (self.model_name,self.name)
+        s += self.get_io_repr()
+        s+= ')'
+        return s
+    
+    
+    
 def instance_block(name, operation, config):
     ''' Instances a block '''
     t = get_block_class(operation)
@@ -245,12 +268,12 @@ def check_link_compatibility_input(previous_block, previous_link):
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
         if s.block_name is not None:
-            raise Exception('Could not give a block name between two blocks.')
+            raise SemanticError('Could not give a block name between two blocks.')
         if s.local_input is None:
             s.local_input = i
                     
         if not previous_block.is_valid_output_name(s.local_input):
-            raise Exception('Could not find output name "%s"(%s) in %s' % \
+            raise SemanticError('Could not find output name "%s"(%s) in %s' % \
                             (s.local_input, type(s.local_input), previous_block))
             
         s.local_input = previous_block.canonicalize_output(s.local_input)
@@ -271,19 +294,22 @@ def check_link_compatibility_output(block, previous_link):
             s.local_output = i
                     
         if not block.is_valid_input_name(s.local_output):
-            raise Exception('Could not find input name "%s" in %s' % \
+            raise SemanticError('Could not find input name "%s" in %s' % \
                             s.local_output, s.block)
             
         s.local_output = block.canonicalize_input(s.local_output)
  
      
-def create_from_parsing_results(parsed_model):
-    assert isinstance(parsed_model, ParsedModel)
+def create_from_parsing_results(parsed_model, name=None):
+    if not isinstance(parsed_model, ParsedModel):
+        raise TypeError('I expect a ParsedModel instance, not a "%s".' % 
+                        parsed_model.__class__.__name__)
     
     # print "\n\n --- new model ----------------"
     # print "Parsed: %s" % parsed_model
-
-    model = Model()
+ 
+    
+    model = Model(name=name, model_name=parsed_model.name)
     
     # First we collect all the properties, to use
     # in initialization.
@@ -301,6 +327,8 @@ def create_from_parsing_results(parsed_model):
                 properties[element.key] = element.value 
             pass  
 
+    print "Properties: %s" % properties
+    
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
     
@@ -329,7 +357,7 @@ def create_from_parsing_results(parsed_model):
                     for s in (previous_link.signals):
                         # We cannot have a local output
                         if s.local_output is not None:
-                            raise Exception('Terminator connection %s cannot have a local output' %s)  
+                            raise SemanticError('Terminator connection %s cannot have a local output' %s)  
                         
                         model.connect(block1=previous_block, block1_signal=s.local_input,
                                              block2=None, block2_signal=None, public_name=s.name)
@@ -386,10 +414,10 @@ def create_from_parsing_results(parsed_model):
                         num_out = previous_block.num_output_signals()
                         num_in = block.num_input_signals()
                         if num_out != num_in:
-                            raise Exception('Tried to connect two blocks (%s \
+                            raise SemanticError('Tried to connect two blocks (%s \
 and %s) with incompatible signals; you must do this expliciyl.' % (previous_block, block))
                         if num_out == 0:
-                            raise Exception('Tried to connect two blocks (%s, %s) w/no signals.'\
+                            raise SemanticError('Tried to connect two blocks (%s, %s) w/no signals.'\
                                             % (previous_block, block))
                             
                         # just create default connections
@@ -415,21 +443,21 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                     for s in (previous_link.signals):
                         # Cannot use local_input here
                         if s.local_input is not None:
-                            raise Exception('Link %s cannot use local input without antecedent. ' %\
+                            raise SemanticError('Link %s cannot use local input without antecedent. ' %\
                                             s)
                         # Check if it is using an explicit block name
                         if s.block_name is not None:
                             if not s.block_name in model.name2block:
-                                raise Exception('Link %s refers to unknown block "%s". We know %s.' % 
+                                raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
                                                 (s, s.block_name, model.name2block.keys()))
                             input_block = model.name2block[s.block_name]
                             if not input_block.is_valid_output_name(s.name):
-                                raise Exception('Link %s refers to unknown output %s in block %s. ' % 
+                                raise SemanticError('Link %s refers to unknown output %s in block %s. ' % 
                                                 (s, s.name, input_block))
                             s.local_input = input_block.canonicalize_output(s.name)
                         else:
                             if not s.name in model.name2block_connection:
-                                raise Exception('Link %s refers to unknown signal "%s". We know %s.' % \
+                                raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
                                                 (s, s.name, model.name2block_connection.keys()))
                             defined_signal = model.name2block_connection[s.name]
                             input_block = defined_signal.block1
@@ -444,10 +472,10 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                 elif previous_block is None and previous_link is None:
                     # make sure it's a generator?
                     if not block.are_input_signals_defined():
-                        raise Exception('The block %s did not define signals and it has no input.'%
+                        raise SemanticError('The block %s did not define signals and it has no input.'%
                                        block) 
                     if block.num_input_signals() > 0:
-                        raise Exception('The generator block %s should have defined 0 inputs.' % 
+                        raise SemanticError('The generator block %s should have defined 0 inputs.' % 
                                         block) 
                 
                 # at this point the input should be defined
@@ -458,11 +486,11 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                     res = block.init()
                     # it cannot return NOT_FINISHED again.
                     if res == Block.INIT_NOT_FINISHED:
-                        raise Exception('Block %s cannot return NOT_FINISHED'+
+                        raise SemanticError('Block %s cannot return NOT_FINISHED'+
                                         'after inputs have been defined. ' % block)
                     # now the outputs should be defined
                     if not block.are_output_signals_defined():
-                        raise Exception(('Block %s still does not define outputs'+
+                        raise SemanticError(('Block %s still does not define outputs'+
                                         ' after init() called twice. ') % block)
                 
                 # at this point input/output should be defined
@@ -474,8 +502,8 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
             # end if 
     
     if len(properties) > 0:
-        raise Exception('Unused properties: %s' % properties)
-        
+        raise SemanticError('Unused properties: %s' % properties)
+    
     # print "--------- end model ----------------\n"           
     return model
                 

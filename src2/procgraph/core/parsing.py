@@ -123,6 +123,11 @@ def python_interpretation(s,loc,tokens):
 
 def parse_model(string):
     ''' Returns a list of ParsedModel ''' 
+    
+    # make this check a special case, otherwise it's hard to debug
+    if not string.strip():
+        raise SyntaxError('Passed empty string.')
+    
     # make end of lines count
     ParserElement.setDefaultWhitespaceChars(" \t")
     
@@ -211,10 +216,12 @@ def parse_model(string):
     anonymous_model.setParseAction(ParsedModel.from_anonymous_model)
     
     comments = ZeroOrMore( (comment + newline) ^ newline)
-    pg_file = comments + ( OneOrMore(Group(named_model)) ^ anonymous_model ) +\
+    pg_file = comments + ( OneOrMore(named_model) ^ anonymous_model ) +\
         stringEnd 
     
     parsed = pg_file.parseString(string)
+    
+    print parsed
     
     return list(parsed)
 

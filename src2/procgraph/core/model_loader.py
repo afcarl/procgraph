@@ -1,12 +1,11 @@
 import sys
 from procgraph.core.model import Model, create_from_parsing_results
 import os
-from procgraph.core.exceptions import UserError
 import glob
 import fnmatch
-from procgraph.core.registrar import register_block_class
-from procgraph.core.parsing import parse_model, ParsedAssignment
-from copy import deepcopy
+from procgraph.core.registrar import register_block_class, exists_block_class
+from procgraph.core.parsing import parse_model, ParsedAssignment, ParsedModel
+from procgraph.core.exceptions import SemanticError
 
 PATH_ENV_VAR = 'PROCGRAPH_PATH'
 
@@ -29,7 +28,7 @@ def pg_look_for_models(additional_paths=None):
     all_files = set()
     for path in paths:
         if not os.path.isdir(path):
-            raise UserError('Invalid path "%s" to search for models. ' % path) 
+            raise Exception('Invalid path "%s" to search for models. ' % path) 
         
         for root, dirs, files in os.walk(path):
             for f in files: 
@@ -53,7 +52,10 @@ def pg_add_models_to_library(pgfile, name=None):
 
 def pg_add_parsed_model_to_library(parsed_model):
     assert parsed_model.name is not None
-    print "Registering model %s " % parsed_model.name
+    if exists_block_class(parsed_model.name):
+        raise SemanticError('I already have registered "%s". '%parsed_model.name)
+    print "Registering model '%s' " % parsed_model.name
+    
     register_block_class(parsed_model.name, ModelSpec(parsed_model))
     
 class ModelSpec():
@@ -61,25 +63,33 @@ class ModelSpec():
     def __init__(self, parsed_model):
         self.parsed_model = parsed_model
         
-    def __call__(self, name, properties):
+    def __call__(self, name, config):
+        # XXXXXXXX FIXME ME
+        parsed_model = self.parsed_model
+        # deepcopy(self.parsed_model)
         
-        parsed_model = deepcopy(self.parsed_model)
-        
-        for key, value in properties.items():
+        for key, value in config.items():
             assignment = ParsedAssignment(key,value)
             parsed_model.elements.append(assignment)
         
-        model = create_from_parsing_results(parsed_model)
+        model = create_from_parsing_results(parsed_model, name)
 
         return model
                
-def model_from_string(model_spec, properties = {}):
+def model_from_string(model_spec, name=None, properties = None):
     ''' Instances a model from a specification. Optional
         attributes can be passed. Returns a Model object. '''
+    if properties is None:
+        properties = {}
     assert isinstance(model_spec, str)
     assert isinstance(properties, dict)
+    assert name is None or isinstance(name, str)
     
     parsed_models = parse_model(model_spec)
+
+    assert isinstance(parsed_models, list)
+    for x in parsed_models:
+        assert isinstance(x, ParsedModel)
     
     if len(parsed_models) > 0:            
         for support in parsed_models[1:]:
@@ -88,11 +98,14 @@ def model_from_string(model_spec, properties = {}):
     parsed_model = parsed_models[0]
     
     # Add the properties passed by argument to the ones parsed in the spec
+    print "Properties %s" % properties
+    
     for key, value in properties.items():
         assignment = ParsedAssignment(key,value)
+        print "Adding %s" % assignment
         parsed_model.elements.append(assignment)
     
-    model = create_from_parsing_results(parsed_model)
+    model = create_from_parsing_results(parsed_model, name)
     
     return model
    

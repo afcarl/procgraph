@@ -175,21 +175,24 @@ Syntax
 ======
 
 
-The basic operation looks like this:
+The basic operation looks like this::
 
 	u --> |operation| --> result
 	
-The form can be chained:
+The form can be chained::
 
 	u --> |filter| --> u1 --> |operation| --> result
 	
-Anonymous connections:
+Anonymous connections::
 
     u --> |operation| --> |operation2| --> result
 
-Giving a name to the blocks:
+Giving a name to the blocks::
 
 	u --> |op1:operation| -->  result
+
+
+
 
 Blocks have parameters. There are two ways to set them. 
 Either in the block itself:
@@ -219,6 +222,19 @@ log1(log_reader) --> *
 log1: 
 	directory: pwd
 	
+	
+Syntax for multiple models in the same file
+--------------------------------------------
+
+Multiple models look like this::
+    
+        --- model <model name>
+        
+        model content
+        
+        --- model <model name>
+        
+        other
 	
 	
 signals can be: 

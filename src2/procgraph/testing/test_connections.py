@@ -7,6 +7,7 @@ import procgraph.components.basic
 import procgraph.components.debug_components 
 from procgraph.core.parsing import parse_model
 from procgraph.core.model_loader import model_from_string
+from procgraph.core.exceptions import SemanticError
 
 
 good_examples2 = [
@@ -133,8 +134,7 @@ class SemanticsTest(unittest.TestCase):
             try:
                 parsed = parse_model(example)
                 self.assertTrue( len(parsed) == 1)
-                model = create_from_parsing_results(parsed[0])
-                #model.summary()
+                model = model_from_string(example)
                 
 #                print "      %s" % res.__repr__()
             except Exception as e:
@@ -152,7 +152,7 @@ class SemanticsTest(unittest.TestCase):
         # this should not work
         self.assertRaises(Exception, model_from_string, spec)
         # this should, instead
-        model_from_string(spec, {'g1.in': 1})
+        model_from_string(spec, properties={'g1.in': 1})
         
     
     
@@ -165,8 +165,8 @@ class ParamsTest(unittest.TestCase):
            |input name=x| -> |g1:gain| -> |output name=y|
         """
         # g2.gain is unused
-        self.assertRaises(Exception, model_from_string,
-                     model_desc, {'g2.gain': 2})
+        self.assertRaises(SemanticError, model_from_string,
+                          model_desc, properties={'g2.gain': 2})
        
     
     
