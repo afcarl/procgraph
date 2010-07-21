@@ -292,7 +292,7 @@ def check_link_compatibility_output(block, previous_link):
         s.local_output = block.canonicalize_input(s.local_output)
  
      
-def create_from_parsing_results(parsed_model, name=None, library=None):
+def create_from_parsing_results(parsed_model, name=None, config={}, library=None):
     if library is None:
         library = default_library
     if not isinstance(parsed_model, ParsedModel):
@@ -307,19 +307,27 @@ def create_from_parsing_results(parsed_model, name=None, library=None):
     
     # First we collect all the properties, to use
     # in initialization.
-    properties = {}
-    
+    all_config = [] # tuple (key, value)
+    # First put the ones in the model (act as default)
     for element in parsed_model.elements:
         if isinstance(element, ParsedAssignment):
-            # if it is of the form  object.property = value
-            if '.' in element.key:
-                object, property = element.key.split('.')
-                if not object in properties:
-                    properties[object] = {}
-                properties[object][property] = element.value
-            else:
-                properties[element.key] = element.value 
-            pass  
+            all_config.append((element.key, element.value))
+    # now append the ones passed by configuration
+    all_config.extend(config.items())
+    
+    # Next, define the properties hash, and populate it intelligentily
+    # from the tuples in all_config.
+    properties = {}
+    for key, value in all_config:
+        # if it is of the form  object.property = value
+        if '.' in key:
+            object, property = key.split('.')
+            if not object in properties:
+                properties[object] = {}
+            properties[object][property] = value
+        else:
+            properties[key] = value 
+        pass  
  
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
@@ -362,10 +370,11 @@ def create_from_parsing_results(parsed_model, name=None, library=None):
                     element.name = anonymous_name_pattern % num_anonymous_blocks
                     num_anonymous_blocks += 1
                 
-                
                 # update the configuration if given
+                block_config = {}
+                block_config.update(element.config)
                 if element.name in properties:
-                    element.config.update(properties[element.name])
+                    block_config.update(properties[element.name])
                     # delete so we can keep track of unused properties
                     del properties[element.name]
                 
@@ -374,7 +383,7 @@ def create_from_parsing_results(parsed_model, name=None, library=None):
                                         (element.operation, library.get_known_blocks()))
                 
                 block = library.instance(block_type=element.operation, 
-                                         name=element.name, config=element.config)
+                                         name=element.name, config=block_config)
                 
                 block = model.add_block(name=element.name,block=block)
                 

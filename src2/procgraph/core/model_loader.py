@@ -1,7 +1,7 @@
 from procgraph.core.model import  create_from_parsing_results
 import os
 import fnmatch
-from procgraph.core.parsing import parse_model, ParsedAssignment, ParsedModel
+from procgraph.core.parsing import parse_model, ParsedModel
 from procgraph.core.exceptions import SemanticError
 from procgraph.core.registrar import default_library, Library
 
@@ -13,13 +13,7 @@ class ModelSpec():
         self.parsed_model = parsed_model
         
     def __call__(self, name, config, library):
-        # XXXXXXXX FIXME ME
-        parsed_model = self.parsed_model
-        # deepcopy(self.parsed_model)
-        
-        for key, value in config.items():
-            assignment = ParsedAssignment(key,value)
-            parsed_model.elements.append(assignment)
+        parsed_model = self.parsed_model 
             
         # We create a mock library that forbids that this
         # model is created again. This prevents recursion.
@@ -36,7 +30,7 @@ class ModelSpec():
                     return Library.instance(self, block_type, name, 
                                             config,parent_library)
         sandbox = ForbidRecursion(library, parsed_model.name)     
-        model = create_from_parsing_results(parsed_model, name, library=sandbox)
+        model = create_from_parsing_results(parsed_model, name, config, library=sandbox)
 
         return model
 
@@ -112,13 +106,7 @@ def model_from_string(model_spec, name=None, properties = None, library=None):
 
     parsed_model = parsed_models[0]
     
-    # Add the properties passed by argument to the ones parsed in the spec
-    
-    for key, value in properties.items():
-        assignment = ParsedAssignment(key,value)
-        parsed_model.elements.append(assignment)
-    
-    model = create_from_parsing_results(parsed_model, name, library=library)
+    model = create_from_parsing_results(parsed_model, name, properties, library=library)
     
     return model
    
