@@ -4,11 +4,38 @@ from procgraph.core.model_loader import model_from_string
 
 class PipelineTest(TestCase):
     
-    def test1(self):
-
-        model_desc = """
+    def test_pipeline(self):
+        ''' All graphs equivalent (multiply by a gain), but interconnections
+            change. '''
+            
+        examples = [
+        """ # direct
            |input name=x| -> |g1:gain| -> |output name=y|
-        """
+        """,
+        """ # named
+           |input name=x| -> v -> |g1:gain| -> |output name=y|
+        """,
+        """ # named
+           |input name=x| -> v -> |g1:gain| -> y -> |output name=y|
+        """,
+        """ # only  identity 2
+           |input name=x| -> |identity| -> |g1:gain| -> |identity| -> |output name=y|
+        """,
+        """ # named + identity
+           |input name=x| -> v -> |identity| -> |g1:gain| -> y -> |output name=y|
+        """,
+        """ # named + identity
+           |input name=x| -> |identity| -> v -> |g1:gain| -> y -> |output name=y|
+        """,
+        """ # only  identity
+           |input name=x| -> |identity| -> |g1:gain| -> y -> |output name=y|
+        """]
+        
+        for example in examples:
+            self.try_one(example)
+    
+    def try_one(self, model_desc):
+        print "Trying with '''%s'''"%model_desc
         gain = 3
         model = model_from_string(model_desc, config={'g1.gain': gain})
         

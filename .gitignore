@@ -214,3 +214,5 @@ src2/procgraph/testing/utils.pyc
 .coverage
 src2/.coverage
 src2/cover
+src2/procgraph/components/rawseeds/rawseeds_demo.pyc
+src2/procgraph/components/history.pyc

@@ -91,8 +91,21 @@ class RandomGenerator(Generator):
 default_library.register('rand', RandomGenerator)
 
 
-
-
+class Clock(Generator):
+    def init(self):
+        self.define_input_signals([])
+        self.define_output_signals(['clock'])
+        self.set_config_default('interval', 1)
+        self.set_state('clock', 0)
+    def update(self):
+        clock = self.get_state('clock')
+        clock += self.get_config('interval')
+        self.set_state('clock', clock)
+        self.set_output('clock', clock, timestamp=clock)
+    def next_data_status(self):
+        return (True, self.get_state('clock') + self.get_config('interval'))
+    
+default_library.register('clock', Clock)
 
 
 

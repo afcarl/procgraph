@@ -212,7 +212,6 @@ class Block(object):
         if isinstance(num_or_id, type(0)):
             return self.__output_signal_names[num_or_id]
         raise ValueError()
-    
      
     def get_output_signals_timestamps(self):
         ''' Returns a list of the output values timestamps. '''
@@ -221,7 +220,6 @@ class Block(object):
     def get_input_signals_timestamps(self):
         ''' Returns a list of the input signals timestamps. '''
         return map( lambda x: x.timestamp, self.__input_signals)
-    
     
     def __repr__(self):
         s = 'B:%s:%s(' % (self.__class__.__name__, self.name)

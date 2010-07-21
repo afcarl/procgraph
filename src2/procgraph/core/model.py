@@ -153,7 +153,8 @@ class Model(Block):
     
     def update(self):
         def debug(s):
-            print 'Model %s | %s' % (self.model_name, s)
+            if True:
+                print 'Model %s | %s' % (self.model_name, s)
         
         
         # We keep a list of blocks to be updated.
@@ -201,7 +202,8 @@ class Model(Block):
             raise ModelExecutionError("You asked me to update but nothing's left.")
             
         # now we have a block (could be a generator)
-        debug('Updating %s' % block)
+        debug('Updating %s (input ts: %s)' % \
+              (block, block.get_input_signals_timestamps()))
         result = block.update()
         # if the update is not finished, we put it back in the queue
         if result == block.UPDATE_NOT_FINISHED:
@@ -209,8 +211,8 @@ class Model(Block):
         else:
             # the block updated, propagate
             
-        # print "processed %s, ts: %s" % (block, block.get_output_signals_timestamps())
-        
+            debug("  processed %s, ts: %s" % (block, block.get_output_signals_timestamps()))
+            debug("  its succesors: %s"% list(self.__get_output_connections(block)) )
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
                 other = connection.block2
@@ -229,13 +231,15 @@ class Model(Block):
                 
                 # Two cases:
                 # - timestamp is updated
-                # - this is the first time
-                if this_timestamp > old_timestamp or \
-                    other.get_input(other_signal) is None:
+                # NOOOOOOO - this is the first time
+                #  WRONG think of the |wait| block
+                if this_timestamp > old_timestamp: 
+                # or \
+                #    other.get_input(other_signal) is None:
                     #print "updating input %s of %s with timestamp %s" % \
                     #    (other_signal, other, this_timestamp)
                     
-                    debug('waking up %s' % other) 
+                    debug('  then waking up %s' % other) 
                     
                     other.from_outside_set_input(other_signal, value, 
                                                  this_timestamp)
@@ -247,7 +251,7 @@ class Model(Block):
                         #print "Updating output %s" %  other.signal_name
                         self.set_output(other.signal_name, value, this_timestamp)
                 else:
-                    debug("Not updated %s because not %s > %s" % \
+                    debug("  Not updated %s because not %s > %s" % \
                            (other, this_timestamp, old_timestamp) )
         
         # now let's see if we have still work to do
@@ -466,6 +470,12 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                         and not block.are_input_signals_defined():
                         names = previous_block.get_output_signals_names()
                         block.define_input_signals(names)
+                        # just create default connections
+                        for i in range(len(names)):
+                            name = 'link_%s_to_%s_%d' % \
+                                (previous_block.name, block.name, i)
+                            model.connect(previous_block, i,
+                                             block, i, name)
                     # If both have defined, we check they have the same
                     # number of signals
                     elif  previous_block.are_output_signals_defined() \

@@ -1,0 +1,7 @@
+
+|clock| --> |history|  -> |wait n=2000| -> x, t
+
+#|clock| ----> |identity| --> |output name=x| 
+ 
+x --> |print|
+x --> |plot|
