@@ -2,27 +2,75 @@ from procgraph.core.block import Block, Generator, ETERNITY
 from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import default_library
+import numpy
 
-class GenericOperation(Block):
+#
+#class SimpleFilter(Block):
+#    ''' This is a base class for implementing a generic
+#        filter-like block with one input and one output. 
+#        Just implement "operation". '''
+#    
+#    def init(self):
+#        self.define_output_signals(['0'])
+#        self.define_input_signals(['0'])
+#
+#    def operation(self, value):
+#        raise TypeError('Implement this function.')
+#        
+#    def update(self):
+#        input = self.get_input(0)
+#        result = self.operation(input)
+#        self.set_output(0, result)
+#
+#def make_filter(filter):
+#    ''' This is the factory for a derivate of SimpleFilter '''
+#    class Myfilter(SimpleFilter):
+#        def operation(self, value):
+#            return filter(value)
+#    return Myfilter
+
+
+
+def make_generic(num_inputs, num_outputs, operation, **parameters):
+    # make a copy
+    parameters = dict(parameters)
+    
+    class GenericOperation(Block):
+            
+        def init(self):
+            for key, value in parameters.items():
+                self.set_config_default(key, value)
+            self.define_input_signals(map(str,range(num_inputs)))
+            self.define_output_signals(map(str,range(num_outputs)))
+   
+        def update(self):
+            args = []
+            for i in range(num_inputs):
+                args.append( self.get_input(i))
+                
+            params = {}
+            for key in parameters.keys():
+                params[key] = self.get_config(key)
+                
+            result = operation(*args, **params)
+            
+            if num_outputs == 1:
+                self.set_output(0, result)
+            else:
+                for i in range(num_outputs):
+                    self.set_output(i, result[i])
         
-    def update(self):
-        assert self.input_signals is not None
-        if len(self.input_signals) < 2:
-            raise ValueError('Too few arguments')
-        in1 = self.get_input(0)
-        in2 = self.get_input(1)
-        res = self.f(in1, in2) 
-        for s in self.input_signals[2:]:
-            res = self.f(res, self.get_input(s))
-        self.set_output(0, res)
-    
-class Plus(GenericOperation):
-    def init(self):
-        self.f = lambda x,y : x+y
-        self.define_output_signals(['result'])
-    
-    
-default_library.register('+', Plus)
+    return GenericOperation
+
+# One example use of make_filter
+default_library.register('double', make_generic(1,1, lambda x:x*2))
+default_library.register('square', make_generic(1,1, numpy.square))
+
+default_library.register('+', make_generic(2,1, lambda x,y: x+y ) )
+default_library.register('*', make_generic(2,1, lambda x,y: x*y ) )
+default_library.register('-', make_generic(2,1, lambda x,y: x-y ) )
+default_library.register('/', make_generic(2,1, lambda x,y: x/y ) )
+
     
 class Constant(Block):
     ''' Creates a numerical constant that never changes.::

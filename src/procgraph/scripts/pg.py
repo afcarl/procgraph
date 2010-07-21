@@ -3,6 +3,7 @@ import sys
 # XXX: I don't know how to put these
 
 from procgraph.components.rawseeds import *
+from procgraph.components.cv import *
 from procgraph.core.model_loader import model_from_string
 
 
