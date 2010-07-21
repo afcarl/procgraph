@@ -1,5 +1,5 @@
 from procgraph.core.block import Block
-from procgraph.core.registrar import register_block_class
+from procgraph.core.registrar import default_library
 
 
 class ModelInput(Block):
@@ -24,7 +24,7 @@ class ModelOutput(Block):
         pass
     
     
-register_block_class('input', ModelInput)
-register_block_class('output', ModelOutput)
+default_library.register('input', ModelInput)
+default_library.register('output', ModelOutput)
 
 

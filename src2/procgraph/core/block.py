@@ -11,7 +11,7 @@ class Value:
 class Block(object):
 
     # Housekeeping
-    def __init__(self, name, config):
+    def __init__(self, name, config, library):
         self.name = name
         self.__config = config
         # this is an array containing the names/ids

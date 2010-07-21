@@ -223,6 +223,17 @@ log1:
 	directory: pwd
 	
 	
+	
+Feedback connections
+--------------------
+
+|input name=y| -> y -> |gain k=0.9| -> 
+|feedback var=z| -> y_old -> |gain k=0.1| 
+
+
+	y, y_old 
+	
+	
 Syntax for multiple models in the same file
 --------------------------------------------
 

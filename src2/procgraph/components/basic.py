@@ -1,7 +1,7 @@
 from procgraph.core.block import Block, Generator
 from math import sqrt
 from numpy import random 
-from procgraph.core.registrar import register_block_class
+from procgraph.core.registrar import default_library
 
 class GenericOperation(Block):
         
@@ -21,7 +21,8 @@ class Plus(GenericOperation):
         self.f = lambda x,y : x+y
         self.define_output_signals(['result'])
     
-register_block_class('+', Plus)
+    
+default_library.register('+', Plus)
     
 class Constant(Block):
     ''' Creates a numerical constant that never changes.::
@@ -47,7 +48,7 @@ class Constant(Block):
     def __repr__(self):
         return 'Constant(%s)' % self.get_config('value')
 
-register_block_class('constant', Constant)
+default_library.register('constant', Constant)
 
 
 class Gain(Block):
@@ -60,7 +61,7 @@ class Gain(Block):
     def update(self):
         self.set_output(0, self.get_input(0) * self.get_config('gain') )
 
-register_block_class('gain', Gain)
+default_library.register('gain', Gain)
         
 class Delay(Block):
 
@@ -72,7 +73,7 @@ class Delay(Block):
         self.set_state(0, self.get_input(0))
 
     
-register_block_class('delay', Delay)
+default_library.register('delay', Delay)
     
 class RandomGenerator(Generator):    
     def init(self):
@@ -87,7 +88,7 @@ class RandomGenerator(Generator):
         variance = self.get_config('variance')
         self.set_output(0, random.rand(1) * sqrt(variance) )
         
-register_block_class('rand', RandomGenerator)
+default_library.register('rand', RandomGenerator)
 
 
 

@@ -1,5 +1,5 @@
 from procgraph.core.block import Block
-from procgraph.core.registrar import register_block_class
+from procgraph.core.registrar import default_library
 
 
 class Expectation(Block):
@@ -26,4 +26,4 @@ class Expectation(Block):
         self.set_output('Ex', Ex)
             
     
-register_block_class('expectation', Expectation)
+default_library.register('expectation', Expectation)

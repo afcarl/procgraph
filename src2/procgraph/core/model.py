@@ -3,7 +3,6 @@ from procgraph.core.parsing import ParsedAssignment, Connection, ParsedBlock,\
     ParsedSignalList, ParsedSignal, parse_model, ParsedModel
 
 from procgraph.components import *
-from procgraph.core.registrar import get_block_class
 from procgraph.core.exceptions import  SemanticError, BlockWriterError,\
     ModelExecutionError
 
@@ -54,7 +53,7 @@ class Model(Block):
         self.model_name = model_name
     
         # As a block
-        Block.__init__(self, name=name, config={})
+        Block.__init__(self, name=name, config={}, library=None)
     
         
         # we start with no input/output signals
@@ -85,10 +84,9 @@ class Model(Block):
             print "- %s: %s" % (name, conn) 
  
  
-    def add_block(self, name, operation, params):
-        ''' Instances, configures, init(), and add a block to the model.
+    def add_block(self, name, block):
+        '''  init(), and add a block to the model.
             Returns the block instance. '''
-        block = instance_block(name, operation, params)
         
         res = block.init()
         # add it to the list if initialization is not complete
@@ -151,6 +149,7 @@ class Model(Block):
         if self.blocks_to_update:
             # get one block
             block = self.blocks_to_update.pop(0)
+            
             
         else:
             # look if we have any generators
@@ -248,13 +247,6 @@ class Model(Block):
         return s
     
     
-    
-def instance_block(name, operation, config):
-    ''' Instances a block '''
-    t = get_block_class(operation)
-    block = t(name=name, config=config)
-    
-    return block
 
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
@@ -300,7 +292,9 @@ def check_link_compatibility_output(block, previous_link):
         s.local_output = block.canonicalize_input(s.local_output)
  
      
-def create_from_parsing_results(parsed_model, name=None):
+def create_from_parsing_results(parsed_model, name=None, library=None):
+    if library is None:
+        library = default_library
     if not isinstance(parsed_model, ParsedModel):
         raise TypeError('I expect a ParsedModel instance, not a "%s".' % 
                         parsed_model.__class__.__name__)
@@ -326,9 +320,7 @@ def create_from_parsing_results(parsed_model, name=None):
             else:
                 properties[element.key] = element.value 
             pass  
-
-    #print "Properties: %s" % properties
-    
+ 
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
     
@@ -370,14 +362,21 @@ def create_from_parsing_results(parsed_model, name=None):
                     element.name = anonymous_name_pattern % num_anonymous_blocks
                     num_anonymous_blocks += 1
                 
+                
                 # update the configuration if given
                 if element.name in properties:
                     element.config.update(properties[element.name])
                     # delete so we can keep track of unused properties
                     del properties[element.name]
                 
-                block = model.add_block(name=element.name, operation=element.operation, 
-                                params=element.config)
+                if not library.exists(element.operation):
+                    raise SemanticError('Uknown block type "%s". We know %s' % \
+                                        (element.operation, library.get_known_blocks()))
+                
+                block = library.instance(block_type=element.operation, 
+                                         name=element.name, config=element.config)
+                
+                block = model.add_block(name=element.name,block=block)
                 
                 # print "Defined block %s = %s " % (element.name , block)
                 
@@ -486,7 +485,7 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                     res = block.init()
                     # it cannot return NOT_FINISHED again.
                     if res == Block.INIT_NOT_FINISHED:
-                        raise SemanticError('Block %s cannot return NOT_FINISHED'+
+                        raise SemanticError('Block %s cannot return NOT_FINISHED '+
                                         'after inputs have been defined. ' % block)
                     # now the outputs should be defined
                     if not block.are_output_signals_defined():

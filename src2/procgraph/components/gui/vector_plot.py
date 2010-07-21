@@ -1,8 +1,7 @@
 
 from pylab import ion, draw, plot
 from procgraph.core.block import Block
-from procgraph.core.registrar import register_block_class
-
+from procgraph.core.registrar import default_library
 
 
 class SimplePlot(Block):
@@ -27,4 +26,4 @@ class SimplePlot(Block):
         
 
 
-register_block_class('plot', SimplePlot)
+default_library.register('plot', SimplePlot)

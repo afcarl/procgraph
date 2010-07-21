@@ -1,7 +1,7 @@
 from procgraph.core.block import Block, Generator
 import glob
 import os
-from procgraph.core.registrar import register_block_class
+from procgraph.core.registrar import default_library
 import numpy
 from procgraph.components.rawseeds.file_utils import expand_environment
 
@@ -52,6 +52,6 @@ class RawseedsRangeFinder(Generator):
         return timestamp, readings
 
 
-register_block_class('RawseedsRF', RawseedsRangeFinder)
+default_library.register('RawseedsRF', RawseedsRangeFinder)
 
 

@@ -2,6 +2,8 @@ import unittest
 from procgraph.core.model_loader import model_from_string
 from procgraph.core.parsing import parse_model
 from procgraph.core.exceptions import SemanticError
+from procgraph.core.registrar import default_library, Library
+import traceback
 
 
 class PGTestCase(unittest.TestCase):
@@ -15,7 +17,18 @@ class PGTestCase(unittest.TestCase):
         ''' Tests that the given string can parse OK and we can create a model.
             Note that a syntax error is translated into a test Error, not failure.
             '''
-        model = model_from_string(model_spec)
+            
+        library = Library(parent = default_library)
+        
+        try:
+            model = model_from_string(model_spec, library=library)
+            return model
+        except SemanticError as e:
+            print "Oops, seems like we had an error for '''%s'''" % model_spec
+            traceback.print_exc()
+            raise e
+         
+            
 
     def check_syntax_error(self, model_spec):
         ''' Tests that the given string parsing gives a syntax error. '''
@@ -40,7 +53,8 @@ class PGTestCase(unittest.TestCase):
         failed = False
         try:
             # try again
-            model = model_from_string(model_spec)
+            library = Library(parent = default_library)
+            model = model_from_string(model_spec, library=library)
             print "OOPS, we could interpret '''%s'''" % model_spec
             print parsed 
             model.summary()

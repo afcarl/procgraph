@@ -1,5 +1,5 @@
 from procgraph.core.block import Block
-from procgraph.core.registrar import register_block_class
+from procgraph.core.registrar import default_library
 
 class Generic(Block):
     ''' This is a generic block used mainly for debug.
@@ -29,7 +29,7 @@ class Generic(Block):
         self.define_output_signals( map(str, range(nout)) )
 
 
-register_block_class('generic', Generic)
+default_library.register('generic', Generic)
 
 
 class Identity(Block):
@@ -51,7 +51,7 @@ class Identity(Block):
             self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
         
         
-register_block_class('identity', Identity)
+default_library.register('identity', Identity)
         
           
 
@@ -61,7 +61,7 @@ class DoesNotDefineInput(Block):
     def init(self):
         self.define_output_signals([])
     
-register_block_class('DoesNotDefineInput', DoesNotDefineInput)
+default_library.register('DoesNotDefineInput', DoesNotDefineInput)
 
 
 class DoesNotDefineOutput(Block):
@@ -70,7 +70,7 @@ class DoesNotDefineOutput(Block):
     def init(self):
         self.define_input_signals([])
         
-register_block_class('DoesNotDefineOutput', DoesNotDefineOutput)
+default_library.register('DoesNotDefineOutput', DoesNotDefineOutput)
 
         
     
