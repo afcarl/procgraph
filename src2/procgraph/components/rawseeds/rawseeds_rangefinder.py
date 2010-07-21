@@ -1,21 +1,7 @@
-from procgraph.core.block import Block, Generator
-import glob
-import os
-from procgraph.core.registrar import default_library
 import numpy
+from procgraph.core.block import Generator
+from procgraph.core.registrar import default_library
 from procgraph.components.rawseeds.file_utils import expand_environment
-
-
-class RawseedsLogReader(Block):
-    
-    def init(self, directory, format='png'):
-        all_files = glob.glob(os.path.join(directory, '*_*.*.%s' % format))
-                              
-    def has_more(self):
-        pass
-             
-    def update(self):
-        pass
 
 
 class RawseedsRangeFinder(Generator):

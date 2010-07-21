@@ -78,14 +78,12 @@ class Wait(Block):
         count = self.get_state('count')
         count += 1
         self.set_state('count', count)
-        print 'Counting %s' %count
+        #print 'Counting %s' %count
         # make something happen after we have waited enough
         if count >= self.get_config('n'): 
             # Just copy the input to the output
             for i in range(self.num_input_signals()):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
-
-
 
 default_library.register('wait', Wait)
 

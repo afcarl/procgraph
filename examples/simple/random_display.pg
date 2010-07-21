@@ -1,8 +1,4 @@
 
 |clock| --> |history|  --> |wait n=2000| --> x, t
 
-#|clock| ----> |identity| --> |output name=x| 
-
-clock.interval = 2 
-x --> |print|
-x --> |plot|
+x --> |fps_limit fps=1| -> |plot|

@@ -1,0 +1,6 @@
+# displays the output of a rawseed log file
+# Needs logreader.file=... on the command line
+# $ pg  camera_display.pg log=${PBENV_DATA}/FRONTAL
+
+|RawseedsCam dir=$log| -> y -> |imshow|
+
