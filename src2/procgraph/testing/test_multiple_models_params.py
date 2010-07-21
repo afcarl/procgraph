@@ -75,7 +75,29 @@ s1.my_param = $my_param2
 
 c1.value = $my_param
 
-''',{'my_param2': 42})
+''',{'my_param2': 42}),
+(''' # Default naming
+--- model master 
+
+|slave| ---> |output name=meaning| 
+
+--- model slave
+
+|constant| --> |output name=c|
+
+constant.value = $my_param
+
+''',{'slave.my_param': 42}),
+(''' # Default naming -- recursive.
+--- model master 
+
+|slave| ---> |output name=meaning| 
+
+--- model slave
+
+|constant| --> |output name=c| 
+
+''',{'slave.constant.value': 42})
 
 ]
  

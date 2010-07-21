@@ -153,7 +153,7 @@ class Model(Block):
     
     def update(self):
         def debug(s):
-            if True:
+            if False:
                 print 'Model %s | %s' % (self.model_name, s)
         
         
@@ -329,6 +329,12 @@ def check_link_compatibility_output(block, previous_link):
  
      
 def create_from_parsing_results(parsed_model, name=None, config={}, library=None):
+    def debug(s):
+        if False:
+            print 'Creating %s:%s | %s' % (name, parsed_model.name, s)
+    
+    debug('config: %s' % config)
+    
     if library is None:
         library = default_library
     if not isinstance(parsed_model, ParsedModel):
@@ -337,7 +343,6 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     # print "\n\n --- new model ----------------"
     # print "Parsed: %s" % parsed_model
- 
     
     model = Model(name=name, model_name=parsed_model.name)
     
@@ -371,7 +376,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     for key, value in all_config:
         # if it is of the form  object.property = value
         if '.' in key:
-            object, property = key.split('.')
+            # TODO: put this in syntax
+            object, property = key.split('.', 1)
             if not object in properties:
                 properties[object] = {}
             properties[object][property] = value
@@ -418,8 +424,12 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 
                 # give a name if anonymous
                 if element.name is None:
-                    element.name = anonymous_name_pattern % num_anonymous_blocks
-                    num_anonymous_blocks += 1
+                    # give it, if possible the name of its type
+                    if not element.operation in model.name2block:
+                        element.name = element.operation
+                    else:
+                        element.name = anonymous_name_pattern % num_anonymous_blocks
+                        num_anonymous_blocks += 1
                 
                 # update the configuration if given
                 block_config = {}
@@ -433,10 +443,11 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     block_config[key] = expand_value(value)
                     
                 
-                
                 if not library.exists(element.operation):
                     raise SemanticError('Uknown block type "%s". We know %s' % \
                                         (element.operation, library.get_known_blocks()))
+                debug('instancing %s:%s config: %s' % \
+                      (element.name,element.operation,block_config) )
                 
                 block = library.instance(block_type=element.operation, 
                                          name=element.name, config=block_config)

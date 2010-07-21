@@ -1,7 +1,8 @@
 
-|clock| --> |history|  -> |wait n=2000| -> x, t
+|clock| --> |history|  --> |wait n=2000| --> x, t
 
 #|clock| ----> |identity| --> |output name=x| 
- 
+
+clock.interval = 2 
 x --> |print|
 x --> |plot|
