@@ -121,7 +121,7 @@ class SemanticsTest(PGTestCase):
         # this should not work
         self.assertRaises(Exception, model_from_string, spec)
         # this should, instead
-        model_from_string(spec, properties={'g1.in': 1})
+        model_from_string(spec, config={'g1.in': 1})
         
     
     
@@ -135,7 +135,7 @@ class ParamsTest(unittest.TestCase):
         """
         # g2.gain is unused
         self.assertRaises(SemanticError, model_from_string,
-                          model_desc, properties={'g2.gain': 2})
+                          model_desc, config={'g2.gain': 2})
        
     
     

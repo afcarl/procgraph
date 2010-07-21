@@ -1,4 +1,4 @@
-from procgraph.core.block import Block, Generator
+from procgraph.core.block import Block, Generator, ETERNITY
 from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import default_library
@@ -43,7 +43,7 @@ class Constant(Block):
         self.define_input_signals([])
         
     def update(self):
-        self.set_output(0, self.value)
+        self.set_output(0, self.value, timestamp=ETERNITY)
         
     def __repr__(self):
         return 'Constant(%s)' % self.get_config('value')

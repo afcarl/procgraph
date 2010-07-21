@@ -95,6 +95,15 @@ class Connection:
     def from_tokens(original_string, location, tokens):
         return Connection(tokens)
 
+class VariableReference:
+    def __init__(self, variable):
+        self.variable = variable
+    def __repr__(self):
+        return "${%s}" % self.variable
+    @staticmethod
+    def from_tokens(original_string, location, tokens):
+        return VariableReference(tokens['variable'])
+
 class ParsedModel:
     def __init__(self, name, elements):
         self.name = name
@@ -169,7 +178,11 @@ def parse_model(string):
     key = good_name ^ qualified_name
     
     quoted = QuotedString('"','\\',unquoteResults=True)
-    value = integer ^ floatnumber ^  Word(alphanums) ^ quoted
+    
+    reference = Combine( Suppress('$') + good_name('variable'))
+    reference.setParseAction(VariableReference.from_tokens)
+    value = reference ^ integer ^ floatnumber ^  Word(alphanums) ^ quoted
+    
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
     parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
     parameter_list.setParseAction( lambda s,l,t: dict([(a[0],a[1]) for a in t ]))

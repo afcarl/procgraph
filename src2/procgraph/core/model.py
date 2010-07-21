@@ -1,6 +1,6 @@
 from procgraph.core.block import Block
 from procgraph.core.parsing import ParsedAssignment, Connection, ParsedBlock,\
-    ParsedSignalList, ParsedSignal, parse_model, ParsedModel
+    ParsedSignalList, ParsedSignal, parse_model, ParsedModel, VariableReference
 
 from procgraph.components import *
 from procgraph.core.exceptions import  SemanticError, BlockWriterError,\
@@ -142,16 +142,31 @@ class Model(Block):
     
     def reset_execution(self):
         self.blocks_to_update = []
+        # FIXME XXX it's late
+        # add all the blocks without input to the update list
+        for block in self.name2block.values():
+            if not isinstance(block, ModelInput) and \
+                block.num_input_signals()==0:
+                self.blocks_to_update.append(block)
+            if isinstance(block, Model):
+                block.reset_execution()
     
     def update(self):
+        def debug(s):
+            print 'Model %s | %s' % (self.model_name, s)
+        
+        
         # We keep a list of blocks to be updated.
         # If the list is not empty, then pop one and update it.
         if self.blocks_to_update:
             # get one block
             block = self.blocks_to_update.pop(0)
             
+            debug('Got block to update %s' % block)
             
         else:
+            debug('No blocks to update')
+            
             # look if we have any generators
             # list of (generator, timestamp) 
             generators_with_timestamps = [] 
@@ -186,46 +201,63 @@ class Model(Block):
             raise ModelExecutionError("You asked me to update but nothing's left.")
             
         # now we have a block (could be a generator)
+        debug('Updating %s' % block)
+        result = block.update()
+        # if the update is not finished, we put it back in the queue
+        if result == block.UPDATE_NOT_FINISHED:
+            self.blocks_to_update.insert(0, block)
+        else:
+            # the block updated, propagate
             
-        block.update()
-        
         # print "processed %s, ts: %s" % (block, block.get_output_signals_timestamps())
         
-        # check if the output signals were updated
-        for connection in self.__get_output_connections(block):
-            other = connection.block2
-            if other is None:
-                # XXX don't include dummy connection
-                continue
-            other_signal = connection.block2_signal
-            old_timestamp = other.get_input_timestamp(other_signal)
-            this_signal = connection.block1_signal
-            this_timestamp = block.get_output_timestamp(this_signal)
-            value  = block.get_output(this_signal)
-            
-            if value is not None and this_timestamp == 0:
-                raise ModelExecutionError('Strange, value is not none by timestamp is 0'+
-                                ' for signal %s of %s.' % (this_signal, block))
-            
-            if this_timestamp > old_timestamp:
-                #print "updating input %s of %s with timestamp %s" % \
-                #    (other_signal, other, this_timestamp)
+            # check if the output signals were updated
+            for connection in self.__get_output_connections(block):
+                other = connection.block2
+                if other is None:
+                    # XXX don't include dummy connection
+                    continue
+                other_signal = connection.block2_signal
+                old_timestamp = other.get_input_timestamp(other_signal)
+                this_signal = connection.block1_signal
+                this_timestamp = block.get_output_timestamp(this_signal)
+                value  = block.get_output(this_signal)
                 
-                other.from_outside_set_input(other_signal, value, 
-                                             this_timestamp)
+                if value is not None and this_timestamp == 0:
+                    raise ModelExecutionError('Strange, value is not none by timestamp is 0'+
+                                    ' for signal %s of %s.' % (this_signal, block))
                 
-                self.blocks_to_update.append(other)
-                
-                # If this is an output port, update the model
-                if isinstance(other, ModelOutput):
-                    #print "Updating output %s" %  other.signal_name
-                    self.set_output(other.signal_name, value, this_timestamp)
-            else:
-                pass
-                #print "Not updated %s because not %s > %s" % \
-                #    (other, this_timestamp, old_timestamp)
+                # Two cases:
+                # - timestamp is updated
+                # - this is the first time
+                if this_timestamp > old_timestamp or \
+                    other.get_input(other_signal) is None:
+                    #print "updating input %s of %s with timestamp %s" % \
+                    #    (other_signal, other, this_timestamp)
+                    
+                    debug('waking up %s' % other) 
+                    
+                    other.from_outside_set_input(other_signal, value, 
+                                                 this_timestamp)
+                    
+                    self.blocks_to_update.append(other)
+                    
+                    # If this is an output port, update the model
+                    if isinstance(other, ModelOutput):
+                        #print "Updating output %s" %  other.signal_name
+                        self.set_output(other.signal_name, value, this_timestamp)
+                else:
+                    debug("Not updated %s because not %s > %s" % \
+                           (other, this_timestamp, old_timestamp) )
         
-        
+        # now let's see if we have still work to do
+        # this step is important when the model is inside another one
+        if self.blocks_to_update:
+            # XXX should I count the generators here?
+            return Block.UPDATE_NOT_FINISHED
+        else:
+            return True
+            
     def __get_output_connections(self, block):
         for block_connection in self.name2block_connection.values():
             if block_connection.block1 == block:
@@ -318,6 +350,20 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     # Next, define the properties hash, and populate it intelligentily
     # from the tuples in all_config.
     properties = {}
+    # We keep track of what properties we use
+    used_properties = set() # of strings
+ 
+    def expand_value(value):
+        if isinstance(value, VariableReference):
+            variable = value.variable
+            if not variable in properties:
+                raise SemanticError('Could not evaluate %s. I know %s' %\
+                                    (value, properties.keys()))
+            used_properties.add(variable) 
+            return expand_value(properties[variable])
+        else:
+            return value
+        
     for key, value in all_config:
         # if it is of the form  object.property = value
         if '.' in key:
@@ -326,9 +372,10 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 properties[object] = {}
             properties[object][property] = value
         else:
-            properties[key] = value 
+            properties[key] = expand_value(value) 
         pass  
- 
+    
+    
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
     
@@ -376,7 +423,12 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 if element.name in properties:
                     block_config.update(properties[element.name])
                     # delete so we can keep track of unused properties
-                    del properties[element.name]
+                    used_properties.add(element.name)
+                
+                for key, value in list(block_config.items()):
+                    block_config[key] = expand_value(value)
+                    
+                
                 
                 if not library.exists(element.operation):
                     raise SemanticError('Uknown block type "%s". We know %s' % \
@@ -509,12 +561,13 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                 previous_block = block
             # end if 
     
-    if len(properties) > 0:
-        raise SemanticError('Unused properties: %s' % properties)
+    unused_properties = set(properties.keys()).difference(used_properties)
+    if unused_properties:
+        raise SemanticError('Unused properties: %s -- Used: %s' % \
+                            (unused_properties, used_properties))
     
     # print "--------- end model ----------------\n"           
     return model
-                
-                 
+
 
 

@@ -26,7 +26,7 @@ class ModelSpec():
                 if block_type == self.forbid:
                     raise SemanticError('Recursion error for model "%s".' % self.forbid)
                 else:
-                    print "Instancing %s (forbid %s)" % (block_type, self.forbid)
+                    #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name, 
                                             config,parent_library)
         sandbox = ForbidRecursion(library, parsed_model.name)     
@@ -83,15 +83,15 @@ def pg_add_parsed_model_to_library(parsed_model, library):
     library.register(parsed_model.name, ModelSpec(parsed_model))
 
                
-def model_from_string(model_spec, name=None, properties = None, library=None):
+def model_from_string(model_spec, name=None, config = None, library=None):
     ''' Instances a model from a specification. Optional
         attributes can be passed. Returns a Model object. '''
-    if properties is None:
-        properties = {}
+    if config is None:
+        config = {}
     if library is None:
         library = default_library
     assert isinstance(model_spec, str)
-    assert isinstance(properties, dict)
+    assert isinstance(config, dict)
     assert name is None or isinstance(name, str)
     
     parsed_models = parse_model(model_spec)
@@ -106,7 +106,8 @@ def model_from_string(model_spec, name=None, properties = None, library=None):
 
     parsed_model = parsed_models[0]
     
-    model = create_from_parsing_results(parsed_model, name, properties, library=library)
+    model = create_from_parsing_results(parsed_model, name=name, 
+                                        config=config, library=library)
     
     return model
    

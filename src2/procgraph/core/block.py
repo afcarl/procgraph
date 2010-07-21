@@ -1,5 +1,7 @@
 from procgraph.core.exceptions import BlockWriterError
 
+# Timestamp to use for constant times
+ETERNITY = 'constant-time'
 
 class Value:
     def __init__(self, value=None, timestamp=None):
