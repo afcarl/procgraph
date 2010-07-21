@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='procgraph',
 	version="0.1",
-      package_dir={'':'src2'},
+      package_dir={'':'src'},
       py_modules=['procgraph'],
       install_requires=['pyparsing'],
       entry_points={
