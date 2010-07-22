@@ -60,14 +60,16 @@ class Print(Block):
     
     def init(self):
         # say we are not ready if the inputs were not defined.
-        #if not self.are_input_signals_defined():
-        #    return Block.INIT_NOT_FINISHED
+        if not self.are_input_signals_defined():
+            return Block.INIT_NOT_FINISHED
         
+        #print self.get_input_signals_names()
         # output signals get the same name as the inputs
         self.define_output_signals([])
         
     def update(self):
         # Just copy the input to the output
+        # print self.get_input_signals_names()
         for i in range(self.num_input_signals()):
             print 'P %s %s' % (self.canonicalize_input(i), self.get_input(i))
 

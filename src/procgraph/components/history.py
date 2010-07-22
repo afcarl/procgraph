@@ -44,8 +44,8 @@ class History(Block):
         self.set_output('t', t)
         
         
-    def __repr__(self):
-        return 'History(interval=%s)' % self.get_config('interval')
+   # def __repr__(self):
+   #     return 'History(interval=%s)' % self.get_config('interval')
 
 default_library.register('history', History)
 

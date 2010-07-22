@@ -106,8 +106,8 @@ class Block(object):
             
     def get_config(self, conf):
         if not conf in self.__config:
-            raise ValueError('Could not find parameter "%s" in config %s.' % 
-                             (conf, self.__config))
+            raise ValueError('For block %s: could not find parameter "%s" in config %s.' % 
+                             (self, conf, self.__config))
         return self.__config[conf]
         
     def set_state(self, num_or_id, value):

@@ -2,4 +2,6 @@
 # Needs log=... on the command line
 --- model master
 
-|RawseedsCam dir=$log|  --> y -->  |mencoder|
+# |RawseedsCam dir=$log|  --> y -->  |mencoder|
+
+|RawseedsCam dir=$log|  --> y --> |grayscale| --> |expectation| --> |scale| -->  |mencoder|
