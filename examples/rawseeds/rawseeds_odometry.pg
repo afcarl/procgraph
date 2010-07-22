@@ -8,4 +8,7 @@
 
 odometry.x -> |history|
 
-history.x -> |wait n=200| -> |plot|
+history.x -> |sieve n=10| -> |wait n=200| -> |rgbplot| -> rgb
+
+
+rgb -> |mencoder|

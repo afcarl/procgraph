@@ -11,7 +11,7 @@ class PGTestCase(unittest.TestCase):
     def check_syntax_ok(self, model_spec):
         ''' Tests that the given string can parse OK. Returns parsed models. '''
         parsed = parse_model(model_spec)
-
+        return parsed
     
     def check_semantic_ok(self, model_spec):
         ''' Tests that the given string can parse OK and we can create a model.

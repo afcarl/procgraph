@@ -1,7 +1,7 @@
 from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore,\
-    stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, Or,\
+    stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, \
     ParserElement, Combine, nums, Literal, CaselessLiteral, col, lineno,\
-    restOfLine, QuotedString, ParseException
+    restOfLine, QuotedString, ParseException, Forward,ParseResults, Dict
 
 class Location:
     def __init__(self, string, character):
@@ -124,12 +124,123 @@ class ParsedModel:
         elements = list(tokens)
         return ParsedModel(name=None, elements=elements)
     
+def eval_dictionary(s,loc,tokens):
+    print "Dict Tokens: %s" % tokens
+    if not 'content' in tokens:
+        return {}
+    d = {}
+    for a in tokens:
+        print "A: %s" % a
+        if 'value' in a:
+            d[a['key']]=a['value']
+    
+    #return ShieldDict(d.items())
+    return d
+    #if d:
+    #    return ParseResults(toklist=d)
+    #else:
+    #    return [{}]
+
+
+class ShieldDict:
+    def __init__(self, items):
+        self.items = items
+        
+    def __repr__(self):
+        return 'Dict(%s)' % self.items
+
+class ShieldList:
+    def __init__(self, elements):
+        self.elements = elements
+    def __repr__(self):
+        return 'List(%s)' % self.elements
+    
+def eval_list2(s,loc,tokens):
+    print "List Tokens: %s" % tokens
+    if not 'content' in tokens:
+        return ShieldList(tokens)
+        #return [[]]
+    return ShieldList(tokens.asList())
+
+def eval_list(s,loc,tokens):
+#    if not 'content' in tokens:
+#        return [[]]
+    elements = tokens.asList()
+    return elements
+
 
 def python_interpretation(s,loc,tokens):
     val = eval(tokens[0])
     #print '%s -> %s (%s)' % (tokens, val, type(val))
     return val
 
+# Important: should be at the beginning
+# make end of lines count
+ParserElement.setDefaultWhitespaceChars(" \t") 
+    
+# These are just values
+# Definition of numbers
+number = Word(nums) 
+point = Literal('.')
+e = CaselessLiteral('E')
+plusorminus = Literal('+') | Literal('-')
+integer = Combine( Optional(plusorminus) + number )
+floatnumber = Combine( integer +
+                   Optional( point + Optional(number) ) +
+                   Optional( e + integer )
+                 )
+integer.setParseAction(python_interpretation)
+floatnumber.setParseAction(python_interpretation)
+# comments
+comment = Suppress(Literal('#') + restOfLine)
+good_name =  Combine(Word(alphas)+Optional(Word(alphanums +'_')))
+
+quoted = QuotedString('"','\\',unquoteResults=True)
+reference = Combine( Suppress('$') + good_name('variable'))
+
+reference.setParseAction(VariableReference.from_tokens)
+
+dictionary = Forward()
+array = Forward()
+value = Forward()
+value << (array ^ dictionary ^ reference ^ integer \
+          ^ floatnumber ^  Word(alphanums) ^ quoted)('val')
+
+# dictionaries
+    
+dict_key = good_name ^ quoted
+dictionary << (Suppress("{") + \
+    Group(Optional(delimitedList((dict_key('key') +Suppress(':')+ value('value')))))('content') +   \
+    Suppress("}"))
+    
+dictionary.setParseAction(eval_dictionary)
+    
+#array << Suppress("[") + (delimitedList(value))('content') +Suppress("]")  
+#array.setParseAction(eval_list)
+
+array << Group(Suppress("[") + Optional(delimitedList(value)) +Suppress("]"))
+#array.setParseAction(eval_list)
+
+
+def parse_value(string):
+    ''' This is useful for debugging '''
+    try:
+        tokens = value.parseString(string)
+        print 'tokens: %s' % tokens
+        if isinstance(tokens['val'], dict) or\
+           isinstance(tokens['val'], int) or\
+           isinstance(tokens['val'], float):
+          return tokens['val']
+        ret = tokens['val'].asList()
+        print "Parsed '%s' into %s (%d), ret: %s" % (string, tokens, len(tokens),
+                                                     ret)
+        return ret
+
+
+    except ParseException as e:
+        raise SyntaxError('Error in parsing string: %s' % e)
+        
+        
 def parse_model(string):
     ''' Returns a list of ParsedModel ''' 
     
@@ -137,32 +248,13 @@ def parse_model(string):
     if not string.strip():
         raise SyntaxError('Passed empty string.')
     
-    # make end of lines count
-    ParserElement.setDefaultWhitespaceChars(" \t")
-    
-    
-    # Definition of numbers
-    number = Word(nums) 
-    point = Literal('.')
-    e = CaselessLiteral('E')
-    plusorminus = Literal('+') | Literal('-')
-    integer = Combine( Optional(plusorminus) + number )
-    floatnumber = Combine( integer +
-                       Optional( point + Optional(number) ) +
-                       Optional( e + integer )
-                     )
-    integer.setParseAction(python_interpretation)
-    floatnumber.setParseAction(python_interpretation)
-    # comments
-    comment = Suppress(Literal('#') + restOfLine)
-
     
     arrow = Suppress(Regex(r'-+>'))
     
-    good_name =  Combine(Word(alphas)+Optional(Word(alphanums +'_')))
     # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
     # XXX: don't put '.' at the beginning
     qualified_name = Combine( good_name +'.' + (integer ^ good_name ) )
+    
 
     block_name = good_name
     block_type =   Word(alphanums +'_+-/*' )
@@ -177,11 +269,7 @@ def parse_model(string):
     
     key = good_name ^ qualified_name
     
-    quoted = QuotedString('"','\\',unquoteResults=True)
     
-    reference = Combine( Suppress('$') + good_name('variable'))
-    reference.setParseAction(VariableReference.from_tokens)
-    value = reference ^ integer ^ floatnumber ^  Word(alphanums) ^ quoted
     
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
     parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
