@@ -1,0 +1,19 @@
+# Testing some filters
+# Needs log=... on the command line
+--- model master
+
+# |RawseedsCam dir=$log|  --> y -->  |mencoder|
+
+|RawseedsCam dir=$log|  --> y --> |grayscale| --> |expectation| --> |scale| --> ys
+
+y, ys --> |compose| --> rgb
+
+rgb --> |mencoder file=$out|
+
+
+# coordinates for video
+compose.width = 640
+compose.height = 480
+compose.positions2 = "{'y': [0,0], 'ys': [320,20]}"
+compose.positions = {y: [0,0], ys: [320,20]}
+
