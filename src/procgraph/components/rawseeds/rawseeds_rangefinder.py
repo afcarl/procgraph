@@ -4,14 +4,22 @@ from procgraph.components.rawseeds.textlog import TextLog
 
 
 class RawseedsRangeFinder(TextLog):
-    ''' This block reads a range-finder log in Rawseeds format. '''
+    ''' This block reads a range-finder log in Rawseeds format. 
+    
+    Timestamp [seconds.microseconds]
+# of ranges [unitless]
+Angular offset [1/4 degree]
+R1..R181 Ranges (zero padded to 181 ranges) [m]
+    
+    '''
     
     def parse_format(self, line):
         """ returns a tuple (timestamp, array of (name, value) )"""
         elements = line.split(',')
         timestamp = float(elements[0])
         num_readings = int(elements[1]) #@UnusedVariable
-        readings = numpy.array(map(float, elements[2:]))
+        offset = float(elements[2])
+        readings = numpy.array(map(float, elements[3:]))
         return timestamp, [('readings', readings)]
 
 

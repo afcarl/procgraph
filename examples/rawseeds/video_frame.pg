@@ -25,8 +25,6 @@ compose.positions = {y: [0,0], yc: [0,240], Ey: [320,0],  Eyc: [320,240]}
 text.texts = [  {string: "raw image", position: [10,10], size:20, halign: left, color: black, bg: white  }, {string: "processed image", position: [330,10], size:20, halign: left, color: "#ff00ff", bg: white  }]
 
 
-
-
 --- model contrast
 
 |input name=image| --> y

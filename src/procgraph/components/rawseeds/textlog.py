@@ -1,6 +1,7 @@
 from procgraph.components.rawseeds.file_utils import expand_environment
 from procgraph.core.block import Generator
 
+
 class TextLog(Generator):
     ''' This represents a generic log reader that reads
         from a file line-by-line. 
@@ -11,7 +12,12 @@ class TextLog(Generator):
     def init(self):
         filename = self.get_config('file')
         filename = expand_environment(filename)
-        self.stream = open(filename,'r')
+        
+        if filename.endswith('bz2'):
+            import bz2
+            self.stream = bz2.BZ2File(filename)
+        else:
+            self.stream = open(filename,'r')
             
         self.read_next_line()
         

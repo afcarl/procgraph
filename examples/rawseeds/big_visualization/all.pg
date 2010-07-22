@@ -1,0 +1,6 @@
+--- model loaders
+
+|hokuyo_front:RawseedsHokuyo| -> hokuyo_front
+| hokuyo_rear:RawseedsHokuyo| -> hokuyo_rear
+|  sick_front:RawseedsRF| -> sick_front
+|   sick_rear:RawseedsRF| -> sick_rear
