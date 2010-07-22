@@ -125,12 +125,12 @@ class ParsedModel:
         return ParsedModel(name=None, elements=elements)
     
 def eval_dictionary(s,loc,tokens):
-    print "Dict Tokens: %s" % tokens
+    #print "Dict Tokens: %s" % tokens
     if not 'content' in tokens:
         return {}
     d = {}
     for a in tokens:
-        print "A: %s" % a
+        #print "A: %s" % a
         if 'value' in a:
             d[a['key']]=a['value']
     
@@ -141,26 +141,26 @@ def eval_dictionary(s,loc,tokens):
     #else:
     #    return [{}]
 
-
-class ShieldDict:
-    def __init__(self, items):
-        self.items = items
-        
-    def __repr__(self):
-        return 'Dict(%s)' % self.items
-
-class ShieldList:
-    def __init__(self, elements):
-        self.elements = elements
-    def __repr__(self):
-        return 'List(%s)' % self.elements
-    
-def eval_list2(s,loc,tokens):
-    print "List Tokens: %s" % tokens
-    if not 'content' in tokens:
-        return ShieldList(tokens)
-        #return [[]]
-    return ShieldList(tokens.asList())
+#
+#class ShieldDict:
+#    def __init__(self, items):
+#        self.items = items
+#        
+#    def __repr__(self):
+#        return 'Dict(%s)' % self.items
+#
+#class ShieldList:
+#    def __init__(self, elements):
+#        self.elements = elements
+#    def __repr__(self):
+#        return 'List(%s)' % self.elements
+#    
+#def eval_list2(s,loc,tokens):
+#    #print "List Tokens: %s" % tokens
+#    if not 'content' in tokens:
+#        return ShieldList(tokens)
+#        #return [[]]
+#    return ShieldList(tokens.asList())
 
 def eval_list(s,loc,tokens):
 #    if not 'content' in tokens:
@@ -231,13 +231,15 @@ array << Group(Suppress("[") + Optional(delimitedList(value)) +Suppress("]"))
 
 def parse_value(string):
     ''' This is useful for debugging '''
+    # XXX this is a mess that needs cleaning
+    # perhaps now it works without ceremonies
     try:
         tokens = value.parseString(string)
         print 'tokens: %s' % tokens
         if isinstance(tokens['val'], dict) or\
            isinstance(tokens['val'], int) or\
            isinstance(tokens['val'], float):
-          return tokens['val']
+            return tokens['val']
         ret = tokens['val'].asList()
         print "Parsed '%s' into %s (%d), ret: %s" % (string, tokens, len(tokens),
                                                      ret)

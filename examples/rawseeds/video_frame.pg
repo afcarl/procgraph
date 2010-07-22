@@ -4,16 +4,39 @@
 
 # |RawseedsCam dir=$log|  --> y -->  |mencoder|
 
-|RawseedsCam dir=$log|  --> y --> |grayscale| --> |expectation| --> |scale| --> ys
+|RawseedsCam dir=$log|  --> y  --> |grayscale| --> gray -> |expectation| --> |scale| --> Ey
 
-y, ys --> |compose| --> rgb
+y -> |contrast| -> yc -> |expectation| -> |scale| -> Eyc
+
+yc -> |scale| -> yc_rgb
+
+y, Ey, yc_rgb[yc], Eyc --> |compose| --> |text| --> rgb
+
 
 rgb --> |mencoder file=$out|
 
 
 # coordinates for video
 compose.width = 640
-compose.height = 480
-compose.positions2 = "{'y': [0,0], 'ys': [320,20]}"
-compose.positions = {y: [0,0], ys: [320,20]}
+compose.height = 480 
+compose.positions = {y: [0,0], yc: [0,240], Ey: [320,0],  Eyc: [320,240]}
+#compose.positions = {y: [0,0],  Ey: [320,0]}
+
+text.texts = [  {string: "raw image", position: [10,10], size:20, halign: left, color: black, bg: white  }, {string: "processed image", position: [330,10], size:20, halign: left, color: "#ff00ff", bg: white  }]
+
+
+
+
+--- model contrast
+
+|input name=image| --> y
+
+         y  --> |grayscale| --> |gradient| --> gx, gy
+
+         gx --> |square| --> gx_square
+         gy --> |square| --> gy_square
+
+         gx_square, gy_square --> |+| --> contrast
+
+                         contrast --> |output name=contrast|
 

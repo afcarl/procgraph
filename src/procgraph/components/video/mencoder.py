@@ -45,8 +45,9 @@ class MEncoder(Block):
                      '-o', self.file]
             print 'Command line: \n %s' % " ".join(args)
             self.process = subprocess.Popen(args=args,stdin=subprocess.PIPE,
-                                            stderr=subprocess.PIPE,
-                                            stdout=subprocess.PIPE)
+                                            #stderr=subprocess.PIPE,
+                                            #stdout=subprocess.PIPE
+                                            )
             
         self.process.stdin.write(image.data)
         self.process.stdin.flush()

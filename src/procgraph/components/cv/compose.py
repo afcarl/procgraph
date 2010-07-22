@@ -29,16 +29,11 @@ class Compose(Block):
         canvas = numpy.zeros((height, width, 3), dtype='uint8')
         
         positions = self.get_config('positions')
-#        try:
-#            positions = eval(positions)
-#        except:
-#            raise Exception("Malformed string '%s'." % positions)
-#        
+
         if not isinstance(positions, dict):
             raise Exception('I expected a dict, not "%s"' % positions)
-        #assert isinstance(positions, dict)
         
-        print "conf: %s" % positions
+       
         for signal, position in positions.items():
             if not self.is_valid_input_name(signal):
                 raise Exception('Uknown input "%s" in %s.' % (signal, self))
@@ -46,7 +41,7 @@ class Compose(Block):
             # TODO check
             if rgb is not None:
                 place_at(canvas, rgb, position[0], position[1])
-                print "Writing image %s" % signal
+                #print "Writing image %s" % signal
             else:
                 print "Ignoring image %s because not ready.\n" % signal
         

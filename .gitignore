@@ -422,3 +422,4 @@ src/procgraph/testing/test_parsing.pyc
 src/procgraph/testing/test_signal_naming.pyc
 src/procgraph/testing/test_values.pyc
 src/procgraph/testing/utils.pyc
+src/procgraph/components/cv/text.pyc
