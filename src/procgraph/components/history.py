@@ -115,8 +115,7 @@ class Sieve(Block):
     def update(self):
         count = self.get_state('count')
         n = self.get_config('n')
-        
-        
+
         # make something happen after we have waited enough
         if 0 == count % n: 
             # Just copy the input to the output

@@ -6,3 +6,5 @@ from gui import *
 from history import *
 
 from video import *
+from sync import *
+from join import *

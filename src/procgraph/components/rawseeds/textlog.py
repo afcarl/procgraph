@@ -39,7 +39,6 @@ class TextLog(Generator):
             return (True, self.timestamp)
                  
     def update(self):
-        
         for signal, value in self.values:
             self.set_output(signal, value, timestamp=self.timestamp)
       

@@ -1,6 +1,17 @@
 --- model loaders
 
-|hokuyo_front:RawseedsHokuyo| -> hokuyo_front
-| hokuyo_rear:RawseedsHokuyo| -> hokuyo_rear
-|  sick_front:RawseedsRF| -> sick_front
-|   sick_rear:RawseedsRF| -> sick_rear
+|hokuyo_front:RawseedsHokuyo| --> hokuyo_front
+| hokuyo_rear:RawseedsHokuyo| --> hokuyo_rear
+|  sick_front:RawseedsRF| --> sick_front
+|   sick_rear:RawseedsRF| --> sick_rear
+
+# hokuyo_front, hokuyo_rear, sick_front, sick_rear --> |sync| --> L1, L2, L3, L4
+# sick_front, hokuyo_front, hokuyo_rear, sick_rear --> |sync| --> L1, L2, L3, L4
+hokuyo_rear, sick_front, hokuyo_front, sick_rear --> |sync| --> |sieve n=50| --> |join| --> y
+
+
+y  --> |log| -> display
+
+ display -> |plot|
+
+#display -> |rgbplot| -> |mencoder file="all.mp4"|

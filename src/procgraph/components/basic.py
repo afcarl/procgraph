@@ -3,32 +3,7 @@ from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import default_library
 import numpy
-
-#
-#class SimpleFilter(Block):
-#    ''' This is a base class for implementing a generic
-#        filter-like block with one input and one output. 
-#        Just implement "operation". '''
-#    
-#    def init(self):
-#        self.define_output_signals(['0'])
-#        self.define_input_signals(['0'])
-#
-#    def operation(self, value):
-#        raise TypeError('Implement this function.')
-#        
-#    def update(self):
-#        input = self.get_input(0)
-#        result = self.operation(input)
-#        self.set_output(0, result)
-#
-#def make_filter(filter):
-#    ''' This is the factory for a derivate of SimpleFilter '''
-#    class Myfilter(SimpleFilter):
-#        def operation(self, value):
-#            return filter(value)
-#    return Myfilter
-
+ 
 
 
 def make_generic(num_inputs, num_outputs, operation, **parameters):
@@ -65,6 +40,7 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
 # One example use of make_filter
 default_library.register('double', make_generic(1,1, lambda x:x*2))
 default_library.register('square', make_generic(1,1, numpy.square))
+default_library.register('log', make_generic(1,1, numpy.log))
 
 default_library.register('+', make_generic(2,1, lambda x,y: x+y ) )
 default_library.register('*', make_generic(2,1, lambda x,y: x*y ) )
@@ -109,34 +85,35 @@ class Gain(Block):
     def update(self):
         self.set_output(0, self.get_input(0) * self.get_config('gain') )
 
+# TODO: make generic
 default_library.register('gain', Gain)
-        
-class Delay(Block):
-
-    def init(self):
-        self.set_state(0, None)
-        
-    def update(self):
-        self.set_output(0, self.get_state(0))
-        self.set_state(0, self.get_input(0))
-
-    
-default_library.register('delay', Delay)
-    
-class RandomGenerator(Generator):    
-    def init(self):
-        self.set_config_default('variance', 1)
-        self.define_input_signals([])
-        self.define_output_signals(['random'])
-    
-    def has_more(self):
-        return True
-    
-    def update(self):
-        variance = self.get_config('variance')
-        self.set_output(0, random.rand(1) * sqrt(variance) )
-        
-default_library.register('rand', RandomGenerator)
+#        
+#class Delay(Block):
+#
+#    def init(self):
+#        self.set_state(0, None)
+#        
+#    def update(self):
+#        self.set_output(0, self.get_state(0))
+#        self.set_state(0, self.get_input(0))
+#
+#    
+#default_library.register('delay', Delay)
+#    
+#class RandomGenerator(Generator):    
+#    def init(self):
+#        self.set_config_default('variance', 1)
+#        self.define_input_signals([])
+#        self.define_output_signals(['random'])
+#    
+#    def has_more(self):
+#        return True
+#    
+#    def update(self):
+#        variance = self.get_config('variance')
+#        self.set_output(0, random.rand(1) * sqrt(variance) )
+#        
+#default_library.register('rand', RandomGenerator)
 
 
 class Clock(Generator):
