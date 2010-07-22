@@ -210,8 +210,15 @@ value << (array ^ dictionary ^ reference ^ integer \
     
 dict_key = good_name ^ quoted
 dictionary << (Suppress("{") + \
-    Group(Optional(delimitedList((dict_key('key') +Suppress(':')+ value('value')))))('content') +   \
+    Optional(\
+             delimitedList(\
+                           Group(\
+                                 dict_key('key') +Suppress(':')+ value('value')\
+                                 ) \
+                           ) \
+             )('content') +   \
     Suppress("}"))
+    
     
 dictionary.setParseAction(eval_dictionary)
     
