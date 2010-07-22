@@ -1,0 +1,5 @@
+# Testing some filters
+# Needs log=... on the command line
+--- model master
+
+|RawseedsCam dir=$log|  --> y -->  |mencoder|

@@ -137,5 +137,7 @@ class ParamsTest(unittest.TestCase):
         self.assertRaises(SemanticError, model_from_string,
                           model_desc, config={'g2.gain': 2})
        
+
+    
     
     

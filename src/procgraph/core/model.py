@@ -312,7 +312,20 @@ def check_link_compatibility_output(block, previous_link):
     if not block.are_input_signals_defined():
         # We define a bunch of anonymous signals
         n = len(previous_link.signals)
-        block.define_input_signals(map(str, range(n)))
+        names = []
+        for i in range(n):
+            if previous_link.signals[i].local_output is not None:
+                name = previous_link.signals[i].local_output
+            elif previous_link.signals[i].name is not None:
+                name = previous_link.signals[i].name
+            else:
+                # XXX I'm not sure we should be here, at least name should be 
+                # defined
+                assert(False)
+                #name = str(i)
+            names.append(name)
+        
+        block.define_input_signals(names)
     
     # we check that we have good matches for the next    
     for i, s in enumerate(previous_link.signals):
@@ -480,6 +493,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     if previous_block.are_output_signals_defined() \
                         and not block.are_input_signals_defined():
                         names = previous_block.get_output_signals_names()
+                        
                         block.define_input_signals(names)
                         # just create default connections
                         for i in range(len(names)):
