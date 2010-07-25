@@ -1,11 +1,3 @@
-
-import unittest
-import traceback
-from pyparsing import ParseException
-from procgraph.core.model import create_from_parsing_results
-import procgraph.components.basic 
-import procgraph.components.debug_components 
-from procgraph.core.parsing import parse_model
 from procgraph.testing.utils import PGTestCase
 
 good_examples = \

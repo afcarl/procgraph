@@ -1,4 +1,5 @@
-from procgraph.core.model import  create_from_parsing_results
+from procgraph.core.model_instantiation import create_from_parsing_results
+create_from_parsing_results
 import os
 import fnmatch
 from procgraph.core.parsing import parse_model, ParsedModel
@@ -15,6 +16,7 @@ class ModelSpec():
     def __call__(self, name, config, library):
         parsed_model = self.parsed_model 
             
+        parent = self
         # We create a mock library that forbids that this
         # model is created again. This prevents recursion.
         class ForbidRecursion(Library):
@@ -22,17 +24,27 @@ class ModelSpec():
                 Library.__init__(self, parent)
                 self.forbid = forbid
                 
-            def instance(self, block_type, name, config, parent_library=None):
+            def instance(self, block_type, name, config, parent_library=None, where=None):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % self.forbid)
+                    raise SemanticError('Recursion error for model "%s".' % self.forbid,
+                                        parent.parsed_model)
                 else:
                     #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name, 
-                                            config,parent_library)
+                                            config,parent_library, where)
         sandbox = ForbidRecursion(library, parsed_model.name)     
         model = create_from_parsing_results(parsed_model, name, config, library=sandbox)
 
         return model
+
+def add_models_to_library(library, string, name=None, filename=None):
+    models = parse_model(string,filename=filename)
+    if models[0].name is None:
+        assert name is not None
+        models[0].name = name
+        
+    for model in models:
+        pg_add_parsed_model_to_library(parsed_model=model, library=library)
 
 def pg_look_for_models(library, additional_paths=None):
     ''' Call this function at the beginning of the executions.
@@ -42,15 +54,6 @@ def pg_look_for_models(library, additional_paths=None):
     it looks into the ones in the PROCGRAPH_PATH environment
     variable (colon separated list of paths)
     '''
-    def __add_models_to_library(library,pgfile, name=None):
-        models = parse_model(pgfile,filename=pgfile)
-        if models[0].name is None:
-            assert name is not None
-            models[0].name = name
-            
-        for model in models:
-            pg_add_parsed_model_to_library(parsed_model=model, library=library)
-
     
     paths = []
     if additional_paths:
@@ -80,7 +83,7 @@ def pg_look_for_models(library, additional_paths=None):
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
         model_spec = open(f).read()
-        __add_models_to_library(library, model_spec, base)
+        add_models_to_library(library, model_spec, name=base, filename=f)
 
   
 def pg_add_parsed_model_to_library(parsed_model, library):
@@ -91,6 +94,7 @@ def pg_add_parsed_model_to_library(parsed_model, library):
     
     library.register(parsed_model.name, ModelSpec(parsed_model))
 
+               
                
 def model_from_string(model_spec, name=None, config = None, library=None, filename=None):
     ''' Instances a model from a specification. Optional

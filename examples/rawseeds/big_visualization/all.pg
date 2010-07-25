@@ -10,8 +10,9 @@ import procgraph.components.rawseeds
 # sick_front, hokuyo_front, hokuyo_rear, sick_rear --> |sync| --> L1, L2, L3, L4
 hokuyo_rear, sick_front, hokuyo_front, sick_rear --> |sync| --> |sieve n=50| --> |join| --> y
 
+ y --> |derivative| --> y_dot
 
-y  --> |log| -> display
+y  --> |log| -> |derivative| --> display
 
  display -> |plot|
 

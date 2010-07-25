@@ -43,13 +43,55 @@ class History(Block):
         self.set_output('x', x) 
         self.set_output('t', t)
         
-        
-   # def __repr__(self):
-   #     return 'History(interval=%s)' % self.get_config('interval')
-
 default_library.register('history', History)
 
 
+class HistoryN(Block):
+    ''' 
+    This block collects the last n samples of a quantity,
+    and outputs (x, timestamp).
+    
+    Arguments:
+    - n, number of samples
+    
+    Output:
+    - x
+    - t
+    ''' 
+        
+    def init(self):
+        self.get_config('n')
+        
+        self.define_output_signals(['x','t'])
+        self.define_input_signals(['input'])
+        
+        self.set_state('x', [])
+        self.set_state('t', [])
+    
+    def update(self):
+        
+        sample = self.get_input(0)
+        timestamp = self.get_input_timestamp(0)
+         
+        x = self.get_state('x')
+        t = self.get_state('t')
+        
+        x.append(sample)
+        t.append(timestamp)
+        
+        n = self.get_config('n')
+        while len(x) > n:
+            t.pop(0)
+            x.pop(0)
+            
+        if len(x) == n:
+            self.set_output('x', x) 
+            self.set_output('t', t)
+        
+default_library.register('last_n_samples', HistoryN)
+
+        
+        
 class Wait(Block):
     ''' 
     This block waits a given number of updates before transmitting the 
@@ -127,5 +169,4 @@ class Sieve(Block):
         
 default_library.register('sieve', Sieve)
 
-  
   

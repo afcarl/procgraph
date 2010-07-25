@@ -8,7 +8,10 @@ class BlockWriterError(PGException):
 
 class ModelWriterError(PGException):
     ''' An error by who wrote the model, can be either Syntax or Semantic '''
-    pass
+    def __init__(self, error, block=None):
+        Exception.__init__(self, error + ' (block %s)' % block)
+        self.block = block
+
 
 class SemanticError(ModelWriterError):
     ''' A semantic error by who wrote the model spec.'''
@@ -21,7 +24,20 @@ class PGSyntaxError(ModelWriterError):
     def __init__(self, error, where=None):
         Exception.__init__(self,error)
         self.where = where
+        
+    def __str__(self):
+        return Exception.__str__(self) +'\n' + self.where.__str__()
 
 class ModelExecutionError(PGException):
     ''' Runtime errors, including misuse by the user '''
     pass
+
+class BadInput(ModelExecutionError):
+    def __init__(self, error, block, input_signal):
+        Exception.__init__(self,error)
+        self.block = block
+        self.input_signal = input_signal
+    
+    
+    
+    

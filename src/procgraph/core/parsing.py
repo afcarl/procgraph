@@ -58,7 +58,7 @@ dictionary = Forward()
 array = Forward()
 value = Forward()
 value << (array ^ dictionary ^ reference ^ integer \
-          ^ floatnumber ^  Word(alphanums) ^ quoted)('val')
+          ^ floatnumber ^  good_name ^ quoted)('val')
 
 # dictionaries
     

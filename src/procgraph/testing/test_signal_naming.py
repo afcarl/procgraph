@@ -1,7 +1,7 @@
-import unittest
 from procgraph.core.model_loader import model_from_string
+from procgraph.testing.utils import PGTestCase
 
-class NamingTest(unittest.TestCase):
+class NamingTest(PGTestCase):
     
     def test_correct_naming(self):
         # in all these cases, the identity block should have
@@ -33,3 +33,5 @@ class NamingTest(unittest.TestCase):
         print "Obtained %s from '''%s'''" % (names, example)
         self.assertEqual( len(names), 1)
         self.assertEqual( names[0], 'x')
+        
+        

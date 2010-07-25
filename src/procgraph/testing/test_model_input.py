@@ -1,8 +1,7 @@
-from procgraph.core.model import Model 
-from unittest import TestCase
 from procgraph.core.model_loader import model_from_string
+from procgraph.testing.utils import PGTestCase
 
-class PipelineTest(TestCase):
+class PipelineTest(PGTestCase):
     
     def test_pipeline(self):
         ''' All graphs equivalent (multiply by a gain), but interconnections

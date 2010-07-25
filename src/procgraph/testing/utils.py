@@ -1,9 +1,66 @@
 import unittest
+import traceback
+
 from procgraph.core.model_loader import model_from_string
 from procgraph.core.parsing import parse_model
 from procgraph.core.exceptions import SemanticError, PGSyntaxError
 from procgraph.core.registrar import default_library, Library
-import traceback
+
+# load standard components
+import procgraph.components
+from procgraph.core.block import Block
+
+# a couple of blocks for testing
+
+
+class DoesNotDefineInput(Block):
+    ''' This (erroneous) block does not register inputs '''
+    
+    def init(self):
+        self.define_output_signals([])
+    
+default_library.register('DoesNotDefineInput', DoesNotDefineInput)
+
+
+class DoesNotDefineOutput(Block):
+    ''' This (erroneous) block does not register output '''
+    
+    def init(self):
+        self.define_input_signals([])
+        
+default_library.register('DoesNotDefineOutput', DoesNotDefineOutput)
+
+
+class Generic(Block):
+    ''' This is a generic block used mainly for debug.
+        It defines inputs and outputs given by the parameters
+        "in" and "out". 
+        
+        Parameters:
+        * ``in`` (default: ``0``)
+        * ``out`` (default: ``0``)  
+        
+        For example::
+    
+            A,B,C -> |generic in=3 out=5| -> a,b,c,d,e
+            
+            # all by itself
+            |generic|
+            
+    '''
+    def init(self):
+        # use default if not set
+        self.set_config_default('in', 0)
+        self.set_config_default('out', 0)
+        
+        nin = self.get_config('in')
+        nout =  self.get_config('out')
+        self.define_input_signals( map(str, range(nin)) )
+        self.define_output_signals( map(str, range(nout)) )
+
+
+default_library.register('generic', Generic)
+
 
 
 class PGTestCase(unittest.TestCase):

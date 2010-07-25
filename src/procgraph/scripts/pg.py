@@ -1,9 +1,5 @@
 import sys 
 
-# XXX: I don't know how to put these
-
-# from procgraph.components.rawseeds import *
-# from procgraph.components.cv import *
 from procgraph.core.model_loader import model_from_string, pg_look_for_models
 from optparse import OptionParser
 from procgraph.core.registrar import default_library
@@ -44,10 +40,10 @@ def main():
         else:
             raise Exception('What should I do with "%s"?' % arg)
     
-    # print 'Configuration: %s' % config
-    # print """%s""" % model_spec
-    
     try:
+        # load standard components
+        import procgraph.components
+
         model = model_from_string(model_spec, config=config, filename=filename)
         
         if options.debug:

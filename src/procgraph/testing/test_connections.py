@@ -1,11 +1,6 @@
 
-import unittest
-import traceback
-from pyparsing import ParseException
-from procgraph.core.model import create_from_parsing_results, Model
-import procgraph.components.basic 
-import procgraph.components.debug_components 
-from procgraph.core.parsing import parse_model
+import unittest 
+
 from procgraph.core.model_loader import model_from_string
 from procgraph.core.exceptions import SemanticError
 from procgraph.testing.utils import PGTestCase
@@ -125,7 +120,7 @@ class SemanticsTest(PGTestCase):
         
     
     
-class ParamsTest(unittest.TestCase):
+class ParamsTest(PGTestCase):
     
     def test1(self):
         ''' Checking that we signal unused parameters. '''

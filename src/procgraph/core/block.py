@@ -1,4 +1,4 @@
-from procgraph.core.exceptions import BlockWriterError
+from procgraph.core.exceptions import BlockWriterError, ModelWriterError
 
 # Timestamp to use for constant times
 ETERNITY = 'constant-time'
@@ -31,6 +31,9 @@ class Block(object):
         
         # state variables
         self.__states = {}
+        
+        # instantiation point
+        self.where = None
     
     INIT_NOT_FINISHED = 'init-not-finished'
     def init(self):
@@ -139,7 +142,6 @@ class Block(object):
         input_struct.value = value
         input_struct.timestamp = timestamp
 
-        
     def get_input(self, num_or_id):
         ''' Gets the value of an input signal. '''
         input_struct = self.__get_input_struct(num_or_id)
@@ -159,10 +161,11 @@ class Block(object):
         ''' Gets the value of an output signal. '''
         output_struct = self.__get_output_struct(num_or_id)
         return output_struct.value
-
     
     def __get_input_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given input signal. '''
+        if not self.is_valid_input_name(num_or_id):
+            raise ModelWriterError('Unknown output name "%s".' % str(num_or_id), self)
         if isinstance(num_or_id, str):
             # convert from name to number 
             num_or_id = self.__input_signal_name2id[num_or_id]
@@ -170,6 +173,9 @@ class Block(object):
         
     def __get_output_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given out signal. '''
+        if not self.is_valid_output_name(num_or_id):
+            raise ModelWriterError('Unknown input name "%s".' % str(num_or_id), self)
+        
         if isinstance(num_or_id, str):
             # convert from name to number
             num_or_id = self.__output_signal_name2id[num_or_id]

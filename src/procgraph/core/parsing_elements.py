@@ -15,6 +15,22 @@ class Where:
             self.character = character
             self.line = lineno(character,string)
             self.col =  col(character, string)
+
+    def __str__(self):
+        s = ''
+        s += ('In file %s:\n' % self.filename)
+        context = 3;
+        lines = self.string.split('\n')
+        start = max(0, self.line-context)
+        pattern='line %2d |'
+        for i in range(start,self.line):
+            s+=("%s%s\n" % (pattern % (i+1), lines[i]))
+            
+        fill = len(pattern % (i+1) )
+        space = ' '*fill + ' '* (self.col-1) 
+        s+=( space + '^\n')
+        s+=( space + '|\n')
+        return s
         
     def print_where(self, s=sys.stdout):
         s.write('\n\n')
@@ -34,8 +50,8 @@ class Where:
         write( space + '|\n')
         
         
-    def __str__(self):
-        return "{filename: %s, line %d, col %d}" % (self.filename, self.line, self.col)
+    #def __str__(self):
+    #    return "{filename: %s, line %d, col %d}" % (self.filename, self.line, self.col)
 
 
 class ParsedElement:
@@ -88,8 +104,6 @@ class ParsedSignal(ParsedElement):
         if self.local_output is not None:
             s += "[%s]" % self.local_output
         s+=')'
-#        if self.where:
-#            s += '@%s' % self.where
         return s
     
     @staticmethod

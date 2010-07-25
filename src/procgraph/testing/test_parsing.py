@@ -55,7 +55,9 @@ g1.in = "ciao"
 """ ,
 """
 g1.in = "ci\\"a/o"
-""" 
+""",
+# underscores 
+" |output name=x_old|  "
 
 
 ]

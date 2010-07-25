@@ -21,7 +21,7 @@ class Library:
     
         self.name2block[block_type] = generator
     
-    def instance(self, block_type, name, config, parent_library=None):
+    def instance(self, block_type, name, config, parent_library=None, where=None):
         # we give the children a reference to the library object
         # that was called first, not its parent
         if parent_library is None:
@@ -32,12 +32,15 @@ class Library:
                              block_type)
         if block_type in self.name2block:
             generator = self.name2block[block_type]
-            return generator(name=name, config=config, library=parent_library)
+            block = generator(name=name, config=config, library=parent_library)
         else: 
             assert self.parent
-            return self.parent.instance(block_type,name,config,
+            block = self.parent.instance(block_type,name,config,
                                         parent_library=parent_library)
-        
+        block.where = where
+        return block
+    
+    
     def get_known_blocks(self):
         blocks = self.name2block.keys()
         if self.parent:
