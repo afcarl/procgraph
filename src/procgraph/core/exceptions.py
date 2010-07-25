@@ -3,7 +3,7 @@ class PGException(Exception):
     pass
 
 class BlockWriterError(PGException):
-    ''' An error by who wrote the block ''' 
+    ''' An error by who wrote the block (e.g.: did not define signals).''' 
     pass
 
 class ModelWriterError(PGException):
@@ -11,11 +11,13 @@ class ModelWriterError(PGException):
     pass
 
 class SemanticError(ModelWriterError):
-    ''' A semantic error by who wrote the model.'''
-    pass
+    ''' A semantic error by who wrote the model spec.'''
+    def __init__(self, error, element=None):
+        Exception.__init__(self,error)
+        self.element = element
 
 class SyntaxError(ModelWriterError):
-    ''' A syntactic error by who wrote the model.'''
+    ''' A syntactic error by who wrote the model spec.'''
     pass
 
 class ModelExecutionError(PGException):

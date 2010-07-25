@@ -2,13 +2,16 @@ import sys
 
 # XXX: I don't know how to put these
 
-from procgraph.components.rawseeds import *
-from procgraph.components.cv import *
-from procgraph.core.model_loader import model_from_string
+# from procgraph.components.rawseeds import *
+# from procgraph.components.cv import *
+from procgraph.core.model_loader import model_from_string, pg_look_for_models
 from optparse import OptionParser
+from procgraph.core.registrar import default_library
 
 
 def main():
+    
+    pg_look_for_models(default_library)
      
     parser = OptionParser()
      

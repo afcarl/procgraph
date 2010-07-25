@@ -86,35 +86,7 @@ class Gain(Block):
         self.set_output(0, self.get_input(0) * self.get_config('gain') )
 
 # TODO: make generic
-default_library.register('gain', Gain)
-#        
-#class Delay(Block):
-#
-#    def init(self):
-#        self.set_state(0, None)
-#        
-#    def update(self):
-#        self.set_output(0, self.get_state(0))
-#        self.set_state(0, self.get_input(0))
-#
-#    
-#default_library.register('delay', Delay)
-#    
-#class RandomGenerator(Generator):    
-#    def init(self):
-#        self.set_config_default('variance', 1)
-#        self.define_input_signals([])
-#        self.define_output_signals(['random'])
-#    
-#    def has_more(self):
-#        return True
-#    
-#    def update(self):
-#        variance = self.get_config('variance')
-#        self.set_output(0, random.rand(1) * sqrt(variance) )
-#        
-#default_library.register('rand', RandomGenerator)
-
+default_library.register('gain', Gain) 
 
 class Clock(Generator):
     def init(self):
@@ -133,7 +105,19 @@ class Clock(Generator):
 default_library.register('clock', Clock)
 
 
-
+class RandomGenerator(Generator):    
+    def init(self):
+        self.set_config_default('variance', 1)
+        self.define_input_signals([])
+        self.define_output_signals(['random'])
+    
+    def has_more(self):
+        return True
+    
+    def update(self):
+        variance = self.get_config('variance')
+        self.set_output(0, random.rand(1) * sqrt(variance) )
         
+default_library.register('rand', RandomGenerator)
         
         

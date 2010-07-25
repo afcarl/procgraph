@@ -42,12 +42,25 @@ def pg_look_for_models(library, additional_paths=None):
     it looks into the ones in the PROCGRAPH_PATH environment
     variable (colon separated list of paths)
     '''
+    def __add_models_to_library(library,pgfile, name=None):
+        models = parse_model(pgfile)
+        if models[0].name is None:
+            assert name is not None
+            models[0].name = name
+            
+        for model in models:
+            pg_add_parsed_model_to_library(parsed_model=model, library=library)
+
+    
     paths = []
     if additional_paths:
         paths.extend(additional_paths)
         
     if PATH_ENV_VAR in os.environ:
         paths.extend( os.environ[PATH_ENV_VAR].split(':'))
+        
+    if not paths:
+        print "No paths given and environment var %s not defined." % PATH_ENV_VAR 
         
     # enumerate each sub directory
     all_files = set()
@@ -58,22 +71,18 @@ def pg_look_for_models(library, additional_paths=None):
         for root, dirs, files in os.walk(path): #@UnusedVariable
             for f in files: 
                 if fnmatch.fnmatch(f, '*.pg'):
-                    all_files.append(os.path.join(root, f))
+                    all_files.add(os.path.join(root, f))
+                    
+        print "Scanning %s " % path
+            
     for f in all_files:
-        #print "Loading %s" % f
-        base,  = os.path.splitext(os.path.basename(f))
+        print "Loading %s" % f
+        split = os.path.splitext(os.path.basename(f))
+        base = split[0]
         model_spec = open(f).read()
         __add_models_to_library(library, model_spec, base)
 
-    def __add_models_to_library(pgfile, name=None):
-        models = parse_model(pgfile)
-        if models[0].name is None:
-            assert name is not None
-            models[0].name = name
-            
-        for model in models:
-            pg_add_parsed_model_to_library(parsed_model=model, library=library)
-    
+  
 def pg_add_parsed_model_to_library(parsed_model, library):
     assert parsed_model.name is not None
     if library.exists(parsed_model.name):

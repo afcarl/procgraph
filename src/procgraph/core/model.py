@@ -5,6 +5,7 @@ from procgraph.core.parsing import ParsedAssignment, Connection, ParsedBlock,\
 from procgraph.components import *
 from procgraph.core.exceptions import  SemanticError, BlockWriterError,\
     ModelExecutionError
+from procgraph.core.parsing_elements import ImportStatement
 
 
 class BlockConnection:
@@ -55,7 +56,6 @@ class Model(Block):
         # As a block
         Block.__init__(self, name=name, config={}, library=None)
     
-        
         # we start with no input/output signals
         self.define_input_signals([])
         self.define_output_signals([])
@@ -376,6 +376,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     used_properties = set() # of strings
  
     def expand_value(value):
+        ''' Function that looks for VariableReference and does the substitution. '''
         if isinstance(value, VariableReference):
             variable = value.variable
             if not variable in properties:
@@ -398,6 +399,14 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             properties[key] = expand_value(value) 
         pass  
     
+    for x in [x for x in parsed_model.elements if isinstance(x, ImportStatement)]:
+        package = x.package
+        print "Importing package %s" % package
+        try:
+            __import__(package)
+        except Exception as e:
+            raise SemanticError('Could not import package %s: %s' % \
+                                    (package, e), element=x)
     
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]

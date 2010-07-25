@@ -1,3 +1,4 @@
+----------------------- model whitening
 
 |input name=x| --> x --> |expectation| --> |wait=20| --> mean
 

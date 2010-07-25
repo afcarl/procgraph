@@ -1,4 +1,5 @@
 --- model loaders
+import procgraph.components.rawseeds 
 
 |hokuyo_front:RawseedsHokuyo| --> hokuyo_front
 | hokuyo_rear:RawseedsHokuyo| --> hokuyo_rear
