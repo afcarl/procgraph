@@ -43,7 +43,7 @@ def pg_look_for_models(library, additional_paths=None):
     variable (colon separated list of paths)
     '''
     def __add_models_to_library(library,pgfile, name=None):
-        models = parse_model(pgfile)
+        models = parse_model(pgfile,filename=pgfile)
         if models[0].name is None:
             assert name is not None
             models[0].name = name
@@ -92,7 +92,7 @@ def pg_add_parsed_model_to_library(parsed_model, library):
     library.register(parsed_model.name, ModelSpec(parsed_model))
 
                
-def model_from_string(model_spec, name=None, config = None, library=None):
+def model_from_string(model_spec, name=None, config = None, library=None, filename=None):
     ''' Instances a model from a specification. Optional
         attributes can be passed. Returns a Model object. '''
     if config is None:
@@ -103,7 +103,7 @@ def model_from_string(model_spec, name=None, config = None, library=None):
     assert isinstance(config, dict)
     assert name is None or isinstance(name, str)
     
-    parsed_models = parse_model(model_spec)
+    parsed_models = parse_model(model_spec, filename)
 
     assert isinstance(parsed_models, list)
     for x in parsed_models:

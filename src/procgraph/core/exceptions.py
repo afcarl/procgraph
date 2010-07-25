@@ -16,9 +16,11 @@ class SemanticError(ModelWriterError):
         Exception.__init__(self,error)
         self.element = element
 
-class SyntaxError(ModelWriterError):
+class PGSyntaxError(ModelWriterError):
     ''' A syntactic error by who wrote the model spec.'''
-    pass
+    def __init__(self, error, where=None):
+        Exception.__init__(self,error)
+        self.where = where
 
 class ModelExecutionError(PGException):
     ''' Runtime errors, including misuse by the user '''

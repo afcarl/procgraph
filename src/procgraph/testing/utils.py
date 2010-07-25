@@ -1,7 +1,7 @@
 import unittest
 from procgraph.core.model_loader import model_from_string
 from procgraph.core.parsing import parse_model
-from procgraph.core.exceptions import SemanticError
+from procgraph.core.exceptions import SemanticError, PGSyntaxError
 from procgraph.core.registrar import default_library, Library
 import traceback
 
@@ -27,7 +27,6 @@ class PGTestCase(unittest.TestCase):
             print "Oops, seems like we had an error for '''%s'''" % model_spec
             traceback.print_exc()
             raise e
-         
             
 
     def check_syntax_error(self, model_spec):
@@ -37,7 +36,7 @@ class PGTestCase(unittest.TestCase):
             parsed = parse_model(model_spec)
             print "OOPS, we could parse '''%s'''" % model_spec
             print parsed
-        except SyntaxError as e:
+        except PGSyntaxError as e:
             print "OK, syntax failed with error:  %s" % e
             failed = True
         

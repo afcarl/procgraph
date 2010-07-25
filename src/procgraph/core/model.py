@@ -436,7 +436,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     for s in (previous_link.signals):
                         # We cannot have a local output
                         if s.local_output is not None:
-                            raise SemanticError('Terminator connection %s cannot have a local output' %s)  
+                            raise SemanticError(('Terminator connection %s '+
+                                'cannot have a local output') %s, element = previous_link)  
                         
                         model.connect(block1=previous_block, block1_signal=s.local_input,
                                              block2=None, block2_signal=None, public_name=s.name)
@@ -467,7 +468,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 
                 if not library.exists(element.operation):
                     raise SemanticError('Uknown block type "%s". We know %s' % \
-                                        (element.operation, library.get_known_blocks()))
+                                        (element.operation, library.get_known_blocks()),
+                                        element=element)
                 debug('instancing %s:%s config: %s' % \
                       (element.name,element.operation,block_config) )
                 
@@ -519,10 +521,12 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                         num_in = block.num_input_signals()
                         if num_out != num_in:
                             raise SemanticError('Tried to connect two blocks (%s \
-and %s) with incompatible signals; you must do this expliciyl.' % (previous_block, block))
+and %s) with incompatible signals; you must do this expliciyl.' % (previous_block, block),
+element=block)
                         if num_out == 0:
                             raise SemanticError('Tried to connect two blocks (%s, %s) w/no signals.'\
-                                            % (previous_block, block))
+                                            % (previous_block, block),
+                                            element=block)
                             
                         # just create default connections
                         for i in range(num_out):
@@ -548,21 +552,24 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                         # Cannot use local_input here
                         if s.local_input is not None:
                             raise SemanticError('Link %s cannot use local input without antecedent. ' %\
-                                            s)
+                                            s, element=previous_link)
                         # Check if it is using an explicit block name
                         if s.block_name is not None:
                             if not s.block_name in model.name2block:
                                 raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
-                                                (s, s.block_name, model.name2block.keys()))
+                                                (s, s.block_name, model.name2block.keys()),
+                                                element=previous_link)
                             input_block = model.name2block[s.block_name]
                             if not input_block.is_valid_output_name(s.name):
                                 raise SemanticError('Link %s refers to unknown output %s in block %s. ' % 
-                                                (s, s.name, input_block))
+                                                (s, s.name, input_block),
+                                                element=previous_link)
                             s.local_input = input_block.canonicalize_output(s.name)
                         else:
                             if not s.name in model.name2block_connection:
                                 raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
-                                                (s, s.name, model.name2block_connection.keys()))
+                                                (s, s.name, model.name2block_connection.keys()),
+                                                element=previous_link)
                             defined_signal = model.name2block_connection[s.name]
                             input_block = defined_signal.block1
                             s.local_input = defined_signal.block1_signal
@@ -577,10 +584,10 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                     # make sure it's a generator?
                     if not block.are_input_signals_defined():
                         raise SemanticError('The block %s did not define signals and it has no input.'%
-                                       block) 
+                                       block, element=block) 
                     if block.num_input_signals() > 0:
                         raise SemanticError('The generator block %s should have defined 0 inputs.' % 
-                                        block) 
+                                        block, element=block) 
                 
                 # at this point the input should be defined
                 assert block.are_input_signals_defined()
@@ -591,11 +598,13 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
                     # it cannot return NOT_FINISHED again.
                     if res == Block.INIT_NOT_FINISHED:
                         raise SemanticError('Block %s cannot return NOT_FINISHED '+
-                                        'after inputs have been defined. ' % block)
+                                        'after inputs have been defined. ' % block,
+                                        element=block)
                     # now the outputs should be defined
                     if not block.are_output_signals_defined():
                         raise SemanticError(('Block %s still does not define outputs'+
-                                        ' after init() called twice. ') % block)
+                                        ' after init() called twice. ') % block,
+                                        element=block)
                 
                 # at this point input/output should be defined
                 assert block.are_input_signals_defined()
@@ -608,7 +617,8 @@ and %s) with incompatible signals; you must do this expliciyl.' % (previous_bloc
     unused_properties = set(properties.keys()).difference(used_properties)
     if unused_properties:
         raise SemanticError('Unused properties: %s -- Used: %s' % \
-                            (unused_properties, used_properties))
+                            (unused_properties, used_properties),
+                            element = parsed_model)
     
     # print "--------- end model ----------------\n"           
     return model

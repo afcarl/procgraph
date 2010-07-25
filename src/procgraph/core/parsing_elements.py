@@ -1,48 +1,82 @@
 from pyparsing import lineno, col
+import sys
 
-class Location:
-    def __init__(self, string, character):
+class Where:
+    def __init__(self, filename, string, character=None,line=None,column=None):
+        self.filename = filename
         self.string = string
-        self.character = character
-        self.line = lineno(character,string)
-        self.col =  col(character, string)
+        if character is None:
+            assert line is not None and column is not None
+            self.line = line
+            self.col = column
+            self.character = None
+        else:
+            assert line is None and column is None
+            self.character = character
+            self.line = lineno(character,string)
+            self.col =  col(character, string)
+        
+    def print_where(self, s=sys.stdout):
+        s.write('\n\n')
+        prefix = '    '
+        write = lambda x: s.write(prefix+x)
+        write('In file %s:\n' % self.filename)
+        context = 3;
+        lines = self.string.split('\n')
+        start = max(0, self.line-context)
+        pattern='line %2d |'
+        for i in range(start,self.line):
+            write("%s%s\n" % (pattern % (i+1), lines[i]))
+            
+        fill = len(pattern % (i+1) )
+        space = ' '*fill + ' '* (self.col-1) 
+        write( space + '^\n')
+        write( space + '|\n')
+        
         
     def __str__(self):
-        return "{line %d, col %d}" % (self.line, self.col)
+        return "{filename: %s, line %d, col %d}" % (self.filename, self.line, self.col)
 
 
-class ParsedSignalList:
-    def __init__(self, l):
-        self.signals = l
+class ParsedElement:
+    def __init__(self):
+        self.where = None
+        
+
+class ParsedSignalList(ParsedElement):
+    def __init__(self, signals):
+        ParsedElement.__init__(self)
+        self.signals = signals
         
     def __repr__(self):
         return 'Signals%s' % self.signals
     
     @staticmethod
-    def from_tokens (original_string,location,tokens):
+    def from_tokens(tokens):
         return ParsedSignalList(list(tokens))
     
-class ImportStatement:
-    def __init__(self, package, location):
+    
+class ImportStatement(ParsedElement):
+    def __init__(self, package):
+        ParsedElement.__init__(self)
         self.package = package
-        self.location = location
     
     def __repr__(self):
         return 'import(%s)' % self.package
     
     @staticmethod
-    def from_tokens(original_string,location,tokens):
+    def from_tokens(tokens):
         package = "".join(tokens.asList())
-        return ImportStatement(package, location)
+        return ImportStatement(package)
     
 
-class ParsedSignal:
-    def __init__(self, name, block_name, local_input, local_output, location=None):
+class ParsedSignal(ParsedElement):
+    def __init__(self, name, block_name, local_input, local_output):
+        ParsedElement.__init__(self)
         self.name = name
         self.block_name = block_name
         self.local_input = local_input
         self.local_output = local_output
-        self.location = location
         
     def __repr__(self):
         s = 'Signal('
@@ -54,21 +88,22 @@ class ParsedSignal:
         if self.local_output is not None:
             s += "[%s]" % self.local_output
         s+=')'
-        if self.location:
-            s += '@%s' % self.location
+#        if self.where:
+#            s += '@%s' % self.where
         return s
     
     @staticmethod
-    def from_tokens (original_string,location,tokens):
+    def from_tokens(tokens):
         name = tokens.get('name')
         block_name = tokens.get('block_name', None)
         local_input = tokens.get('local_input', None)
         local_output = tokens.get('local_output', None)
-        where = Location(original_string,location)
-        return ParsedSignal(name, block_name, local_input, local_output, where)
+        return ParsedSignal(name, block_name, local_input, local_output)
 
-class ParsedBlock:
+
+class ParsedBlock(ParsedElement):
     def __init__(self, name, operation, config):
+        ParsedElement.__init__(self)
         self.name = name
         self.operation = operation
         self.config = config
@@ -77,14 +112,17 @@ class ParsedBlock:
         return 'Block(op=%s,name=%s,config=%s)' % (self.operation,self.name,self.config)
 
     @staticmethod
-    def from_tokens(original_string,location,tokens):
+    def from_tokens(tokens):
         blocktype = tokens['blocktype'] 
         config = tokens.get('config', {})
         name = tokens.get('name', None)
         return ParsedBlock(name, blocktype, config)
 
-class ParsedAssignment:
-    def __init__(self, key,value):
+
+class ParsedAssignment(ParsedElement):
+    def __init__(self, key, value):
+        ParsedElement.__init__(self)
+
         self.key = key
         self.value = value
         
@@ -92,45 +130,51 @@ class ParsedAssignment:
         return 'Assignment(%s=%s)' % (self.key, self.value)
 
     @staticmethod
-    def from_tokens(original_string,location,tokens):
+    def from_tokens(tokens):
         return ParsedAssignment(tokens['key'], tokens['value'])
           
       
-class Connection:
+class Connection(ParsedElement):
     def __init__(self, elements):
+        ParsedElement.__init__(self)
         self.elements = elements
+    
     def __repr__(self):
         return 'Connection(%s)' % self.elements
+
     @staticmethod
-    def from_tokens(original_string, location, tokens):
+    def from_tokens(tokens):
         return Connection(tokens)
 
-class VariableReference:
+class VariableReference(ParsedElement):
     def __init__(self, variable):
+        ParsedElement.__init__(self)
         self.variable = variable
+        
     def __repr__(self):
         return "${%s}" % self.variable
+    
     @staticmethod
-    def from_tokens(original_string, location, tokens):
+    def from_tokens(tokens):
         return VariableReference(tokens['variable'])
 
-class ParsedModel:
+class ParsedModel(ParsedElement):
     def __init__(self, name, elements):
+        ParsedElement.__init__(self)
         self.name = name
         self.elements = elements
-
+        
     def __repr__(self):
         return 'Model:%s(%s)' % (self.name, self.elements)
-    
         
     @staticmethod
-    def from_named_model(original_string, location, tokens):
+    def from_named_model(tokens):
         name = tokens['model_name']
         elements = list(tokens['content'])
         return ParsedModel(name, elements)
     
     @staticmethod
-    def from_anonymous_model(original_string, location, tokens):
+    def from_anonymous_model(tokens):
         elements = list(tokens)
         return ParsedModel(name=None, elements=elements)
     

@@ -4,7 +4,8 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore,\
     restOfLine, QuotedString, ParseException, Forward 
 from procgraph.core.parsing_elements import VariableReference, ParsedBlock,\
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal,\
-    ParsedSignalList , Connection
+    ParsedSignalList , Connection, Where
+from procgraph.core.exceptions import PGSyntaxError
 
 
 def eval_dictionary(s,loc,tokens):
@@ -102,14 +103,21 @@ def parse_value(string):
     except ParseException as e:
         raise SyntaxError('Error in parsing string: %s' % e)
         
-        
-def parse_model(string):
+
+def parse_model(string, filename=None):
     ''' Returns a list of ParsedModel ''' 
+
+    # We pass a "where" object to the constructors
+    def wrap(constructor):
+        def from_tokens(string, location, tokens):
+            element = constructor(tokens)
+            element.where = Where(filename, string, location)
+            return element 
+        return from_tokens
     
     # make this check a special case, otherwise it's hard to debug
     if not string.strip():
-        raise SyntaxError('Passed empty string.')
-    
+        raise PGSyntaxError('Passed empty string.', Where(filename, string, 0))
     
     arrow = Suppress(Regex(r'-+>'))
     
@@ -117,21 +125,18 @@ def parse_model(string):
     # XXX: don't put '.' at the beginning
     qualified_name = Combine( good_name +'.' + (integer ^ good_name ) )
     
-
     block_name = good_name
     block_type =   Word(alphanums +'_+-/*' )
      
     signal = Optional(Suppress('[') + (integer ^ good_name  )('local_input') + Suppress(']')) \
             +  Optional(block_name('block_name') + Suppress(".")) + (integer ^ good_name)('name') + \
             Optional(Suppress('[') +  (integer ^ good_name  )('local_output') + Suppress(']'))
-    signal.setParseAction(ParsedSignal.from_tokens)
+    signal.setParseAction(wrap(ParsedSignal.from_tokens))
     
     signals = delimitedList(signal)
-    signals.setParseAction(ParsedSignalList.from_tokens)
+    signals.setParseAction(wrap(ParsedSignalList.from_tokens))
     
     key = good_name ^ qualified_name
-    
-    
     
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
     parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
@@ -140,7 +145,7 @@ def parse_model(string):
     block = Suppress("|") + Optional(block_name("name") + Suppress(":")) + block_type("blocktype") + \
          Optional(parameter_list("config")) +  Suppress("|")
     
-    block.setParseAction(ParsedBlock.from_tokens) 
+    block.setParseAction(wrap(ParsedBlock.from_tokens)) 
     
     between = arrow + Optional( signals + arrow)
     
@@ -156,14 +161,14 @@ def parse_model(string):
     # all of those are colled a connection
     connection = arrow_arrow ^ source_sink ^ source ^ sink
       
-    connection.setParseAction(Connection.from_tokens)
+    connection.setParseAction(wrap(Connection.from_tokens))
     
     assignment   = (key("key") + Suppress('=') + value("value"))
     assignment.setParseAction(ParsedAssignment.from_tokens) 
     
     package_name = good_name + ZeroOrMore('.' + good_name)
     import_statement = Suppress('import') + package_name('package')
-    import_statement.setParseAction(ImportStatement.from_tokens)
+    import_statement.setParseAction(wrap(ImportStatement.from_tokens))
     
     
     action = connection ^ assignment ^ comment ^ import_statement
@@ -179,10 +184,10 @@ def parse_model(string):
         good_name('model_name') + newline + \
         model_content('content')
         
-    named_model.setParseAction(ParsedModel.from_named_model)
+    named_model.setParseAction(wrap(ParsedModel.from_named_model))
     
     anonymous_model = model_content.copy()
-    anonymous_model.setParseAction(ParsedModel.from_anonymous_model)
+    anonymous_model.setParseAction(wrap(ParsedModel.from_anonymous_model))
     
     comments = ZeroOrMore( (comment + newline) ^ newline)
     pg_file = comments + ( OneOrMore(named_model) ^ anonymous_model ) +\
@@ -192,5 +197,7 @@ def parse_model(string):
         parsed = pg_file.parseString(string)
         return list(parsed)
     except ParseException as e:
-        raise SyntaxError('Error in parsing string: %s' % e)
+        where = Where(filename, string, line=e.lineno, column=e.col)
+        raise PGSyntaxError('Error in parsing string: %s' % e, where=where)
+    
         

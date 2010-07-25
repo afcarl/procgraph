@@ -7,6 +7,8 @@ import sys
 from procgraph.core.model_loader import model_from_string, pg_look_for_models
 from optparse import OptionParser
 from procgraph.core.registrar import default_library
+import traceback
+from procgraph.core.exceptions import SemanticError, PGSyntaxError
 
 
 def main():
@@ -23,9 +25,9 @@ def main():
     (options, args) = parser.parse_args()
     
     
-    file = args.pop(0)
+    filename = args.pop(0)
 
-    model_spec = open(file).read()
+    model_spec = open(filename).read()
     
     config = {}
     for arg in args:
@@ -42,16 +44,30 @@ def main():
         else:
             raise Exception('What should I do with "%s"?' % arg)
     
-    print 'Configuration: %s' % config
-    print """%s""" % model_spec
-    model = model_from_string(model_spec, config=config)
+    # print 'Configuration: %s' % config
+    # print """%s""" % model_spec
     
-    if options.debug:
-        model.summary()
-        sys.exit(0) 
-    
-    model.reset_execution()
-    while model.has_more():
-        model.update()
+    try:
+        model = model_from_string(model_spec, config=config, filename=filename)
         
-        
+        if options.debug:
+            model.summary()
+            sys.exit(0) 
+
+        model.reset_execution()
+        while model.has_more():
+            model.update()
+    except SemanticError as e:
+        print e
+        traceback.print_exc()    
+        if e.element is not None:
+            where = e.element.where
+            where.print_where()
+        sys.exit(-2)
+    except PGSyntaxError as e:
+        print e
+        traceback.print_exc()    
+        e.where.print_where()
+        sys.exit(-2)
+            
+            
