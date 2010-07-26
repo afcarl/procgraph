@@ -41,6 +41,7 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
 default_library.register('double', make_generic(1,1, lambda x:x*2))
 default_library.register('square', make_generic(1,1, numpy.square))
 default_library.register('log', make_generic(1,1, numpy.log))
+default_library.register('abs', make_generic(1,1, numpy.abs))
 
 default_library.register('+', make_generic(2,1, lambda x,y: x+y ) )
 default_library.register('*', make_generic(2,1, lambda x,y: x*y ) )

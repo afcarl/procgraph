@@ -2,6 +2,7 @@ from procgraph.core.model_loader import add_models_to_library
 from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
 from procgraph.core.exceptions import BadInput
+import numpy
 
 def isiterable(x):
     try:
@@ -27,9 +28,13 @@ class ForwardDifference(Block):
         delta = t[2] - t[0]
         
         if not delta > 0:
-            raise BadInput('Bad timestamp sequence %s' % diff, self, 't')
+            raise BadInput('Bad timestamp sequence %s' % t, self, 't')
 
-        diff = x[2] - x[0]
+        # if this is a sequence of bytes, let's promove them to floats
+        if x[0].dtype == numpy.dtype('uint8'):
+            diff = x[2].astype('float32') - x[0].astype('float32')
+        else:
+            diff = x[2] - x[0]
         time = t[1]
         x_dot = diff / delta
         self.set_output('x_dot', x_dot, timestamp=time)  

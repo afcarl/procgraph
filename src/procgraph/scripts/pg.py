@@ -5,6 +5,8 @@ from optparse import OptionParser
 from procgraph.core.registrar import default_library
 import traceback
 from procgraph.core.exceptions import SemanticError, PGSyntaxError
+from procgraph.core.parsing_elements import Where
+import os
 
 
 def main():
@@ -20,11 +22,12 @@ def main():
     
     (options, args) = parser.parse_args()
     
+    if not args:
+        print "Usage:    pg  <model>.pg   [param=value  param=value ... ]"
+        sys.exit(-1) 
     
     filename = args.pop(0)
-
-    model_spec = open(filename).read()
-    
+        
     config = {}
     for arg in args:
         if '=' in arg:
@@ -43,8 +46,17 @@ def main():
     try:
         # load standard components
         import procgraph.components
-
-        model = model_from_string(model_spec, config=config, filename=filename)
+        
+        if default_library.exists(block_type=filename):
+            w = Where('command line', filename, 0)
+            model = default_library.instance(filename, name=None, 
+                                             config=config, where=w)
+        else:
+            if not os.path.exists(filename):
+                print 'Uknown file "%s".' % filename
+                sys.exit(-3)
+            model_spec = open(filename).read()
+            model = model_from_string(model_spec, config=config, filename=filename)
         
         if options.debug:
             model.summary()
