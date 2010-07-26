@@ -7,7 +7,7 @@ def posneg(value, max_value=None):
     """ Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255
      
     """
-    
+        
     value = value.squeeze()
     
     if len(value.shape) != 2:

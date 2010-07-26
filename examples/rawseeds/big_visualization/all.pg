@@ -1,19 +1,34 @@
---- model loaders
+--- model rawseeds_display_all
 import procgraph.components.rawseeds 
+import procgraph.components.cv 
+
+
+|svs_t:RawseedsCam| --> svs_t_gray --> |gray2rgb| --> |resize width=320 height=240|-> svs_t
+|svs_r:RawseedsCam| --> svs_r_gray --> |gray2rgb| --> |resize width=320 height=240| --> svs_r
+|svs_l:RawseedsCam| --> svs_l_gray --> |gray2rgb| --> |resize width=320 height=240| --> svs_l
+|frontal:RawseedsCam| --> |resize width=320 height=240| --> frontal
+|omni:RawseedsCam|-> |resize width=320 height=320| --> omni
 
 |hokuyo_front:RawseedsHokuyo| --> hokuyo_front
 | hokuyo_rear:RawseedsHokuyo| --> hokuyo_rear
 |  sick_front:RawseedsRF| --> sick_front
 |   sick_rear:RawseedsRF| --> sick_rear
 
-# hokuyo_front, hokuyo_rear, sick_front, sick_rear --> |sync| --> L1, L2, L3, L4
-# sick_front, hokuyo_front, hokuyo_rear, sick_rear --> |sync| --> L1, L2, L3, L4
-hokuyo_rear, sick_front, hokuyo_front, sick_rear --> |sync| --> |sieve n=50| --> |join| --> y
+# display all laser data together
+hokuyo_rear, hokuyo_front, sick_front, sick_rear --> |sync| -->  |join| --> y --> |rgbplot width=640 height=240| --> display_laser
 
- y --> |derivative| --> y_dot
+# synchronize everything to the frontal camera
+# frontal, svs_t, svs_r, svs_l, omni, display_laser --> |S:sync|
+frontal, svs_t, svs_r, svs_l, omni, display_laser --> |S:identity|
 
-y  --> |log| -> |derivative| --> display
+# compose everything together
+S.svs_t, S.svs_r, S.svs_l, S.omni, S.frontal, S.display_laser --> |compose width=1024 height=768| --> |text| --> rgb
+    compose.positions = {svs_t: [0,0], svs_l: [0,240], svs_r: [320,0],  omni: [320,240]}
+    
+rgb --> |mencoder file=$out|
 
- display -> |plot|
 
-#display -> |rgbplot| -> |mencoder file="all.mp4"|
+# coordinates for video
+
+text.texts = [  {string: "raw image", position: [10,10], size:20, halign: left, color: black, bg: white  }, {string: "processed image", position: [330,10], size:20, halign: left, color: "#ff00ff", bg: white  }]
+

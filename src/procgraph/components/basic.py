@@ -5,6 +5,7 @@ from procgraph.core.registrar import default_library
 import numpy
  
 
+COMPULSORY = 'compulsory-param'
 
 def make_generic(num_inputs, num_outputs, operation, **parameters):
     # make a copy
@@ -14,7 +15,8 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
             
         def init(self):
             for key, value in parameters.items():
-                self.set_config_default(key, value)
+                if value != COMPULSORY:
+                    self.set_config_default(key, value)
             self.define_input_signals(map(str,range(num_inputs)))
             self.define_output_signals(map(str,range(num_outputs)))
    
