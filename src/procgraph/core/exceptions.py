@@ -30,12 +30,15 @@ class PGSyntaxError(ModelWriterError):
 
 class ModelExecutionError(PGException):
     ''' Runtime errors, including misuse by the user '''
-    pass
+    def __init__(self, error, block):
+        Exception.__init__(self,error)
+        self.block = block
+    def __str__(self):
+        return Exception.__str__(self) +'\n' + self.block.where.__str__()
 
 class BadInput(ModelExecutionError):
     def __init__(self, error, block, input_signal):
-        Exception.__init__(self,error)
-        self.block = block
+        ModelExecutionError.__init__(self,error,block)
         self.input_signal = input_signal
     
     

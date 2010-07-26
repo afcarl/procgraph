@@ -3,6 +3,7 @@ from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import default_library
 import numpy
+from procgraph.core.exceptions import ModelExecutionError
  
 
 COMPULSORY = 'compulsory-param'
@@ -29,7 +30,12 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
             for key in parameters.keys():
                 params[key] = self.get_config(key)
                 
-            result = operation(*args, **params)
+            try:
+                result = operation(*args, **params)
+            except Exception as e:
+                raise ModelExecutionError("While executing %s: %s" % \
+                                          (operation, e), block=self)
+        
             
             if num_outputs == 1:
                 self.set_output(0, result)

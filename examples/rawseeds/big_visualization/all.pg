@@ -22,8 +22,8 @@ hokuyo_rear, hokuyo_front, sick_front, sick_rear --> |sync| -->  |join| --> y --
 frontal, svs_t, svs_r, svs_l, omni, display_laser --> |S:identity|
 
 # compose everything together
-S.svs_t, S.svs_r, S.svs_l, S.omni, S.frontal, S.display_laser --> |compose width=1024 height=768| --> |text| --> rgb
-    compose.positions = {svs_t: [0,0], svs_l: [0,240], svs_r: [320,0],  omni: [320,240]}
+S.svs_t, S.svs_r, S.svs_l, S.omni, S.frontal, S.display_laser --> |compose width=1280 height=768| --> |text| --> rgb
+    compose.positions = {svs_t: [0,0], svs_l: [0,240], svs_r: [0,480],  omni: [320,0], frontal: [320,320]}
     
 rgb --> |mencoder file=$out|
 

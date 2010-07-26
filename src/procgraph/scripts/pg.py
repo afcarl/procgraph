@@ -4,7 +4,8 @@ from procgraph.core.model_loader import model_from_string, pg_look_for_models
 from optparse import OptionParser
 from procgraph.core.registrar import default_library
 import traceback
-from procgraph.core.exceptions import SemanticError, PGSyntaxError
+from procgraph.core.exceptions import SemanticError, PGSyntaxError,\
+    ModelExecutionError
 from procgraph.core.parsing_elements import Where
 import os
 
@@ -65,6 +66,10 @@ def main():
         model.reset_execution()
         while model.has_more():
             model.update()
+    #except ModelExecutionError as e:
+    #    print e
+    #    traceback.print_exc()    
+        
     except SemanticError as e:
         print e
         traceback.print_exc()    

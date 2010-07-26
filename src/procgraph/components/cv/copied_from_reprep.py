@@ -2,11 +2,14 @@ import numpy
 from numpy import maximum, minimum, zeros
 from procgraph.core.registrar import default_library
 from procgraph.components.basic import make_generic
+from procgraph.components.cv.checks import check_2d_array
 
 def posneg(value, max_value=None):
     """ Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255
      
     """
+    
+    check_2d_array(value, 'input to posneg')
         
     value = value.squeeze()
     
@@ -55,6 +58,9 @@ def scale(value, min_value=None, max_value=None,
     Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
       
     """
+    
+    check_2d_array(value, 'input to scale()')
+    
     #assert_finite(value)
     value = value.squeeze()
     #require_shape((gt(0), gt(0)), value)

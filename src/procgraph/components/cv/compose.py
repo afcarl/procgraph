@@ -1,6 +1,7 @@
 from procgraph.core.block import Block
 import numpy
 from procgraph.core.registrar import default_library
+from procgraph.components.cv.checks import assert_rgb_image
         
 def place_at(canvas, image, xpix, ypix):
     #print canvas.shape, image.shape
@@ -40,6 +41,8 @@ class Compose(Block):
             rgb = self.get_input(signal)
             # TODO check
             if rgb is not None:
+                assert_rgb_image(rgb, 'input %s to compose block' % signal)
+                
                 place_at(canvas, rgb, position[0], position[1])
                 #print "Writing image %s" % signal
             else:
