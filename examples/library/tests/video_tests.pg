@@ -7,7 +7,9 @@
 --- model transcode_filter
 |mplayer file=$in| --> y
 
-   y --> |rgb2gray| --> |derivative| --> |posneg| --> yd
+   y --> |rgb2gray| --> |derivative| --> y_dot --> |posneg| --> yd
+   
+   y_dot --> |abs| --> |scale| --> ydabs
    
    
-   y,yd --> |grid cols=1| --> |mencoder file=$out|
+   y,yd,ydabs --> |grid cols=2| --> |mencoder file=$out|

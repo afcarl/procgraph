@@ -8,3 +8,4 @@ import dynamic
 import images
 import robotics
 import signals
+import numpy_ops
