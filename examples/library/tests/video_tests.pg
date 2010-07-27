@@ -1,2 +1,8 @@
 --- model transcode
 |mplayer file=$in| --> |mencoder file=$out|
+
+--- model decode
+|mplayer file=$in| 
+
+--- model transcode_filter
+|mplayer file=$in| --> |rgb2gray| --> |derivative| --> |posneg| --> |mencoder file=$out|

@@ -4,6 +4,7 @@ from procgraph.core.block import Generator
 from procgraph.core.registrar import default_library  
 from procgraph.core.exceptions import ModelExecutionError
 import numpy
+import os
  
 class MPlayer(Generator):
     ''' Plays a video stream.
@@ -56,13 +57,32 @@ class MPlayer(Generator):
 #                'w=%d:h=%d:format=%s' % (self.width,self.height,format),
 #                #'w=%d:h=%d' % (self.width,self.height)
 #                ]
-#        print "command line: %s" % " ".join(args)
 
-        args = ['mencoder', self.file,'-ovc', 'raw', '-oac', 'copy', '-o', '/dev/stdout']
-        self.process = subprocess.Popen(args,stdout=subprocess.PIPE)
+        format = "rgb24"
+        fifo_name = 'mencoder_fifo'
+        if os.path.exists(fifo_name):
+            os.unlink(fifo_name)
+        os.mkfifo(fifo_name)
+        args = ['mencoder', self.file,'-ovc', 'raw', 
+                '-rawvideo', 'w=%d:h=%d:format=%s' % (self.width,self.height,format),
+                '-of', 'rawvideo',
+                '-vf', 'format=rgb24',
+                # '-oac', 'copy',
+                '-nosound', 
+                '-o',
+                fifo_name
+                # '/dev/stdout'
+                ]
+        
+        print "command line: %s" % " ".join(args)
+        
+        #self.process = subprocess.Popen(args,stdout=subprocess.PIPE)
+        self.process = subprocess.Popen(args)
 
         self.delta = 1.0 / self.fps
         self.set_state('timestamp', self.delta)
+        
+        self.stream = open(fifo_name,'r')
         
     def update(self):
 #        bytes = self.height * self.width * 3
@@ -71,9 +91,9 @@ class MPlayer(Generator):
 #        frame = numpy.ndarray(shape=self.shape,dtype=self.dtype,
 #                              buffer=buffer)
         dtype = numpy.dtype(('uint8', self.shape))
-        rgb = numpy.fromfile(self.process.stdout, dtype=dtype, count=1)
+        rgb = numpy.fromfile(self.stream, dtype=dtype, count=1)
         rgb = rgb.squeeze()
-        print "dtype: ", rgb.dtype, rgb.shape
+#        print "dtype: ", rgb.dtype, rgb.shape
         
         t = self.get_state('timestamp')
 
