@@ -1,0 +1,2 @@
+--- model transcode
+|mplayer file=$in| --> |mencoder file=$out|

@@ -51,9 +51,9 @@ def check_rgb_or_grayscale(block, input):
     shape = image.shape
     if len(shape) == 3:
         if shape[2] != 3:
-            raise BadInput('Bad shape for image: %s' % str(shape))
+            raise BadInput('Bad shape for image: %s' % str(shape), block, input)
     elif len(shape) == 2:
         pass
     else:
-        raise BadInput('Bad shape for image: %s' % str(shape))
+        raise BadInput('Bad shape for image: %s' % str(shape), block, input)
         

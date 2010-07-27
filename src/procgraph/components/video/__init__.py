@@ -1,1 +1,2 @@
-from mencoder import *
+import mencoder
+import mplayer

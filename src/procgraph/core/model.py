@@ -223,7 +223,7 @@ class Model(Block):
                 
                 if value is not None and this_timestamp == 0:
                     raise ModelExecutionError('Strange, value is not none by timestamp is 0'+
-                                    ' for signal %s of %s.' % (this_signal, block))
+                                    ' for signal %s of %s.' % (this_signal, block), block)
                 
                 # Two cases:
                 # - timestamp is updated
