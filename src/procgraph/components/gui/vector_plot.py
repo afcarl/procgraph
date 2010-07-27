@@ -21,7 +21,7 @@ class SimplePlot(Block):
         ion()
 
         x = self.get_input(0)
-        
+
         x = numpy.array(x)
         
         
@@ -40,9 +40,11 @@ class SimplePlot(Block):
                 self.line, = plot(range(self.n), x, format)
             else:
                 self.line.set_ydata(x)
-            a = axis()
-            axis([ a[0],a[1],min(x),max(x)])
-            draw()
+        #   a = axis()
+        #    axis([ a[0],a[1],min(x),max(x)])
+        axis([ 0, self.n, min(x),max(x)])
+        
+        draw()
         
 default_library.register('plot', SimplePlot)
 
@@ -79,7 +81,7 @@ class RGBPlot(Block):
         #ion()
 
         x = self.get_input(0)
-        
+        # TODO: add check_cast_array
         x = numpy.array(x) 
         
         format = self.get_config('format')
@@ -94,8 +96,9 @@ class RGBPlot(Block):
                 self.line, = self.axes.plot(range(self.n), x, format)
             else:
                 self.line.set_ydata(x)
-            a = axis()
-            axis([ a[0],a[1],min(x),max(x)])
+        
+        axis([ 0, self.n, min(x),max(x)])
+        #print "x: %s, %s axis: %s" % (min(x),max(x),axis())
             #draw()
         
         temp_file = 'frame-tmp.png'
