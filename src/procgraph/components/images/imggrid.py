@@ -23,19 +23,24 @@ class ImageGrid(Block):
         if cols is None:
             cols = ceil(sqrt(n))
             
-        rows = ceil(n * 1.0 / cols)
+        rows = int(ceil(n * 1.0 / cols))
         
         assert cols > 0 and rows > 0
+        assert n <= cols* rows
         
         # find width and height for the grid 
         col_width = zeros(cols, dtype='int32')
         row_height = zeros(rows, dtype='int32')
         for i in range(n):
-            col = i % n
-            row = (i - i % n) / n
+            col = i % cols
+            row = (i - i % cols) / cols
+            assert 0 <= col < cols
+            assert 0 <= row < rows
+
             image = self.get_input(i)
             width = image.shape[1]
             height = image.shape[0]
+
             col_width[col] = max( width, col_width[col])
             row_height[row] = max( height, row_height[row])
         
@@ -57,8 +62,10 @@ class ImageGrid(Block):
         canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
         
         for i in range(n):
-            col = i % n
-            row = (i - i % n) / n
+            col = i % cols
+            row = (i - i % cols) / cols
+            assert 0 <= col < cols
+            assert 0 <= row < rows
             image = self.get_input(i)
             x = col_x[col]
             y = row_y[row]

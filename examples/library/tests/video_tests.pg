@@ -5,4 +5,9 @@
 |mplayer file=$in| 
 
 --- model transcode_filter
-|mplayer file=$in| --> |rgb2gray| --> |derivative| --> |posneg| --> |mencoder file=$out|
+|mplayer file=$in| --> y
+
+   y --> |rgb2gray| --> |derivative| --> |posneg| --> yd
+   
+   
+   y,yd --> |grid cols=1| --> |mencoder file=$out|
