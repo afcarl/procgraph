@@ -2,7 +2,6 @@ from procgraph.core.block import Block, Generator, ETERNITY
 from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import default_library
-import numpy
 from procgraph.core.exceptions import ModelExecutionError
  
 
@@ -44,12 +43,6 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
                     self.set_output(i, result[i])
         
     return GenericOperation
-
-# One example use of make_filter
-default_library.register('double', make_generic(1,1, lambda x:x*2))
-default_library.register('square', make_generic(1,1, numpy.square))
-default_library.register('log', make_generic(1,1, numpy.log))
-default_library.register('abs', make_generic(1,1, numpy.abs))
 
 default_library.register('+', make_generic(2,1, lambda x,y: x+y ) )
 default_library.register('*', make_generic(2,1, lambda x,y: x*y ) )

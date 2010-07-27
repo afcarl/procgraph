@@ -1,0 +1,73 @@
+from numpy import ceil, sqrt, zeros
+from procgraph.core.block import Block
+from procgraph.components.cv.checks import check_rgb_or_grayscale
+from procgraph.components.cv.compose import place_at
+from procgraph.core.registrar import default_library
+
+class ImageGrid(Block):
+    ''' A block that creates a larger image by arranging them in a grid. '''
+    def init(self):        
+        self.define_output_signals( ['grid'] )
+        self.set_config_default('cols', None)
+        
+    def update(self):
+        n = self.num_input_signals()
+        for i in range(n):
+            if self.get_input(i) is None:
+                # we only go if everything is ready
+                return
+            check_rgb_or_grayscale(self, i)
+            
+        cols = self.get_config('cols')
+        
+        if cols is None:
+            cols = ceil(sqrt(n))
+            
+        rows = ceil(n * 1.0 / cols)
+        
+        assert cols > 0 and rows > 0
+        
+        # find width and height for the grid 
+        col_width = zeros(cols, dtype='int32')
+        row_height = zeros(rows, dtype='int32')
+        for i in range(n):
+            col = i % n
+            row = (i - i % n) / n
+            image = self.get_input(i)
+            width = image.shape[1]
+            height = image.shape[0]
+            col_width[col] = max( width, col_width[col])
+            row_height[row] = max( height, row_height[row])
+        
+        canvas_width = sum(col_width)
+        canvas_height = sum(row_height)
+             
+        # find position for each col and row
+        col_x = zeros(cols, dtype='int32')
+        for col in range(1, cols):
+            col_x[col] = col_x[col-1] + col_width[col-1]
+        
+        assert(canvas_width == col_x[-1] + col_width[-1])
+        
+        row_y = zeros(rows, dtype='int32')
+        for row in range(1, rows):
+            row_y[row] = row_y[row-1] + row_height[row-1]
+        assert(canvas_height == row_y[-1] + row_height[-1])
+        
+        canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
+        
+        for i in range(n):
+            col = i % n
+            row = (i - i % n) / n
+            image = self.get_input(i)
+            x = col_x[col]
+            y = row_y[row]
+            place_at(canvas, image, x, y)
+            
+        self.set_output(0, canvas)
+
+
+default_library.register('grid', ImageGrid)
+
+            
+            

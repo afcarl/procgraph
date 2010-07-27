@@ -1,10 +1,10 @@
 from basic import *
-from debug_components import *
-from statistics import * 
-from gui import *
-from history import *
 
-from video import *
-from sync import *
-from join import *
-from derivative import *
+import debug_components
+import statistics
+import gui
+import video
+import dynamic
+import images
+import robotics
+import signals

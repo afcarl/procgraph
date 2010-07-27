@@ -1,0 +1,19 @@
+--- model test_pose2commands
+import procgraph.components.rawseeds
+
+|odometry:RawseedsOdo file=$log| 
+
+odometry.pose --> |commands:pose2commands|
+
+
+ odometry.x --> |hx:history|
+ 
+ hx.x --> |rgbplot| --> plot1
+ 
+commands.vx --> |hvx:history| 
+
+ hvx.x --> |rgbplot height=320| --> plot2
+
+plot1, plot2 --> |grid|  --> |sieve n=$decimate|--> |mencoder file=$out|
+
+decimate = 5 

@@ -107,7 +107,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             variable = value.variable
             if not variable in properties:
                 raise SemanticError('Could not evaluate %s. I know %s' %\
-                                    (value, properties.keys()))
+                                    (value, sorted(properties.keys()) ))
             used_properties.add(variable) 
             return expand_value(properties[variable])
         else:
@@ -199,7 +199,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 
                 if not library.exists(element.operation):
                     raise SemanticError('Unknown block type "%s". I know %s.' % \
-                                        (element.operation, ", ".join(library.get_known_blocks())),
+                                        (element.operation, ", ".join(sorted(library.get_known_blocks()))),
                                         element=element)
                 debug('instancing %s:%s config: %s' % \
                       (element.name,element.operation,block_config) )
@@ -276,7 +276,6 @@ element=block)
                 elif previous_block is None and previous_link is not None:
                     # this is the first block with previous signals
                     # For the output we can do as before
-                    print "got %s" % previous_link
                     check_link_compatibility_output(block, previous_link)
                     
                     # However, this time we need to be careful, because
@@ -353,5 +352,5 @@ element=block)
                             (unused_properties, used_properties),
                             element = parsed_model)
     
-    # print "--------- end model ----------------\n"           
+    #            
     return model

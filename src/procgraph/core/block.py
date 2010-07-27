@@ -73,7 +73,11 @@ class Block(object):
         return self.__output_signals is not None
     
     def define_input_signals(self, signals):
-        assert isinstance(signals, list)
+        if not isinstance(signals, list):
+            raise BlockWriterError('I expect the parameter to define_input_signals()'+
+                                   ' to be a list, got a %s: %s' % \
+                                   (signals.__class__.__name__, signals))
+
         # reset structures
         self.__input_signal_names = []
         self.__input_signals = []
@@ -89,7 +93,10 @@ class Block(object):
              
           
     def define_output_signals(self, signals):
-        assert isinstance(signals, list)
+        if not isinstance(signals, list):
+            raise BlockWriterError('I expect the parameter to define_output_signals()'+
+                                   ' to be a list, got a %s: %s' % \
+                                   (signals.__class__.__name__, signals))
         # reset structures
         self.__output_signal_names = []
         self.__output_signals = []
