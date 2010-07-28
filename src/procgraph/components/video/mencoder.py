@@ -2,7 +2,7 @@
 import subprocess 
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library 
-from procgraph.components.cv.checks import check_rgb_or_grayscale
+from procgraph.components  import check_rgb_or_grayscale
  
  
 class MEncoder(Block):

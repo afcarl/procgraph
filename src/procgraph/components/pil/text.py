@@ -1,10 +1,12 @@
-from procgraph.core.block import Block
-from PIL import Image,ImageDraw, ImageFont
 import subprocess
 import os
 import numpy
+
+from PIL import ImageDraw, ImageFont
+
+from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
-from procgraph.components.cv.pil_conversions import Image_from_array
+from procgraph.components.pil.pil_conversions import Image_from_array
 
 
 class Text(Block):

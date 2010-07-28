@@ -1,10 +1,12 @@
 import numpy
-from procgraph.components.cv.checks import assert_gray_image, check_2d_array
+from procgraph.components  import assert_gray_image, check_2d_array
+from procgraph.core.registrar import default_library
+from procgraph.components.basic import make_generic
 try:
-    import cv 
+    import cv #@UnresolvedImport
 except:
     print "Could not import module 'cv'; trying with 'opencv'"
-    import opencv as cv
+    import opencv as cv #@UnresolvedImport
 
 import Image
 
@@ -74,8 +76,15 @@ def gradient(grayscale, aperture_size=3):
 
 def smooth(grayscale, gaussian_std=5.0):
     """ Smooths an image.
-        Input is a 2D numpy float32 array 
-        Output: a 2D  numpy float32 array"""    
+    
+        Input:
+        
+        * grayscale:  a 2D numpy float32 array. 
+        
+        Output:
+        
+        * a 2D  numpy float32 array.
+    """    
 
     check_2d_array(grayscale, name="input to gradient() ")
     grayscale = grayscale.astype('float32')
@@ -89,5 +98,7 @@ def smooth(grayscale, gaussian_std=5.0):
     result_a = cv_to_numpy(smoothed).squeeze() 
     return result_a
 
+default_library.register('gradient', make_generic(1,2,gradient,aperture_size=3))
+default_library.register('smooth', make_generic(1,1,smooth,gaussian_std=5.0))
 
 

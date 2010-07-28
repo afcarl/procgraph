@@ -1,7 +1,8 @@
 from numpy import ceil, sqrt, zeros
+
 from procgraph.core.block import Block
-from procgraph.components.cv.checks import check_rgb_or_grayscale
-from procgraph.components.cv.compose import place_at
+from procgraph.components import check_rgb_or_grayscale
+from procgraph.components.images.compose import place_at
 from procgraph.core.registrar import default_library
 
 class ImageGrid(Block):

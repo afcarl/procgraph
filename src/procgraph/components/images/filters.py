@@ -1,8 +1,8 @@
+import numpy
+
 from procgraph.core.registrar import default_library
 from procgraph.components.basic import make_generic
-from procgraph.components.cv.opencv_utils import gradient, smooth
-import numpy
-from procgraph.components.cv.checks import assert_rgb_image, assert_gray_image
+from procgraph.components import assert_rgb_image, assert_gray_image
 
 def rgb2grayscale(rgb):  
     assert_rgb_image(rgb, 'input to rgb2grayscale')  
@@ -28,8 +28,6 @@ def gray2rgb(gray):
 default_library.register('grayscale', make_generic(1,1,rgb2grayscale)) 
 default_library.register('rgb2gray', make_generic(1,1,rgb2grayscale)) 
 default_library.register('gray2rgb', make_generic(1,1,gray2rgb))
-default_library.register('gradient', make_generic(1,2,gradient,aperture_size=3))
-default_library.register('smooth', make_generic(1,1,smooth,gaussian_std=5.0))
     
     
 
