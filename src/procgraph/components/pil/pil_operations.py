@@ -1,7 +1,9 @@
+import numpy
+
 from procgraph.core.registrar import default_library
 from procgraph.components.basic import make_generic, COMPULSORY
 from procgraph.components.pil.pil_conversions import Image_from_array
-import numpy
+
 
 def pil_resize(value, width, height):
     image = Image_from_array(value)

@@ -19,40 +19,40 @@ Block list
 Block ``-->|gradient|-->``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Configuration**
+.. container:: configuration
 
-``aperture``
-  Aperture parameter (1,**3**,5,7,...).
+  ``aperture``
+    Aperture parameter (1,**3**,5,7,...).
 
-**Input**
+.. container:: input
 
-* A 2D numpy array.
+  A 2D numpy array.
 
-**Output (2)**
+.. container:: output
 
-``gx`` 
-  Gradient along x. A 2D numpy float32 array.
+  ``gx`` 
+    Gradient along x. A 2D numpy float32 array.
   
-``gy``
-  Gradient along y. A 2D numpy float32 array.  
+  ``gy``
+    Gradient along y. A 2D numpy float32 array.  
 
 .. _`block:smooth`:
 
 Block ``-->|smooth|-->``
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Configuration**
+.. container:: configuration
 
-``gaussian_std``
-  Standard deviation of gaussian kernel, in pixel.
+  ``gaussian_std``
+    Standard deviation of gaussian kernel, in pixel.
 
-**Input (1)**
+.. container:: input
 
-* a 2D numpy array
+  A 2D numpy array.
 
-**Output (1)**
+.. container:: output
 
-* a 2D numpy float32 array  
+  A 2D numpy float32 array.  
 
 
 Module documentation

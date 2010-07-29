@@ -6,10 +6,6 @@
 Welcome to procgraph's documentation!
 =====================================
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
 
 
 
@@ -29,8 +25,8 @@ Libraries documentation
 
 * :ref:`library:images`
 
-  :ref:`block:compose`,
-  :ref:`block:grid`,
+  :ref:`compose block:compose`,
+  :ref:`**grid** block:grid`,
   :ref:`block:rgb2gray`,
   :ref:`block:gray2rgb`,
   :ref:`block:posneg`,
@@ -56,8 +52,12 @@ Libraries documentation
 * :ref:`library:gui`
 
 
+
 Indices and tables
 ==================
+
+.. toctree::
+   :maxdepth: 2
 
 * :ref:`genindex`
 * :ref:`modindex`

@@ -1,0 +1,28 @@
+--- model rawseeds_laser_covariance
+import procgraph.components.rawseeds
+import procgraph.components.pil
+
+
+|hokuyo_front:RawseedsHokuyo| --> |select every=7| --> hokuyo_front
+| hokuyo_rear:RawseedsHokuyo| --> |select every=7| --> hokuyo_rear
+|  sick_front:RawseedsRF| --> |select every=2| --> sick_front
+|   sick_rear:RawseedsRF| --> |select every=2| --> sick_rear
+
+# display all laser data together
+#hokuyo_rear, hokuyo_front, sick_front, sick_rear --> |sync| -->  |join| --> y
+
+sick_front,hokuyo_front,hokuyo_rear -->  |sync|-->|join|-->y
+
+y --> |derivative| --> |sign|  --> z 
+
+z --> |covariance| -> cov_z
+y --> |covariance| -> cov_y
+
+cov_y --> |sieve n=20| --> |cov2corr|--> |posneg| --> cov_y_rgb
+cov_z --> |sieve n=20| --> |cov2corr|--> |posneg| --> cov_z_rgb
+
+
+cov_y_rgb, cov_z_rgb --> |sync| --> |grid cols=2| --> |resize width=1280 height=640|-> |mencoder file=$out|
+
+
+

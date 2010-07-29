@@ -26,49 +26,49 @@ Convert a RGB image to grayscale, and back to a RGB image::
     |input| -> |rgb2gray| -> |gray2rgb| -> |output| 
 
 Block list
-----------
+---------- 
 
-.. _`block:rgb2gray`:
+.. _`block:rgb2gray`: myblock
 
 Block ``-->|rgb2gray|-->``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**Configuration**
+.. container:: configuration
 
-None
+  None
 
-**Input**
+.. container:: input
 
-* A grayscale image.
+  A grayscale image.
 
-**Output (2)**
+.. container:: output
 
-* An RGB image.
+  An RGB image.
 
-**Implementation**
+.. container:: implementation
 
-Thin wrapper for :function:gray2rgb.
+  Thin wrapper for :function:gray2rgb.
 
 .. _`block:gray2rgb`:
 
 Block ``-->|gray2rgb|-->``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
  
-**Configuration**
+.. container:: configuration
 
-None
+  None
 
-**Input**
+.. container:: input
 
-* A RGB image.
+  A RGB image.
 
-**Output (2)**
+.. container:: output
 
-* A grayscale image.
+  A grayscale image.
 
-**Implementation**
+.. container:: implementation
 
-Thin wrapper for :function:rgb2grayscale.
+  Thin wrapper for :function:rgb2grayscale.
 
 
 .. _`block:compose`:

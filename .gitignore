@@ -3,3 +3,5 @@
 *.mp4
 .coverage
 *.avi
+docs/build/
+.DS_Store

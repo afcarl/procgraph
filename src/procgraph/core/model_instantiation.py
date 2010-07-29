@@ -120,7 +120,13 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             object, property = key.split('.', 1)
             if not object in properties:
                 properties[object] = {}
-            properties[object][property] = value
+            else:    
+                # XXX probably should be better
+                if not isinstance(properties[object], dict):
+                    raise SemanticError(
+                    'Error while processing "%s=%s". I already now key.' % \
+                            (key, value), parsed_model)
+            properties[object][property] = value # XX or expand?
         else:
             properties[key] = expand_value(value) 
         pass  
@@ -189,9 +195,15 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 block_config = {}
                 block_config.update(element.config)
                 if element.name in properties:
-                    block_config.update(properties[element.name])
-                    # delete so we can keep track of unused properties
-                    used_properties.add(element.name)
+                    more_config_for_block = properties[element.name]
+                    # now, it might be that el
+                    # For example:
+                    #   wait = 10       ->  { wait: 10 }
+                    #   wait.time  = 3  ->  { wait: {time: 3} }
+                    if isinstance(more_config_for_block, dict):
+                        block_config.update(more_config_for_block)
+                        # delete so we can keep track of unused properties
+                        used_properties.add(element.name)
                 
                 for key, value in list(block_config.items()):
                     block_config[key] = expand_value(value)
