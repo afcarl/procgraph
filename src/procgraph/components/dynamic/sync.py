@@ -68,7 +68,7 @@ class Sync(Generator):
     def update(self):
         def debug(s):
             if False:
-                print 'sync %s' % s
+                print 'sync %s %s' % (self.name, s)
             
         output = self.get_state('output')
         queues = self.get_state('queues')
@@ -78,20 +78,21 @@ class Sync(Generator):
         for i, name in enumerate(names):
             current_timestamp = self.get_input_timestamp(i)
             current_value = self.get_input (i)
+            if current_timestamp == 0:
+                debug('Ignoring %s because timestamp still 0' % name)
+                continue
             queue = queues[name]
             # if there is nothing in the queue
             # or this is a new sample
             if not queue or queue[0].timestamp != current_timestamp: # new sample
                 queue.insert(0, Sample(timestamp=current_timestamp,value=current_value))
-                # print "Inserting %s ts  %s" % (name, current_timestamp)
+                debug("Inserting %s ts %s (queue %d)" % (name, current_timestamp,
+                                                         len(queue)))
                 
         master = self.get_state('master')
         master_queue = queues[master]
         slaves = self.get_state('slaves')
         
-        # if master has more than one sample, then drop the first one
-        if len(master_queue)>1:
-            master_queue.pop()
             
         # if there is more than one value in each slave
         
@@ -115,7 +116,7 @@ class Sync(Generator):
                     break 
             
             if all_ready:
-                debug("Ready: master timestamp %s " % (master_timestamp))
+                debug("**** Ready: master timestamp %s " % (master_timestamp))
                 master_value = master_queue.pop().value
                 output_values = [master_value]
                 for slave in slaves:
@@ -128,10 +129,16 @@ class Sync(Generator):
                     output_values.append(slave_value)
                 output.insert(0, (master_timestamp, output_values))
 
-        
+    # XXX XXX not really sure here
+        # if master has more than one sample, then drop the first one
+#        if len(master_queue)>1:
+ #           val = master_queue.pop()
+  #          debug('DROPPING master (%s) ts =%s' % (master, val.timestamp))
+
         # if we have something to output, do it 
         if output:
             timestamp, values = output.pop()
+            assert timestamp > 0
             debug("---------------- @ %s" % timestamp)
             for i in range(self.num_output_signals()):
                 self.set_output(i, values[i], timestamp) 

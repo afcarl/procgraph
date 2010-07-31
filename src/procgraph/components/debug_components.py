@@ -1,5 +1,6 @@
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
+import numpy
 
 
 
@@ -42,11 +43,42 @@ class Print(Block):
         # Just copy the input to the output
         # print self.get_input_signals_names()
         for i in range(self.num_input_signals()):
-            print 'P %s %s' % (self.canonicalize_input(i), self.get_input(i))
+            print 'P %s %s %s' % (self.canonicalize_input(i),
+                                  self.get_input_timestamp(i),
+                                self.get_input(i))
+
+
+
+default_library.register('print', Print)
+        
+class Info(Block):
+    ''' Prints the inputs '''
+    
+    def init(self):
+        # say we are not ready if the inputs were not defined.
+        if not self.are_input_signals_defined():
+            return Block.INIT_NOT_FINISHED
+        
+        #print self.get_input_signals_names()
+        # output signals get the same name as the inputs
+        self.define_output_signals([])
+        
+    def update(self):
+        # Just copy the input to the output
+        # print self.get_input_signals_names()
+        for i in range(self.num_input_signals()):
+            val = self.get_input(i)
+            if isinstance(val, numpy.ndarray):
+                s = "%s %s" % (str(val.shape), str(val.dtype))
+            else:
+                s = str(val)
+            print 'P %s %s %s' % (self.canonicalize_input(i),
+                                  self.get_input_timestamp(i),
+                                s)
 
 
         
-default_library.register('print', Print)
+default_library.register('info', Info)
         
           
 

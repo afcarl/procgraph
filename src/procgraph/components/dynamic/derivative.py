@@ -36,7 +36,7 @@ class ForwardDifference(Block):
         else:
             diff = x[2] - x[0]
         time = t[1]
-        x_dot = diff / delta
+        x_dot = diff / numpy.float32(delta)
         self.set_output('x_dot', x_dot, timestamp=time)  
 
 default_library.register('forward_difference', ForwardDifference)

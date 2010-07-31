@@ -1,5 +1,6 @@
 from procgraph.components.rawseeds.file_utils import expand_environment
 from procgraph.core.block import Generator
+from procgraph.core.exceptions import ModelExecutionError
 
 
 class TextLog(Generator):
@@ -19,6 +20,7 @@ class TextLog(Generator):
         else:
             self.stream = open(filename,'r')
             
+        self.set_state('line', 0) # line counter
         self.read_next_line()
         
         if self.timestamp is None:
@@ -29,8 +31,20 @@ class TextLog(Generator):
         self.define_input_signals([])
 
     def read_next_line(self):
+        line = self.get_state('line')
         next_line = self.stream.readline()
-        self.timestamp, self.values = self.parse_format(next_line)
+        # check end of file
+        if not next_line:
+            self.timestamp = None
+            self.values = None
+            return
+        try:
+            self.timestamp, self.values = self.parse_format(next_line)
+        except Exception as e:
+            msg = "While reading line %s of file %s (='%s'): %s" % \
+                (line, self.get_config('file'), next_line, e)
+            raise ModelExecutionError(msg, self)
+        self.set_state('line',line+1)
 
     def next_data_status(self):
         if self.timestamp is None: # EOF

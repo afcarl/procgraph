@@ -2,7 +2,6 @@
 import procgraph.components.rawseeds
 import procgraph.components.pil
 
-
 |hokuyo_front:RawseedsHokuyo| --> |select every=7| --> hokuyo_front
 | hokuyo_rear:RawseedsHokuyo| --> |select every=7| --> hokuyo_rear
 |  sick_front:RawseedsRF| --> |select every=2| --> sick_front

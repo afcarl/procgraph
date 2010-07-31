@@ -207,8 +207,10 @@ class Model(Block):
         else:
             # the block updated, propagate
             
-            debug("  processed %s, ts: %s" % (block, block.get_output_signals_timestamps()))
-            debug("  its succesors: %s"% list(self.__get_output_connections(block)) )
+            debug("  processed %s, ts: %s" % 
+                  (block, block.get_output_signals_timestamps()))
+            debug("  its succesors: %s"% 
+                  list(self.__get_output_connections(block)) )
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
                 other = connection.block2
@@ -222,8 +224,10 @@ class Model(Block):
                 value  = block.get_output(this_signal)
                 
                 if value is not None and this_timestamp == 0:
-                    raise ModelExecutionError('Strange, value is not none by timestamp is 0'+
-                                    ' for signal %s of %s.' % (this_signal, block), block)
+                    raise ModelExecutionError(
+                            'Strange, value is not None but the timestamp is 0'+
+                            ' for output signal "%s" of block %s.' % (
+                          block.canonicalize_output(this_signal), block), block)
                 
                 # Two cases:
                 # - timestamp is updated

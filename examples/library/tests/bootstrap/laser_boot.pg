@@ -1,0 +1,45 @@
+--- model laser_boot
+import procgraph.components.rawseeds
+#import procgraph.components.pil
+
+|hokuyo_front:RawseedsHokuyo| --> |select every=4| --> hokuyo_front
+| hokuyo_rear:RawseedsHokuyo| --> |select every=4| --> hokuyo_rear
+|  sick_front:RawseedsRF| --> |select every=1| --> |sieve n=3| --> sick_front
+|   sick_rear:RawseedsRF| --> |select every=1| --> |sieve n=3| --> sick_rear
+|odometry:RawseedsOdo| --> odometry --> |pose2commands| --> commands
+
+
+# sick_front, hokuyo_front, hokuyo_rear --> |laser_sync:sync|-->|join|-->y  
+sick_front --> |identity| --> y  
+#hokuyo_front --> |identity|  -->y  
+    
+# compute derivative 
+y --> |derivative| --> |sign| --> y_dot
+#y --> |derivative| -->  y_dot
+# subtract mean
+y --> |normalize| --> y_n
+
+# Estimate tensor T
+y_dot, y_n --> |sync| --> |outer| --> y_y_n 
+
+y_y_n,commands --> |sync| -> a,b --> |outer| --> Ti 
+
+Ti --> |expectation| --> T 
+
+
+
+
+# Extract the components of T and display them
+T -> |sieve n=50| --> Tc
+Tc --> |take axis=2 indices=[0]| --> T_x --> |posneg| --> T_x_rgb
+Tc --> |take axis=2 indices=[1]| --> T_y  --> |posneg| --> T_y_rgb
+Tc --> |take axis=2 indices=[2]| --> T_theta--> |posneg| --> T_theta_rgb
+#T_x_rgb, T_y_rgb, T_theta_rgb --> |sync| --> |grid cols=3| --> |mencoder file=$out|
+
+Ti -> |sieve n=10| -> |sign| --> Tic
+Tic --> |take axis=2 indices=[0]| --> |posneg| --> Ti0
+Tic --> |take axis=2 indices=[1]| --> |posneg| --> Ti1
+Tic --> |take axis=2 indices=[2]| --> |posneg| --> Ti2
+# 
+# Create output video
+ T_x_rgb, T_y_rgb, T_theta_rgb, Ti0, Ti1, Ti2 --> |sync| --> |grid cols=3| --> |mencoder file=$out|

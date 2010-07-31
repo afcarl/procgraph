@@ -21,7 +21,10 @@ def posneg(value, max_value=None):
     if max_value is None:
         max_value = numpy.max(abs(value))
         if max_value == 0:
-            raise ValueError('You asked to normalize a matrix which is all 0')
+        #    raise ValueError('You asked to normalize a matrix which is all 0')
+            result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
+            return result
+
     
     value = value / max_value
 
