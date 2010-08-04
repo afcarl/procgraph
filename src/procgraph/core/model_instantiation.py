@@ -6,6 +6,9 @@ from procgraph.core.parsing_elements import ParsedSignalList, VariableReference,
 from procgraph.core.registrar import default_library
 from procgraph.core.model import Model
 from copy import deepcopy
+import os
+import re
+from pyparsing import ParseResults
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -101,15 +104,48 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     # We keep track of what properties we use
     used_properties = set() # of strings
  
-    def expand_value(value):
+    def expand_references_in_string(s, function):
+        ''' Expands references of the kind ${var} in the string s.
+            ``function``(var) translates from var -> value '''
+        while True:
+            m =  re.match('(.*)\$\{(\w+)\}(.*)', s)
+            if not m:
+                return s
+            before = m.group(1)
+            var = m.group(2)
+            after = m.group(3)
+            sub = function(var)
+            s = before+sub+after
+        
+    def expand_value(value, context=None):
         ''' Function that looks for VariableReference and does the substitution. '''
+        if context is None:
+            context = []
+    #    if value in context:
+    #        raise SemanticError('Recursion warning: context = %s, value = "%s".' %\
+    #                            context, value)
+        context.append( value)
+        
         if isinstance(value, VariableReference):
             variable = value.variable
             if not variable in properties:
                 raise SemanticError('Could not evaluate %s. I know %s' %\
                                     (value, sorted(properties.keys()) ))
             used_properties.add(variable) 
-            return expand_value(properties[variable])
+            return expand_value(properties[variable], context)
+        elif isinstance(value, str):
+            if value in os.environ:
+                return os.environ[value]
+            return expand_references_in_string(value, 
+                    lambda s: expand_value(VariableReference(s), context))
+        elif isinstance(value, dict):
+            h = {}
+            for key in value:
+                h[key] = expand_value(value[key], context)
+            return h 
+        # XXX: we shouldn't have here ParseResults
+        elif isinstance(value, list) or isinstance(value, ParseResults):
+            return map( lambda s: expand_value(s, context), value)
         else:
             return value
         

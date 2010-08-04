@@ -166,7 +166,7 @@ class VariableReference(ParsedElement):
         self.variable = variable
         
     def __repr__(self):
-        return "${%s}" % self.variable
+        return "ref:%s" % self.variable
     
     @staticmethod
     def from_tokens(tokens):

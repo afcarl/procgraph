@@ -1,4 +1,6 @@
 from procgraph.core.exceptions import BlockWriterError, ModelWriterError
+from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy,\
+    ConfigProxy
 
 # Timestamp to use for constant times
 ETERNITY = 'constant-time'
@@ -34,6 +36,13 @@ class Block(object):
         
         # instantiation point
         self.where = None
+        
+        # proxies for accessing input, output, and state
+        self.input = InputProxy(self)
+        self.output = OutputProxy(self)
+        self.state = StateProxy(self)
+        self.config = ConfigProxy(self)
+
     
     INIT_NOT_FINISHED = 'init-not-finished'
     def init(self):

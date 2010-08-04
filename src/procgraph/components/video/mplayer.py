@@ -48,17 +48,9 @@ class MPlayer(Generator):
 
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
-         
-        # format = {2: 'y8', 3: 'rgb24'}[len(image.shape)]
-#        format = "+rawrgb24"
-#        args = ['mplayer', self.file,
-#                '-demuxer', 'rawvideo', '-vc', format,
-#                '-rawvideo', 
-#                'w=%d:h=%d:format=%s' % (self.width,self.height,format),
-#                #'w=%d:h=%d' % (self.width,self.height)
-#                ]
 
         format = "rgb24"
+        # FIXME: change fifo filename 
         fifo_name = 'mencoder_fifo'
         if os.path.exists(fifo_name):
             os.unlink(fifo_name)
@@ -67,16 +59,13 @@ class MPlayer(Generator):
                 '-rawvideo', 'w=%d:h=%d:format=%s' % (self.width,self.height,format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
-                # '-oac', 'copy',
                 '-nosound', 
                 '-o',
-                fifo_name
-                # '/dev/stdout'
+                fifo_name 
                 ]
         
         print "command line: %s" % " ".join(args)
-        
-        #self.process = subprocess.Popen(args,stdout=subprocess.PIPE)
+         
         self.process = subprocess.Popen(args)
 
         self.delta = 1.0 / self.fps
@@ -85,15 +74,9 @@ class MPlayer(Generator):
         self.stream = open(fifo_name,'r')
         
     def update(self):
-#        bytes = self.height * self.width * 3
-#        buffer = self.process.stdout.read(bytes)
-#        print bytes, len(buffer)
-#        frame = numpy.ndarray(shape=self.shape,dtype=self.dtype,
-#                              buffer=buffer)
         dtype = numpy.dtype(('uint8', self.shape))
         rgb = numpy.fromfile(self.stream, dtype=dtype, count=1)
         rgb = rgb.squeeze()
-#        print "dtype: ", rgb.dtype, rgb.shape
         
         t = self.get_state('timestamp')
 
@@ -102,6 +85,7 @@ class MPlayer(Generator):
         self.set_state('timestamp', t + self.delta)        
     
     def next_data_status(self):
+        # FIXME check EOF
         return (True, self.get_state('timestamp'))
 
 default_library.register('mplayer',  MPlayer)
