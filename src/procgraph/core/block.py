@@ -1,4 +1,5 @@
-from procgraph.core.exceptions import BlockWriterError, ModelWriterError
+from procgraph.core.exceptions import BlockWriterError, ModelWriterError, \
+    ModelExecutionError
 from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy, \
     ConfigProxy
 
@@ -125,8 +126,8 @@ class Block(object):
             
     def get_config(self, conf):
         if not conf in self.__config:
-            raise ValueError('For block %s: could not find parameter "%s" in config %s.' % 
-                             (self, conf, self.__config))
+            raise ModelExecutionError('For block %s: could not find parameter "%s" in config %s.' % 
+                             (self, conf, self.__config), self)
         return self.__config[conf]
         
     def set_state(self, num_or_id, value):

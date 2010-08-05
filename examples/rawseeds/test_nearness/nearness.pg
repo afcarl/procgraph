@@ -1,4 +1,4 @@
---- model rawseeds_display_all
+--- model test_nearness
 import procgraph.components.rawseeds 
 import procgraph.components.cv 
 

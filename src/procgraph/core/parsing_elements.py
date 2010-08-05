@@ -22,7 +22,7 @@ class Where:
         context = 3;
         lines = self.string.split('\n')
         start = max(0, self.line - context)
-        pattern = 'line %2d |'
+        pattern = 'line %2d >'
         for i in range(start, self.line):
             s += ("%s%s\n" % (pattern % (i + 1), lines[i]))
             
@@ -30,6 +30,7 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         s += (space + '^\n')
         s += (space + '|\n')
+        s += (space + 'here\n')
         return s
         
     def print_where(self, s=sys.stdout):
@@ -40,7 +41,7 @@ class Where:
         context = 3;
         lines = self.string.split('\n')
         start = max(0, self.line - context)
-        pattern = 'line %2d |'
+        pattern = 'line %2d >'
         for i in range(start, self.line):
             write("%s%s\n" % (pattern % (i + 1), lines[i]))
             
@@ -48,6 +49,7 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         write(space + '^\n')
         write(space + '|\n')
+        write(space + 'here\n')
         
         
     #def __str__(self):

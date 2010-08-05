@@ -1,6 +1,7 @@
 import os, fnmatch
 
 from procgraph.core.model_instantiation import create_from_parsing_results
+import pickle
 create_from_parsing_results
 from procgraph.core.parsing import parse_model, ParsedModel
 from procgraph.core.exceptions import SemanticError
@@ -76,20 +77,42 @@ def pg_look_for_models(library, additional_paths=None):
                 if fnmatch.fnmatch(f, '*.pg'):
                     all_files.add(os.path.join(root, f))
                     
-        print "Scanning %s " % path
+        #print "Scanning %s " % path
             
     for f in all_files:
-        print "Loading %s" % f
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
-        model_spec = open(f).read()
-        add_models_to_library(library, model_spec, name=base, filename=f)
+        
+        cache = os.path.splitext(f)[0] + '.pgc'
+        if os.path.exists(cache) and os.path.getmtime(cache) > os.path.getmtime(f):
+            try:
+                models = pickle.load(open(cache))
+            except Exception as e:
+                raise Exception('Cannot unpickle file %s: %s.' % (cache, e))
+            #print "Using cache %s" % cache
+        else:
+            print "Parsing %s" % f
+            model_spec = open(f).read()
+            models = parse_model(model_spec, filename=f)
+            pickle.dump(models, open(cache, 'w'))
+        
+        if models[0].name is None:
+            models[0].name = base
+    
+        for parsed_model in models:
+            if library.exists(parsed_model.name):
+                prev = library.name2block[parsed_model.name].parsed_model.where
+                raise SemanticError('Found model "%s" in %s, already in  %s. ' % \
+                            (parsed_model.name, f, prev.filename))
+            library.register(parsed_model.name, ModelSpec(parsed_model))
 
   
 def pg_add_parsed_model_to_library(parsed_model, library):
     assert parsed_model.name is not None
     if library.exists(parsed_model.name):
-        raise SemanticError('I already have registered "%s". ' % parsed_model.name)
+        prev = library.name2block[parsed_model.name].parsed_model.where
+        raise SemanticError('I already have registered "%s" from %s. ' % \
+                            (parsed_model.name, prev.filename))
     # print "Registering model '%s' " % parsed_model.name
     
     library.register(parsed_model.name, ModelSpec(parsed_model))

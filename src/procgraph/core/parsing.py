@@ -52,6 +52,7 @@ good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
 quoted = QuotedString('"', '\\', unquoteResults=True)
 reference = Combine(Suppress('$') + good_name('variable'))
 
+# FIXME: add wrap also here?
 reference.setParseAction(VariableReference.from_tokens)
 
 dictionary = Forward()
@@ -164,7 +165,7 @@ def parse_model(string, filename=None):
     connection.setParseAction(wrap(Connection.from_tokens))
     
     assignment = (key("key") + Suppress('=') + value("value"))
-    assignment.setParseAction(ParsedAssignment.from_tokens) 
+    assignment.setParseAction(wrap(ParsedAssignment.from_tokens)) 
     
     package_name = good_name + ZeroOrMore('.' + good_name)
     import_statement = Suppress('import') + package_name('package')

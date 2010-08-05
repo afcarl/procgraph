@@ -5,3 +5,4 @@
 *.avi
 docs/build/
 .DS_Store
+*.pgc

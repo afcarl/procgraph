@@ -67,9 +67,20 @@ def check_link_compatibility_output(block, previous_link):
             
         s.local_output = block.canonicalize_input(s.local_output)
  
-     
+def expand_references_in_string(s, function):
+    ''' Expands references of the kind ${var} in the string s.
+        ``function``(var) translates from var -> value '''
+    while True:
+        m = re.match('(.*)\$\{(\w+)\}(.*)', s)
+        if not m:
+            return s
+        before = m.group(1)
+        var = m.group(2)
+        after = m.group(3)
+        sub = function(var)
+        s = before + sub + after
+
 def create_from_parsing_results(parsed_model, name=None, config={}, library=None):
-    
     
     def debug(s):
         if False:
@@ -90,13 +101,19 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     # First we collect all the properties, to use
     # in initialization.
-    all_config = [] # tuple (key, value)
-    # First put the ones in the model (act as default)
+    all_config = [] # tuple (key, value, element)
+    
+    for key, value in config.items():
+        all_config.append((key, value, None))
+
     for element in parsed_model.elements:
         if isinstance(element, ParsedAssignment):
-            all_config.append((element.key, element.value))
-    # now append the ones passed by configuration
-    all_config.extend(config.items())
+            if element.key in config:
+                # TODO: make a unittest for this behavior
+                print "Overloading default for variable %s." % element.key
+                continue
+            all_config.append((element.key, element.value, element))
+    
     
     # Next, define the properties hash, and populate it intelligentily
     # from the tuples in all_config.
@@ -104,20 +121,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     # We keep track of what properties we use
     used_properties = set() # of strings
  
-    def expand_references_in_string(s, function):
-        ''' Expands references of the kind ${var} in the string s.
-            ``function``(var) translates from var -> value '''
-        while True:
-            m = re.match('(.*)\$\{(\w+)\}(.*)', s)
-            if not m:
-                return s
-            before = m.group(1)
-            var = m.group(2)
-            after = m.group(3)
-            sub = function(var)
-            s = before + sub + after
         
-    def expand_value(value, context=None):
+    def expand_value(value, context=None, element=None):
         ''' Function that looks for VariableReference and does the substitution. '''
         if context is None:
             context = []
@@ -129,27 +134,29 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         if isinstance(value, VariableReference):
             variable = value.variable
             if not variable in properties:
-                raise SemanticError('Could not evaluate %s. I know %s' % \
-                                    (value, sorted(properties.keys())))
+                raise SemanticError(('Could not resolve a reference to the variable "%s".'\
+                + ' I only know the variables: %s.') % \
+                        (variable, ", ".join(sorted(properties.keys()))), element)
             used_properties.add(variable) 
-            return expand_value(properties[variable], context)
+            return expand_value(properties[variable], context, element=element)
         elif isinstance(value, str):
             if value in os.environ:
                 return os.environ[value]
             return expand_references_in_string(value,
-                    lambda s: expand_value(VariableReference(s), context))
+                    lambda s: expand_value(VariableReference(s),
+                                           context=context, element=element))
         elif isinstance(value, dict):
             h = {}
             for key in value:
-                h[key] = expand_value(value[key], context)
+                h[key] = expand_value(value[key], context=context, element=element)
             return h 
         # XXX: we shouldn't have here ParseResults
         elif isinstance(value, list) or isinstance(value, ParseResults):
-            return map(lambda s: expand_value(s, context), value)
+            return map(lambda s: expand_value(s, context, element), value)
         else:
             return value
-        
-    for key, value in all_config:
+
+    for key, value, element in all_config:
         # if it is of the form  object.property = value
         if '.' in key:
             # TODO: put this in syntax
@@ -161,10 +168,10 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 if not isinstance(properties[object], dict):
                     raise SemanticError(
                     'Error while processing "%s=%s". I already now key.' % \
-                            (key, value), parsed_model)
+                            (key, value), element)
             properties[object][property] = value # XX or expand?
         else:
-            properties[key] = expand_value(value) 
+            properties[key] = expand_value(value, element=element) 
         pass  
     
     for x in [x for x in parsed_model.elements if isinstance(x, ImportStatement)]:
@@ -242,7 +249,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                         used_properties.add(element.name)
                 
                 for key, value in list(block_config.items()):
-                    block_config[key] = expand_value(value)
+                    block_config[key] = expand_value(value, element=element)
                     
                 
                 if not library.exists(element.operation):
@@ -396,9 +403,10 @@ element=block)
     
     unused_properties = set(properties.keys()).difference(used_properties)
     if unused_properties:
-        raise SemanticError('Unused properties: %s -- Used: %s' % \
-                            (unused_properties, used_properties),
-                            element=parsed_model)
+        unused = ", ".join(sorted(list(unused_properties)))
+        used = ", ".join(sorted(list(used_properties)))
+        raise SemanticError('Unused properties: %s. (Used: %s.)' % \
+                            (unused, used), element=parsed_model)
     
     #            
     return model

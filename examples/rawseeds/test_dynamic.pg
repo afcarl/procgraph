@@ -1,6 +1,6 @@
 # Testing some filters
 # Needs log=... on the command line
---- model master
+--- model test_dynamics
 
 |RawseedsCam dir=$log|  --> y
 
@@ -22,21 +22,4 @@
     
 display  --> |imshow|
 
-
-
-
---- model contrast
-
-
-|input name=image| --> y
-
-         y  --> |grayscale| --> |gradient| --> gx, gy
-
-         gx --> |square| --> gx_square
-         gy --> |square| --> gy_square
-
-         gx_square, gy_square --> |+| --> contrast
-
-
-                         contrast --> |output name=contrast|
 
