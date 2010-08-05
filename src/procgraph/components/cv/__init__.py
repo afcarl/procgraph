@@ -16,7 +16,7 @@ Block list
 
 .. _`block:gradient`:
 
-Block ``-->|gradient|-->``
+gradient
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: configuration
@@ -38,7 +38,7 @@ Block ``-->|gradient|-->``
 
 .. _`block:smooth`:
 
-Block ``-->|smooth|-->``
+smooth
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. container:: configuration

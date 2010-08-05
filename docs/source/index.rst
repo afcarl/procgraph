@@ -6,42 +6,61 @@
 Welcome to procgraph's documentation!
 =====================================
 
+.. container:: col1
 
+	**Getting started**
 
+	* :ref:`install`
+	* :ref:`why`
+	* :ref:`limitations`
+
+	**Tutorial**
+	
+	* :ref:`tutorial0`
+
+.. container:: col2
+
+	**Advanced usage**
+
+	* :ref:`creating_new_blocks` 
 
 Libraries documentation
 -----------------------
 
 **Basic operations**
 
-* :ref:`library:numpy_ops` \*
-
+* :ref:`library:numpy_ops`
 
 **Operations with time**
 
-* :ref:`library:dynamic` \*
-
+* :ref:`library:dynamic`:
+  :ref:`block:wait`,
+  :ref:`block:sieve`,
+  :ref:`block:derivative`,
+  :ref:`block:history`,
+  :ref:`block:historyn`.
+ 
 **Images and video**
 
-* :ref:`library:images`
-
-  :ref:`compose block:compose`,
-  :ref:`**grid** block:grid`,
+* :ref:`library:images`: 
+  :ref:`block:compose`,
+  :ref:`block:grid`,
   :ref:`block:rgb2gray`,
   :ref:`block:gray2rgb`,
   :ref:`block:posneg`,
-  :ref:`block:scale`
+  :ref:`block:scale`.
 
-* :ref:`library:pil` \*
+* :ref:`library:pil`:
+  :ref:`block:resize`,
+  :ref:`block:text`.
 
-  :ref:`block:rgb2gray`,
-  :ref:`block:gray2rgb`
+* :ref:`library:cv`:
+  :ref:`block:gradient`,  
+  :ref:`block:smooth`.
 
-* :ref:`library:cv` \*
-  
-  :ref:`block:gradient`,  :ref:`block:smooth`
-
-* :ref:`library:video`
+* :ref:`library:video`:
+  :ref:`block:mencoder`,  
+  :ref:`block:mplayer`.
 
 **Plotting**
 
@@ -51,6 +70,16 @@ Libraries documentation
 
 * :ref:`library:gui`
 
+**Robotics**
+
+* :ref:`library:robotics`:
+  :ref:`block:pose2velocity`.
+
+* :ref:`library:rawseeds`:
+  :ref:`block:RawseedsCam`,
+  :ref:`block:RawseedsHokuyo`,
+  :ref:`block:RawseedsOdo`,
+  :ref:`block:RawseedsRF`.
 
 
 Indices and tables

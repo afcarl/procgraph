@@ -28,10 +28,11 @@ Convert a RGB image to grayscale, and back to a RGB image::
 Block list
 ---------- 
 
-.. _`block:rgb2gray`: myblock
+.. _`block:rgb2gray`:
 
-Block ``-->|rgb2gray|-->``
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+rgb2gray
+^^^^^^^^^
+
 
 .. container:: configuration
 
@@ -51,7 +52,7 @@ Block ``-->|rgb2gray|-->``
 
 .. _`block:gray2rgb`:
 
-Block ``-->|gray2rgb|-->``
+gray2rgb
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
  
 .. container:: configuration
@@ -73,24 +74,24 @@ Block ``-->|gray2rgb|-->``
 
 .. _`block:compose`:
 
-Block ``-->|compose|-->``
+compose
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. _`block:grid`:
 
-Block ``-->|grid|-->``
+grid
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. _`block:posneg`:
 
-Block ``-->|posneg|-->``
+posneg
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 
 .. _`block:scale`:
 
-Block ``-->|scale|-->``
+scale
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 

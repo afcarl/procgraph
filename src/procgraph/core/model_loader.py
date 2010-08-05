@@ -38,14 +38,6 @@ class ModelSpec():
 
         return model
 
-def add_models_to_library(library, string, name=None, filename=None):
-    models = parse_model(string, filename=filename)
-    if models[0].name is None:
-        assert name is not None
-        models[0].name = name
-        
-    for model in models:
-        pg_add_parsed_model_to_library(parsed_model=model, library=library)
 
 def pg_look_for_models(library, additional_paths=None):
     ''' Call this function at the beginning of the executions.
@@ -117,7 +109,16 @@ def pg_add_parsed_model_to_library(parsed_model, library):
     
     library.register(parsed_model.name, ModelSpec(parsed_model))
 
-               
+
+def add_models_to_library(library, string, name=None, filename=None):
+    models = parse_model(string, filename=filename)
+    if models[0].name is None:
+        assert name is not None
+        models[0].name = name
+        
+    for model in models:
+        pg_add_parsed_model_to_library(parsed_model=model, library=library)
+        
                
 def model_from_string(model_spec, name=None, config=None, library=None, filename=None):
     ''' Instances a model from a specification. Optional

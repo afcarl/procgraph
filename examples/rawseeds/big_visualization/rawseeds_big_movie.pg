@@ -3,6 +3,7 @@ import procgraph.components.rawseeds
 import procgraph.components.cv 
 import procgraph.components.pil
 
+
 hokuyo_front.file = "${logdir}/HOKUYO_FRONT.csv.bz2"
  hokuyo_rear.file = "${logdir}/HOKUYO_REAR.csv.bz2"
   sick_front.file = "${logdir}/SICK_FRONT.csv.bz2"
@@ -14,37 +15,45 @@ hokuyo_front.file = "${logdir}/HOKUYO_FRONT.csv.bz2"
         omni.dir = "${logdir}/OMNI"
      frontal.dir = "${logdir}/FRONTAL"
 
+  odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
+
              out = "${logdir}/rawseeds_big_movie.avi"
 
-
+######## Cameras
 |svs_t:RawseedsCam| --> |svs_pipeline| --> svs_t
 |svs_r:RawseedsCam| --> |svs_pipeline| --> svs_r
 |svs_l:RawseedsCam| --> |svs_pipeline| --> svs_l
-
-
 svs_t, svs_r, svs_l --> |sync| -> |grid cols=1| --> display_svs
+|frontal:RawseedsCam| --> |resize width=320 height=240| --> frontal
+   |omni:RawseedsCam| --> |resize width=320 height=320| --> omni
 
+######## Range finders
 |hokuyo_front:RawseedsHokuyo| --> |rf_display| --> hokuyo_front
 | hokuyo_rear:RawseedsHokuyo| --> |rf_display| --> hokuyo_rear
 |  sick_front:RawseedsRF|     --> |rf_display| --> sick_front
 |   sick_rear:RawseedsRF|     --> |rf_display| --> sick_rear
-
-# display all laser data together
 hokuyo_rear, hokuyo_front, sick_front, sick_rear --> |sync| --> |grid cols=2| -->   display_laser
 
+######## Odometry
+|odometry:RawseedsOdo| 
+odometry.pose --> |pose2commands| --> commands 
+    commands --> |history interval=2| --> commands_history
+    commands_history --> |take indices=0| --> lvel_history
+    commands_history --> |take indices=2| --> avel_history
+    
+lvel_history, avel_history --> |sync| --> |rgbplot width=320 height=160| --> display_odometry
 
-|frontal:RawseedsCam| --> |resize width=320 height=240| --> frontal
-   |omni:RawseedsCam| --> |resize width=320 height=320| --> omni
+
 
 # synchronize everything to the frontal camera
 # frontal, svs_t, svs_r, svs_l, omni, display_laser --> |S:sync|
-frontal, display_svs, omni, display_laser --> |S:identity|
+frontal, display_svs, omni, display_laser, display_odometry --> |S:identity|
 
 # compose everything together
-S.display_svs, S.omni, S.frontal, S.display_laser --> |compose width=1280 height=768| --> |text| --> rgb
-    compose.positions = {display_svs: [0,0], omni: [320,0], frontal: [320,320], display_laser: [640,0]}
+S.display_svs, S.omni, S.frontal, S.display_laser, S.display_odometry --> |compose width=1280 height=768| --> |text| --> rgb
+    compose.positions = {display_svs: [0,0], omni: [320,0], frontal: [320,320], display_laser: [640,0], display_odometry:[640,320]}
 
-# ecnode everythin
+# encode everything
 rgb --> |mencoder file=$out fps=30|
 
 
@@ -54,9 +63,9 @@ text.texts = [  {string: "raw image", position: [10,10], size:20, halign: left, 
 
 
 --- model svs_pipeline
-svsw = 320
-svsh = 240
-|input name=cam| --> |gray2rgb| -->  |resize width=$svsw height=$svsh| --> |output name=rgb|
+w = 320
+h = 240
+|input name=cam| --> |gray2rgb| -->  |resize width=$w height=$h| --> |output name=rgb|
 
 --- model rf_display
 |input name=y| --> |rgbplot width=320 height=160| --> |output name=display_laser|

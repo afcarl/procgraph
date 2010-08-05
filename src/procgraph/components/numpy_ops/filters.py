@@ -11,7 +11,9 @@ default_library.register('abs', make_generic(1, 1, numpy.abs))
 default_library.register('sign', make_generic(1, 1, numpy.sign))
 
 def my_take(a, axis, indices):
+    a = numpy.array(a)
     indices = list(indices) # parsingresult bug
+    axis = int(axis)
     try:
         return a.take(axis=axis, indices=indices).squeeze()
     except Exception as e:
