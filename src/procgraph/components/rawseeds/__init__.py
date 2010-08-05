@@ -4,7 +4,8 @@
 ``rawseeds`` block library
 ====================
 
-**(to write)**
+|towrite|
+
 '''
 
 from rawseeds_rangefinder import *

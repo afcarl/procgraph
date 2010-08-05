@@ -4,7 +4,8 @@
 ``robotics`` block library
 ====================
 
-**(to write)**
+|towrite|
+
 '''
 
 import pose2velocity

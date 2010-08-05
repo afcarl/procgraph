@@ -1,14 +1,15 @@
 import numpy
-from procgraph.components  import assert_gray_image, check_2d_array
+
+from procgraph.components  import  check_2d_array
 from procgraph.core.registrar import default_library
 from procgraph.components.basic import make_generic
+
 try:
     import cv #@UnresolvedImport
 except:
     print "Could not import module 'cv'; trying with 'opencv'"
     import opencv as cv #@UnresolvedImport
 
-import Image
 
 
 def numpy_to_cv(numpy_array):
@@ -33,6 +34,7 @@ def numpy_to_cv(numpy_array):
     im_cv = cv.CreateImage((width, height), dtype2depth[str(numpy_array.dtype)], nchannels)
     cv.SetData(im_cv, numpy_array.tostring(), numpy_array.dtype.itemsize * width * nchannels)
     return im_cv
+
 
 def cv_to_numpy(im):
     '''Converts opencv to numpy '''
@@ -73,6 +75,7 @@ def gradient(grayscale, aperture_size=3):
 
     return gx.astype('float32'), gy.astype('float32')
 
+default_library.register('gradient', make_generic(1, 2, gradient, aperture_size=3))
 
 def smooth(grayscale, gaussian_std=5.0):
     """ Smooths an image.
@@ -98,7 +101,6 @@ def smooth(grayscale, gaussian_std=5.0):
     result_a = cv_to_numpy(smoothed).squeeze() 
     return result_a
 
-default_library.register('gradient', make_generic(1, 2, gradient, aperture_size=3))
 default_library.register('smooth', make_generic(1, 1, smooth, gaussian_std=5.0))
 
 

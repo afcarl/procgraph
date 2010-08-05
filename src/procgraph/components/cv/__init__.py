@@ -66,4 +66,4 @@ Module documentation
 
 '''
 
-from opencv_utils import *
+import opencv_utils 

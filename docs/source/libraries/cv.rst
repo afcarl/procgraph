@@ -1,3 +1,0 @@
-.. automodule:: procgraph.components.cv
-
-

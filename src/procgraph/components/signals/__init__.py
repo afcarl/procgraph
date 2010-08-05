@@ -1,1 +1,12 @@
-import join, extract
+'''
+.. _`library:signals`:
+
+``signals`` block library
+====================
+
+|towrite|
+
+'''
+
+import join
+import extract

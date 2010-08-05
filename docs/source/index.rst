@@ -23,6 +23,7 @@ Welcome to procgraph's documentation!
 	**Advanced usage**
 
 	* :ref:`creating_new_blocks` 
+	
 
 Libraries documentation
 -----------------------
@@ -30,6 +31,12 @@ Libraries documentation
 **Basic operations**
 
 * :ref:`library:numpy_ops`
+* :ref:`library:statistics`:
+  :ref:`block:expectation`,
+  :ref:`block:covariance`,
+  :ref:`block:variance`,
+  :ref:`block:cov2corr`.
+
 
 **Operations with time**
 

@@ -1,1 +1,0 @@
-.. automodule:: procgraph.components.images

@@ -77,6 +77,8 @@ gray2rgb
 compose
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+|towrite|
+
 
 .. _`block:grid`:
 
@@ -85,14 +87,21 @@ grid
 
 .. _`block:posneg`:
 
+|towrite|
+
 posneg
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+|towrite|
 
 
 .. _`block:scale`:
 
 scale
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+|towrite|
 
 
 Module documentation
