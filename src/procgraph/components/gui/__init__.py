@@ -7,6 +7,7 @@
 **(to write)**
 '''
 
-from vector_plot import *
-from fps_limit  import *
-from image_plot  import *
+import plot
+import vector_plot
+import image_plot
+import fps_limit

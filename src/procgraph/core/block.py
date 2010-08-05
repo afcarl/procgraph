@@ -43,6 +43,7 @@ class Block(object):
         self.output = OutputProxy(self)
         self.state = StateProxy(self)
         self.config = ConfigProxy(self)
+        #self.config_default = ConfigDefaultProxy(self)
 
     
     INIT_NOT_FINISHED = 'init-not-finished'

@@ -47,7 +47,7 @@ class SimplePlot(Block):
         
         draw()
         
-default_library.register('plot', SimplePlot)
+default_library.register('splot', SimplePlot)
 
 
 

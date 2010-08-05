@@ -6,6 +6,15 @@
 
 |towrite|
 
+
+.. block:: join
+
+  |towrite|
+  
+.. block:: extract
+
+  |towrite|
+  
 '''
 
 import join

@@ -60,10 +60,22 @@ class ConfigProxy(Proxy):
         return self.__dict__['block'].get_config(key)
     
     def __setattr__(self, i, v):
-        raise ValueError('You can only read config, not change it.')
+        self.__dict__['block'].set_config_default(i, v)
     def __setitem__(self, key, value):
-        raise ValueError('You can only read config, not change it.')
+        self.__dict__['block'].set_config_default(key, value)
     
-        
-    
-    
+#        
+#class ConfigDefaultProxy(Proxy):
+#    
+#    def __getattr__(self, i):
+#        raise ValueError('You can only set the output.')
+#    def __getitem__(self, key):
+#        raise ValueError('You can only set the output.')
+#    
+#    def __setattr__(self, i, v):
+#        self.__dict__['block'].set_config_default(i, v)
+#    def __setitem__(self, key, value):
+#        self.__dict__['block'].set_config_default(key, value)
+#        
+#    
+#    
