@@ -1,5 +1,5 @@
 from procgraph.core.exceptions import BlockWriterError, ModelWriterError
-from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy,\
+from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy, \
     ConfigProxy
 
 # Timestamp to use for constant times
@@ -83,7 +83,7 @@ class Block(object):
     
     def define_input_signals(self, signals):
         if not isinstance(signals, list):
-            raise BlockWriterError('I expect the parameter to define_input_signals()'+
+            raise BlockWriterError('I expect the parameter to define_input_signals()' + 
                                    ' to be a list, got a %s: %s' % \
                                    (signals.__class__.__name__, signals))
 
@@ -93,17 +93,17 @@ class Block(object):
         self.__input_signal_name2id = {}
         for i, s in enumerate(signals):
             if not isinstance(s, str):
-                raise BlockWriterError(('Invalid list of names for input: %s '+
+                raise BlockWriterError(('Invalid list of names for input: %s ' + 
                                         'they should be strings') % signals)
 
             self.__input_signal_names.append(str(s))
             self.__input_signal_name2id[str(s)] = i
-            self.__input_signals.append( Value()) 
+            self.__input_signals.append(Value()) 
              
           
     def define_output_signals(self, signals):
         if not isinstance(signals, list):
-            raise BlockWriterError('I expect the parameter to define_output_signals()'+
+            raise BlockWriterError('I expect the parameter to define_output_signals()' + 
                                    ' to be a list, got a %s: %s' % \
                                    (signals.__class__.__name__, signals))
         # reset structures
@@ -112,12 +112,12 @@ class Block(object):
         self.__output_signal_name2id = {}
         for i, s in enumerate(signals):
             if not isinstance(s, str):
-                raise BlockWriterError(('Invalid list of names for output: %s '+
+                raise BlockWriterError(('Invalid list of names for output: %s ' + 
                                         'they should be strings') % signals)
             
             self.__output_signal_names.append(str(s))
             self.__output_signal_name2id[str(s)] = i
-            self.__output_signals.append( Value())
+            self.__output_signals.append(Value())
         
     def set_config_default(self, key, value):
         if not key in self.__config:
@@ -237,22 +237,22 @@ class Block(object):
      
     def get_output_signals_timestamps(self):
         ''' Returns a list of the output values timestamps. '''
-        return map( lambda x: x.timestamp, self.__output_signals)
+        return map(lambda x: x.timestamp, self.__output_signals)
     
     def get_input_signals_timestamps(self):
         ''' Returns a list of the input signals timestamps. '''
-        return map( lambda x: x.timestamp, self.__input_signals)
+        return map(lambda x: x.timestamp, self.__input_signals)
     
     def __repr__(self):
         s = 'B:%s:%s(' % (self.__class__.__name__, self.name)
         s += self.get_io_repr()
-        s+= ')'
+        s += ')'
         return s
     
         
     def get_io_repr(self):
         ''' Returns a representation of io ports for this block. '''
-        s =""
+        s = ""
         if self.are_input_signals_defined():
             if self.__input_signals:
                 s += "in:%s" % ",".join(self.__input_signal_names)
@@ -261,7 +261,7 @@ class Block(object):
         else:
             s += "in:?"
         
-        s+=';'
+        s += ';'
         if self.are_output_signals_defined():
             if self.__output_signals:
                 s += "out:%s" % ",".join(self.__output_signal_names)

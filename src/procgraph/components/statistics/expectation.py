@@ -1,6 +1,6 @@
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
-from procgraph.core.model_loader import add_models_to_library
+
 
 class Expectation(Block):
         
@@ -18,7 +18,7 @@ class Expectation(Block):
         if num_samples == 0:
             Ex = x.copy()
         else:
-            Ex = (Ex * num_samples + x) / float(num_samples+1);
+            Ex = (Ex * num_samples + x) / float(num_samples + 1);
         
         self.set_state('Ex', Ex)
         self.set_state('num_samples', num_samples + 1)

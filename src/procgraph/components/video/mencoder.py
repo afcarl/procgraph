@@ -1,5 +1,6 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess 
+
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library 
 from procgraph.components  import check_rgb_or_grayscale
@@ -41,12 +42,12 @@ class MEncoder(Block):
             format = {2: 'y8', 3: 'rgb24'}[len(image.shape)]
             
             args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
-                    '-rawvideo', 'w=%d:h=%d:fps=%d:format=%s' % (w,h,fps,format),
-                    '-ovc','lavc','-lavcopts',
-                     'vcodec=%s:vbitrate=%d' %(vcodec, vbitrate),
+                    '-rawvideo', 'w=%d:h=%d:fps=%d:format=%s' % (w, h, fps, format),
+                    '-ovc', 'lavc', '-lavcopts',
+                     'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
                      '-o', self.file]
             print 'command line: %s' % " ".join(args)
-            self.process = subprocess.Popen(args=args,stdin=subprocess.PIPE,
+            self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE,
                                             #stderr=subprocess.PIPE,
                                             #stdout=subprocess.PIPE
                                             )
@@ -54,4 +55,4 @@ class MEncoder(Block):
         self.process.stdin.write(image.data)
         self.process.stdin.flush()
 
-default_library.register('mencoder',  MEncoder)
+default_library.register('mencoder', MEncoder)

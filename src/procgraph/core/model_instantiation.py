@@ -1,13 +1,13 @@
+import os, re
 from procgraph.core.exceptions import SemanticError
 from procgraph.core.block import Block
-from procgraph.core.parsing_elements import ParsedSignalList, VariableReference,\
-    ImportStatement, ParsedBlock, Connection, ParsedModel, ParsedAssignment,\
+from procgraph.core.parsing_elements import ParsedSignalList, VariableReference, \
+    ImportStatement, ParsedBlock, Connection, ParsedModel, ParsedAssignment, \
     ParsedSignal
 from procgraph.core.registrar import default_library
 from procgraph.core.model import Model
 from copy import deepcopy
-import os
-import re
+
 from pyparsing import ParseResults
 
 
@@ -63,7 +63,7 @@ def check_link_compatibility_output(block, previous_link):
                     
         if not block.is_valid_input_name(s.local_output):
             raise SemanticError('Could not find input name "%s" in %s' % \
-                            (s.local_output, block) )
+                            (s.local_output, block))
             
         s.local_output = block.canonicalize_input(s.local_output)
  
@@ -108,14 +108,14 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         ''' Expands references of the kind ${var} in the string s.
             ``function``(var) translates from var -> value '''
         while True:
-            m =  re.match('(.*)\$\{(\w+)\}(.*)', s)
+            m = re.match('(.*)\$\{(\w+)\}(.*)', s)
             if not m:
                 return s
             before = m.group(1)
             var = m.group(2)
             after = m.group(3)
             sub = function(var)
-            s = before+sub+after
+            s = before + sub + after
         
     def expand_value(value, context=None):
         ''' Function that looks for VariableReference and does the substitution. '''
@@ -124,19 +124,19 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     #    if value in context:
     #        raise SemanticError('Recursion warning: context = %s, value = "%s".' %\
     #                            context, value)
-        context.append( value)
+        context.append(value)
         
         if isinstance(value, VariableReference):
             variable = value.variable
             if not variable in properties:
-                raise SemanticError('Could not evaluate %s. I know %s' %\
-                                    (value, sorted(properties.keys()) ))
+                raise SemanticError('Could not evaluate %s. I know %s' % \
+                                    (value, sorted(properties.keys())))
             used_properties.add(variable) 
             return expand_value(properties[variable], context)
         elif isinstance(value, str):
             if value in os.environ:
                 return os.environ[value]
-            return expand_references_in_string(value, 
+            return expand_references_in_string(value,
                     lambda s: expand_value(VariableReference(s), context))
         elif isinstance(value, dict):
             h = {}
@@ -145,7 +145,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             return h 
         # XXX: we shouldn't have here ParseResults
         elif isinstance(value, list) or isinstance(value, ParseResults):
-            return map( lambda s: expand_value(s, context), value)
+            return map(lambda s: expand_value(s, context), value)
         else:
             return value
         
@@ -209,8 +209,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     for s in (previous_link.signals):
                         # We cannot have a local output
                         if s.local_output is not None:
-                            raise SemanticError(('Terminator connection %s '+
-                                'cannot have a local output') %s, element = previous_link)  
+                            raise SemanticError(('Terminator connection %s ' + 
+                                'cannot have a local output') % s, element=previous_link)  
                         
                         model.connect(block1=previous_block, block1_signal=s.local_input,
                                              block2=None, block2_signal=None, public_name=s.name)
@@ -250,13 +250,13 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                                         (element.operation, ", ".join(sorted(library.get_known_blocks()))),
                                         element=element)
                 debug('instancing %s:%s config: %s' % \
-                      (element.name,element.operation,block_config) )
+                      (element.name, element.operation, block_config))
                 
-                block = library.instance(block_type=element.operation, 
+                block = library.instance(block_type=element.operation,
                                          name=element.name, config=block_config,
                                          where=element.where)
                 
-                block = model.add_block(name=element.name,block=block)
+                block = model.add_block(name=element.name, block=block)
                 
                 # print "Defined block %s = %s " % (element.name , block)
                 
@@ -331,7 +331,7 @@ element=block)
                     for s in (previous_link.signals):
                         # Cannot use local_input here
                         if s.local_input is not None:
-                            raise SemanticError('Link %s cannot use local input without antecedent. ' %\
+                            raise SemanticError('Link %s cannot use local input without antecedent. ' % \
                                             s, element=previous_link)
                         # Check if it is using an explicit block name
                         if s.block_name is not None:
@@ -363,7 +363,7 @@ element=block)
                 elif previous_block is None and previous_link is None:
                     # make sure it's a generator?
                     if not block.are_input_signals_defined():
-                        raise SemanticError('The block %s did not define signals and it has no input.'%
+                        raise SemanticError('The block %s did not define signals and it has no input.' % 
                                        block, element=block) 
                     if block.num_input_signals() > 0:
                         raise SemanticError('The generator block %s should have defined 0 inputs.' % 
@@ -377,12 +377,12 @@ element=block)
                     res = block.init()
                     # it cannot return NOT_FINISHED again.
                     if res == Block.INIT_NOT_FINISHED:
-                        raise SemanticError('Block %s cannot return NOT_FINISHED '+
+                        raise SemanticError('Block %s cannot return NOT_FINISHED ' + 
                                         'after inputs have been defined. ' % block,
                                         element=block)
                     # now the outputs should be defined
                     if not block.are_output_signals_defined():
-                        raise SemanticError(('Block %s still does not define outputs'+
+                        raise SemanticError(('Block %s still does not define outputs' + 
                                         ' after init() called twice. ') % block,
                                         element=block)
                 
@@ -398,7 +398,7 @@ element=block)
     if unused_properties:
         raise SemanticError('Unused properties: %s -- Used: %s' % \
                             (unused_properties, used_properties),
-                            element = parsed_model)
+                            element=parsed_model)
     
     #            
     return model

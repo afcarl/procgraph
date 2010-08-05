@@ -1,9 +1,10 @@
-import  pylab
-from pylab import ion, draw, plot, axis, figure, axes, ioff
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
 import numpy 
 from PIL import Image
+import  pylab
+from pylab import ion, draw, plot, axis, figure, axes
+
+from procgraph.core.block import Block
+from procgraph.core.registrar import default_library
 
 
 class SimplePlot(Block):
@@ -42,7 +43,7 @@ class SimplePlot(Block):
                 self.line.set_ydata(x)
         #   a = axis()
         #    axis([ a[0],a[1],min(x),max(x)])
-        axis([ 0, self.n, min(x),max(x)])
+        axis([ 0, self.n, min(x), max(x)])
         
         draw()
         
@@ -117,13 +118,13 @@ class RGBPlot(Block):
             else:
                 self.line.set_ydata(x)
         
-        self.axes.axis([ 0, self.n, min(x),max(x)])
+        self.axes.axis([ 0, self.n, min(x), max(x)])
         if self.legend_handle is None:
             legend = self.get_config('legend')
             if legend:
                 self.legend_handle = self.axes.legend(*legend,
-                    loc='upper right', handlelength=1.5, markerscale=2, 
-                    labelspacing=0.03, borderpad=0, handletextpad=0.03, 
+                    loc='upper right', handlelength=1.5, markerscale=2,
+                    labelspacing=0.03, borderpad=0, handletextpad=0.03,
                     borderaxespad=1)
                   
 

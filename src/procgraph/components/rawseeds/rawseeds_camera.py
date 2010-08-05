@@ -1,8 +1,10 @@
-import os,re,numpy
+import os, re, numpy
 from PIL import Image
+
 from procgraph.core.block import Generator
 from procgraph.core.registrar import default_library
 from procgraph.components.rawseeds.file_utils import expand_environment
+
 
 class RawseedsCamera(Generator):
     ''' This block reads a range-finder log in Rawseeds format. '''
@@ -29,7 +31,7 @@ class RawseedsCamera(Generator):
                 signal_name = m.group(1)
                 seconds = m.group(2)
                 fraction = m.group(3)
-                timestamp = float(seconds) + float('0.%s'%fraction)
+                timestamp = float(seconds) + float('0.%s' % fraction)
                 global_filename = os.path.join(dirname, filename)
                 frames.append((timestamp, global_filename))
         
@@ -38,7 +40,7 @@ class RawseedsCamera(Generator):
         
         
         print "Read %s frames -- sorting." % len(frames)
-        frames.sort( key = lambda x: x[0])
+        frames.sort(key=lambda x: x[0])
         
         self.set_state('frames', frames)
         self.set_state('next_frame', 0)
@@ -80,7 +82,7 @@ class RawseedsCamera(Generator):
         if k + 1 >= len(frames):
             self.set_state('next_frame', None)
         else:
-            self.set_state('next_frame', k+1)
+            self.set_state('next_frame', k + 1)
  
 
 default_library.register('RawseedsCam', RawseedsCamera)

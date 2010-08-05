@@ -1,12 +1,14 @@
 from procgraph.core.model_loader import add_models_to_library
 from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
-from snp_geometry.pose import Pose
 from procgraph.core.exceptions import BadInput
+
+from snp_geometry.pose import Pose
+
 
 class Pose2velocity(Block):
     def init(self):
-        self.define_input_signals(['q12','t12'])
+        self.define_input_signals(['q12', 't12'])
         self.define_output_signals(['commands'])
         
     def update(self):
@@ -35,11 +37,11 @@ class Pose2velocity(Block):
         # assert velocity.angular[0] == 0
         # assert velocity.angular[1] == 0
         
-        commands = [float(velocity.linear[0]), 
-                    float(velocity.linear[1]), 
+        commands = [float(velocity.linear[0]),
+                    float(velocity.linear[1]),
                     float(velocity.angular[2])]
         
-        self.set_output('commands', commands, timestamp = t[0])
+        self.set_output('commands', commands, timestamp=t[0])
 
 default_library.register('pose2vel_', Pose2velocity)
 

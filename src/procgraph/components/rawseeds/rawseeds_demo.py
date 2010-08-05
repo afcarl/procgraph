@@ -1,12 +1,14 @@
-from procgraph.core.model import Model
-from procgraph.components.rawseeds import *
 import sys
+
 from procgraph.core.model_loader import model_from_string
+
+
 
 if __name__ == '__main__':
     # First we define the computational structure
     
     model_desc = """
+import  procgraph.components.rawseeds
        |logreader:RawseedsRF| -> y -> |expectation| -> y_mean
        
        #y, y_mean -> |generic in=2| 

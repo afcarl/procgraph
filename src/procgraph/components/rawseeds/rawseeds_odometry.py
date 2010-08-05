@@ -1,6 +1,7 @@
 from procgraph.components.rawseeds.textlog import TextLog
 from procgraph.core.registrar import default_library
 
+
 class RawseedsOdometry(TextLog):
     '''
 File format:
@@ -44,12 +45,12 @@ to the wheelbase and points towards the right wheel.
         
         signals = [
             # XXX compensate for reference frame?
-            ('pose', [x,y,theta]),
+            ('pose', [x, y, theta]),
             ('ticks_right', ticks_right),
             ('ticks_left', ticks_left),
-            ('x',x),
-            ('y',y),
-            ('theta',theta),
+            ('x', x),
+            ('y', y),
+            ('theta', theta),
             ('rolling_counter', rolling_counter)
         ]
         

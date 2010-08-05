@@ -1,5 +1,3 @@
-from procgraph.core.model import Model
-from unittest import TestCase
 from procgraph.core.model_loader import model_from_string
 from procgraph.testing.utils import PGTestCase
 
@@ -13,7 +11,7 @@ class DelayedTest(PGTestCase):
         model = model_from_string(model_desc)
         
         block1 = model.name2block['block1']
-        self.assertTrue(block1.are_output_signals_defined() )
+        self.assertTrue(block1.are_output_signals_defined())
         
         print block1
         

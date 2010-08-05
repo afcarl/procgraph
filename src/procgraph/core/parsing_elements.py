@@ -1,8 +1,8 @@
-from pyparsing import lineno, col
 import sys
+from pyparsing import lineno, col
 
 class Where:
-    def __init__(self, filename, string, character=None,line=None,column=None):
+    def __init__(self, filename, string, character=None, line=None, column=None):
         self.filename = filename
         self.string = string
         if character is None:
@@ -13,41 +13,41 @@ class Where:
         else:
             assert line is None and column is None
             self.character = character
-            self.line = lineno(character,string)
-            self.col =  col(character, string)
+            self.line = lineno(character, string)
+            self.col = col(character, string)
 
     def __str__(self):
         s = ''
         s += ('In file %s:\n' % self.filename)
         context = 3;
         lines = self.string.split('\n')
-        start = max(0, self.line-context)
-        pattern='line %2d |'
-        for i in range(start,self.line):
-            s+=("%s%s\n" % (pattern % (i+1), lines[i]))
+        start = max(0, self.line - context)
+        pattern = 'line %2d |'
+        for i in range(start, self.line):
+            s += ("%s%s\n" % (pattern % (i + 1), lines[i]))
             
-        fill = len(pattern % (i+1) )
-        space = ' '*fill + ' '* (self.col-1) 
-        s+=( space + '^\n')
-        s+=( space + '|\n')
+        fill = len(pattern % (i + 1))
+        space = ' ' * fill + ' ' * (self.col - 1) 
+        s += (space + '^\n')
+        s += (space + '|\n')
         return s
         
     def print_where(self, s=sys.stdout):
         s.write('\n\n')
         prefix = '    '
-        write = lambda x: s.write(prefix+x)
+        write = lambda x: s.write(prefix + x)
         write('In file %s:\n' % self.filename)
         context = 3;
         lines = self.string.split('\n')
-        start = max(0, self.line-context)
-        pattern='line %2d |'
-        for i in range(start,self.line):
-            write("%s%s\n" % (pattern % (i+1), lines[i]))
+        start = max(0, self.line - context)
+        pattern = 'line %2d |'
+        for i in range(start, self.line):
+            write("%s%s\n" % (pattern % (i + 1), lines[i]))
             
-        fill = len(pattern % (i+1) )
-        space = ' '*fill + ' '* (self.col-1) 
-        write( space + '^\n')
-        write( space + '|\n')
+        fill = len(pattern % (i + 1))
+        space = ' ' * fill + ' ' * (self.col - 1) 
+        write(space + '^\n')
+        write(space + '|\n')
         
         
     #def __str__(self):
@@ -103,7 +103,7 @@ class ParsedSignal(ParsedElement):
         s += str(self.name)
         if self.local_output is not None:
             s += "[%s]" % self.local_output
-        s+=')'
+        s += ')'
         return s
     
     @staticmethod
@@ -123,7 +123,7 @@ class ParsedBlock(ParsedElement):
         self.config = config
         
     def __repr__(self):
-        return 'Block(op=%s,name=%s,config=%s)' % (self.operation,self.name,self.config)
+        return 'Block(op=%s,name=%s,config=%s)' % (self.operation, self.name, self.config)
 
     @staticmethod
     def from_tokens(tokens):

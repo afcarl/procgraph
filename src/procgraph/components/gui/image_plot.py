@@ -1,7 +1,7 @@
 from pylab import ion, draw, imshow
+
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
-
 
 
 class ImagePlot(Block):
@@ -20,7 +20,7 @@ class ImagePlot(Block):
         if self.image is None:
             self.image = imshow(data);
         else:  
-            self.image.set_data( data )
+            self.image.set_data(data)
             self.image.changed()
             draw()
         

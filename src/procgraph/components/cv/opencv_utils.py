@@ -98,7 +98,7 @@ def smooth(grayscale, gaussian_std=5.0):
     result_a = cv_to_numpy(smoothed).squeeze() 
     return result_a
 
-default_library.register('gradient', make_generic(1,2,gradient,aperture_size=3))
-default_library.register('smooth', make_generic(1,1,smooth,gaussian_std=5.0))
+default_library.register('gradient', make_generic(1, 2, gradient, aperture_size=3))
+default_library.register('smooth', make_generic(1, 1, smooth, gaussian_std=5.0))
 
 

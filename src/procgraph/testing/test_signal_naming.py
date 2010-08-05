@@ -1,6 +1,7 @@
 from procgraph.core.model_loader import model_from_string
 from procgraph.testing.utils import PGTestCase
 
+
 class NamingTest(PGTestCase):
     
     def test_correct_naming(self):
@@ -31,7 +32,7 @@ class NamingTest(PGTestCase):
         block = model.name2block['identity']
         names = block.get_output_signals_names()
         print "Obtained %s from '''%s'''" % (names, example)
-        self.assertEqual( len(names), 1)
-        self.assertEqual( names[0], 'x')
+        self.assertEqual(len(names), 1)
+        self.assertEqual(names[0], 'x')
         
         

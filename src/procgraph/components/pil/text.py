@@ -31,7 +31,7 @@ class Text(Block):
         for text in texts:
             process_text(draw, text)
         
-        out =  im.convert("RGB")
+        out = im.convert("RGB")
         pixel_data = numpy.asarray(out)
         
         self.set_output(0, pixel_data)

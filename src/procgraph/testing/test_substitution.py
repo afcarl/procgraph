@@ -3,6 +3,7 @@ from procgraph.core.registrar import default_library
 from procgraph.testing.utils import PGTestCase
 from procgraph.core.exceptions import SemanticError
 
+
 class VerifyBlock(Block):
     ''' 
         This debug block verifies that config.x == config.y 
@@ -16,7 +17,7 @@ class VerifyBlock(Block):
         self.define_input_signals([])
         self.define_output_signals([])
         
-default_library.register('verify',  VerifyBlock)
+default_library.register('verify', VerifyBlock)
 
 
 good_examples = [

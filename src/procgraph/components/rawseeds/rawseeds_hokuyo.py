@@ -1,7 +1,7 @@
 import numpy
+
 from procgraph.core.registrar import default_library
 from procgraph.components.rawseeds.textlog import TextLog
-
 
 
 class RawseedsHokuyo(TextLog):

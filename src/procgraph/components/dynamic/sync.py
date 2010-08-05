@@ -37,7 +37,7 @@ class Sync(Generator):
         if len(names) == 1:
             raise Exception('I need at least two ')
         
-        self.define_output_signals( names )
+        self.define_output_signals(names)
         
         # create a state for each signal: it is an array
         # of tuples (timestamp, tuple)
@@ -55,7 +55,7 @@ class Sync(Generator):
         
         self.set_state('queues', queues)
         
-        self.set_state('master', names[0] )
+        self.set_state('master', names[0])
         self.set_state('slaves', names[1:])
         
         # The output is an array of tuple (timestamp, values)
@@ -85,7 +85,7 @@ class Sync(Generator):
             # if there is nothing in the queue
             # or this is a new sample
             if not queue or queue[0].timestamp != current_timestamp: # new sample
-                queue.insert(0, Sample(timestamp=current_timestamp,value=current_value))
+                queue.insert(0, Sample(timestamp=current_timestamp, value=current_value))
                 debug("Inserting %s ts %s (queue %d)" % (name, current_timestamp,
                                                          len(queue)))
                 

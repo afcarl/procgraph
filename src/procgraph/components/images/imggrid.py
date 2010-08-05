@@ -5,10 +5,11 @@ from procgraph.components import check_rgb_or_grayscale
 from procgraph.components.images.compose import place_at
 from procgraph.core.registrar import default_library
 
+
 class ImageGrid(Block):
     ''' A block that creates a larger image by arranging them in a grid. '''
     def init(self):        
-        self.define_output_signals( ['grid'] )
+        self.define_output_signals(['grid'])
         self.set_config_default('cols', None)
         
     def update(self):
@@ -27,7 +28,7 @@ class ImageGrid(Block):
         rows = int(ceil(n * 1.0 / cols))
         
         assert cols > 0 and rows > 0
-        assert n <= cols* rows
+        assert n <= cols * rows
         
         # find width and height for the grid 
         col_width = zeros(cols, dtype='int32')
@@ -42,8 +43,8 @@ class ImageGrid(Block):
             width = image.shape[1]
             height = image.shape[0]
 
-            col_width[col] = max( width, col_width[col])
-            row_height[row] = max( height, row_height[row])
+            col_width[col] = max(width, col_width[col])
+            row_height[row] = max(height, row_height[row])
         
         canvas_width = sum(col_width)
         canvas_height = sum(row_height)
@@ -51,13 +52,13 @@ class ImageGrid(Block):
         # find position for each col and row
         col_x = zeros(cols, dtype='int32')
         for col in range(1, cols):
-            col_x[col] = col_x[col-1] + col_width[col-1]
+            col_x[col] = col_x[col - 1] + col_width[col - 1]
         
         assert(canvas_width == col_x[-1] + col_width[-1])
         
         row_y = zeros(rows, dtype='int32')
         for row in range(1, rows):
-            row_y[row] = row_y[row-1] + row_height[row-1]
+            row_y[row] = row_y[row - 1] + row_height[row - 1]
         assert(canvas_height == row_y[-1] + row_height[-1])
         
         canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')

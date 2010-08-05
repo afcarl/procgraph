@@ -1,5 +1,5 @@
-from procgraph.core.block import Block
 import time
+from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
 
 class FPSLimit(Block):
@@ -14,7 +14,7 @@ class FPSLimit(Block):
             return Block.INIT_NOT_FINISHED
         
         # output signals get the same name as the inputs
-        self.define_output_signals( self.get_input_signals_names() )
+        self.define_output_signals(self.get_input_signals_names())
       
         fps = self.get_config('fps') #@UnusedVariable
         
@@ -24,7 +24,7 @@ class FPSLimit(Block):
         should_update = False
         
         last = self.get_state('last-timestamp')
-        current =  time.time()
+        current = time.time()
         
         if last is None:
             should_update = True

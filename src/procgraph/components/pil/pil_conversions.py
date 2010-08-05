@@ -1,6 +1,7 @@
 import numpy
 from PIL import Image
 
+
 def Image_from_array(a):
     ''' Converts an image in a numpy array to an Image instance.
         Accepts:  h x w      255  interpreted as grayscale

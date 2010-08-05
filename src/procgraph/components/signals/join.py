@@ -1,6 +1,7 @@
+import numpy
+
 from procgraph.core.block import Block 
 from procgraph.core.registrar import default_library
-import numpy
 
 
 class Join(Block):
@@ -12,7 +13,7 @@ class Join(Block):
         if not self.are_input_signals_defined():
             return Block.INIT_NOT_FINISHED
         
-        self.define_output_signals( ['joined'] )
+        self.define_output_signals(['joined'])
         
         sizes = {}
         names = self.get_input_signals_names()
@@ -26,7 +27,7 @@ class Join(Block):
         result = []
         for name in self.get_input_signals_names():
             value = self.get_input(name)
-            size=  len(value)
+            size = len(value)
             if value is None:
                 return
             if sizes[name] is None:

@@ -17,13 +17,13 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
             for key, value in parameters.items():
                 if value != COMPULSORY:
                     self.set_config_default(key, value)
-            self.define_input_signals(map(str,range(num_inputs)))
-            self.define_output_signals(map(str,range(num_outputs)))
+            self.define_input_signals(map(str, range(num_inputs)))
+            self.define_output_signals(map(str, range(num_outputs)))
    
         def update(self):
             args = []
             for i in range(num_inputs):
-                args.append( self.get_input(i))
+                args.append(self.get_input(i))
                 
             params = {}
             for key in parameters.keys():
@@ -44,10 +44,10 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
         
     return GenericOperation
 
-default_library.register('+', make_generic(2,1, lambda x,y: x+y ) )
-default_library.register('*', make_generic(2,1, lambda x,y: x*y ) )
-default_library.register('-', make_generic(2,1, lambda x,y: x-y ) )
-default_library.register('/', make_generic(2,1, lambda x,y: x/y ) )
+default_library.register('+', make_generic(2, 1, lambda x, y: x + y))
+default_library.register('*', make_generic(2, 1, lambda x, y: x * y))
+default_library.register('-', make_generic(2, 1, lambda x, y: x - y))
+default_library.register('/', make_generic(2, 1, lambda x, y: x / y))
 
     
 class Constant(Block):
@@ -63,7 +63,7 @@ class Constant(Block):
     def init(self):
         self.set_config_default('name', 'const')
         
-        self.signal_name  = self.get_config('name')
+        self.signal_name = self.get_config('name')
         self.value = self.get_config('value')
         self.define_output_signals([self.signal_name])
         self.define_input_signals([])
@@ -85,7 +85,7 @@ class Gain(Block):
         self.define_output_signals(['out'])
     
     def update(self):
-        self.set_output(0, self.get_input(0) * self.get_config('gain') )
+        self.set_output(0, self.get_input(0) * self.get_config('gain'))
 
 # TODO: make generic
 default_library.register('gain', Gain) 
@@ -118,7 +118,7 @@ class RandomGenerator(Generator):
     
     def update(self):
         variance = self.get_config('variance')
-        self.set_output(0, random.rand(1) * sqrt(variance) )
+        self.set_output(0, random.rand(1) * sqrt(variance))
         
 default_library.register('rand', RandomGenerator)
         

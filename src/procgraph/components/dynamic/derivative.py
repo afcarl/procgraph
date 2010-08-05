@@ -14,7 +14,7 @@ def isiterable(x):
 
 class ForwardDifference(Block):
     def init(self):
-        self.define_input_signals(['x123','t123'])
+        self.define_input_signals(['x123', 't123'])
         self.define_output_signals(['x_dot'])
         
     def update(self):

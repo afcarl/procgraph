@@ -1,7 +1,7 @@
+import os, fnmatch
+
 from procgraph.core.model_instantiation import create_from_parsing_results
 create_from_parsing_results
-import os
-import fnmatch
 from procgraph.core.parsing import parse_model, ParsedModel
 from procgraph.core.exceptions import SemanticError
 from procgraph.core.registrar import default_library, Library
@@ -30,15 +30,15 @@ class ModelSpec():
                                         parent.parsed_model)
                 else:
                     #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
-                    return Library.instance(self, block_type, name, 
-                                            config,parent_library, where)
+                    return Library.instance(self, block_type, name,
+                                            config, parent_library, where)
         sandbox = ForbidRecursion(library, parsed_model.name)     
         model = create_from_parsing_results(parsed_model, name, config, library=sandbox)
 
         return model
 
 def add_models_to_library(library, string, name=None, filename=None):
-    models = parse_model(string,filename=filename)
+    models = parse_model(string, filename=filename)
     if models[0].name is None:
         assert name is not None
         models[0].name = name
@@ -60,7 +60,7 @@ def pg_look_for_models(library, additional_paths=None):
         paths.extend(additional_paths)
         
     if PATH_ENV_VAR in os.environ:
-        paths.extend( os.environ[PATH_ENV_VAR].split(':'))
+        paths.extend(os.environ[PATH_ENV_VAR].split(':'))
         
     if not paths:
         print "No paths given and environment var %s not defined." % PATH_ENV_VAR 
@@ -89,14 +89,14 @@ def pg_look_for_models(library, additional_paths=None):
 def pg_add_parsed_model_to_library(parsed_model, library):
     assert parsed_model.name is not None
     if library.exists(parsed_model.name):
-        raise SemanticError('I already have registered "%s". '%parsed_model.name)
+        raise SemanticError('I already have registered "%s". ' % parsed_model.name)
     # print "Registering model '%s' " % parsed_model.name
     
     library.register(parsed_model.name, ModelSpec(parsed_model))
 
                
                
-def model_from_string(model_spec, name=None, config = None, library=None, filename=None):
+def model_from_string(model_spec, name=None, config=None, library=None, filename=None):
     ''' Instances a model from a specification. Optional
         attributes can be passed. Returns a Model object. '''
     if config is None:
@@ -119,7 +119,7 @@ def model_from_string(model_spec, name=None, config = None, library=None, filena
 
     parsed_model = parsed_models[0]
     
-    model = create_from_parsing_results(parsed_model, name=name, 
+    model = create_from_parsing_results(parsed_model, name=name,
                                         config=config, library=library)
     
     return model

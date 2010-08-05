@@ -1,10 +1,10 @@
 # OS X: install from http://ffmpegx.com/download.html
-import subprocess 
+import subprocess, os, numpy
+ 
 from procgraph.core.block import Generator
 from procgraph.core.registrar import default_library  
 from procgraph.core.exceptions import ModelExecutionError
-import numpy
-import os
+
  
 class MPlayer(Generator):
     ''' Plays a video stream.
@@ -26,20 +26,20 @@ class MPlayer(Generator):
         info = {}
         for line in output.split('\n'):
             if line.startswith('ID_'):
-                key,value=line.split('=',1)
+                key, value = line.split('=', 1)
                 try: # interpret numbers if possible
                     value = eval(value)
                 except: 
                     pass
-                info[key]=value
+                info[key] = value
             
         print "Video configuration: %s" % info
 
-        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT",  "ID_VIDEO_FPS"]
+        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS"]
         id_width, id_height, id_fps = keys
         for k in keys:
             if not k in info:
-                raise ModelExecutionError('Could not find key %s in properties %s' %
+                raise ModelExecutionError('Could not find key %s in properties %s' % 
                                           (k, sorted(info.keys())), self)
         
         self.width = info[id_width]
@@ -55,11 +55,11 @@ class MPlayer(Generator):
         if os.path.exists(fifo_name):
             os.unlink(fifo_name)
         os.mkfifo(fifo_name)
-        args = ['mencoder', self.file,'-ovc', 'raw', 
-                '-rawvideo', 'w=%d:h=%d:format=%s' % (self.width,self.height,format),
+        args = ['mencoder', self.file, '-ovc', 'raw',
+                '-rawvideo', 'w=%d:h=%d:format=%s' % (self.width, self.height, format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
-                '-nosound', 
+                '-nosound',
                 '-o',
                 fifo_name 
                 ]
@@ -71,7 +71,7 @@ class MPlayer(Generator):
         self.delta = 1.0 / self.fps
         self.set_state('timestamp', self.delta)
         
-        self.stream = open(fifo_name,'r')
+        self.stream = open(fifo_name, 'r')
         
     def update(self):
         dtype = numpy.dtype(('uint8', self.shape))
@@ -88,7 +88,7 @@ class MPlayer(Generator):
         # FIXME check EOF
         return (True, self.get_state('timestamp'))
 
-default_library.register('mplayer',  MPlayer)
+default_library.register('mplayer', MPlayer)
 
 
 

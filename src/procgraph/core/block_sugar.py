@@ -12,11 +12,7 @@
     
 class Proxy(object):
     def __init__(self, block):
-        self.__dict__['block'] = block
-     #   setattr(self, 'block', block)
-        
-    #def __getattr__(self, i):
-    #    return self.block.get_input(i)
+        self.__dict__['block'] = block 
 
 class InputProxy(Proxy):
     

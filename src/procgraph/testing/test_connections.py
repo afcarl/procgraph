@@ -1,6 +1,3 @@
-
-import unittest 
-
 from procgraph.core.model_loader import model_from_string
 from procgraph.core.exceptions import SemanticError
 from procgraph.testing.utils import PGTestCase
@@ -20,7 +17,7 @@ a, b -> |+| -> c  """,
  c, d -> |+| -> result         """,
 
 """ # Referring to outputs using numbers  
-|constant value=12| -> [0]a  """, 
+|constant value=12| -> [0]a  """,
 
 """ # Referring to input/outputs using numbers  
 |constant value=12| -> [0]a[0] -> |gain|  """,
@@ -55,13 +52,13 @@ g1.in = 1
 
 bad_examples2 = [
 """ # Bad number of outputs  
-|constant value=12| -> a, b  """, 
+|constant value=12| -> a, b  """,
 
 """ # Bad output name  
-|constant value=12| -> [inexistent]a  """, 
+|constant value=12| -> [inexistent]a  """,
 
 """ # Bad output number  
-|constant value=12| -> [1]a  """, 
+|constant value=12| -> [1]a  """,
 
 """ # inexistent input
 invalid -> |gain|            """,

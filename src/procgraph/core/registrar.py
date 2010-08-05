@@ -1,4 +1,5 @@
 
+
 class Library:
     
     def __init__(self, parent=None):
@@ -28,14 +29,14 @@ class Library:
             parent_library = self
 
         if not self.exists(block_type):
-            raise ValueError('Asked to instance "%s" which does not exist' %
+            raise ValueError('Asked to instance "%s" which does not exist' % 
                              block_type)
         if block_type in self.name2block:
             generator = self.name2block[block_type]
             block = generator(name=name, config=config, library=parent_library)
         else: 
             assert self.parent
-            block = self.parent.instance(block_type,name,config,
+            block = self.parent.instance(block_type, name, config,
                                         parent_library=parent_library)
         block.where = where
         return block

@@ -1,14 +1,14 @@
-from procgraph.core.exceptions import  SemanticError, BlockWriterError,\
+from procgraph.core.exceptions import  SemanticError, BlockWriterError, \
     ModelExecutionError
 from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
 
 
 class BlockConnection:
-    def __init__(self, block1, block1_signal, block2, block2_signal, public_name=None ):
-        assert isinstance( block1, Block)
+    def __init__(self, block1, block1_signal, block2, block2_signal, public_name=None):
+        assert isinstance(block1, Block)
         assert block1_signal is not None
-        assert block2 is None or isinstance( block2, Block)
+        assert block2 is None or isinstance(block2, Block)
         
         self.block1 = block1
         self.block1_signal = block1_signal
@@ -20,17 +20,17 @@ class BlockConnection:
         s = 'Connection('
         if self.block1:
             s += self.block1.name
-            s += '.%s' %self.block1_signal 
+            s += '.%s' % self.block1_signal 
         else:
             s += '?.?'
         
         s += ' --> '
         if self.block2:
             s += self.block2.name
-            s += '.%s' %self.block2_signal 
+            s += '.%s' % self.block2_signal 
         else:
             s += '?.?'
-        s+=')'
+        s += ')'
             
         return s
     
@@ -72,7 +72,7 @@ class Model(Block):
         
     def summary(self):
         print "--- Model: %d blocks, %d connections" % \
-            (len(self.name2block),len(self.name2block_connection))
+            (len(self.name2block), len(self.name2block_connection))
         for name, block in self.name2block.items():
             print "- %s: %s" % (name, block)
             
@@ -90,7 +90,7 @@ class Model(Block):
             if not self.are_input_signals_defined() or \
                 not self.are_output_signals_defined():
                 raise BlockWriterError(('Block %s did not define input/output signals' + 
-                                ' and did not return INIT_NOT_FINISHED') %
+                                ' and did not return INIT_NOT_FINISHED') % 
                                 block) 
          
         
@@ -120,7 +120,7 @@ class Model(Block):
         self.blocks_to_update.append(input_block)
     
     def connect(self, block1, block1_signal, block2, block2_signal, public_name):
-        BC = BlockConnection( block1, block1_signal, block2, block2_signal, public_name=None)
+        BC = BlockConnection(block1, block1_signal, block2, block2_signal, public_name=None)
         if public_name in self.name2block_connection:
             raise SemanticError('Signal "%s" already defined. ' % public_name, block2)
         self.name2block_connection[public_name] = BC
@@ -142,7 +142,7 @@ class Model(Block):
         # add all the blocks without input to the update list
         for block in self.name2block.values():
             if not isinstance(block, ModelInput) and \
-                block.num_input_signals()==0:
+                block.num_input_signals() == 0:
                 self.blocks_to_update.append(block)
             if isinstance(block, Model):
                 block.reset_execution()
@@ -181,17 +181,17 @@ class Model(Block):
                 if timestamp1 is None:
                     return 1
                 elif timestamp2 is None:
-                    return -1
+                    return - 1
                 elif timestamp1 < timestamp2:
-                    return -1
+                    return - 1
                 elif timestamp2 < timestamp1:
                     return 1
                 else:
                     return 0
                 
-            generators_with_timestamps.sort( key = lambda x:x[1], cmp=cmp)
+            generators_with_timestamps.sort(key=lambda x:x[1], cmp=cmp)
             
-            block =  generators_with_timestamps[0][0]
+            block = generators_with_timestamps[0][0]
         
         if block is None:
             # We finished everything
@@ -209,8 +209,8 @@ class Model(Block):
             
             debug("  processed %s, ts: %s" % 
                   (block, block.get_output_signals_timestamps()))
-            debug("  its succesors: %s"% 
-                  list(self.__get_output_connections(block)) )
+            debug("  its succesors: %s" % 
+                  list(self.__get_output_connections(block)))
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
                 other = connection.block2
@@ -221,11 +221,11 @@ class Model(Block):
                 old_timestamp = other.get_input_timestamp(other_signal)
                 this_signal = connection.block1_signal
                 this_timestamp = block.get_output_timestamp(this_signal)
-                value  = block.get_output(this_signal)
+                value = block.get_output(this_signal)
                 
                 if value is not None and this_timestamp == 0:
                     raise ModelExecutionError(
-                            'Strange, value is not None but the timestamp is 0'+
+                            'Strange, value is not None but the timestamp is 0' + 
                             ' for output signal "%s" of block %s.' % (
                           block.canonicalize_output(this_signal), block), block)
                 
@@ -241,7 +241,7 @@ class Model(Block):
                     
                     debug('  then waking up %s' % other) 
                     
-                    other.from_outside_set_input(other_signal, value, 
+                    other.from_outside_set_input(other_signal, value,
                                                  this_timestamp)
                     
                     self.blocks_to_update.append(other)
@@ -252,7 +252,7 @@ class Model(Block):
                         self.set_output(other.signal_name, value, this_timestamp)
                 else:
                     debug("  Not updated %s because not %s > %s" % \
-                           (other, this_timestamp, old_timestamp) )
+                           (other, this_timestamp, old_timestamp))
         
         # now let's see if we have still work to do
         # this step is important when the model is inside another one
@@ -277,9 +277,9 @@ class Model(Block):
     
     
     def __repr__(self):
-        s = 'M:%s:%s(' % (self.model_name,self.name)
+        s = 'M:%s:%s(' % (self.model_name, self.name)
         s += self.get_io_repr()
-        s+= ')'
+        s += ')'
         return s
     
     

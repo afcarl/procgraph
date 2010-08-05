@@ -18,7 +18,7 @@ class History(Block):
     def init(self):
         self.set_config_default('interval', 10)
         
-        self.define_output_signals(['x','t'])
+        self.define_output_signals(['x', 't'])
         self.define_input_signals(['input'])
         
         self.set_state('x', [])
@@ -62,7 +62,7 @@ class HistoryN(Block):
     def init(self):
         self.get_config('n')
         
-        self.define_output_signals(['x','t'])
+        self.define_output_signals(['x', 't'])
         self.define_input_signals(['input'])
         
         self.set_state('x', [])
@@ -111,7 +111,7 @@ class Wait(Block):
             return Block.INIT_NOT_FINISHED
         
         # output signals get the same name as the inputs
-        self.define_output_signals( self.get_input_signals_names() )
+        self.define_output_signals(self.get_input_signals_names())
         
         self.set_state('count', 0)
         print 'Initializing'
@@ -148,7 +148,7 @@ class Sieve(Block):
             return Block.INIT_NOT_FINISHED
         
         # output signals get the same name as the inputs
-        self.define_output_signals( self.get_input_signals_names() )
+        self.define_output_signals(self.get_input_signals_names())
         
         self.get_config('n')
         self.set_state('count', 0)

@@ -1,7 +1,7 @@
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
 import numpy
 
+from procgraph.core.block import Block
+from procgraph.core.registrar import default_library
 
 
 class Identity(Block):
@@ -15,7 +15,7 @@ class Identity(Block):
             return Block.INIT_NOT_FINISHED
         
         # output signals get the same name as the inputs
-        self.define_output_signals( self.get_input_signals_names() )
+        self.define_output_signals(self.get_input_signals_names())
         
     def update(self):
         # Just copy the input to the output

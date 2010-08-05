@@ -1,14 +1,14 @@
-from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore,\
+from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, \
     ParserElement, Combine, nums, Literal, CaselessLiteral, \
     restOfLine, QuotedString, ParseException, Forward 
-from procgraph.core.parsing_elements import VariableReference, ParsedBlock,\
-    ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal,\
+from procgraph.core.parsing_elements import VariableReference, ParsedBlock, \
+    ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
     ParsedSignalList , Connection, Where
 from procgraph.core.exceptions import PGSyntaxError
 
 
-def eval_dictionary(s,loc,tokens):
+def eval_dictionary(s, loc, tokens):
     #print "Dict Tokens: %s" % tokens
     if not 'content' in tokens:
         return {}
@@ -16,7 +16,7 @@ def eval_dictionary(s,loc,tokens):
     for a in tokens:
         #print "A: %s" % a
         if 'value' in a:
-            d[a['key']]=a['value']
+            d[a['key']] = a['value']
     
     return d
 
@@ -24,7 +24,7 @@ def eval_dictionary(s,loc,tokens):
 #    elements = tokens.asList()
 #    return elements
 
-def python_interpretation(s,loc,tokens):
+def python_interpretation(s, loc, tokens):
     val = eval(tokens[0]) # XXX why 0?
     return val
 
@@ -38,19 +38,19 @@ number = Word(nums)
 point = Literal('.')
 e = CaselessLiteral('E')
 plusorminus = Literal('+') | Literal('-')
-integer = Combine( Optional(plusorminus) + number )
-floatnumber = Combine( integer +
-                   Optional( point + Optional(number) ) +
-                   Optional( e + integer )
+integer = Combine(Optional(plusorminus) + number)
+floatnumber = Combine(integer + 
+                   Optional(point + Optional(number)) + 
+                   Optional(e + integer)
                  )
 integer.setParseAction(python_interpretation)
 floatnumber.setParseAction(python_interpretation)
 # comments
 comment = Suppress(Literal('#') + restOfLine)
-good_name =  Combine(Word(alphas)+Optional(Word(alphanums +'_')))
+good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
 
-quoted = QuotedString('"','\\',unquoteResults=True)
-reference = Combine( Suppress('$') + good_name('variable'))
+quoted = QuotedString('"', '\\', unquoteResults=True)
+reference = Combine(Suppress('$') + good_name('variable'))
 
 reference.setParseAction(VariableReference.from_tokens)
 
@@ -58,7 +58,7 @@ dictionary = Forward()
 array = Forward()
 value = Forward()
 value << (array ^ dictionary ^ reference ^ integer \
-          ^ floatnumber ^  good_name ^ quoted)('val')
+          ^ floatnumber ^ good_name ^ quoted)('val')
 
 # dictionaries
     
@@ -67,10 +67,10 @@ dictionary << (Suppress("{") + \
     Optional(\
              delimitedList(\
                            Group(\
-                                 dict_key('key') +Suppress(':')+ value('value')\
+                                 dict_key('key') + Suppress(':') + value('value')\
                                  ) \
                            ) \
-             )('content') +   \
+             )('content') + \
     Suppress("}"))
     
     
@@ -79,7 +79,7 @@ dictionary.setParseAction(eval_dictionary)
 #array << Suppress("[") + (delimitedList(value))('content') +Suppress("]")  
 #array.setParseAction(eval_list)
 
-array << Group(Suppress("[") + Optional(delimitedList(value)) +Suppress("]"))
+array << Group(Suppress("[") + Optional(delimitedList(value)) + Suppress("]"))
 #array.setParseAction(eval_list)
 
 
@@ -123,14 +123,14 @@ def parse_model(string, filename=None):
     
     # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
     # XXX: don't put '.' at the beginning
-    qualified_name = Combine( good_name +'.' + (integer ^ good_name ) )
+    qualified_name = Combine(good_name + '.' + (integer ^ good_name))
     
     block_name = good_name
-    block_type =   Word(alphanums +'_+-/*' )
+    block_type = Word(alphanums + '_+-/*')
      
-    signal = Optional(Suppress('[') + (integer ^ good_name  )('local_input') + Suppress(']')) \
-            +  Optional(block_name('block_name') + Suppress(".")) + (integer ^ good_name)('name') + \
-            Optional(Suppress('[') +  (integer ^ good_name  )('local_output') + Suppress(']'))
+    signal = Optional(Suppress('[') + (integer ^ good_name)('local_input') + Suppress(']')) \
+            + Optional(block_name('block_name') + Suppress(".")) + (integer ^ good_name)('name') + \
+            Optional(Suppress('[') + (integer ^ good_name)('local_output') + Suppress(']'))
     signal.setParseAction(wrap(ParsedSignal.from_tokens))
     
     signals = delimitedList(signal)
@@ -139,22 +139,22 @@ def parse_model(string, filename=None):
     key = good_name ^ qualified_name
     
     key_value_pair = Group(key("key") + Suppress('=') + value("value"))
-    parameter_list =  delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
-    parameter_list.setParseAction( lambda s,l,t: dict([(a[0],a[1]) for a in t ]))
+    parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
+    parameter_list.setParseAction(lambda s, l, t: dict([(a[0], a[1]) for a in t ]))
     
     block = Suppress("|") + Optional(block_name("name") + Suppress(":")) + block_type("blocktype") + \
-         Optional(parameter_list("config")) +  Suppress("|")
+         Optional(parameter_list("config")) + Suppress("|")
     
     block.setParseAction(wrap(ParsedBlock.from_tokens)) 
     
-    between = arrow + Optional( signals + arrow)
+    between = arrow + Optional(signals + arrow)
     
     # Different patterns
-    arrow_arrow =  signals + arrow +  Optional( block + ZeroOrMore(between + block) ) \
-     + arrow +  signals
-    source =   block + ZeroOrMore(between + block)  \
-     + arrow +  signals
-    sink =   signals + arrow + block + ZeroOrMore(between + block)  
+    arrow_arrow = signals + arrow + Optional(block + ZeroOrMore(between + block)) \
+     + arrow + signals
+    source = block + ZeroOrMore(between + block)  \
+     + arrow + signals
+    sink = signals + arrow + block + ZeroOrMore(between + block)  
     
     source_sink = block + ZeroOrMore(between + block)
     
@@ -163,7 +163,7 @@ def parse_model(string, filename=None):
       
     connection.setParseAction(wrap(Connection.from_tokens))
     
-    assignment   = (key("key") + Suppress('=') + value("value"))
+    assignment = (key("key") + Suppress('=') + value("value"))
     assignment.setParseAction(ParsedAssignment.from_tokens) 
     
     package_name = good_name + ZeroOrMore('.' + good_name)
@@ -175,8 +175,8 @@ def parse_model(string, filename=None):
     
     newline = Suppress(lineEnd)
     
-    model_content =  ZeroOrMore(newline) + action + \
-        ZeroOrMore( OneOrMore(newline) + action) + \
+    model_content = ZeroOrMore(newline) + action + \
+        ZeroOrMore(OneOrMore(newline) + action) + \
     ZeroOrMore(newline) 
     
     named_model = \
@@ -189,8 +189,8 @@ def parse_model(string, filename=None):
     anonymous_model = model_content.copy()
     anonymous_model.setParseAction(wrap(ParsedModel.from_anonymous_model))
     
-    comments = ZeroOrMore( (comment + newline) ^ newline)
-    pg_file = comments + ( OneOrMore(named_model) ^ anonymous_model ) +\
+    comments = ZeroOrMore((comment + newline) ^ newline)
+    pg_file = comments + (OneOrMore(named_model) ^ anonymous_model) + \
         stringEnd 
     
     try:
