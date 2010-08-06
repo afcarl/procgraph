@@ -22,9 +22,9 @@ class ExecutionStats:
         assert wall >= 0
          
         if cpu == 0:
-            duration = 0.0001
+            cpu = 0.0001
         if wall == 0:
-            duration = 0.0001
+            wall = 0.0001
             
         
         if not block in self.samples:
