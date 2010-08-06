@@ -1,18 +1,14 @@
-import sys 
+import sys, os, traceback 
+from optparse import OptionParser
 
 from procgraph.core.model_loader import model_from_string, pg_look_for_models
-from optparse import OptionParser
 from procgraph.core.registrar import default_library
-import traceback
-from procgraph.core.exceptions import SemanticError, PGSyntaxError, \
-    ModelExecutionError
+from procgraph.core.exceptions import SemanticError, PGSyntaxError 
 from procgraph.core.parsing_elements import Where
-import os
 
 
 def main():
     try:
-
         pg_look_for_models(default_library)
          
         parser = OptionParser()
@@ -61,18 +57,25 @@ def main():
                                              config=config, where=w)
         else:
             if not os.path.exists(filename):
-                print 'Uknown file "%s".' % filename
-                sys.exit(-3)
+                raise Exception('Uknown file "%s".' % filename)
+
             model_spec = open(filename).read()
-            model = model_from_string(model_spec, config=config, filename=filename)
+            model = model_from_string(model_spec, config=config,
+                                      filename=filename)
         
         if options.debug:
             model.summary()
             sys.exit(0) 
 
+        count = 0
         model.reset_execution()
         while model.has_more():
+            count += 1
             model.update()
+            
+            if count % 500 == 0:
+                model.stats.print_info()
+                
     #except ModelExecutionError as e:
     #    print e
     #    traceback.print_exc()    

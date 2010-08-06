@@ -2,6 +2,8 @@ from procgraph.core.exceptions import  SemanticError, BlockWriterError, \
     ModelExecutionError
 from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
+import time
+from procgraph.core.model_stats import ExecutionStats
 
 
 class BlockConnection:
@@ -69,6 +71,9 @@ class Model(Block):
         
         # hash signal name -> Block for blocks of type ModelInput
         self.model_input_ports = {} 
+        
+        
+        self.stats = ExecutionStats()
         
     def summary(self):
         print "--- Model: %d blocks, %d connections" % \
@@ -200,7 +205,14 @@ class Model(Block):
         # now we have a block (could be a generator)
         debug('Updating %s (input ts: %s)' % \
               (block, block.get_input_signals_timestamps()))
+        
+        # We also time the execution
+        start = time.clock()
         result = block.update()
+        duration = time.clock() - start
+        
+        self.stats.add(block=block, duration=duration)
+        
         # if the update is not finished, we put it back in the queue
         if result == block.UPDATE_NOT_FINISHED:
             self.blocks_to_update.insert(0, block)

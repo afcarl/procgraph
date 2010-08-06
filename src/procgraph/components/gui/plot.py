@@ -1,8 +1,16 @@
-import pylab, numpy
+import matplotlib
+#print "Backend %s" % matplotlib.get_backend()
+import time
+
+
+from matplotlib import pylab
+
+import  numpy
+from PIL import Image
+
 from procgraph.core.block import Block
 from procgraph.core.exceptions import BadInput
 from procgraph.core.registrar import default_library
-from PIL import Image
 
 class Plot(Block):
     ''' Just plots the vector instantaneously '''
@@ -96,6 +104,7 @@ class Plot(Block):
     def update(self):
         self.limits = None
         
+        start = time.clock()
         pylab.figure(self.figure.number)
         
         for i in range(self.num_input_signals()):
@@ -169,14 +178,25 @@ class Plot(Block):
                     loc='upper right', handlelength=1.5, markerscale=2,
                     labelspacing=0.03, borderpad=0, handletextpad=0.03,
                     borderaxespad=1)
-            
+       
+        plotting = time.clock() - start
+    
+        start = time.clock()
         temp_file = 'frame-tmp.png' # TODO use tmpfile
         pylab.savefig(temp_file)
+        saving = time.clock() - start
+        
+        
+        start = time.clock()    
         im = Image.open(temp_file)
-        #print pixel_data.shape
         im = im.convert("RGB")
         pixel_data = numpy.asarray(im)
+        reading = time.clock() - start
+       
+        if False: 
+            print "plotting: %dms  saving: %dms  reading: %dms" % (
+                plotting * 1000, saving * 1000, reading * 1000)
         
-        self.set_output(0, pixel_data)
+        self.output.rgb = pixel_data
 
 default_library.register('plot', Plot)
