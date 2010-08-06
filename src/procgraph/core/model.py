@@ -207,11 +207,14 @@ class Model(Block):
               (block, block.get_input_signals_timestamps()))
         
         # We also time the execution
-        start = time.clock()
-        result = block.update()
-        duration = time.clock() - start
+        start_cpu = time.clock()
+        start_wall = time.time()
         
-        self.stats.add(block=block, duration=duration)
+        result = block.update()
+        cpu = time.clock() - start_cpu
+        wall = time.time() - start_wall
+        
+        self.stats.add(block=block, cpu=cpu, wall=wall)
         
         # if the update is not finished, we put it back in the queue
         if result == block.UPDATE_NOT_FINISHED:
