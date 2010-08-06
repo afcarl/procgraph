@@ -20,6 +20,10 @@ class Plot(Block):
         self.config.legend = None
         self.config.title = None
         self.config.format = '-'
+        self.config.x_min = None 
+        self.config.x_max = None
+        self.config.y_min = None 
+        self.config.y_max = None
         
         width = self.config.width
         height = self.config.height
@@ -74,6 +78,7 @@ class Plot(Block):
             self.lines[id] = line
         else:
             self.lines[id].set_ydata(y)
+            self.lines[id].set_xdata(x)
         
         self.lengths[id] = len(x)
         
@@ -143,7 +148,19 @@ class Plot(Block):
             # TODO: check that if one has time vector, also others have it
 
         if self.limits:
+            
+            if self.config.x_min is not None:
+                self.limits[0] = self.config.x_min
+            if self.config.x_max is not None:
+                self.limits[1] = self.config.x_max
+            if self.config.y_min is not None:
+                self.limits[2] = self.config.y_min
+            if self.config.y_max is not None:
+                self.limits[3] = self.config.y_max
+                
             self.axes.axis(self.limits)
+            
+        
         
         if self.legend_handle is None:
             legend = self.config.legend

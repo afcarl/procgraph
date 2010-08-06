@@ -13,6 +13,7 @@ Welcome to procgraph's documentation!
 	* :ref:`install`
 	* :ref:`why`
 	* :ref:`limitations`
+	
 
 	**Tutorial**
 	
@@ -24,6 +25,18 @@ Welcome to procgraph's documentation!
 
 	* :ref:`creating_new_blocks` 
 	
+
+
+
+.. block:: gray2rgb
+  
+  Block description description
+
+ .. input:: An rgb imager
+
+ .. config:: An rgb image
+
+ .. output:: An rgb image
 
 Libraries documentation
 -----------------------
