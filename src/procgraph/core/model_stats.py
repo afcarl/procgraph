@@ -52,7 +52,7 @@ class ExecutionStats:
             
             
         # sort by percentage
-        all = sorted(self.samples.values(), key=lambda x:-x.perc_cpu)
+        all = sorted(self.samples.values(), key=lambda x:-x.perc_wall)
         min_perc = 3
         print 'Statistics (ignoring < %d):' % min_perc + " " * 30
         for s in all:
@@ -65,6 +65,10 @@ class ExecutionStats:
             jitter_cpu = ceil(100 * (sqrt(s.var_cpu) * 2 / s.mean_cpu))
             jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))
             
+            if s.mean_cpu < 0.7 * s.mean_wall:
+                comment = ' IO '
+            else:
+                comment = '    '
 #            print ''.join([
 #'- cpu: %dms (+-%d%%) %02d%% of total; ' % (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
 #'wall: %dms (+-%d%%) %02d%% of total; ' % (1000 * s.mean_wall, jitter_wall, perc_wall),
@@ -72,7 +76,7 @@ class ExecutionStats:
             print ''.join([
 '- cpu: %4dms %2d%%; ' % (1000 * s.mean_cpu, perc_cpu),
 'wall: %4dms %2d%%; ' % (1000 * s.mean_wall, perc_wall),
-'exec: %2d%%  ' % perc_times,
+'exec: %2d%%; %s  ' % (perc_times, comment),
 str(s.block)])
      
         
