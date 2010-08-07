@@ -32,7 +32,7 @@ svs_t, svs_r, svs_l --> |sync| -> |grid cols=1| --> display_svs
 | hokuyo_rear:RawseedsHokuyo| --> |hr:rf_display max=6 title=hokuyo_rear| --> hokuyo_rear
 |  sick_front:RawseedsRF|     --> |sf:rf_display max=81 title=sick_front| --> sick_front
 |   sick_rear:RawseedsRF|     --> |sr:rf_display max=81 title=sick_rear| --> sick_rear
-hokuyo_rear, hokuyo_front, sick_front, sick_rear --> |sync| --> |grid cols=2| -->   display_laser
+hokuyo_rear, hokuyo_front, sick_front, sick_rear --> |sync| --> |grid cols=2| --> display_laser
 
 ######## Odometry
 |odometry:RawseedsOdo| 

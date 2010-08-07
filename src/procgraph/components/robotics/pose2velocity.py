@@ -7,6 +7,7 @@ from snp_geometry.pose import Pose
 
 
 class Pose2velocity(Block):
+    
     def init(self):
         self.define_input_signals(['q12', 't12'])
         self.define_output_signals(['commands'])
@@ -28,14 +29,7 @@ class Pose2velocity(Block):
         velocity = diff.logarithm()
         # scale velocity
         velocity.linear = velocity.linear / delta
-        velocity.angular = velocity.angular / delta
-        
-        #print velocity.linear, velocity.angular
-        
-        # This is 2D motion (== is too strong)
-        # assert velocity.linear[2] == 0
-        # assert velocity.angular[0] == 0
-        # assert velocity.angular[1] == 0
+        velocity.angular = velocity.angular / delta 
         
         commands = [float(velocity.linear[0]),
                     float(velocity.linear[1]),

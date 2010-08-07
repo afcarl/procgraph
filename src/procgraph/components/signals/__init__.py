@@ -7,13 +7,9 @@
 |towrite|
 
 
-.. block:: join
+.. automodule:: procgraph.signals.extract
 
-  |towrite|
-  
-.. block:: extract
-
-  |towrite|
+.. automodule:: procgraph.signals.join
   
 '''
 

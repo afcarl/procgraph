@@ -50,6 +50,8 @@ Libraries documentation
   :ref:`block:variance`,
   :ref:`block:cov2corr`.
 
+* :ref:`library:signals`
+
 
 **Operations with time**
 

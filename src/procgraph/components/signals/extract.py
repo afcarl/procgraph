@@ -1,3 +1,11 @@
+'''
+
+.. block:: join
+
+  |towrite|
+  
+
+'''
 from procgraph.core.block import Block 
 from procgraph.core.registrar import default_library
 
@@ -14,7 +22,7 @@ class Extract(Block):
     '''
     def init(self):
         self.define_input_signals(['vector'])
-        self.define_output_signals(['part'] )
+        self.define_output_signals(['part'])
             
         self.get_config('index')
             

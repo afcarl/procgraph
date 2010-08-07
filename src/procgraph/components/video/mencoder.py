@@ -23,21 +23,21 @@ class MEncoder(Block):
         self.process = None
         self.define_input_signals(["image"])
         self.define_output_signals([])
-        self.file = self.get_config('file')
-        self.set_config_default('fps', 10) 
-        self.set_config_default('vcodec', 'mpeg4')
-        self.set_config_default('vbitrate', 1000000)
+        self.file = self.config.file
+        self.config.fps = 10 
+        self.config.vcodec = 'mpeg4'
+        self.config.vbitrate = 1000000
         
     def update(self):
         check_rgb_or_grayscale(self, 0)
         
-        image = self.get_input(0)        
+        image = self.input.image        
         h, w = image.shape[0:2]
-        fps = self.get_config('fps')
+        fps = self.config.fps
         
         if self.process is None:
-            vcodec = self.get_config('vcodec')
-            vbitrate = self.get_config('vbitrate')
+            vcodec = self.config.vcodec
+            vbitrate = self.config.vbitrate
             
             format = {2: 'y8', 3: 'rgb24'}[len(image.shape)]
             

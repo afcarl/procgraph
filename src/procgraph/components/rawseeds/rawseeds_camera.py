@@ -10,7 +10,7 @@ class RawseedsCamera(Generator):
     ''' This block reads a range-finder log in Rawseeds format. '''
     
     def init(self):
-        dirname = self.get_config('dir')
+        dirname = self.config.dir
         dirname = expand_environment(dirname)
         
         if not os.path.exists(dirname):
@@ -42,28 +42,28 @@ class RawseedsCamera(Generator):
         print "Read %s frames -- sorting." % len(frames)
         frames.sort(key=lambda x: x[0])
         
-        self.set_state('frames', frames)
-        self.set_state('next_frame', 0)
+        self.state.frames = frames
+        self.state.next_frame = 0
 
         # TODO: make sure we have only one signal in the dir?
         self.set_config_default('name', signal_name)
         self.define_input_signals([])
-        self.define_output_signals([self.get_config('name')])
+        self.define_output_signals([self.config.name])
         
         print "Camera log ready for %s" % self.get_config('name')
         
     def next_data_status(self):
-        k = self.get_state('next_frame')
+        k = self.state.next_frame
         if k is None:
             return (False, None)
         else:
-            frames = self.get_state('frames')
+            frames = self.state.frames
             timestamp = frames[k][0]
             return (True, timestamp)
                  
     def update(self):
-        frames = self.get_state('frames')
-        k = self.get_state('next_frame')
+        frames = self.state.frames
+        k = self.state.next_frame
 
         assert k < len(frames)
         
@@ -80,9 +80,9 @@ class RawseedsCamera(Generator):
         self.set_output(0, value=data, timestamp=timestamp)        
 
         if k + 1 >= len(frames):
-            self.set_state('next_frame', None)
+            self.state.next_frame = None
         else:
-            self.set_state('next_frame', k + 1)
+            self.state.next_frame = k + 1
  
 
 default_library.register('RawseedsCam', RawseedsCamera)

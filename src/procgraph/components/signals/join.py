@@ -1,3 +1,11 @@
+'''
+
+.. block:: join
+
+  |towrite|
+  
+
+'''
 import numpy
 
 from procgraph.core.block import Block 

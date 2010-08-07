@@ -11,27 +11,27 @@ class TextLog(Generator):
     '''
     
     def init(self):
-        filename = self.get_config('file')
+        filename = self.config.file
         filename = expand_environment(filename)
         
         if filename.endswith('bz2'):
             import bz2
             self.stream = bz2.BZ2File(filename)
         else:
-            self.stream = open(filename,'r')
+            self.stream = open(filename, 'r')
             
-        self.set_state('line', 0) # line counter
+        self.state.line = 0  # line counter
         self.read_next_line()
         
         if self.timestamp is None:
             raise Exception('Empty file %s' % filename)
         
-        names = map( lambda x:x[0], self.values )
+        names = map(lambda x:x[0], self.values)
         self.define_output_signals(names)
         self.define_input_signals([])
 
     def read_next_line(self):
-        line = self.get_state('line')
+        line = self.state.line
         next_line = self.stream.readline()
         # check end of file
         if not next_line:
@@ -44,7 +44,7 @@ class TextLog(Generator):
             msg = "While reading line %s of file %s (='%s'): %s" % \
                 (line, self.get_config('file'), next_line, e)
             raise ModelExecutionError(msg, self)
-        self.set_state('line',line+1)
+        self.state.line = line + 1
 
     def next_data_status(self):
         if self.timestamp is None: # EOF
