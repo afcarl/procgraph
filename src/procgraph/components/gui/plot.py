@@ -183,7 +183,8 @@ class Plot(Block):
         plotting = time.clock() - start
     
         start = time.clock()
-        temp_file = tempfile.NamedTemporaryFile(suffix='.png', delete=False).name
+        f = tempfile.NamedTemporaryFile(suffix='.png')
+        temp_file = f.name
         
         #temp_file = 'frame-tmp.png' # TODO use tmpfile
         pylab.savefig(temp_file)
