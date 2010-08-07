@@ -67,4 +67,4 @@ h = 180
 |input name=cam| --> |gray2rgb| -->  |resize width=$w height=$h| --> |output name=rgb|
 
 --- model rf_display
-|input name=y| --> |fps_limit fps=10| -> |plot width=320 height=160 title=$title y_max=$max y_min=0| --> |output name=display_laser|
+|input name=y| --> |fps_data_limit fps=10| -> |plot width=320 height=160 title=$title y_max=$max y_min=0| --> |output name=display_laser|

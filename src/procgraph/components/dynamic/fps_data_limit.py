@@ -3,11 +3,8 @@ import time
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
 
-class FPSLimit(Block):
-    ''' This block limits the output update to a certain framerate.
-    
-    Note that this uses realtime wall clock time -- not the data time!
-    This is mean for real-time applications, such as visualization.''' 
+class FPSDataLimit(Block):
+    ''' This block limits the output update to a certain framerate. ''' 
      
     def init(self):
         # say we are not ready if the inputs were not defined.
@@ -25,7 +22,7 @@ class FPSLimit(Block):
         should_update = False
         
         last = self.state.last_timestamp
-        current = time.time()
+        current = max(self.get_input_signals_timestamps())
         
         if last is None:
             should_update = True
@@ -46,7 +43,7 @@ class FPSLimit(Block):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
 
         
-default_library.register('fps_limit', FPSLimit)
+default_library.register('fps_data_limit', FPSDataLimit)
 
 
 
