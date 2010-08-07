@@ -11,6 +11,7 @@ from PIL import Image
 from procgraph.core.block import Block
 from procgraph.core.exceptions import BadInput
 from procgraph.core.registrar import default_library
+import tempfile
 
 class Plot(Block):
     ''' Just plots the vector instantaneously '''
@@ -182,7 +183,9 @@ class Plot(Block):
         plotting = time.clock() - start
     
         start = time.clock()
-        temp_file = 'frame-tmp.png' # TODO use tmpfile
+        temp_file = tempfile.NamedTemporaryFile(suffix='.png', delete=False).name
+        
+        #temp_file = 'frame-tmp.png' # TODO use tmpfile
         pylab.savefig(temp_file)
         saving = time.clock() - start
         
