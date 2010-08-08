@@ -32,7 +32,13 @@ class TextLog(Generator):
 
     def read_next_line(self):
         line = self.state.line
-        next_line = self.stream.readline()
+        while True: 
+            next_line = self.stream.readline()
+            # skip empty lines
+            if next_line == '\n':
+                continue
+            else:
+                break
         # check end of file
         if not next_line:
             self.timestamp = None
