@@ -14,6 +14,7 @@ class Statistics:
 
 class ExecutionStats:
     
+    
     def __init__(self):
         self.samples = {}
         
@@ -37,6 +38,11 @@ class ExecutionStats:
         s.mean_wall = (s.mean_wall * s.num + wall) / (s.num + 1)
         s.var_wall = (s.var_wall * s.num + (wall - s.mean_wall) ** 2) / (s.num + 1)
         s.num = s.num + 1
+        
+        WINDOW = 100
+        
+        if s.num > WINDOW:
+            s.num == WINDOW
         
         
     def print_info(self):

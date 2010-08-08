@@ -16,6 +16,9 @@ def main():
         parser.add_option("--debug", action="store_true",
                           default=False, dest="debug",
                           help="Displays debug information on the model.")
+        parser.add_option("--stats", action="store_true",
+                          default=False, dest="stats",
+                          help="Displays execution statistics, including CPU usage.")
         
         
         (options, args) = parser.parse_args()
@@ -70,11 +73,13 @@ def main():
         count = 0
         model.reset_execution()
         while model.has_more():
-            count += 1
+            
             model.update()
             
-            if count % 500 == 0:
-                model.stats.print_info()
+            if options.stats:
+                count += 1
+                if count % 500 == 0:
+                    model.stats.print_info()
                 
     #except ModelExecutionError as e:
     #    print e
