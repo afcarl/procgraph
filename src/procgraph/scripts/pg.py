@@ -72,8 +72,7 @@ def main():
 
         count = 0
         model.reset_execution()
-        while model.has_more():
-            
+        while model.has_more():       
             model.update()
             
             if options.stats:

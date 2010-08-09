@@ -11,6 +11,10 @@ class Statistics:
         self.perc_cpu = None
         self.perc_wall = None
         self.perc_times = None
+        self.baseline_fraction = None
+        self.last_timestamp = None
+        self.mean_delta = 0
+        self.delta_num = 0
 
 class ExecutionStats:
     
@@ -18,7 +22,7 @@ class ExecutionStats:
     def __init__(self):
         self.samples = {}
         
-    def add(self, block, cpu, wall):
+    def add(self, block, cpu, wall, timestamp):
         assert cpu >= 0
         assert wall >= 0
          
@@ -33,21 +37,39 @@ class ExecutionStats:
             
         s = self.samples[block]
         
-        s.mean_cpu = (s.mean_cpu * s.num + cpu) / (s.num + 1)
-        s.var_cpu = (s.var_cpu * s.num + (cpu - s.mean_cpu) ** 2) / (s.num + 1)
-        s.mean_wall = (s.mean_wall * s.num + wall) / (s.num + 1)
-        s.var_wall = (s.var_wall * s.num + (wall - s.mean_wall) ** 2) / (s.num + 1)
-        s.num = s.num + 1
-        
         WINDOW = 100
+        N = min(s.num, WINDOW)
         
-        if s.num > WINDOW:
-            s.num == WINDOW
+        s.mean_cpu = (s.mean_cpu * N + cpu) / (N + 1)
+        s.var_cpu = (s.var_cpu * N + (cpu - s.mean_cpu) ** 2) / (N + 1)
+        s.mean_wall = (s.mean_wall * N + wall) / (N + 1)
+        s.var_wall = (s.var_wall * N + (wall - s.mean_wall) ** 2) / (N + 1)
+        s.num += 1
+        
+        if isinstance(timestamp, float):
+            if s.last_timestamp is not None:
+                delta = timestamp - s.last_timestamp
+                # when the block is a model, it could be called multiple times
+                if delta > 0:
+                    N = s.delta_num
+                    s.mean_delta = (s.mean_delta * N + delta) / (N + 1)
+                    s.delta_num += 1
+                    # print "%s %d mean %d" % (s.block, delta * 1000, 1000 * s.mean_delta)
+                
+        
+        s.last_timestamp = timestamp
+        
+        
         
         
     def print_info(self):
-        # update percentage
         samples = self.samples.values()
+
+        # get the block that executed fewest times and use it as a baseline
+        baseline = min(samples, key=lambda s: s.num)
+        
+        
+        # update percentage
         total_cpu = sum(map(lambda s: s.mean_cpu * s.num, samples))
         total_wall = sum(map(lambda s: s.mean_wall * s.num, samples))
         total_times = sum(map(lambda s:  s.num, samples))
@@ -55,16 +77,17 @@ class ExecutionStats:
             s.perc_cpu = s.mean_cpu * s.num / total_cpu
             s.perc_wall = s.mean_wall * s.num / total_wall
             s.perc_times = s.num * 1.0 / total_times
-            
+            s.baseline_fraction = s.num * 1.0 / baseline.num
             
         # sort by percentage
         all = sorted(self.samples.values(), key=lambda x:-x.perc_wall)
         min_perc = 3
-        print 'Statistics (ignoring < %d):' % min_perc + " " * 30
+        print '--- Statistics (ignoring < %d) baseline: %s %d' % \
+            (min_perc , baseline.block, baseline.num) 
         for s in all:
             perc_cpu = ceil(s.perc_cpu * 100)
             perc_wall = ceil(s.perc_wall * 100)
-            if (perc_cpu < min_perc) and (perc_wall < min_perc):
+            if s != baseline and (perc_cpu < min_perc) and (perc_wall < min_perc):
                 continue
             perc_times = ceil(s.perc_times * 100)
             
@@ -72,17 +95,25 @@ class ExecutionStats:
             jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))
             
             if s.mean_cpu < 0.7 * s.mean_wall:
-                comment = ' IO '
+                comment = ' I/O '
             else:
-                comment = '    '
+                comment = '     '
 #            print ''.join([
 #'- cpu: %dms (+-%d%%) %02d%% of total; ' % (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
 #'wall: %dms (+-%d%%) %02d%% of total; ' % (1000 * s.mean_wall, jitter_wall, perc_wall),
 #'exec: %02d%% of total' % perc_times])
+
+            if s.mean_delta > 0:
+                fps = 1 / s.mean_delta 
+                stats = 'update %4d fps' % fps
+            else:
+                stats = ' ' * len('update %4d fps' % 0)
+
             print ''.join([
 '- cpu: %4dms %2d%%; ' % (1000 * s.mean_cpu, perc_cpu),
 'wall: %4dms %2d%%; ' % (1000 * s.mean_wall, perc_wall),
-'exec: %2d%%; %s  ' % (perc_times, comment),
+'exec: %2d%% %3.1fx %s; %s  ' % (perc_times, s.baseline_fraction,
+                                          stats, comment),
 str(s.block)])
      
         

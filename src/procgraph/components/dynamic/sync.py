@@ -5,6 +5,15 @@ from procgraph.core.registrar import default_library
 Sample = namedtuple('Sample', 'timestamp value')
 
 
+def oldest(queue):
+    return queue[-1]
+
+def newest(queue):
+    return queue[0]
+
+def add_last(queue, object):
+    queue.insert(0, object)
+    
 class Sync(Generator):
     ''' 
     This block synchronizes a set of N sensor streams.
@@ -54,6 +63,7 @@ class Sync(Generator):
             
         
         self.set_state('queues', queues)
+        self.state.already_seen = {}
         
         self.set_state('master', names[0])
         self.set_state('slaves', names[1:])
@@ -81,13 +91,23 @@ class Sync(Generator):
             if current_timestamp == 0:
                 debug('Ignoring %s because timestamp still 0' % name)
                 continue
+            
+            if  name in self.state.already_seen \
+                and self.state.already_seen[name] == current_timestamp:
+                continue 
+            else:
+                self.state.already_seen[name] = current_timestamp
+            
             queue = queues[name]
             # if there is nothing in the queue
             # or this is a new sample
-            if not queue or queue[0].timestamp != current_timestamp: # new sample
-                queue.insert(0, Sample(timestamp=current_timestamp, value=current_value))
-                debug("Inserting %s ts %s (queue %d)" % (name, current_timestamp,
-                                                         len(queue)))
+            if (len(queue) == 0) or newest(queue).timestamp != current_timestamp: # new sample
+                debug("Inserting signal '%s'  ts %s (queue len: %d)" % \
+                      (name, current_timestamp, len(queue)))
+                #debug('Before the queue is: %s' % queue)
+                add_last(queue, Sample(timestamp=current_timestamp, value=current_value))
+                
+                #debug('Now the queue is: %s' % queue)
                 
         master = self.get_state('master')
         master_queue = queues[master]
@@ -95,7 +115,10 @@ class Sync(Generator):
         
             
         # if there is more than one value in each slave
-        
+        if len(master_queue) > 1:
+            val = master_queue.pop()
+            debug('DROPPING master (%s) ts =%s' % (master, val.timestamp))
+
         # Now check whether all slaves signals are >= the master
         # If so, output a synchronized sample.
         if master_queue:
@@ -105,11 +128,11 @@ class Sync(Generator):
             for slave in slaves:
                 slave_queue = queues[slave]
                 # remove oldest
-                while slave_queue and slave_queue[-1].timestamp < master_timestamp:
+                while len(slave_queue) > 1 and oldest(slave_queue).timestamp < master_timestamp:
                     debug("DROP one from %s" % slave)
                     slave_queue.pop()
                 
-                if not slave_queue or (master_timestamp > slave_queue[-1].timestamp): 
+                if not slave_queue: # or (master_timestamp > slave_queue[-1].timestamp): 
                     all_ready = False
                     its_ts = map(lambda x:x.timestamp, slave_queue)
                     #print "Slave %s not ready: %s" %(slave, its_ts)
@@ -123,7 +146,7 @@ class Sync(Generator):
                     # get the freshest still after the master
                     slave_queue = queues[slave]
                     slave_timestamp, slave_value = slave_queue.pop()
-                    assert slave_timestamp >= master_timestamp
+                    ## not true anymore, assert slave_timestamp >= master_timestamp
                     difference = slave_timestamp - master_timestamp
                     debug(" - %s timestamp %s diff %s" % (slave, slave_timestamp, difference))
                     output_values.append(slave_value)
@@ -131,10 +154,7 @@ class Sync(Generator):
 
     # XXX XXX not really sure here
         # if master has more than one sample, then drop the first one
-#        if len(master_queue)>1:
- #           val = master_queue.pop()
-  #          debug('DROPPING master (%s) ts =%s' % (master, val.timestamp))
-
+  
         # if we have something to output, do it 
         if output:
             timestamp, values = output.pop()

@@ -14,6 +14,7 @@ class TextLog(Generator):
         filename = self.config.file
         filename = expand_environment(filename)
         
+        # TODO: add .gz
         if filename.endswith('bz2'):
             import bz2
             self.stream = bz2.BZ2File(filename)

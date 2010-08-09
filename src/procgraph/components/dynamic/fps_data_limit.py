@@ -1,5 +1,3 @@
-import time
-
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
 
@@ -31,8 +29,9 @@ class FPSDataLimit(Block):
             fps = self.config.fps 
             delta = 1.0 / fps
             difference = current - last
-            #print "difference: %s ~ %s" % (difference, delta)
             if difference > delta:
+                #print "%s difference: %s ~ %s" % (self, difference, delta)
+                #print "%s difference: %dms > %d" % (self, difference * 1000, delta * 1000)
                 should_update = True
                 self.state.last_timestamp = current
 

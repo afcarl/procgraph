@@ -23,6 +23,7 @@ class Library:
         self.name2block[block_type] = generator
     
     def instance(self, block_type, name, config, parent_library=None, where=None):
+
         # we give the children a reference to the library object
         # that was called first, not its parent
         if parent_library is None:

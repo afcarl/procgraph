@@ -42,9 +42,7 @@ class Block(object):
         self.input = InputProxy(self)
         self.output = OutputProxy(self)
         self.state = StateProxy(self)
-        self.config = ConfigProxy(self)
-        #self.config_default = ConfigDefaultProxy(self)
-
+        self.config = ConfigProxy(self) 
     
     INIT_NOT_FINISHED = 'init-not-finished'
     def init(self):
@@ -192,7 +190,7 @@ class Block(object):
     def __get_output_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given out signal. '''
         if not self.is_valid_output_name(num_or_id):
-            raise ModelWriterError('Unknown input name "%s".' % str(num_or_id), self)
+            raise ModelWriterError('Unknown output name "%s".' % str(num_or_id), self)
         
         if isinstance(num_or_id, str):
             # convert from name to number
@@ -244,6 +242,11 @@ class Block(object):
     def get_input_signals_timestamps(self):
         ''' Returns a list of the input signals timestamps. '''
         return map(lambda x: x.timestamp, self.__input_signals)
+    
+    def get_input_signals_values(self):
+        ''' Returns a list of the input signals values. '''
+        return map(lambda x: x.value, self.__input_signals)
+
     
     def __repr__(self):
         s = 'B:%s:%s(' % (self.__class__.__name__, self.name)

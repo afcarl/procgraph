@@ -1,5 +1,5 @@
 from procgraph.core.exceptions import  SemanticError, BlockWriterError, \
-    ModelExecutionError
+    ModelExecutionError, ModelWriterError
 from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
 import time
@@ -135,7 +135,12 @@ class Model(Block):
             return True
         
         for generator in self.generators:
-            (has_next, timestamp) = generator.next_data_status() #@UnusedVariable
+            status = generator.next_data_status() #@UnusedVariable
+            
+            if not isinstance(status, tuple) or len(status) != 2:
+                raise ModelWriterError('next_data_status should return a tuple ' + 
+                                       'of len 2, not "%s"' % status, generator)
+            (has_next, timestamp) = status #@UnusedVariable
             if has_next:
                 return True
             
@@ -213,8 +218,16 @@ class Model(Block):
         result = block.update()
         cpu = time.clock() - start_cpu
         wall = time.time() - start_wall
-        
-        self.stats.add(block=block, cpu=cpu, wall=wall)
+
+        if block.get_input_signals_timestamps():
+            timestamp = max(block.get_input_signals_timestamps())
+        elif block.get_output_signals_timestamps():
+            timestamp = max(block.get_output_signals_timestamps())
+        else: # for those that don't have input signals
+            timestamp = 0.001
+            
+        self.stats.add(block=block, cpu=cpu, wall=wall,
+                       timestamp=timestamp)
         
         # if the update is not finished, we put it back in the queue
         if result == block.UPDATE_NOT_FINISHED:
