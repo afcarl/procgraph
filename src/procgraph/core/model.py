@@ -37,8 +37,8 @@ class BlockConnection:
         return s
     
     
-class Model(Block):
-    ''' A Model is a block. '''
+class Model(Generator):
+    ''' A Model is a block and a generator. '''
     
     def __init__(self, name, model_name):
         ''' Name is the personal name of this instance.
@@ -129,6 +129,26 @@ class Model(Block):
         if public_name in self.name2block_connection:
             raise SemanticError('Signal "%s" already defined. ' % public_name, block2)
         self.name2block_connection[public_name] = BC
+
+    def next_data_status(self):
+        ''' XXX OK, I'm writing this late and probably it's more complicated than this. '''  
+        generator_timestamps = []
+        at_least_one = False
+        for generator in self.generators:
+            status = generator.next_data_status() 
+            (has_next, timestamp) = status #@UnusedVariable
+            if has_next:
+                at_least_one = True
+                if timestamp is not None:
+                    generator_timestamps.append(timestamp)
+        
+        if not at_least_one:
+            return (False, None)
+        elif not generator_timestamps:
+            return (True, None)
+        else:
+            return (True, min(generator_timestamps))
+            
 
     def has_more(self):
         if self.blocks_to_update:
