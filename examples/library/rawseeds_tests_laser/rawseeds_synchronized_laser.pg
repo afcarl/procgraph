@@ -1,6 +1,6 @@
 --- model rawseeds_synchronized_laser
 # This model reads and synchronizes the 4 laser sources in a Rawseeds log.
-# params: 
+# params:
 # - logdir
 # - fps    (=10) fps limit on the data. Hokuyo is 10, Sick is ? natively.
 # - hokuyo_downsample (=4)  Hokuyo resolution is 676/1024 rays 
