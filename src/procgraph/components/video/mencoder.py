@@ -27,6 +27,7 @@ class MEncoder(Block):
         self.config.fps = 10 
         self.config.vcodec = 'mpeg4'
         self.config.vbitrate = 1000000
+        self.config.quiet = True
         
     def update(self):
         check_rgb_or_grayscale(self, 0)
@@ -47,10 +48,15 @@ class MEncoder(Block):
                      'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
                      '-o', self.file]
             print 'command line: %s' % " ".join(args)
-            self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE,
-                                            #stderr=subprocess.PIPE,
-                                            #stdout=subprocess.PIPE
-                                            )
+                     
+            if self.config.quiet:
+                self.process = subprocess.Popen(args,
+                    stdin=subprocess.PIPE, stdout=open('/dev/null'),
+                                                stderr=open('/dev/null'),)
+            else:
+                self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
+
+
             
         self.process.stdin.write(image.data)
         self.process.stdin.flush()

@@ -18,6 +18,7 @@ class MPlayer(Generator):
         self.define_input_signals([])
         self.define_output_signals(["video"])
         self.file = self.get_config('file')
+        self.config.quiet = True 
         
         # first we identify the video resolution
         args = 'mplayer -identify -vo null -ao null -frames 0'.split() + [self.file]
@@ -66,7 +67,11 @@ class MPlayer(Generator):
         
         print "command line: %s" % " ".join(args)
          
-        self.process = subprocess.Popen(args)
+        if self.config.quiet:
+            self.process = subprocess.Popen(args, stdout=open('/dev/null'),
+                                            stderr=open('/dev/null'),)
+        else:
+            self.process = subprocess.Popen(args)
 
         self.delta = 1.0 / self.fps
         self.set_state('timestamp', self.delta)
