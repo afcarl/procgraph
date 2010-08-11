@@ -29,21 +29,23 @@ y_dot, y_n --> |sync| --> |outer| --> y_y_n
 y_y_n, commands --> |sync| -> a,b --> |outer| --> Ti 
 
 Ti --> |expectation| --> T 
+
+T --> |rawseeds_laser_bsd_boot_sign_display_simple out=$out|
  
-
-# Extract the components of T and display them
-w=360
-T --> |fps_data_limit fps=1| --> Tc
-Tc --> |take axis=2 indices=[0]| --> T_x --> |posneg| --> |resize width=$w  height=$w| --> T_x_rgb
-Tc --> |take axis=2 indices=[1]| --> T_y  --> |posneg| -->  |resize width=$w  height=$w| --> T_y_rgb
-Tc --> |take axis=2 indices=[2]| --> T_theta--> |posneg| --> |resize width=$w height=$w| --> T_theta_rgb
-#T_x_rgb, T_y_rgb, T_theta_rgb --> |sync| --> |grid cols=3| --> |mencoder file=$out|
-
-Ti --> |fps_data_limit fps=1|  --> |sign| --> Tic
-Tic --> |take axis=2 indices=[0]| --> |posneg| --> |resize width=$w  height=$w| --> Ti0
-Tic --> |take axis=2 indices=[1]| --> |posneg| --> |resize width=$w  height=$w| --> Ti1
-Tic --> |take axis=2 indices=[2]| --> |posneg| --> |resize width=$w  height=$w| --> Ti2
 # 
-# Create output video
- T_x_rgb, T_y_rgb, T_theta_rgb, Ti0, Ti1, Ti2 --> |sync| --> |grid cols=3|  --> |mencoder file=$out|
-
+# # Extract the components of T and display them
+# w=360
+# T --> |fps_data_limit fps=1| --> Tc
+# Tc --> |take axis=2 indices=[0]| --> T_x --> |posneg| --> |resize width=$w  height=$w| --> T_x_rgb
+# Tc --> |take axis=2 indices=[1]| --> T_y  --> |posneg| -->  |resize width=$w  height=$w| --> T_y_rgb
+# Tc --> |take axis=2 indices=[2]| --> T_theta--> |posneg| --> |resize width=$w height=$w| --> T_theta_rgb
+# #T_x_rgb, T_y_rgb, T_theta_rgb --> |sync| --> |grid cols=3| --> |mencoder file=$out|
+# 
+# Ti --> |fps_data_limit fps=1|  --> |sign| --> Tic
+# Tic --> |take axis=2 indices=[0]| --> |posneg| --> |resize width=$w  height=$w| --> Ti0
+# Tic --> |take axis=2 indices=[1]| --> |posneg| --> |resize width=$w  height=$w| --> Ti1
+# Tic --> |take axis=2 indices=[2]| --> |posneg| --> |resize width=$w  height=$w| --> Ti2
+# # 
+# # Create output video
+#  T_x_rgb, T_y_rgb, T_theta_rgb, Ti0, Ti1, Ti2 --> |sync| --> |grid cols=3|  --> |mencoder file=$out|
+# 
