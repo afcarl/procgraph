@@ -50,6 +50,15 @@ default_library.register('-', make_generic(2, 1, lambda x, y: x - y))
 default_library.register('/', make_generic(2, 1, lambda x, y: x / y))
 
     
+def define_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}):
+    if name is None:
+        name = function.__name__
+    
+    block = make_generic(num_inputs, num_outputs, function, **params)
+    
+    default_library.register(name, block)
+
+    
 class Constant(Block):
     ''' Creates a numerical constant that never changes.::
     
