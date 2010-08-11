@@ -1,8 +1,9 @@
+import time
+
 from procgraph.core.exceptions import  SemanticError, BlockWriterError, \
     ModelExecutionError, ModelWriterError
 from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
-import time
 from procgraph.core.model_stats import ExecutionStats
 
 
@@ -182,7 +183,6 @@ class Model(Generator):
             if False:
                 print 'Model %s | %s' % (self.model_name, s)
         
-        
         # We keep a list of blocks to be updated.
         # If the list is not empty, then pop one and update it.
         if self.blocks_to_update:
@@ -203,7 +203,7 @@ class Model(Generator):
                     generators_with_timestamps.append((generator, timestamp))
         
             if not generators_with_timestamps:
-                raise ModelExecutionError("You asked me to update but nothing's left.")
+                raise ModelExecutionError("You asked me to update but nothing's left.", self)
                
             # now look for the smallest available timestamp
             # (timestamp can be none)
@@ -292,7 +292,8 @@ class Model(Generator):
                     other.from_outside_set_input(other_signal, value,
                                                  this_timestamp)
                     
-                    self.blocks_to_update.append(other)
+                    if not other in self.blocks_to_update:
+                        self.blocks_to_update.append(other)
                     
                     # If this is an output port, update the model
                     if isinstance(other, ModelOutput):
@@ -314,6 +315,7 @@ class Model(Generator):
         for block_connection in self.name2block_connection.values():
             if block_connection.block1 == block:
                 yield block_connection
+                
     def __get_successors(self, block):
         ''' Returns an iterable of all the blocks connected
             to one of the outputs of the given block. '''
