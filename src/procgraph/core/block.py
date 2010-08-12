@@ -55,8 +55,11 @@ class Block(object):
         Use set_state() for temporary storage. '''
         pass
     
-    # Used during initialization
+    def finish(self):
+        pass
     
+    
+    # Used during initialization
     def num_input_signals(self):
         assert self.are_input_signals_defined()
         return len(self.__input_signals)
@@ -83,8 +86,9 @@ class Block(object):
     
     def define_input_signals(self, signals):
         if not isinstance(signals, list):
-            raise BlockWriterError('I expect the parameter to define_input_signals()' + 
-                                   ' to be a list, got a %s: %s' % \
+            raise BlockWriterError(
+                'I expect the parameter to define_input_signals()' + 
+               ' to be a list, got a %s: %s' % \
                                    (signals.__class__.__name__, signals))
 
         # reset structures
@@ -103,9 +107,10 @@ class Block(object):
           
     def define_output_signals(self, signals):
         if not isinstance(signals, list):
-            raise BlockWriterError('I expect the parameter to define_output_signals()' + 
-                                   ' to be a list, got a %s: %s' % \
-                                   (signals.__class__.__name__, signals))
+            raise BlockWriterError(
+                    'I expect the parameter to define_output_signals()' + 
+                   ' to be a list, got a %s: %s' % \
+                   (signals.__class__.__name__, signals))
         # reset structures
         self.__output_signal_names = []
         self.__output_signals = []
@@ -125,17 +130,24 @@ class Block(object):
             
     def get_config(self, conf):
         if not conf in self.__config:
-            raise ModelExecutionError('For block %s: could not find parameter "%s" in config %s.' % 
+            raise ModelExecutionError(
+                'For block %s: could not find parameter "%s" in config %s.' % 
                              (self, conf, self.__config), self)
         return self.__config[conf]
         
-    def set_state(self, num_or_id, value):
-        ''' Can be called during init() and update() '''
-        self.__states[num_or_id] = value
+    def set_state(self, varname, value):
+        ''' Can be called during init() and update(). '''
+        # TODO: add check and exception
+        self.__states[varname] = value
         
-    def get_state(self, num_or_id):
-        ''' Can be called during init() and update() '''
-        return self.__states[num_or_id]
+    def get_state(self, varname):
+        ''' Can be called during init() and update() .'''
+        # TODO: add check and exception
+        return self.__states[varname]
+    
+    def get_state_vars(self):
+        ''' Returns a list of the names for the state variables. '''
+        return self.__state.keys()
     
     # Functions that can be called during runtime
     def set_output(self, num_or_id, value, timestamp=None):
@@ -181,7 +193,9 @@ class Block(object):
     def __get_input_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given input signal. '''
         if not self.is_valid_input_name(num_or_id):
-            raise ModelWriterError('Unknown output name "%s".' % str(num_or_id), self)
+            raise ModelWriterError(
+                'Unknown output name "%s".' % str(num_or_id), self)
+            
         if isinstance(num_or_id, str):
             # convert from name to number 
             num_or_id = self.__input_signal_name2id[num_or_id]
@@ -190,7 +204,8 @@ class Block(object):
     def __get_output_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given out signal. '''
         if not self.is_valid_output_name(num_or_id):
-            raise ModelWriterError('Unknown output name "%s".' % str(num_or_id), self)
+            raise ModelWriterError(
+                'Unknown output name "%s".' % str(num_or_id), self)
         
         if isinstance(num_or_id, str):
             # convert from name to number
@@ -246,14 +261,12 @@ class Block(object):
     def get_input_signals_values(self):
         ''' Returns a list of the input signals values. '''
         return map(lambda x: x.value, self.__input_signals)
-
     
     def __repr__(self):
         s = 'B:%s:%s(' % (self.__class__.__name__, self.name)
         s += self.get_io_repr()
         s += ')'
         return s
-    
         
     def get_io_repr(self):
         ''' Returns a representation of io ports for this block. '''
@@ -278,6 +291,7 @@ class Block(object):
     
     
 class Generator(Block):
+    # TODO: change interface
     
     def next_data_status(self):
         ''' 

@@ -4,7 +4,7 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
     restOfLine, QuotedString, ParseException, Forward 
 from procgraph.core.parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
-    ParsedSignalList , Connection, Where
+    ParsedSignalList , Connection, Where, LoadStatement, SaveStatement
 from procgraph.core.exceptions import PGSyntaxError
 
 
@@ -18,11 +18,7 @@ def eval_dictionary(s, loc, tokens):
         if 'value' in a:
             d[a['key']] = a['value']
     
-    return d
-
-#def eval_list(s,loc,tokens): 
-#    elements = tokens.asList()
-#    return elements
+    return d 
 
 def python_interpretation(s, loc, tokens):
     val = eval(tokens[0]) # XXX why 0?
@@ -120,7 +116,11 @@ def parse_model(string, filename=None):
     if not string.strip():
         raise PGSyntaxError('Passed empty string.', Where(filename, string, 0))
     
-    arrow = Suppress(Regex(r'-+>'))
+    # Shortcuts
+    S = Suppress
+    O = Optional
+      
+    arrow = S(Regex(r'-+>'))
     
     # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
     # XXX: don't put '.' at the beginning
@@ -129,9 +129,9 @@ def parse_model(string, filename=None):
     block_name = good_name
     block_type = Word(alphanums + '_+-/*')
      
-    signal = Optional(Suppress('[') + (integer ^ good_name)('local_input') + Suppress(']')) \
-            + Optional(block_name('block_name') + Suppress(".")) + (integer ^ good_name)('name') + \
-            Optional(Suppress('[') + (integer ^ good_name)('local_output') + Suppress(']'))
+    signal = O(S('[') + (integer ^ good_name)('local_input') + S(']')) \
+            + O(block_name('block_name') + S(".")) + (integer ^ good_name)('name') + \
+            O(S('[') + (integer ^ good_name)('local_output') + S(']'))
     signal.setParseAction(wrap(ParsedSignal.from_tokens))
     
     signals = delimitedList(signal)
@@ -139,19 +139,19 @@ def parse_model(string, filename=None):
     
     key = good_name ^ qualified_name
     
-    key_value_pair = Group(key("key") + Suppress('=') + value("value"))
+    key_value_pair = Group(key("key") + S('=') + value("value"))
     parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
     parameter_list.setParseAction(lambda s, l, t: dict([(a[0], a[1]) for a in t ]))
     
-    block = Suppress("|") + Optional(block_name("name") + Suppress(":")) + block_type("blocktype") + \
-         Optional(parameter_list("config")) + Suppress("|")
+    block = S("|") + O(block_name("name") + S(":")) + block_type("blocktype") + \
+         O(parameter_list("config")) + S("|")
     
     block.setParseAction(wrap(ParsedBlock.from_tokens)) 
     
-    between = arrow + Optional(signals + arrow)
+    between = arrow + O(signals + arrow)
     
     # Different patterns
-    arrow_arrow = signals + arrow + Optional(block + ZeroOrMore(between + block)) \
+    arrow_arrow = signals + arrow + O(block + ZeroOrMore(between + block)) \
      + arrow + signals
     source = block + ZeroOrMore(between + block)  \
      + arrow + signals
@@ -164,17 +164,30 @@ def parse_model(string, filename=None):
       
     connection.setParseAction(wrap(Connection.from_tokens))
     
-    assignment = (key("key") + Suppress('=') + value("value"))
+    assignment = (key("key") + S('=') + value("value"))
     assignment.setParseAction(wrap(ParsedAssignment.from_tokens)) 
     
     package_name = good_name + ZeroOrMore('.' + good_name)
-    import_statement = Suppress('import') + package_name('package')
+    import_statement = S('import') + package_name('package')
     import_statement.setParseAction(wrap(ImportStatement.from_tokens))
     
+    # Loading statements:
     
-    action = connection ^ assignment ^ comment ^ import_statement
+    loading = O(S('on')) + S('init') + S(':') + \
+        S('load') + key('what') + O(S('from')) + value('where') + \
+         O(S('as') + good_name('format'))
+    loading.setParseAction(wrap(LoadStatement.from_tokens))
     
-    newline = Suppress(lineEnd)
+    saving = O(S('on')) + S('finish') + S(':') + \
+        S('save') + key('what') + O(S('to')) + value('where') + \
+         O(S('as') + good_name('format'))
+    saving.setParseAction(wrap(SaveStatement.from_tokens))
+    
+    dataio = loading ^ saving
+    
+    action = connection ^ assignment ^ comment ^ import_statement ^ dataio
+    
+    newline = S(lineEnd)
     
     model_content = ZeroOrMore(newline) + action + \
         ZeroOrMore(OneOrMore(newline) + action) + \

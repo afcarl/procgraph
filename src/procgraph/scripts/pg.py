@@ -79,6 +79,9 @@ def main():
                 count += 1
                 if count % 500 == 0:
                     model.stats.print_info()
+        
+        # XXX: it should know by itself
+        model.finished()
                 
     #except ModelExecutionError as e:
     #    print e

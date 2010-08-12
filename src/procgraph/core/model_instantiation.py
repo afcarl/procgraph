@@ -3,7 +3,7 @@ from procgraph.core.exceptions import SemanticError
 from procgraph.core.block import Block
 from procgraph.core.parsing_elements import ParsedSignalList, VariableReference, \
     ImportStatement, ParsedBlock, Connection, ParsedModel, ParsedAssignment, \
-    ParsedSignal
+    ParsedSignal, LoadStatement, SaveStatement
 from procgraph.core.registrar import default_library
 from procgraph.core.model import Model
 from copy import deepcopy
@@ -182,6 +182,17 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         except Exception as e:
             raise SemanticError('Could not import package %s: %s' % \
                                     (package, e), element=x)
+    
+    # Extract load and save statements
+    for x in [x for x in parsed_model.elements if isinstance(x, LoadStatement)]:
+        where_from = expand_value(x.where_from, element=element)
+        model.add_load_action(what=x.what, where=where_from,
+                              format=x.format, element=element)
+        
+    for x in [x for x in parsed_model.elements if isinstance(x, SaveStatement)]:
+        where_to = expand_value(x.where_to, element=element)
+        model.add_save_action(what=x.what, where=where_to,
+                              format=x.format, element=element)
     
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
@@ -408,5 +419,10 @@ element=block)
         raise SemanticError('Unused properties: %s. (Used: %s.)' % \
                             (unused, used), element=parsed_model)
     
-    #            
+    # reset counters
+    
+    
+    # Process load statements
+    model.init()
+    
     return model

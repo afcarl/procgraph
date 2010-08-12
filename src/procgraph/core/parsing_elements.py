@@ -88,6 +88,46 @@ class ImportStatement(ParsedElement):
         return ImportStatement(package)
     
 
+class LoadStatement(ParsedElement):
+    def __init__(self, what, where_from, format):
+        ParsedElement.__init__(self)
+        self.what = what
+        self.where_from = where_from
+        self.format = format 
+    
+    def __repr__(self):
+        return 'load(%s from %s as %s)' % (self.what, self.where_from, self.format)
+    
+    @staticmethod
+    def from_tokens(tokens):
+        what = tokens['what']
+        where_from = tokens['where']
+        if 'format' in tokens:
+            format = tokens['format']
+        else:
+            format = None
+        return LoadStatement(what, where_from, format)
+
+class SaveStatement(ParsedElement):
+    def __init__(self, what, where_to, format):
+        ParsedElement.__init__(self)
+        self.what = what
+        self.where_to = where_to
+        self.format = format 
+    
+    def __repr__(self):
+        return 'save(%s to %s as %s)' % (self.what, self.where_to, self.format)
+    
+    @staticmethod
+    def from_tokens(tokens):
+        what = tokens['what']
+        where_to = tokens['where']
+        if 'format' in tokens:
+            format = tokens['format']
+        else:
+            format = None
+        return SaveStatement(what, where_to, format)
+
 class ParsedSignal(ParsedElement):
     def __init__(self, name, block_name, local_input, local_output):
         ParsedElement.__init__(self)

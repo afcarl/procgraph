@@ -42,5 +42,11 @@ class BadInput(ModelExecutionError):
         self.input_signal = input_signal
     
     
-    
+def x_not_found(what, x, iterable):
+    ''' Shortcut for creating pretty error messages. '''
+    # TODO: add guess in case of typos
+    return 'Could not find %s "%s". I know %s.' % \
+        what, x, ", ".join(iterable)
+
+
     

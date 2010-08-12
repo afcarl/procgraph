@@ -5,6 +5,7 @@ from procgraph.core.exceptions import  SemanticError, BlockWriterError, \
 from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
 from procgraph.core.model_stats import ExecutionStats
+from procgraph.core.model_loadsave import ModelLoadAndSave
 
 
 class BlockConnection:
@@ -38,7 +39,7 @@ class BlockConnection:
         return s
     
     
-class Model(Generator):
+class Model(Generator, ModelLoadAndSave):
     ''' A Model is a block and a generator. '''
     
     def __init__(self, name, model_name):
@@ -54,7 +55,9 @@ class Model(Generator):
     
         # As a block
         Block.__init__(self, name=name, config={}, library=None)
-    
+        # mixing for load and save operations
+        ModelLoadAndSave.__init__(self)
+        
         # we start with no input/output signals
         self.define_input_signals([])
         self.define_output_signals([])
@@ -75,16 +78,7 @@ class Model(Generator):
         
         
         self.stats = ExecutionStats()
-        
-    def summary(self):
-        print "--- Model: %d blocks, %d connections" % \
-            (len(self.name2block), len(self.name2block_connection))
-        for name, block in self.name2block.items():
-            print "- %s: %s" % (name, block)
-            
-        for name, conn in self.name2block_connection.items():
-            print "- %s: %s" % (name, conn) 
- 
+    
  
     def add_block(self, name, block):
         '''  init(), and add a block to the model.
@@ -152,6 +146,8 @@ class Model(Generator):
             
 
     def has_more(self):
+        """ Returns true if there are blocks with pending updates,
+            or there is at least one generator that has not ended. """
         if self.blocks_to_update:
             return True
         
@@ -175,9 +171,16 @@ class Model(Generator):
             if not isinstance(block, ModelInput) and \
                 block.num_input_signals() == 0:
                 self.blocks_to_update.append(block)
+                # XXX: no, without input they should be generators??? maybe
             if isinstance(block, Model):
                 block.reset_execution()
     
+    def init(self):
+        self.process_load_actions()
+            
+    def finish(self):
+        self.process_save_actions()
+
     def update(self):
         def debug(s):
             if False:
@@ -332,6 +335,14 @@ class Model(Generator):
         s += ')'
         return s
     
-    
+    def summary(self):
+        print "--- Model: %d blocks, %d connections" % \
+            (len(self.name2block), len(self.name2block_connection))
+        for name, block in self.name2block.items():
+            print "- %s: %s" % (name, block)
+            
+        for name, conn in self.name2block_connection.items():
+            print "- %s: %s" % (name, conn) 
+     
 
 
