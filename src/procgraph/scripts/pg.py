@@ -81,7 +81,7 @@ def main():
                     model.stats.print_info()
         
         # XXX: it should know by itself
-        model.finished()
+        model.finish()
                 
     #except ModelExecutionError as e:
     #    print e
