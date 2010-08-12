@@ -83,6 +83,8 @@ class RawseedsCamera(Generator):
             self.state.next_frame = None
         else:
             self.state.next_frame = k + 1
+            
+            
  
 
 default_library.register('RawseedsCam', RawseedsCamera)

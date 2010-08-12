@@ -15,8 +15,10 @@ class HasState(Block):
         self.state.x = self.config.x
         
         self.define_input_signals([])
-        self.define_output_signals([])
+        self.define_output_signals(['x'])
 
+    def update(self):
+        self.set_output(0, self.state.x + 1, timestamp=1)
 
 default_library.register('has_state', HasState)
 
@@ -30,21 +32,23 @@ class TestSaving(PGTestCase):
         # generate temporary file
         file1 = NamedTemporaryFile(suffix='file1.pickle')
         file2 = NamedTemporaryFile(suffix='file2.pickle')
+        file3 = NamedTemporaryFile(suffix='file3.pickle')
         
         model_spec = '''
         --- model testing_saving
         
-        |has_state x=1|
+        |has_state x=1| --> Y
         
         on init:   load has_state.x from $file1 as pickle 
         on finish: save has_state.x  to  $file2 as pickle
+        on finish: save Y  to  $file3 as pickle
         
         '''
         value = 43
         pickle.dump(value, file1)
         file1.flush()
         
-        config = {'file1': file1.name, 'file2': file2.name}
+        config = {'file1': file1.name, 'file2': file2.name, 'file3': file3.name}
         model = model_from_string(model_spec, config=config)
         
         
@@ -54,8 +58,10 @@ class TestSaving(PGTestCase):
         model.finish()
         
         value2 = pickle.load(open(file2.name))
-        
         self.assertEqual(value, value2)
+
+        value3 = pickle.load(open(file3.name))
+        self.assertEqual(value + 1, value3)
         
         
         # should be like this

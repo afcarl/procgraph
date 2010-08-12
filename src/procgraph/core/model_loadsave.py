@@ -29,7 +29,12 @@ class ModelLoadAndSave():
             data = load()
             
             if var is not None:
-                block.set_state(var, data)
+                type, name = var
+                if type != 'state':
+                    raise SemanticError(
+                        'Can only load into state, not into %s "%s".' % \
+                        (type, name), element)
+                block.set_state(name, data)
             else:
                 if not isinstance(data, dict):
                     raise ModelExecutionError(
@@ -44,7 +49,13 @@ class ModelLoadAndSave():
             load, save = self.__get_functions(where, format, element) #@UnusedVariable
             
             if var is not None:
-                data = block.get_state(var)
+                type, name = var
+                if type == 'output':
+                    data = block.get_output(name)
+                elif type == 'state':
+                    data = block.get_state(name)
+                else:
+                    assert False
             else:
                 data = {}
                 for key in block.get_state_vars():
@@ -58,13 +69,20 @@ class ModelLoadAndSave():
         # - "blockname"
         # - "blockname.varname"
         assert isinstance(what, str)
-
+        
+        # check if it is a signal
+        if what in self.name2block_connection:
+            connection = self.name2block_connection[what]
+            block = connection.block1
+            varname = connection.block1_signal
+            return block, ('output', varname)             
+            
         if '.' in what:
-            block, name = what.split('.', 1)
+            block, varname = what.split('.', 1)
             # TODO: recursive
         else:
             block = what
-            name = None
+            varname = None
         
         if not block in self.name2block:
             raise SemanticError(
@@ -72,7 +90,7 @@ class ModelLoadAndSave():
             
         block = self.name2block[block]
         
-        return block, name
+        return block, ('state', varname)
         
      
     
