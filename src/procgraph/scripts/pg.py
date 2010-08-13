@@ -9,19 +9,26 @@ from procgraph.core.parsing_elements import Where
 
 def main():
     try:
-        pg_look_for_models(default_library)
          
         parser = OptionParser()
          
         parser.add_option("--debug", action="store_true",
                           default=False, dest="debug",
                           help="Displays debug information on the model.")
+        
         parser.add_option("--stats", action="store_true",
                           default=False, dest="stats",
                           help="Displays execution statistics, including CPU usage.")
         
+        parser.add_option("--nocache", action="store_true",
+                          default=False, dest="nocache",
+                          help="Ignores the parsing cache.")
+        
         
         (options, args) = parser.parse_args()
+        
+        pg_look_for_models(default_library, ignore_cache=options.nocache)
+        
         
         if not args:
             print "Usage:    pg  <model>.pg   [param=value  param=value ... ]"

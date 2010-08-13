@@ -39,7 +39,7 @@ class ModelSpec():
         return model
 
 
-def pg_look_for_models(library, additional_paths=None):
+def pg_look_for_models(library, additional_paths=None, ignore_cache=False):
     ''' Call this function at the beginning of the executions.
     It scans the disk for model definitions, and register
     them as available block types. 
@@ -76,7 +76,9 @@ def pg_look_for_models(library, additional_paths=None):
         base = split[0]
         
         cache = os.path.splitext(f)[0] + '.pgc'
-        if os.path.exists(cache) and os.path.getmtime(cache) > os.path.getmtime(f):
+        if not ignore_cache and \
+            os.path.exists(cache) and \
+            os.path.getmtime(cache) > os.path.getmtime(f):
             try:
                 models = pickle.load(open(cache))
             except Exception as e:
