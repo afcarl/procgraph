@@ -54,9 +54,9 @@ class Generic(Block):
         self.set_config_default('out', 0)
         
         nin = self.get_config('in')
-        nout =  self.get_config('out')
-        self.define_input_signals( map(str, range(nin)) )
-        self.define_output_signals( map(str, range(nout)) )
+        nout = self.get_config('out')
+        self.define_input_signals(map(str, range(nin)))
+        self.define_output_signals(map(str, range(nout)))
 
 
 default_library.register('generic', Generic)
@@ -67,18 +67,23 @@ class PGTestCase(unittest.TestCase):
     
     def check_syntax_ok(self, model_spec):
         ''' Tests that the given string can parse OK. Returns parsed models. '''
-        parsed = parse_model(model_spec)
-        return parsed
-    
-    def check_semantic_ok(self, model_spec):
+        try:
+            parsed = parse_model(model_spec)
+            return parsed
+        except Exception as e:
+            print "Oops, seems like we had an error for '''%s'''" % model_spec
+            traceback.print_exc()
+            raise e
+        
+    def check_semantic_ok(self, model_spec, config={}):
         ''' Tests that the given string can parse OK and we can create a model.
             Note that a syntax error is translated into a test Error, not failure.
             '''
-            
-        library = Library(parent = default_library)
+        # Don't pollute the main library with unit tests    
+        library = Library(parent=default_library)
         
         try:
-            model = model_from_string(model_spec, library=library)
+            model = model_from_string(model_spec, config=config, library=library)
             return model
         except SemanticError as e:
             print "Oops, seems like we had an error for '''%s'''" % model_spec
@@ -100,7 +105,7 @@ class PGTestCase(unittest.TestCase):
         if not failed:
             self.assertTrue(False)
 
-    def check_semantic_error(self, model_spec):
+    def check_semantic_error(self, model_spec, config={}):
         ''' Tests that the given string parses ok but gives a
             semantic error. '''
         # make sure we can parse it
@@ -109,8 +114,8 @@ class PGTestCase(unittest.TestCase):
         failed = False
         try:
             # try again
-            library = Library(parent = default_library)
-            model = model_from_string(model_spec, library=library)
+            library = Library(parent=default_library)
+            model = model_from_string(model_spec, config=config, library=library)
             print "OOPS, we could interpret '''%s'''" % model_spec
             print parsed 
             model.summary()
@@ -121,3 +126,19 @@ class PGTestCase(unittest.TestCase):
         if not failed:
             self.assertTrue(False)
     
+
+
+class VerifyBlock(Block):
+    ''' 
+        This debug block verifies that config.x == config.y 
+        and throws an exception if that's not the case.
+    '''
+        
+    def init(self):
+        if self.config.x != self.config.y:
+            raise SemanticError('Oops: "%s" != "%s".' % \
+                                (self.config.x, self.config.y), self)
+        self.define_input_signals([])
+        self.define_output_signals([])
+        
+default_library.register('verify', VerifyBlock)

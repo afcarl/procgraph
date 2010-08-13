@@ -4,7 +4,8 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
     restOfLine, QuotedString, ParseException, Forward 
 from procgraph.core.parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
-    ParsedSignalList , Connection, Where, LoadStatement, SaveStatement
+    ParsedSignalList , Connection, Where, LoadStatement, SaveStatement, \
+    ConfigStatement
 from procgraph.core.exceptions import PGSyntaxError
 
 
@@ -189,9 +190,13 @@ def parse_model(string, filename=None):
          O(S('as') + good_name('format'))
     saving.setParseAction(wrap(SaveStatement.from_tokens))
     
+    config = S('config') + good_name('variable') + O(S('=') + value('default')) + \
+        O(quoted('docstring'))
+    config.setParseAction(wrap(ConfigStatement.from_tokens))
+    
     dataio = loading ^ saving
     
-    action = connection ^ assignment ^ comment ^ import_statement ^ dataio
+    action = connection ^ assignment ^ comment ^ import_statement ^ dataio ^ config
     
     newline = S(lineEnd)
     
@@ -201,7 +206,8 @@ def parse_model(string, filename=None):
     
     named_model = \
     Suppress(Combine('---' + Optional(Word('-')))) + Suppress('model') + \
-        good_name('model_name') + newline + \
+        good_name('model_name') + OneOrMore(newline) + \
+        O(quoted('docstring')) + \
         model_content('content')
         
     named_model.setParseAction(wrap(ParsedModel.from_named_model))

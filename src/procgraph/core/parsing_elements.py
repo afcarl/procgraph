@@ -189,6 +189,26 @@ class ParsedAssignment(ParsedElement):
     def from_tokens(tokens):
         return ParsedAssignment(tokens['key'], tokens['value'])
           
+
+class ConfigStatement(ParsedElement):
+    def __init__(self, variable, default, docstring):
+        ParsedElement.__init__(self)
+        assert isinstance(variable, str)
+        assert docstring is None or isinstance(docstring, str)
+        self.variable = variable
+        self.default = default
+        self.docstring = docstring 
+        
+    def __repr__(self):
+        return 'Config(%s(=%s))' % (self.variable, self.default)
+
+    @staticmethod
+    def from_tokens(tokens):
+        variable = tokens.get('variable')
+        default = tokens.get('default', None)
+        docstring = tokens.get('docstring', None)
+        return ConfigStatement(variable, default, docstring)
+
       
 class Connection(ParsedElement):
     def __init__(self, elements):
@@ -215,9 +235,25 @@ class VariableReference(ParsedElement):
         return VariableReference(tokens['variable'])
 
 class ParsedModel(ParsedElement):
-    def __init__(self, name, elements):
+    def __init__(self, name, docstring, elements):
         ParsedElement.__init__(self)
+        assert name is None or isinstance(name, str)
+#        if not isinstance(name, str):
+#            raise ValueError('Expected name to be a string not a %s "%s".' %\
+#                             (name.__class__.__name__))
+        assert docstring is None or isinstance(docstring, str) 
         self.name = name
+        self.docstring = docstring
+        
+        select = lambda T: [x for x in elements if isinstance(x, T)]
+        
+        self.connections = select(Connection)
+        self.config = select(ConfigStatement)
+        self.load_statements = select(LoadStatement)
+        self.save_statements = select(SaveStatement)
+        self.imports = select(ImportStatement)
+        self.assignments = select(ParsedAssignment)
+    
         self.elements = elements
         
     def __repr__(self):
@@ -227,10 +263,12 @@ class ParsedModel(ParsedElement):
     def from_named_model(tokens):
         name = tokens['model_name']
         elements = list(tokens['content'])
-        return ParsedModel(name, elements)
+        docstring = tokens.get('docstring', None)
+        
+        return ParsedModel(name, docstring, elements)
     
     @staticmethod
     def from_anonymous_model(tokens):
         elements = list(tokens)
-        return ParsedModel(name=None, elements=elements)
+        return ParsedModel(name=None, docstring=None, elements=elements)
     

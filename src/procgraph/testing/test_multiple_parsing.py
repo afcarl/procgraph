@@ -35,7 +35,24 @@ e = 2
 # spacing 
 ---   model   belle
 e = 2
+""",
+
+# Testing docstrings
 """
+--- model ciao
+''' This is the documentation
+    for this model.            '''
+y = 2
+""",
+"""
+
+--- model ciao
+
+''' This is the documentation
+    for this model.            '''
+y = 2
+"""
+
 
 ]
 
@@ -82,6 +99,14 @@ e = 2
 ---   model  
 belle
 e = 2
+""",
+# docstring should be the first thing
+"""
+--- model ciao
+y = 2
+''' This is the documentation
+    for this model.            '''
+
 """
 
 ]

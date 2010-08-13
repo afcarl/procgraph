@@ -14,7 +14,8 @@ class ModelWriterError(PGException):
 
 
 class SemanticError(ModelWriterError):
-    ''' A semantic error by who wrote the model spec.'''
+    ''' A semantic error by who wrote the model spec.
+       (and, as a platypus case, when wrong config is passed.'''
     def __init__(self, error, element=None):
         Exception.__init__(self, error)
         self.element = element
@@ -42,11 +43,18 @@ class BadInput(ModelExecutionError):
         self.input_signal = input_signal
     
     
+# A couple of functions for pretty errors
+def aslist(x):
+    if x:
+        return ", ".join(sorted(x))
+    else:
+        return "<empty>"
+    
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
     # TODO: add guess in case of typos
     return 'Could not find %s "%s". I know %s.' % \
-        (what, x, ", ".join(iterable))
+        (what, x, aslist(iterable))
 
 
     

@@ -1,14 +1,15 @@
 import os, re
-from procgraph.core.exceptions import SemanticError
+from procgraph.core.exceptions import SemanticError, ModelExecutionError, \
+    x_not_found, aslist
 from procgraph.core.block import Block
 from procgraph.core.parsing_elements import ParsedSignalList, VariableReference, \
-    ImportStatement, ParsedBlock, Connection, ParsedModel, ParsedAssignment, \
-    ParsedSignal, LoadStatement, SaveStatement
+     ParsedBlock, ParsedModel, ParsedSignal
 from procgraph.core.registrar import default_library
 from procgraph.core.model import Model
 from copy import deepcopy
 
 from pyparsing import ParseResults
+from procgraph.core.visualization import warning
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -80,11 +81,15 @@ def expand_references_in_string(s, function):
         sub = function(var)
         s = before + sub + after
 
-def create_from_parsing_results(parsed_model, name=None, config={}, library=None):
+
+
+def create_from_parsing_results(parsed_model, name=None, config={}, library=None,
+                                STRICT=False):
     
     def debug(s):
         if False:
             print 'Creating %s:%s | %s' % (name, parsed_model.name, s)
+
     
     debug('config: %s' % config)
     
@@ -99,21 +104,65 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     model = Model(name=name, model_name=parsed_model.name)
     
-    # First we collect all the properties, to use
-    # in initialization.
+    # First we get the names of the config variables.
+    # In the mean time we check that we don't have doubles.
+    config_variables = set()
+    config_variables_required = set()
+    for config_statement in parsed_model.config:
+        variable = config_statement.variable
+        if variable in config_variables:
+            raise SemanticError(
+            'Config variable "%s" already defined.' % variable, config_statement)
+        config_variables.add(variable)
+        if config_statement.default is None:
+            config_variables_required.add(variable)
+            
+    # We start by checking that we got passed the correct configuration.
+    # First we check that we were only passed config formally defined. 
+    #  (This is only a warning if we are not in strict mode.)
+    # Also note that we treat the "block.variable" refs in another way.
+    passed_variables = set([x for x in config.keys() if not '.' in x])
+    passed_not_defined = passed_variables.difference(config_variables) 
+    if passed_not_defined:
+        msg = ('We were passed config (%s) which was not defined formally ' + \
+        'as a config variable. The defined ones are %s.') % (\
+                aslist(passed_not_defined), aslist(config_variables))
+        if STRICT:
+            raise SemanticError(msg, parsed_model)
+        else:
+            warning(msg)
+         
+    # Then we check that we passed all variables that we needed to pass
+    required_not_passed = config_variables_required.difference(passed_variables)
+    if required_not_passed:
+        msg = ('Some required config (%s) was not passed.' % \
+               aslist(required_not_passed))
+        raise SemanticError(msg, parsed_model)
+    
+    
+    # We collect here all the properties, to use in initialization.
     all_config = [] # tuple (key, value, element)
     
+    # 1. We put the configuration defaults
+    for c in parsed_model.config:
+        if c.default is not None:
+            all_config.append((c.variable, c.default, c))
+
+    # 2. We put the user-passed values
     for key, value in config.items():
         all_config.append((key, value, None))
 
-    for element in parsed_model.elements:
-        if isinstance(element, ParsedAssignment):
-            if element.key in config:
-                # TODO: make a unittest for this behavior
-                print "Overloading default for variable %s." % element.key
-                continue
-            all_config.append((element.key, element.value, element))
-    
+    # 3. We process the assignments
+    for assignment in parsed_model.assignments:
+        # We make sure we are not overwriting configuration    
+        if assignment.key in config_variables:
+            msg = ('Assignment to "%s" overwrites a config variable.' + \
+                  ' Perhaps you want to change the default instead?') % \
+                    assignment.key
+            raise SemanticError(msg, assignment)
+
+        all_config.append((assignment.key, assignment.value, assignment))
+
     
     # Next, define the properties hash, and populate it intelligentily
     # from the tuples in all_config.
@@ -126,36 +175,41 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         ''' Function that looks for VariableReference and does the substitution. '''
         if context is None:
             context = []
-    #    if value in context:
-    #        raise SemanticError('Recursion warning: context = %s, value = "%s".' %\
-    #                            context, value)
+        # there's no recursion now...
+        #    if value in context:
+        #        raise SemanticError('Recursion warning: context = %s, value = "%s".' %\
+        #                            context, value)
         context.append(value)
         
         if isinstance(value, VariableReference):
             variable = value.variable
             if not variable in properties:
-                raise SemanticError(('Could not resolve a reference to the variable "%s".'\
-                + ' I only know the variables: %s.') % \
-                        (variable, ", ".join(sorted(properties.keys()))), element)
+                raise SemanticError(
+                    x_not_found('variable', variable, properties), element)
             used_properties.add(variable) 
             return expand_value(properties[variable], context, element=element)
+        
         elif isinstance(value, str):
             if value in os.environ:
                 return os.environ[value]
             return expand_references_in_string(value,
                     lambda s: expand_value(VariableReference(s),
                                            context=context, element=element))
+            
         elif isinstance(value, dict):
             h = {}
             for key in value:
                 h[key] = expand_value(value[key], context=context, element=element)
             return h 
+        
         # XXX: we shouldn't have here ParseResults
         elif isinstance(value, list) or isinstance(value, ParseResults):
             return map(lambda s: expand_value(s, context, element), value)
         else:
             return value
 
+    # We keep track of the blocks we reference so we can check it later
+    referenced_blocks = [] # list of tuples (block name, parsed_element)
     for key, value, element in all_config:
         # if it is of the form  object.property = value
         if '.' in key:
@@ -169,36 +223,36 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     raise SemanticError(
                     'Error while processing "%s=%s". I already now key.' % \
                             (key, value), element)
+            referenced_blocks.append((object, element))
             properties[object][property] = value # XX or expand?
         else:
             properties[key] = expand_value(value, element=element) 
         pass  
     
-    for x in [x for x in parsed_model.elements if isinstance(x, ImportStatement)]:
+    for x in parsed_model.imports:
         package = x.package
         print "Importing package %s" % package
         try:
             __import__(package)
         except Exception as e:
-            raise SemanticError('Could not import package %s: %s' % \
+            raise SemanticError('Could not import package "%s": %s' % \
                                     (package, e), element=x)
     
     # Extract load and save statements
-    for x in [x for x in parsed_model.elements if isinstance(x, LoadStatement)]:
+    for x in parsed_model.load_statements:
         where_from = expand_value(x.where_from, element=element)
         model.add_load_action(what=x.what, where=where_from,
                               format=x.format, element=element)
         
-    for x in [x for x in parsed_model.elements if isinstance(x, SaveStatement)]:
+    for x in parsed_model.save_statements:
         where_to = expand_value(x.where_to, element=element)
         model.add_save_action(what=x.what, where=where_to,
                               format=x.format, element=element)
     
     # Then we instantiate all the blocks
-    connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
    
     # Iterate over connections 
-    for connection in connections:
+    for connection in parsed_model.connections:
         previous_block = None
         previous_link = None
         
@@ -267,8 +321,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
 
                 
                 if not library.exists(block_type):
-                    raise SemanticError('Unknown block type "%s". I know %s.' % \
-                                        (element.operation, ", ".join(sorted(library.get_known_blocks()))),
+                    raise SemanticError(x_not_found('block type', block_type, library.get_known_blocks()),
                                         element=element)
                 debug('instancing %s:%s config: %s' % \
                       (element.name, element.operation, block_config))
@@ -416,12 +469,23 @@ element=block)
                 previous_block = block
             # end if 
     
+    
+    # Check if any of the config referenced a nonexistent block
+    # (before we warn it as just an unused variable in the next paragraph) 
+    for block_name, element in referenced_blocks:
+        if not block_name in model.name2block:
+            raise SemanticError(
+                x_not_found('block', block_name, model.name2block), element)
+    
     unused_properties = set(properties.keys()).difference(used_properties)
     if unused_properties:
-        unused = ", ".join(sorted(list(unused_properties)))
-        used = ", ".join(sorted(list(used_properties)))
-        raise SemanticError('Unused properties: %s. (Used: %s.)' % \
-                            (unused, used), element=parsed_model)
+        msg = 'Unused properties: %s. (Used: %s.)' % \
+            (aslist(unused_properties), aslist(used_properties)) 
+        if STRICT:
+            raise SemanticError(msg, element=parsed_model)
+        else:
+            warning(msg)
+    
     
     # reset counters
     
