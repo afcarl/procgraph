@@ -4,6 +4,7 @@ import subprocess
 from procgraph.core.block import Block
 from procgraph.core.registrar import default_library 
 from procgraph.components  import check_rgb_or_grayscale
+from procgraph.core.model_loadsave import make_sure_dir_exists
  
  
 class MEncoder(Block):
@@ -23,6 +24,7 @@ class MEncoder(Block):
         self.process = None
         self.define_input_signals(["image"])
         self.define_output_signals([])
+        # XXX: check with the state
         self.file = self.config.file
         self.config.fps = 10 
         self.config.vcodec = 'mpeg4'
@@ -39,7 +41,9 @@ class MEncoder(Block):
         if self.process is None:
             vcodec = self.config.vcodec
             vbitrate = self.config.vbitrate
-            
+        
+            make_sure_dir_exists(self.file)
+                
             format = {2: 'y8', 3: 'rgb24'}[len(image.shape)]
             
             args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
