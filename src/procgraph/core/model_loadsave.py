@@ -100,9 +100,7 @@ class ModelLoadAndSave():
             
         block = self.name2block[block]
         
-        return block, ('state', varname)
-        
-     
+        return block, ('state', varname)  
     
     def __get_functions(self, where, format, element):
         ''' Returns a pair of function load, save.
