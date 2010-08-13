@@ -44,10 +44,12 @@ class Model(Generator, ModelLoadAndSave):
             model_name is this model's name '''
         if name is None:
             name = 'unnamed-block'
+        assert isinstance(name, str)
         
         if model_name is None:
             model_name = 'unnamed-model'
-        
+        assert isinstance(model_name, str)        
+
         self.model_name = model_name
     
         # As a block

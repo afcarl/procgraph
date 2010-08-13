@@ -17,6 +17,8 @@ class Block(object):
 
     # Housekeeping
     def __init__(self, name, config, library):
+        assert isinstance(name, str)
+
         self.name = name
         self.__config = config
         # this is an array containing the names/ids
