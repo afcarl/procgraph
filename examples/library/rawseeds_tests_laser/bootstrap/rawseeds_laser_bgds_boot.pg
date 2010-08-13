@@ -1,11 +1,12 @@
 --- model rawseeds_laser_bgds_boot
-# Uses rawseeds_synchronized_laser as a source.
-# .. config::
-#   `logdir`
-#     Rawseeds log directory.
-import procgraph.components.rawseeds
-import procgraph.components.pil
+#""" Uses rawseeds_synchronized_laser as a source. """
+#config logdir                              "Directory containing Rawseeds logs."
+#config outdir   = rawseeds_laser_bgds_boot "Subdirectory inside logdir where to put files."
+#config grad_op  = identity                 "Scalar operation after gradient."
+#config deriv_op = identity                 "Scalar operation after derivative."
 
+on finish: save G to "${logdir}/${outdir}/G.pickle" 
+on finish: save B to "${logdir}/${outdir}/B.pickle" 
 
 mencoder.file = "${logdir}/rawseeds_laser_bgds_boot.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
@@ -18,8 +19,8 @@ odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 import procgraph.components.cv
 
-y --> |derivative| --> y_dot
-y --> |gradient1d| --> gy
+y --> |derivative| --> |$grad_op | --> y_dot
+y --> |gradient1d| --> |$deriv_op| --> gy
 
 y_dot, gy --> |sync| --> |*| --> dygy 
 
@@ -40,13 +41,15 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
     Gs --> |take axis=1 indices=[2]| --> |plot| --> G_th
     Bs --> |take axis=1 indices=[0]| --> |plot| --> B_x
     Bs --> |take axis=1 indices=[1]| --> |plot| --> B_y
-    Bs --> |take axis=1 indices=[2]| --> |plot| --> B_th
-    
-    
+    Bs --> |take axis=1 indices=[2]| --> |plot| --> B_th 
     G_x,G_y,G_th,B_x,B_y,B_th, gy_rgb --> |sync| --> |grid cols=3| --> rgb
-    
-    
     rgb --> |mencoder| 
      
-     
-     
+------------ model rawseeds_laser_bgds_boot_all
+#config logdir                              "Directory containing Rawseeds logs."
+base = "rawseeds_laser_bgds_boot"
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=identity  outdir="${base}_GI_DI"|
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=identity  outdir="${base}_GI_DS"|
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=sign      outdir="${base}_GS_DI"|
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=sign      outdir="${base}_GS_DS"|
+ 

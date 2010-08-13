@@ -11,10 +11,10 @@
 import procgraph.components.rawseeds
 import procgraph.components.pil
 
-
-mencoder.file = "${logdir}/rawseeds_laser_bgds_boot_sign.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
+outdir = "${logdir}/rawseeds_laser_bgds_boot_sign"
+mencoder.file = "${outdir}/learning.avi"
 
 |rawseeds_synchronized_laser logdir=$logdir| --> y
 
@@ -53,7 +53,7 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
     
     rgb --> |mencoder| 
      
-on finish: save G to "${logdir}/rawseeds_laser_bgds_boot_sign-G.pickle" 
-on finish: save B to "${logdir}/rawseeds_laser_bgds_boot_sign-B.pickle" 
+on finish: save G to "${outdir}/G.pickle" 
+on finish: save B to "${outdir}/B.pickle" 
 
 
