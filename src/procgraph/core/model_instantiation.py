@@ -196,11 +196,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     # Then we instantiate all the blocks
     connections = [x for x in parsed_model.elements if isinstance(x, Connection)]
-    
-    # Things for generating names for anonymous blocks
-    num_anonymous_blocks = 0
-    anonymous_name_pattern = 'block%d'
-    
+   
     # Iterate over connections 
     for connection in connections:
         previous_block = None
@@ -236,15 +232,21 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 
             if isinstance(element, ParsedBlock):
                 
+                block_type = expand_value(element.operation, element=element)
+
                 # give a name if anonymous
                 if element.name is None:
                     # give it, if possible the name of its type
-                    if not element.operation in model.name2block:
-                        element.name = element.operation
+                    if not  block_type in model.name2block:
+                        element.name = block_type
                     else:
-                        element.name = anonymous_name_pattern % num_anonymous_blocks
-                        num_anonymous_blocks += 1
-                
+                        i = 2
+                        while True:
+                            element.name = "%s%d" % (block_type, i)
+                            i += 1
+                            if not element.name in model.name2block:
+                                break
+
                 # update the configuration if given
                 block_config = {}
                 block_config.update(element.config)
@@ -263,7 +265,6 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     block_config[key] = expand_value(value, element=element)
                     
 
-                block_type = expand_value(element.operation, element=element)
                 
                 if not library.exists(block_type):
                     raise SemanticError('Unknown block type "%s". I know %s.' % \
