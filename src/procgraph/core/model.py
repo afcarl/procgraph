@@ -178,7 +178,11 @@ class Model(Generator, ModelLoadAndSave):
         self.process_load_actions()
             
     def finish(self):
+        for block in self.name2block.values():
+            block.finish()
+
         self.process_save_actions()
+        
 
     def update(self):
         def debug(s):
