@@ -21,12 +21,9 @@ class BlockConnection:
         self.public_name = public_name
         
     def __repr__(self):
-        s = 'Connection('
-        if self.block1:
-            s += self.block1.name
-            s += '.%s' % self.block1_signal 
-        else:
-            s += '?.?'
+        s = 'Connection(' 
+        s += self.block1.name
+        s += '.%s' % self.block1_signal 
         
         s += ' --> '
         if self.block2:

@@ -126,8 +126,8 @@ def parse_model(string, filename=None):
     # XXX: don't put '.' at the beginning
     qualified_name = Combine(good_name + '.' + (integer ^ good_name))
     
-    block_name = good_name
-    block_type = Word(alphanums + '_+-/*')
+    block_name = good_name 
+    block_type = good_name ^ Word('_+-/*') ^ quoted ^ reference
      
     signal = O(S('[') + (integer ^ good_name)('local_input') + S(']')) \
             + O(block_name('block_name') + S(".")) + (integer ^ good_name)('name') + \

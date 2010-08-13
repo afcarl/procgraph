@@ -262,15 +262,18 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 for key, value in list(block_config.items()):
                     block_config[key] = expand_value(value, element=element)
                     
+
+                block_type = expand_value(element.operation, element=element)
                 
-                if not library.exists(element.operation):
+                if not library.exists(block_type):
                     raise SemanticError('Unknown block type "%s". I know %s.' % \
                                         (element.operation, ", ".join(sorted(library.get_known_blocks()))),
                                         element=element)
                 debug('instancing %s:%s config: %s' % \
                       (element.name, element.operation, block_config))
                 
-                block = library.instance(block_type=element.operation,
+    
+                block = library.instance(block_type=block_type,
                                          name=element.name, config=block_config,
                                          where=element.where)
                 
