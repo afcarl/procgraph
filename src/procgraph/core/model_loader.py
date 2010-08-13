@@ -2,6 +2,7 @@ import os, fnmatch
 
 from procgraph.core.model_instantiation import create_from_parsing_results
 import pickle
+from procgraph.core.visualization import warning
 create_from_parsing_results
 from procgraph.core.parsing import parse_model, ParsedModel
 from procgraph.core.exceptions import SemanticError
@@ -56,7 +57,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_cache=False):
         paths.extend(os.environ[PATH_ENV_VAR].split(':'))
         
     if not paths:
-        print "No paths given and environment var %s not defined." % PATH_ENV_VAR 
+        warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
         
     # enumerate each sub directory
     all_files = set()

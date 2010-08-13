@@ -6,7 +6,7 @@ from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
 from procgraph.core.model_stats import ExecutionStats
 from procgraph.core.model_loadsave import ModelLoadAndSave
-
+from procgraph.core.visualization import debug as debug_main, info
 
 class BlockConnection:
     def __init__(self, block1, block1_signal, block2, block2_signal, public_name=None):
@@ -183,7 +183,7 @@ class Model(Generator, ModelLoadAndSave):
     def update(self):
         def debug(s):
             if False:
-                print 'Model %s | %s' % (self.model_name, s)
+                debug_main('Model %s | %s' % (self.model_name, s))
         
         # We keep a list of blocks to be updated.
         # If the list is not empty, then pop one and update it.
@@ -335,13 +335,13 @@ class Model(Generator, ModelLoadAndSave):
         return s
     
     def summary(self):
-        print "--- Model: %d blocks, %d connections" % \
-            (len(self.name2block), len(self.name2block_connection))
+        info("--- Model: %d blocks, %d connections" % \
+            (len(self.name2block), len(self.name2block_connection)))
         for name, block in self.name2block.items():
-            print "- %s: %s" % (name, block)
+            info("- %s: %s" % (name, block))
             
         for name, conn in self.name2block_connection.items():
-            print "- %s: %s" % (name, conn) 
+            info("- %s: %s" % (name, conn))
      
 
 

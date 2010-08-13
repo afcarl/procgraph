@@ -1,15 +1,18 @@
 import os, re
-from procgraph.core.exceptions import SemanticError, ModelExecutionError, \
+from copy import deepcopy
+from pyparsing import ParseResults
+
+from procgraph.core.exceptions import SemanticError, \
     x_not_found, aslist
 from procgraph.core.block import Block
 from procgraph.core.parsing_elements import ParsedSignalList, VariableReference, \
      ParsedBlock, ParsedModel, ParsedSignal
 from procgraph.core.registrar import default_library
 from procgraph.core.model import Model
-from copy import deepcopy
+from procgraph.core.visualization import warning, semantic_warning
 
-from pyparsing import ParseResults
-from procgraph.core.visualization import warning
+from procgraph.core.visualization import debug as debug_main, info
+
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -88,7 +91,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     def debug(s):
         if False:
-            print 'Creating %s:%s | %s' % (name, parsed_model.name, s)
+            debug_main('Creating %s:%s | %s' % (name, parsed_model.name, s))
 
     
     debug('config: %s' % config)
@@ -98,10 +101,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     if not isinstance(parsed_model, ParsedModel):
         raise TypeError('I expect a ParsedModel instance, not a "%s".' % 
                         parsed_model.__class__.__name__)
-    
-    # print "\n\n --- new model ----------------"
-    # print "Parsed: %s" % parsed_model
-    
+        
     model = Model(name=name, model_name=parsed_model.name)
     
     # First we get the names of the config variables.
@@ -130,7 +130,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         if STRICT:
             raise SemanticError(msg, parsed_model)
         else:
-            warning(msg)
+            semantic_warning(msg, parsed_model)
          
     # Then we check that we passed all variables that we needed to pass
     required_not_passed = config_variables_required.difference(passed_variables)
@@ -484,7 +484,7 @@ element=block)
         if STRICT:
             raise SemanticError(msg, element=parsed_model)
         else:
-            warning(msg)
+            semantic_warning(msg, parsed_model)
     
     
     # reset counters
