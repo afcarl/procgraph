@@ -1,6 +1,14 @@
+import pickle
+
 from procgraph.core.exceptions import SemanticError, ModelExecutionError, \
     x_not_found
-import pickle
+import os
+
+
+def make_sure_dir_exists(file):
+    dir = os.path.dirname(file)
+    if not os.path.exists(dir):
+        os.makedirs(dir) 
 
 
 class ModelLoadAndSave():
@@ -45,6 +53,8 @@ class ModelLoadAndSave():
                     
     def process_save_actions(self):        
         for what, where, format, element in self.__save_actions:
+            make_sure_dir_exists(where)
+            
             block, var = self.__resolve(what, element)
             load, save = self.__get_functions(where, format, element) #@UnusedVariable
             
