@@ -45,7 +45,13 @@ floatnumber.setParseAction(python_interpretation)
 comment = Suppress(Literal('#') + restOfLine)
 good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
 
-quoted = QuotedString('"', '\\', unquoteResults=True)
+# All kinds of python strings
+quoted = \
+    QuotedString('"', '\\', unquoteResults=True) ^ \
+    QuotedString("'", '\\', unquoteResults=True) ^ \
+    QuotedString(quoteChar='"""', escChar='\\', multiline=True, unquoteResults=True) ^ \
+    QuotedString(quoteChar="'''", escChar='\\', multiline=True, unquoteResults=True)
+    
 reference = Combine(Suppress('$') + good_name('variable'))
 
 # FIXME: add wrap also here?

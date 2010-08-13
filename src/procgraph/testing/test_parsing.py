@@ -54,6 +54,19 @@ g1.in = 2
 g1.in = "ciao"
 """ ,
 """
+g1.in = 'ciao'
+""" ,
+# Triple quotes
+"""
+g1.in = '''ciao
+come va'''
+""" ,
+'''
+g1.in = """ciao
+come va"""
+''' ,
+
+"""
 g1.in = "ci\\"a/o"
 """,
 # underscores 
