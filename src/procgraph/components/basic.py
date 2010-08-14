@@ -3,19 +3,23 @@ from math import sqrt
 from numpy import random 
 from procgraph.core.registrar import default_library
 from procgraph.core.exceptions import ModelExecutionError
+from procgraph.core.model_loader import add_models_to_library
  
 
 COMPULSORY = 'compulsory-param'
+TIMESTAMP = 'timestamp-param'
 
-def make_generic(num_inputs, num_outputs, operation, **parameters):
+def make_generic(num_inputs, num_outputs, operation, params={}):
+
     # make a copy
-    parameters = dict(parameters)
+    parameters = dict(params)
     
+
     class GenericOperation(Block):
             
         def init(self):
             for key, value in parameters.items():
-                if value != COMPULSORY:
+                if not value in [COMPULSORY, TIMESTAMP]:
                     self.set_config_default(key, value)
             self.define_input_signals(map(str, range(num_inputs)))
             self.define_output_signals(map(str, range(num_outputs)))
@@ -26,8 +30,11 @@ def make_generic(num_inputs, num_outputs, operation, **parameters):
                 args.append(self.get_input(i))
                 
             params = {}
-            for key in parameters.keys():
-                params[key] = self.get_config(key)
+            for key, value in parameters.items():
+                if value == TIMESTAMP:
+                    params[key] = max(self.get_input_signals_timestamps())
+                else:
+                    params[key] = self.get_config(key)
                 
             try:
                 result = operation(*args, **params)
@@ -50,15 +57,23 @@ default_library.register('-', make_generic(2, 1, lambda x, y: x - y))
 default_library.register('/', make_generic(2, 1, lambda x, y: x / y))
 
     
-def define_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}):
+def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}):
     if name is None:
         name = function.__name__
     
-    block = make_generic(num_inputs, num_outputs, function, **params)
+    block = make_generic(num_inputs, num_outputs, function, params=params)
     
     default_library.register(name, block)
 
-    
+def register_block(block_class, name=None):
+    if name is None:
+        name = block_class.__name__
+    default_library.register(name, block_class)
+
+def register_model_spec(model_spec):
+    add_models_to_library(default_library, model_spec)
+
+
 class Constant(Block):
     ''' Creates a numerical constant that never changes.::
     
