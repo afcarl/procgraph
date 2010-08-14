@@ -1,7 +1,0 @@
---- model rawseeds_read_gps
-""" Reads the GPS log to check that it does not contain errors. """
-config log "Rawseeds GPS log file (.csv or .csv.bz2)"
-
-import procgraph.components.rawseeds  
- 
-|RawseedsGPS file=$log|
