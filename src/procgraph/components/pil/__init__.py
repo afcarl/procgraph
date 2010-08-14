@@ -11,3 +11,4 @@
 import pil_operations
 import pil_conversions
 import text
+import imread
