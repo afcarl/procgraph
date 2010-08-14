@@ -1,13 +1,13 @@
 import os, re, numpy
-from PIL import Image
 
 from procgraph.core.block import Generator
 from procgraph.core.registrar import default_library
 from procgraph.components.rawseeds.file_utils import expand_environment
+from procgraph.core.model_loader import add_models_to_library
 
 
-class RawseedsCamera(Generator):
-    ''' This block reads a range-finder log in Rawseeds format. '''
+class RawseedsCamFiles(Generator):
+    ''' This block reads the filenames for the Rawseeds camera log.'''
     
     def init(self):
         dirname = self.config.dir
@@ -16,8 +16,9 @@ class RawseedsCamera(Generator):
         if not os.path.exists(dirname):
             raise Exception('Non existent directory "%s".' % dirname)
         if not os.path.isdir(dirname):
-            raise Exception('Given file is not directory "%s".' % dirname)
+            raise Exception('The file "%s" is not a directory.' % dirname)
         
+        # TODO: use proper logging
         print "Reading directory listings from %s" % dirname
         all_files = os.listdir(dirname)
         
@@ -69,15 +70,15 @@ class RawseedsCamera(Generator):
         
         timestamp, filename = frames[k]
         
-        try:
-            im = Image.open(filename)
-        except Exception as e:
-            raise Exception('Could not open frame %d/%d in %s: %s' % \
-                            (k, len(frames), filename, e))
+#        try:
+#            im = Image.open(filename)
+#        except Exception as e:
+#            raise Exception('Could not open frame %d/%d in %s: %s' % \
+#                            (k, len(frames), filename, e))
+#        
+#        data = numpy.array(im)
         
-        data = numpy.array(im)
-        
-        self.set_output(0, value=data, timestamp=timestamp)        
+        self.set_output(0, value=filename, timestamp=timestamp)        
 
         if k + 1 >= len(frames):
             self.state.next_frame = None
@@ -85,8 +86,20 @@ class RawseedsCamera(Generator):
             self.state.next_frame = k + 1
             
             
+default_library.register('RawseedsCamFiles', RawseedsCamFiles)
+
+# Computes the variance
+model_spec = """
+--- model RawseedsCam
+'''This model reads the images of a Rawseed camera log.'''
+config dir    'Directory containing the images.' 
+config fps_limit = 100 'Limit the frames per second (default is disabled).'
+
+import procgraph.components.pil 
+
+|RawseedsCamFiles dir=$dir| --> |fps_data_limit fps=$fps_limit| --> filenames
+
+    filenames --> |imread| --> |output name=images|
  
-
-default_library.register('RawseedsCam', RawseedsCamera)
-
-
+"""
+add_models_to_library(default_library, model_spec)
