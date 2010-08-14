@@ -8,60 +8,68 @@ from procgraph.core.parsing_elements import Where
 from procgraph.core.visualization import error
 
 
-def main():
-    try:
-         
-        parser = OptionParser()
-         
-        parser.add_option("--debug", action="store_true",
-                          default=False, dest="debug",
-                          help="Displays debug information on the model.")
+def main(): 
+    parser = OptionParser()
+     
+    parser.add_option("--debug", action="store_true",
+                      default=False, dest="debug",
+                      help="Displays debug information on the model.")
+    
+    parser.add_option("--stats", action="store_true",
+                      default=False, dest="stats",
+                      help="Displays execution statistics, including CPU usage.")
+    
+    parser.add_option("--nocache", action="store_true",
+                      default=False, dest="nocache",
+                      help="Ignores the parsing cache.")
+    
+    
+    (options, args) = parser.parse_args()
+    
+    
+    if not args:
+        print "Usage:    pg  <model>.pg   [param=value  param=value ... ]"
         
-        parser.add_option("--stats", action="store_true",
-                          default=False, dest="stats",
-                          help="Displays execution statistics, including CPU usage.")
+        #print "Known models: %s" % \
+        #    ", ".join(sorted(default_library.get_known_blocks()))
+        sys.exit(-1) 
+    
+    
+    filename = args.pop(0)
         
-        parser.add_option("--nocache", action="store_true",
-                          default=False, dest="nocache",
-                          help="Ignores the parsing cache.")
-        
-        
-        (options, args) = parser.parse_args()
-        
-        pg_look_for_models(default_library, ignore_cache=options.nocache)
-        
-        
-        if not args:
-            print "Usage:    pg  <model>.pg   [param=value  param=value ... ]"
+    config = {}
+    for arg in args:
+        if '=' in arg:
+            key, value = arg.split('=')
+            try:
+                value = float(value)
+            except:
+                try: 
+                    value = int(value)
+                except:
+                    pass
+            config[key] = value            
+        else:
+            raise Exception('What should I do with "%s"?' % arg)
+    
+    if options.debug:
+        print "Configuration: %s" % config
+
+    pg(filename, config,
+       nocache=options.nocache, debug=options.debug, stats=options.stats)
             
-            print "Known models: %s" % \
-                ", ".join(sorted(default_library.get_known_blocks()))
-            sys.exit(-1) 
+
+def pg(filename, config, debug=False, nocache=False, stats=False):
+    ''' Instantiate and run a model. 
+    
+    Instantiate a model (filename can be either a file or a known model. '''
+    
+    try:
+        pg_look_for_models(default_library, ignore_cache=nocache)
         
         # load standard components
         import procgraph.components #@UnusedImport
 
-        filename = args.pop(0)
-            
-        config = {}
-        for arg in args:
-            if '=' in arg:
-                key, value = arg.split('=')
-                try:
-                    value = float(value)
-                except:
-                    try: 
-                        value = int(value)
-                    except:
-                        pass
-                config[key] = value            
-            else:
-                raise Exception('What should I do with "%s"?' % arg)
-        
-        if options.debug:
-            print "Configuration: %s" % config
-
-        
         if default_library.exists(block_type=filename):
             w = Where('command line', filename, 0)
             model = default_library.instance(filename, name=None,
@@ -74,7 +82,7 @@ def main():
             model = model_from_string(model_spec, config=config,
                                       filename=filename)
         
-        if options.debug:
+        if debug:
             model.summary()
             sys.exit(0) 
 
@@ -83,7 +91,7 @@ def main():
         while model.has_more():       
             model.update()
             
-            if options.stats:
+            if stats:
                 count += 1
                 if count % 500 == 0:
                     model.stats.print_info()
@@ -96,8 +104,7 @@ def main():
     #    traceback.print_exc()    
         
     except SemanticError as e:
-        traceback.print_exc()    
-        
+        #traceback.print_exc()    
         error(e)
         if e.element is not None:
             where = e.element.where
@@ -109,9 +116,9 @@ def main():
             
         sys.exit(-2)
     except PGSyntaxError as e:
-        print e
-        traceback.print_exc()    
-        e.where.print_where()
+        #traceback.print_exc()    
+        error(e)
+        error(str(e.where))
         sys.exit(-2)
             
             
