@@ -1,7 +1,9 @@
 import numpy
 
 from procgraph.core.registrar import default_library
-from procgraph.components.basic import make_generic, COMPULSORY
+from procgraph.components.basic import make_generic, COMPULSORY, \
+    register_simple_block
+
 
 
 default_library.register('double', make_generic(1, 1, lambda x:x * 2))
@@ -23,8 +25,9 @@ def my_take(a, axis, indices):
 #default_library.register('take', make_generic(1,1, numpy.take, 
 #                                              axis=COMPULSORY, indices=COMPULSORY))
 
-default_library.register('take', make_generic(1, 1, my_take,
-                                              axis=COMPULSORY, indices=COMPULSORY))
+register_simple_block(my_take, 'take',
+    params={'axis':COMPULSORY, 'indices':COMPULSORY})
+
 
 from numpy import multiply, array
 outer = multiply.outer
@@ -36,7 +39,8 @@ def my_outer(a, b):
     #print "outer %s x %s = %s " % (a.shape,b.shape,res.shape)
     return res
 
-default_library.register('outer', make_generic(2, 1, my_outer))
+
+register_simple_block(my_outer, 'outer')
 
 
 def select(x, every=None):
@@ -44,4 +48,5 @@ def select(x, every=None):
     return x[range(0, n, every)]
     
 
-default_library.register('select', make_generic(1, 1, select, every=COMPULSORY))
+register_simple_block(select)
+

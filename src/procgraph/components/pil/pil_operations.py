@@ -1,6 +1,6 @@
 import numpy
 
-from procgraph.components.basic import  COMPULSORY, define_simple_block
+from procgraph.components.basic import  COMPULSORY, register_simple_block
 from procgraph.components.pil.pil_conversions import Image_from_array
 
 
@@ -10,5 +10,5 @@ def pil_resize(value, width, height):
     return numpy.asarray(image.convert("RGB"))    
     
     
-define_simple_block(pil_resize, name='resize',
+register_simple_block(pil_resize, name='resize',
                     params={ 'width':COMPULSORY, 'height':COMPULSORY})

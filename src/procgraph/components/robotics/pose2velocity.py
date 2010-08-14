@@ -1,10 +1,9 @@
-from procgraph.core.model_loader import add_models_to_library
-from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
 from procgraph.core.exceptions import BadInput
 
-from snp_geometry.pose import Pose
+from procgraph.components.basic import register_block, register_model_spec
 
+from snp_geometry.pose import Pose
 
 class Pose2velocity(Block):
     
@@ -37,10 +36,10 @@ class Pose2velocity(Block):
         
         self.set_output('commands', commands, timestamp=t[0])
 
-default_library.register('pose2vel_', Pose2velocity)
+register_block(Pose2velocity, 'pose2vel_')
 
 # Computes the variance
-model_spec = """
+register_model_spec("""
 --- model pose2commands
  
 |input name=pose| --> |last_n_samples n=2| --> |pose2vel_| --> commands 
@@ -50,7 +49,5 @@ model_spec = """
     commands --> |extract index=1| --> |output name=vy|
     commands --> |extract index=2| --> |output name=omega|
     
-"""
-add_models_to_library(default_library, model_spec)
-
+""")
     

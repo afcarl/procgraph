@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy
-from procgraph.components.basic import define_simple_block
+from procgraph.components.basic import register_simple_block
 
 def imread(filename):
     try:
@@ -13,4 +13,4 @@ def imread(filename):
 
     return data
 
-define_simple_block(imread)
+register_simple_block(imread)

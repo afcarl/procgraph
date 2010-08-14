@@ -1,8 +1,8 @@
 import numpy
 from numpy import maximum, minimum, zeros
 
-from procgraph.core.registrar import default_library
-from procgraph.components.basic import make_generic
+
+from procgraph.components.basic import  register_simple_block
 from procgraph.components import check_2d_array
 
 
@@ -43,7 +43,7 @@ def posneg(value, max_value=None):
     return result
 
 
-default_library.register('posneg', make_generic(1, 1, posneg, max_value=None))  
+register_simple_block(posneg, params={'max_value': None})
 
 
 def scale(value, min_value=None, max_value=None,
@@ -101,8 +101,7 @@ def scale(value, min_value=None, max_value=None,
     
     return result
 
+register_simple_block(scale,
+    params={'min_color':[1, 1, 1], 'max_color':[0, 0, 0],
+            'min_value':None, 'max_value': None})
 
-default_library.register('scale',
-                         make_generic(1, 1, scale,
-                                      min_color=[1, 1, 1], max_color=[0, 0, 0],
-                                      min_value=None, max_value=None))  

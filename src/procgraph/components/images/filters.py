@@ -1,11 +1,11 @@
 import numpy
 
 from procgraph.core.registrar import default_library
-from procgraph.components.basic import make_generic
+from procgraph.components.basic import make_generic, register_simple_block
 from procgraph.components import assert_rgb_image, assert_gray_image
 
 
-def rgb2grayscale(rgb):  
+def rgb2gray(rgb):  
     assert_rgb_image(rgb, 'input to rgb2grayscale')  
     r = rgb[:, :, 0].squeeze()
     g = rgb[:, :, 1].squeeze()
@@ -26,10 +26,10 @@ def gray2rgb(gray):
         rgb[:, :, i] = gray
     return rgb
 
-default_library.register('grayscale', make_generic(1, 1, rgb2grayscale)) 
-default_library.register('rgb2gray', make_generic(1, 1, rgb2grayscale)) 
-default_library.register('gray2rgb', make_generic(1, 1, gray2rgb))
-    
+register_simple_block(rgb2gray)
+register_simple_block(rgb2gray, 'grayscale')
+
+register_simple_block(gray2rgb)
     
 
 
