@@ -5,6 +5,7 @@ from procgraph.core.model_loader import model_from_string, pg_look_for_models
 from procgraph.core.registrar import default_library
 from procgraph.core.exceptions import SemanticError, PGSyntaxError 
 from procgraph.core.parsing_elements import Where
+from procgraph.core.visualization import error
 
 
 def main():
@@ -95,14 +96,17 @@ def main():
     #    traceback.print_exc()    
         
     except SemanticError as e:
-        print e
         traceback.print_exc()    
+        
+        error(e)
         if e.element is not None:
             where = e.element.where
             if where is None:
                 raise Exception("%s does not have where?" % e.element)
             
-            where.print_where()
+            s = str(where)
+            error(s)
+            
         sys.exit(-2)
     except PGSyntaxError as e:
         print e
