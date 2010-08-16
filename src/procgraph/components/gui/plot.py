@@ -34,11 +34,19 @@ class Plot(Block):
         self.config.y_min = None 
         self.config.y_max = None
         
+        self.config.keep = False
+        
+        # figure gets initialized in update() on the first execution
+        self.figure = None
+        
+    def init_figure(self):
         width = self.config.width
         height = self.config.height
         
         pylab.rc('xtick', labelsize=8) 
         pylab.rc('ytick', labelsize=8) 
+
+        ''' Creates figure object and axes '''
         self.figure = pylab.figure(frameon=False,
                                    figsize=(width / 100.0, height / 100.0))
         # left, bottom, right, top
@@ -106,6 +114,10 @@ class Plot(Block):
         self.limits = None
         
         start = time.clock()
+
+        if self.figure is None:
+            self.init_figure()    
+
         pylab.figure(self.figure.number)
         
         for i in range(self.num_input_signals()):
@@ -197,10 +209,14 @@ class Plot(Block):
         pixel_data = numpy.asarray(im)
         reading = time.clock() - start
        
-        if False: 
+        if True: 
             print "plotting: %dms  saving: %dms  reading: %dms" % (
                 plotting * 1000, saving * 1000, reading * 1000)
         
         self.output.rgb = pixel_data
+        
+        if not self.config.keep:
+            pylab.close(self.figure.number)
+            self.figure = None
 
 default_library.register('plot', Plot)
