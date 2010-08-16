@@ -2,7 +2,7 @@ import numpy
 
 from procgraph.components  import  check_2d_array
 from procgraph.core.registrar import default_library
-from procgraph.components.basic import make_generic
+from procgraph.components.basic import make_generic, register_simple_block
 
 try:
     import cv #@UnresolvedImport
@@ -75,7 +75,9 @@ def gradient(grayscale, aperture_size=3):
 
     return gx.astype('float32'), gy.astype('float32')
 
-default_library.register('gradient', make_generic(1, 2, gradient, aperture_size=3))
+register_simple_block(gradient, num_inputs=1, num_outputs=2,
+                      params={'aperture_size':3})
+#default_library.register('gradient', make_generic(1, 2, gradient, aperture_size=3))
 
 def smooth(grayscale, gaussian_std=5.0):
     """ Smooths an image.
@@ -101,6 +103,7 @@ def smooth(grayscale, gaussian_std=5.0):
     result_a = cv_to_numpy(smoothed).squeeze() 
     return result_a
 
-default_library.register('smooth', make_generic(1, 1, smooth, gaussian_std=5.0))
+#default_library.register('smooth', make_generic(1, 1, smooth, gaussian_std=5.0))
 
+register_simple_block(smooth, params={'gaussian_std':5.0})
 

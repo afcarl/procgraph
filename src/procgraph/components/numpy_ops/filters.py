@@ -1,17 +1,17 @@
 import numpy
 
-from procgraph.core.registrar import default_library
-from procgraph.components.basic import make_generic, COMPULSORY, \
-    register_simple_block
+from procgraph.components.basic import  COMPULSORY, register_simple_block
 
+def astype(a, dtype):
+    return a.astype(dtype)
 
+register_simple_block(astype, params={'dtype': COMPULSORY})
 
-default_library.register('double', make_generic(1, 1, lambda x:x * 2))
-default_library.register('square', make_generic(1, 1, numpy.square))
-default_library.register('log', make_generic(1, 1, numpy.log))
-default_library.register('abs', make_generic(1, 1, numpy.abs))
-default_library.register('sign', make_generic(1, 1, numpy.sign))
-
+register_simple_block(numpy.square, 'square')
+register_simple_block(numpy.log, 'long')
+register_simple_block(numpy.abs, 'abs')
+register_simple_block(numpy.sign, 'sign')
+ 
 def my_take(a, axis, indices):
     a = numpy.array(a)
     indices = list(indices) # parsingresult bug

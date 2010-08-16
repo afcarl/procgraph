@@ -13,7 +13,6 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
 
     # make a copy
     parameters = dict(params)
-    
 
     class GenericOperation(Block):
             
