@@ -1,11 +1,7 @@
 --- model rawseeds_laser_bds_boot_sign
-# This is an attempt to do bootstrapping of range finder data.
-# Uses rawseeds_synchronized_laser as a source.
-# .. config::
-#   `logdir`
-#     Rawseeds log directory.
+config logdir "Rawseeds log directory"
 
-out = "${logdir}/rawseeds_laser_bds_boot_sign.avi"
+out = "${logdir}/out/rawseeds_laser_bds_boot_sign/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 import procgraph.components.rawseeds

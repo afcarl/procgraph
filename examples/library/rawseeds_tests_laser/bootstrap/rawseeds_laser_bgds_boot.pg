@@ -5,10 +5,10 @@ config outdir   = rawseeds_laser_bgds_boot "Subdirectory inside logdir where to 
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
 
-on finish: save G to "${logdir}/${outdir}/G.pickle" 
-on finish: save B to "${logdir}/${outdir}/B.pickle" 
+on finish: save G to "${logdir}/out/${outdir}/G.pickle" 
+on finish: save B to "${logdir}/out/${outdir}/B.pickle" 
 
-mencoder.file = "${logdir}/rawseeds_laser_bgds_boot.avi"
+mencoder.file = "${logdir}/out/${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 

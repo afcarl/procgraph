@@ -1,10 +1,8 @@
 --- model rawseeds_laser_covcorr
-# Computes and compares the covariance of y, y_dot and sign(y_dot)
-# Params:
-# - logdir
-# - out = $logdir/rawseeds_laser_covariance.avi
+"""Computes and compares the covariance of y, y_dot and sign(y_dot)"""
+config logdir "Rawseeds log directory"
 
-out = "${logdir}/rawseeds_laser_covcorr.avi"
+out = "${logdir}/out/rawseeds_laser_covcorr/covcorr.avi"
 
 import procgraph.components.rawseeds
 import procgraph.components.pil
@@ -28,7 +26,7 @@ rgb --> |mencoder file=$out|
 # |resize width=1280 height=640|
 
 --- model covcorr_display
-# displays the covariance as an image
+""" Displays the covariance/correlation as an image """
 display_fps = 1
 
 |input name=x| --> |fps_data_limit fps=$display_fps| --> cov 

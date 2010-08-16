@@ -1,22 +1,3 @@
-# --- model rawseeds_camera_mean_old
-# """ Computes and displays the mean """
-# config logdir "Rawseeds log directory"
-# config fps = 0.1 "frame rate for learning video"
-# 
-# |rawseeds_synchronized_camera logdir=$logdir| --> y
-# 
-#     y --> |expectation| --> y_mean 
-#     
-#     
-#     # note that the mean is a float; we need to convert it back to uint8
-#     # (mencoder is picky by design)
-#     y_mean -->  |fps_data_limit fps=$fps| --> |astype dtype=uint8|-->|mencoder|
-#     
-# 
-#     mencoder.file = "${logdir}/rawseeds_camera_mean.avi"
-#     
-# on finish: save y_mean to "${logdir}/rawseeds_camera_mean.pickle"
-
 --- model rawseeds_camera_mean_generalized
 """ Computes and displays the mean of an arbitrary block."""
 config logdir "Rawseeds log directory"
