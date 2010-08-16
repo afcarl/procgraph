@@ -84,7 +84,7 @@ def info(string):
     write_message(string, lambda x: 'pg: ' + colored(x, 'green'))
     
 def debug(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, 'cyan', attr=['dark']))
+    write_message(string, lambda x: 'pg: ' + colored(x, 'cyan', attrs=['dark']))
     
 def write_message(string, formatting):
     sys.stdout.flush()

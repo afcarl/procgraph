@@ -14,7 +14,7 @@ import procgraph.components.rawseeds
 
 ------------------------------- model rawseeds_read_sick
 """ Reads the whole log to check that it does not contain errors. """
-config log "Rawseeds Sick log file (.csv or .csv.bz2)"
+config log "Rawseeds Sick log file (.csv or .csv.bz2)."
 
 import procgraph.components.rawseeds  
  
@@ -23,8 +23,8 @@ import procgraph.components.rawseeds
 
 
 ------------------------------- model rawseeds_read_hokuyo
-# Reads the whole log to check that it does not contain errors.
-config log "Rawseeds Hokuyo log file (.csv or .csv.bz2)"
+""" Reads the whole log to check that it does not contain errors. """
+config log "Rawseeds Hokuyo log file (.csv or .csv.bz2)."
 
 import procgraph.components.rawseeds  
  
@@ -33,8 +33,8 @@ import procgraph.components.rawseeds
 
 
 ------------------------------- model rawseeds_read_camera
-# Reads the whole log to check that it does not contain errors.
-config dir "Directory containing the images"
+""" Reads the whole log to check that it does not contain errors. """
+config dir "Directory containing the images."
 
 import procgraph.components.rawseeds  
  

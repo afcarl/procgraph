@@ -9,9 +9,9 @@ from procgraph.core.parsing_elements import ParsedSignalList, VariableReference,
      ParsedBlock, ParsedModel, ParsedSignal
 from procgraph.core.registrar import default_library
 from procgraph.core.model import Model
-from procgraph.core.visualization import warning, semantic_warning
+from procgraph.core.visualization import semantic_warning
 
-from procgraph.core.visualization import debug as debug_main, info
+from procgraph.core.visualization import debug as debug_main
 
 
 
@@ -94,7 +94,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             debug_main('Creating %s:%s | %s' % (name, parsed_model.name, s))
 
     
-    debug('config: %s' % config)
+    #debug_main('config: %s' % config)
     
     if library is None:
         library = default_library
@@ -231,7 +231,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     for x in parsed_model.imports:
         package = x.package
-        print "Importing package %s" % package
+        debug_main("Importing package %s" % package)
         try:
             __import__(package)
         except Exception as e:
@@ -486,10 +486,7 @@ element=block)
         else:
             semantic_warning(msg, parsed_model)
     
-    
-    # reset counters
-    
-    
+        
     # Process load statements
     model.init()
     

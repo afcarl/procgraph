@@ -4,6 +4,7 @@ config logdir                              "Directory containing Rawseeds logs."
 config outdir   = rawseeds_laser_bgds_boot "Subdirectory inside logdir where to put files."
 config grad_op  = identity                 "Scalar operation after gradient."
 config deriv_op = identity                 "Scalar operation after derivative."
+config display_fps = 0.2                   "Frames per second for movie"
 
 on finish: save G to "${logdir}/out/${outdir}/G.pickle" 
 on finish: save B to "${logdir}/out/${outdir}/B.pickle" 
@@ -32,7 +33,7 @@ Gi --> |expectation| --> G
 y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
 
 
-    gy, B, G --> |sync| --> |fps_data_limit fps=0.1| --> gys, Bs, Gs
+    gy, B, G --> |sync| --> |fps_data_limit fps=$display_fps| --> gys, Bs, Gs
 
 
     gys --> |plot| --> gy_rgb
@@ -46,11 +47,12 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
     rgb --> |mencoder| 
      
 ------------ model rawseeds_laser_bgds_boot_all
-#config logdir                              "Directory containing Rawseeds logs."
+""" Tries all possible combinations of ops for BGDS bootstrapping. """
+config logdir "Directory containing Rawseeds logs."
 base = "rawseeds_laser_bgds_boot"
-# |rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=identity  outdir="${base}_GI_DI"|
-|rawseeds_laser_bgds_boot logdir=$logdir  outdir="${base}_GI_DI"|
-|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=identity  outdir="${base}_GI_DS"|
-|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=sign      outdir="${base}_GS_DI"|
-|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=sign      outdir="${base}_GS_DS"|
+
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=identity outdir="${base}/GI_DI"|
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=identity  outdir="${base}/GI_DS"|
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=sign      outdir="${base}/GS_DI"|
+|rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=sign      outdir="${base}/GS_DS"|
  
