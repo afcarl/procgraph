@@ -49,7 +49,7 @@ def find_file(filename):
     if len(lines) == 0:
         print('Cannot find filename "%s" anywhere' % filename)
         return None
-    return lines.split()[0]
+    return lines.split('\n')[0]
 
 fonts = {}
 def get_font(name, size):
