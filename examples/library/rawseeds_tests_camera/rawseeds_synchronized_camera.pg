@@ -36,7 +36,7 @@ omni, frontal, svs_t --> |sync| -> |compose| --> y --> |output name=y|
 """ Tests the rawseeds_synchronized_camera model by writing out a movie. """
 config logdir "Rawseeds log directory"
 
-out = "${logdir}/rawseeds_synchronized_camera_test.avi"
+out = "${logdir}/out/rawseeds_synchronized_camera_test/rgb.avi"
 |rawseeds_synchronized_camera logdir=$logdir| --> |mencoder file=$out|
 
 
