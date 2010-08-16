@@ -40,7 +40,7 @@ def my_outer(a, b):
     return res
 
 
-register_simple_block(my_outer, 'outer')
+register_simple_block(my_outer, 'outer', num_inputs=2)
 
 
 def select(x, every=None):
@@ -48,5 +48,5 @@ def select(x, every=None):
     return x[range(0, n, every)]
     
 
-register_simple_block(select)
+register_simple_block(select, params={'every': COMPULSORY})
 
