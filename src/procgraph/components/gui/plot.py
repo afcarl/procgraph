@@ -209,7 +209,7 @@ class Plot(Block):
         pixel_data = numpy.asarray(im)
         reading = time.clock() - start
        
-        if True: 
+        if False: 
             print "plotting: %dms  saving: %dms  reading: %dms" % (
                 plotting * 1000, saving * 1000, reading * 1000)
         
