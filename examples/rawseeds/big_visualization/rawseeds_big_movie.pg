@@ -17,7 +17,7 @@ hokuyo_front.file = "${logdir}/HOKUYO_FRONT.csv.bz2"
 
   odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
-             out = "${logdir}/rawseeds_big_movie.avi"
+             out = "${logdir}/out/big_movie/big_movie.avi"
 
 ######## Cameras
 |svs_t:RawseedsCam| --> |svs_pipeline| --> svs_t
