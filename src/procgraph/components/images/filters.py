@@ -1,7 +1,6 @@
 import numpy
-
-from procgraph.core.registrar import default_library
-from procgraph.components.basic import make_generic, register_simple_block
+ 
+from procgraph.components.basic import register_simple_block
 from procgraph.components import assert_rgb_image, assert_gray_image
 
 

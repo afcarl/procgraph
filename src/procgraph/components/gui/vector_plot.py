@@ -3,8 +3,8 @@ from PIL import Image
 import  pylab
 from pylab import ion, draw, plot, axis, figure, axes
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block 
+from procgraph.components.basic import register_block
 
 
 class SimplePlot(Block):
@@ -47,7 +47,7 @@ class SimplePlot(Block):
         
         draw()
         
-default_library.register('splot', SimplePlot)
+register_block(SimplePlot, 'splot')
 
 
 
@@ -143,5 +143,5 @@ class RGBPlot(Block):
         #self.set_output(0, pixel_data[:,:,0:3].squeeze().copy())
 
 
-default_library.register('rgbplot', RGBPlot)
+register_block(RGBPlot, 'rgbplot')
 

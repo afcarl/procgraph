@@ -4,9 +4,9 @@ import numpy
 
 from PIL import ImageDraw, ImageFont
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block 
 from procgraph.components.pil.pil_conversions import Image_from_array
+from procgraph.components.basic import register_block
 
 
 class Text(Block):
@@ -38,7 +38,7 @@ class Text(Block):
             
             
 
-default_library.register('text', Text)
+register_block(Text, 'text')
 
 
 # cache of fonts

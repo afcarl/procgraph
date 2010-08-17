@@ -1,7 +1,7 @@
 from pylab import ion, draw, imshow
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block 
+from procgraph.components.basic import register_block
 
 
 class ImagePlot(Block):
@@ -24,5 +24,5 @@ class ImagePlot(Block):
             self.image.changed()
             draw()
         
-default_library.register('imshow', ImagePlot)
+register_block(ImagePlot, 'imshow')
 

@@ -1,13 +1,5 @@
-'''
-
-.. block:: join
-
-  |towrite|
-  
-
-'''
-from procgraph.core.block import Block 
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block
+from procgraph.components.basic import register_block
 
 
 # Make it generic?
@@ -35,7 +27,6 @@ class Extract(Block):
         self.set_output('part', part)
          
         
-    
-default_library.register('extract', Extract)
+register_block(Extract, 'extract')
 
 

@@ -1,5 +1,5 @@
 from procgraph.components.rawseeds.textlog import TextLog
-from procgraph.core.registrar import default_library
+from procgraph.components.basic import register_block
 
 
 class RawseedsOdometry(TextLog):
@@ -58,8 +58,7 @@ to the wheelbase and points towards the right wheel.
         
         
 
-
-default_library.register('RawseedsOdo', RawseedsOdometry)
+register_block(RawseedsOdometry, 'RawseedsOdo')
 
 
         

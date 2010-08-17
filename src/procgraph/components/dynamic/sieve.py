@@ -1,5 +1,5 @@
-from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
+from procgraph.components.basic import register_block
 
 
 class Sieve(Block):
@@ -38,6 +38,6 @@ class Sieve(Block):
         count += 1
         self.set_state('count', count)
         
-default_library.register('sieve', Sieve)
+register_block(Sieve, 'sieve')
 
   

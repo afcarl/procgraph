@@ -8,9 +8,8 @@
 '''
 import numpy
 
-from procgraph.core.block import Block 
-from procgraph.core.registrar import default_library
-
+from procgraph.core.block import Block  
+from procgraph.components.basic import register_block
 
 class Join(Block):
     ''' 
@@ -50,7 +49,6 @@ class Join(Block):
         self.set_output(0, numpy.array(result))
          
         
-    
-default_library.register('join', Join)
+register_block(Join, 'join')
 
 

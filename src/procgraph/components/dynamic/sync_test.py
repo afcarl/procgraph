@@ -1,8 +1,7 @@
 from procgraph.core.block import Generator, Block
 from procgraph.testing.utils import PGTestCase
-from procgraph.core.exceptions import ModelExecutionError
-from procgraph.core.registrar import default_library
-from procgraph.core.model_loader import add_models_to_library
+from procgraph.core.exceptions import ModelExecutionError  
+from procgraph.components.basic import register_model_spec, register_block
 
 examples = [
 ("If coincident, output that",
@@ -56,7 +55,7 @@ examples = [
 """),
 ]
 
-sync_test_spec = '''
+register_model_spec('''
 --- model sync_test
 
 |log_sim line=$master| -> master 
@@ -65,8 +64,7 @@ sync_test_spec = '''
 
 master, slave1, slave2 -> |sync2| -> |check_sync| --> |output name=value|
 
-'''
-add_models_to_library(default_library, sync_test_spec)
+''')
 
 
 class LogSim(Generator):
@@ -101,7 +99,7 @@ class LogSim(Generator):
         timestamp, value = self.queue.pop()
         self.set_output(0, value, timestamp)
 
-default_library.register('log_sim', LogSim)
+register_block(LogSim, 'log_sim')
 
 
 
@@ -131,7 +129,7 @@ class CheckSync(Block):
         
         self.output.value = values[0]
 
-default_library.register('check_sync', CheckSync)
+register_block(CheckSync, 'check_sync')
 
         
 class TestSync(PGTestCase):

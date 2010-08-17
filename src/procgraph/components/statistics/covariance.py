@@ -1,7 +1,6 @@
-from procgraph.core.model_loader import add_models_to_library
-from procgraph.core.registrar import default_library
+from procgraph.components.basic import register_model_spec
 
-model_covariance = """
+register_model_spec("""
 --- model covariance 
 # number of sample to have reliable expectation
 wait=10
@@ -14,11 +13,9 @@ wait=10
    
    covariance --> |output name=cov_x|
     
-"""
-add_models_to_library(default_library, model_covariance)
+""")
 
-
-model_normalize = """
+register_model_spec("""
 --- model normalize 
 # number of sample to have reliable expectation
 wait=10
@@ -27,5 +24,4 @@ wait=10
 
    x, Ex --> |sync| --> |-| --> x_normalized --> |output name=x_n|
     
-"""
-add_models_to_library(default_library, model_normalize)
+""")

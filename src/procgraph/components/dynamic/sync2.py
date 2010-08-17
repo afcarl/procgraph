@@ -1,6 +1,8 @@
-from procgraph.core.block import Block, Generator
 from collections import namedtuple
+
+from procgraph.core.block import Block
 from procgraph.core.registrar import default_library
+from procgraph.components.basic import register_block
 
 Sample = namedtuple('Sample', 'timestamp value')
 
@@ -93,6 +95,6 @@ class Sync2(Block):
         
         
     
-default_library.register('sync2', Sync2)
+register_block(Sync2, 'sync2')
 
 

@@ -1,5 +1,5 @@
-from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
+from procgraph.components.basic import register_block
 
     
 class HistoryT(Block):
@@ -42,6 +42,6 @@ class HistoryT(Block):
         self.output.history = (t, x)
 
         
-default_library.register('historyt', HistoryT)
+register_block(HistoryT, 'historyt')
 
 

@@ -1,17 +1,12 @@
-import matplotlib
-#print "Backend %s" % matplotlib.get_backend()
 import time
-
-
-from matplotlib import pylab
-
+import tempfile
 import  numpy
 from PIL import Image
+from matplotlib import pylab
 
 from procgraph.core.block import Block
-from procgraph.core.exceptions import BadInput
-from procgraph.core.registrar import default_library
-import tempfile
+from procgraph.core.exceptions import BadInput 
+from procgraph.components.basic import register_block
 
 class Plot(Block):
     ''' Just plots the vector instantaneously '''
@@ -53,14 +48,21 @@ class Plot(Block):
         borders = [0.15, 0.15, 0.03, 0.05]
         w = 1 - borders[0] - borders[2]
         h = 1 - borders[1] - borders[3]
-        self.axes = pylab.axes([borders[0], borders[1], w, h])
+        #self.axes = pylab.axes([borders[0], borders[1], w, h])
+        self.axes = pylab.axes()
         self.figure.add_axes(self.axes)
         
         pylab.draw_if_interactive = lambda: None
 
         pylab.figure(self.figure.number)
-        if self.config.title:
-            self.axes.set_title(self.config.title)
+        if self.config.title is not None:
+            if self.config.title != "":
+                self.axes.set_title(self.config.title)
+        else:
+            # We don't have a title ---
+            t = ", ".join(self.get_input_signals_names())
+            self.axes.set_title(t)
+            
         if self.config.xlabel:
             self.axes.set_xlabel(self.config.xlabel)
         if self.config.ylabel:
@@ -219,4 +221,4 @@ class Plot(Block):
             pylab.close(self.figure.number)
             self.figure = None
 
-default_library.register('plot', Plot)
+register_block(Plot, 'plot')

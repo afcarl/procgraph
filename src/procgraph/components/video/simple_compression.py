@@ -1,9 +1,9 @@
 import numpy
 import sys
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library 
+from procgraph.core.block import Block 
 from procgraph.components.checks import check_rgb_or_grayscale
+from procgraph.components.basic import register_block
  
  
 class SimpleCompression(Block): 
@@ -51,5 +51,4 @@ class SimpleCompression(Block):
         numpy.save(self.file, self.state.delta)
 
 
-
-default_library.register('SimpleCompression', SimpleCompression)
+register_block(SimpleCompression)

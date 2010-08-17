@@ -1,10 +1,10 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess 
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library 
+from procgraph.core.block import Block 
 from procgraph.components  import check_rgb_or_grayscale
 from procgraph.core.model_loadsave import make_sure_dir_exists
+from procgraph.components.basic import register_block
  
  
 class MEncoder(Block):
@@ -65,4 +65,4 @@ class MEncoder(Block):
         self.process.stdin.write(image.data)
         self.process.stdin.flush()
 
-default_library.register('mencoder', MEncoder)
+register_block(MEncoder, 'mencoder')

@@ -49,14 +49,9 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
                     self.set_output(i, result[i])
         
     return GenericOperation
-
-default_library.register('+', make_generic(2, 1, lambda x, y: x + y))
-default_library.register('*', make_generic(2, 1, lambda x, y: x * y))
-default_library.register('-', make_generic(2, 1, lambda x, y: x - y))
-default_library.register('/', make_generic(2, 1, lambda x, y: x / y))
-
     
 def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}):
+    assert name is None or isinstance(name, str)
     if name is None:
         name = function.__name__
     
@@ -65,6 +60,7 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, para
     default_library.register(name, block)
 
 def register_block(block_class, name=None):
+    assert name is None or isinstance(name, str)
     if name is None:
         name = block_class.__name__
     default_library.register(name, block_class)
@@ -73,76 +69,10 @@ def register_model_spec(model_spec):
     add_models_to_library(default_library, model_spec)
 
 
-class Constant(Block):
-    ''' Creates a numerical constant that never changes.::
-    
-            |constant value=42 name=meaning| -> ...
-            
-        Two parameters
-        * value, necessary
-        * name, optional signal name (default: const)
-    ''' 
-        
-    def init(self):
-        self.set_config_default('name', 'const')
-        
-        self.signal_name = self.get_config('name')
-        self.value = self.get_config('value')
-        self.define_output_signals([self.signal_name])
-        self.define_input_signals([])
-        
-    def update(self):
-        self.set_output(0, self.value, timestamp=ETERNITY)
-        
-    def __repr__(self):
-        return 'Constant(%s)' % self.get_config('value')
+#def procgraph_block(original_class):
+#    ''' Simple decorator for fast registration of block 
+#        classes with the default name. '''
+#    # TODO: check class derives from Block
+#    register_block(original_class)
+#    return original_class
 
-default_library.register('constant', Constant)
-
-
-class Gain(Block):
-
-    def init(self):
-        #self.set_config_default('gain', 1)
-        self.define_input_signals(['input'])
-        self.define_output_signals(['out'])
-    
-    def update(self):
-        self.set_output(0, self.get_input(0) * self.get_config('gain'))
-
-# TODO: make generic
-default_library.register('gain', Gain) 
-
-class Clock(Generator):
-    def init(self):
-        self.define_input_signals([])
-        self.define_output_signals(['clock'])
-        self.set_config_default('interval', 1)
-        self.set_state('clock', 0)
-    def update(self):
-        clock = self.get_state('clock')
-        clock += self.get_config('interval')
-        self.set_state('clock', clock)
-        self.set_output('clock', clock, timestamp=clock)
-    def next_data_status(self):
-        return (True, self.get_state('clock') + self.get_config('interval'))
-    
-default_library.register('clock', Clock)
-
-
-class RandomGenerator(Generator):    
-    def init(self):
-        self.set_config_default('variance', 1)
-        self.define_input_signals([])
-        self.define_output_signals(['random'])
-    
-    def has_more(self):
-        return True
-    
-    def update(self):
-        variance = self.get_config('variance')
-        self.set_output(0, random.rand(1) * sqrt(variance))
-        
-default_library.register('rand', RandomGenerator)
-        
-        

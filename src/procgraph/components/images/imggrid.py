@@ -2,8 +2,8 @@ from numpy import ceil, sqrt, zeros
 
 from procgraph.core.block import Block
 from procgraph.components import check_rgb_or_grayscale
-from procgraph.components.images.compose import place_at
-from procgraph.core.registrar import default_library
+from procgraph.components.images.compose import place_at 
+from procgraph.components.basic import register_block
 
 
 class ImageGrid(Block):
@@ -76,7 +76,7 @@ class ImageGrid(Block):
         self.set_output(0, canvas)
 
 
-default_library.register('grid', ImageGrid)
+register_block(ImageGrid, 'grid')
 
             
             

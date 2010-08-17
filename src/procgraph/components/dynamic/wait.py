@@ -1,6 +1,5 @@
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
-
+from procgraph.core.block import Block 
+from procgraph.components.basic import register_block
         
 class Wait(Block):
     ''' 
@@ -37,4 +36,4 @@ class Wait(Block):
             for i in range(self.num_input_signals()):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
 
-default_library.register('wait', Wait)
+register_block(Wait, 'wait')

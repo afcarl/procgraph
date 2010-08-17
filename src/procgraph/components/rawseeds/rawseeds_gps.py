@@ -1,7 +1,5 @@
-import numpy
-
-from procgraph.core.registrar import default_library
 from procgraph.components.rawseeds.textlog import TextLog
+from procgraph.components.basic import register_block
 
 class RawseedsGPS(TextLog):
     ''' This block reads the GPS log from Rawseeds format. 
@@ -61,6 +59,6 @@ class RawseedsGPS(TextLog):
         return timestamp, output
 
 
-default_library.register('RawseedsGPS', RawseedsGPS)
+register_block(RawseedsGPS)
 
 

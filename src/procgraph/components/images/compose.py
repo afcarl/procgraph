@@ -1,8 +1,8 @@
 import numpy
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block 
 from procgraph.components  import assert_rgb_image
+from procgraph.components.basic import register_block
 
         
 def place_at(canvas, image, xpix, ypix):
@@ -52,7 +52,7 @@ class Compose(Block):
         
         self.set_output(0, canvas)
        
-default_library.register('compose', Compose)
+register_block(Compose, 'compose')
 
         
         

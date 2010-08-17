@@ -2,6 +2,19 @@ import numpy
 
 from procgraph.components.basic import  COMPULSORY, register_simple_block
 
+register_simple_block(lambda x, y: x + y, '+', num_inputs=2)
+register_simple_block(lambda x, y: x * y, '*', num_inputs=2)
+register_simple_block(lambda x, y: x - y, '-', num_inputs=2)
+register_simple_block(lambda x, y: x / y, '/', num_inputs=2)
+
+#default_library.register('+', make_generic(2, 1, lambda x, y: x + y))
+#default_library.register('*', make_generic(2, 1, lambda x, y: x * y))
+#default_library.register('-', make_generic(2, 1, lambda x, y: x - y))
+#default_library.register('/', make_generic(2, 1, lambda x, y: x / y))
+
+
+
+
 def astype(a, dtype):
     return a.astype(dtype)
 

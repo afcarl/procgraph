@@ -1,9 +1,8 @@
-import os, re, numpy
+import os, re
 
-from procgraph.core.block import Generator
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Generator 
 from procgraph.components.rawseeds.file_utils import expand_environment
-from procgraph.core.model_loader import add_models_to_library
+from procgraph.components.basic import register_model_spec, register_block
 
 
 class RawseedsCamFiles(Generator):
@@ -68,15 +67,7 @@ class RawseedsCamFiles(Generator):
 
         assert k < len(frames)
         
-        timestamp, filename = frames[k]
-        
-#        try:
-#            im = Image.open(filename)
-#        except Exception as e:
-#            raise Exception('Could not open frame %d/%d in %s: %s' % \
-#                            (k, len(frames), filename, e))
-#        
-#        data = numpy.array(im)
+        timestamp, filename = frames[k] 
         
         self.set_output(0, value=filename, timestamp=timestamp)        
 
@@ -85,11 +76,11 @@ class RawseedsCamFiles(Generator):
         else:
             self.state.next_frame = k + 1
             
-            
-default_library.register('RawseedsCamFiles', RawseedsCamFiles)
+register_block(RawseedsCamFiles)
+
 
 # Computes the variance
-model_spec = """
+register_model_spec("""
 --- model RawseedsCam
 '''This model reads the images of a Rawseed camera log.'''
 config dir    'Directory containing the images.' 
@@ -101,5 +92,4 @@ import procgraph.components.pil
 
     filenames --> |imread| --> |output name=images|
  
-"""
-add_models_to_library(default_library, model_spec)
+""")

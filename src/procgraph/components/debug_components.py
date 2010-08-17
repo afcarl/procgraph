@@ -1,7 +1,7 @@
 import numpy
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block, Generator, ETERNITY
+from procgraph.components.basic import register_block
 
 
 class Identity(Block):
@@ -23,8 +23,7 @@ class Identity(Block):
             self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
         
         
-default_library.register('identity', Identity)
-        
+register_block(Identity, 'identity') 
           
 
 class Print(Block):
@@ -48,8 +47,8 @@ class Print(Block):
                                 self.get_input(i))
 
 
+register_block(Print, 'print')
 
-default_library.register('print', Print)
         
 class Info(Block):
     ''' Prints the inputs '''
@@ -77,11 +76,83 @@ class Info(Block):
                                 s)
 
 
-        
-default_library.register('info', Info)
-        
+register_block(Info, 'Info') 
           
 
+class Constant(Block):
+    ''' Creates a numerical constant that never changes.::
     
+            |constant value=42 name=meaning| -> ...
+            
+        Two parameters
+        * value, necessary
+        * name, optional signal name (default: const)
+    ''' 
+        
+    def init(self):
+        self.set_config_default('name', 'const')
+        
+        self.signal_name = self.get_config('name')
+        self.value = self.get_config('value')
+        self.define_output_signals([self.signal_name])
+        self.define_input_signals([])
+        
+    def update(self):
+        self.set_output(0, self.value, timestamp=ETERNITY)
+        
+    def __repr__(self):
+        return 'Constant(%s)' % self.get_config('value')
+
+register_block(Constant, 'constant')
+ 
+
+class Gain(Block):
+
+    def init(self):
+        #self.set_config_default('gain', 1)
+        self.define_input_signals(['input'])
+        self.define_output_signals(['out'])
+    
+    def update(self):
+        self.set_output(0, self.get_input(0) * self.get_config('gain'))
+
+# TODO: make generic
+
+register_block(Gain, 'gain')
+ 
+
+class Clock(Generator):
+    def init(self):
+        self.define_input_signals([])
+        self.define_output_signals(['clock'])
+        self.set_config_default('interval', 1)
+        self.set_state('clock', 0)
+    def update(self):
+        clock = self.get_state('clock')
+        clock += self.get_config('interval')
+        self.set_state('clock', clock)
+        self.set_output('clock', clock, timestamp=clock)
+    def next_data_status(self):
+        return (True, self.get_state('clock') + self.get_config('interval'))
+    
+register_block(Clock, 'clock')
+
+
+class RandomGenerator(Generator):    
+    def init(self):
+        self.set_config_default('variance', 1)
+        self.define_input_signals([])
+        self.define_output_signals(['random'])
+    
+    def has_more(self):
+        return True
+    
+    def update(self):
+        variance = self.get_config('variance')
+        self.set_output(0, random.rand(1) * sqrt(variance))
+        
+
+register_block(RandomGenerator, 'rand')
+
 
 

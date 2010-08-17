@@ -1,7 +1,7 @@
 import time
 
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
+from procgraph.core.block import Block 
+from procgraph.components.basic import register_block
 
 class FPSLimit(Block):
     ''' This block limits the output update to a certain framerate.
@@ -46,7 +46,7 @@ class FPSLimit(Block):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
 
         
-default_library.register('fps_limit', FPSLimit)
+register_block(FPSLimit, 'fps_limit')
 
 
 

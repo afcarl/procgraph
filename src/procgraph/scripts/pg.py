@@ -121,4 +121,4 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
         error(str(e.where))
         sys.exit(-2)
             
-            
+    return model

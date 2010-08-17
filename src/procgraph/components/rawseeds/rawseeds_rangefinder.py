@@ -1,7 +1,7 @@
 import numpy
 
-from procgraph.core.registrar import default_library
 from procgraph.components.rawseeds.textlog import TextLog
+from procgraph.components.basic import register_block
 
 
 class RawseedsRangeFinder(TextLog):
@@ -24,6 +24,6 @@ R1..R181 Ranges (zero padded to 181 ranges) [m]
         return timestamp, [('readings', readings)]
 
 
-default_library.register('RawseedsRF', RawseedsRangeFinder)
+register_block(RawseedsRangeFinder, 'RawseedsRF')
 
 

@@ -1,9 +1,9 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess, os, numpy
  
-from procgraph.core.block import Generator
-from procgraph.core.registrar import default_library  
+from procgraph.core.block import Generator 
 from procgraph.core.exceptions import ModelExecutionError
+from procgraph.components.basic import register_block
 
  
 class MPlayer(Generator):
@@ -93,7 +93,7 @@ class MPlayer(Generator):
         # FIXME check EOF
         return (True, self.get_state('timestamp'))
 
-default_library.register('mplayer', MPlayer)
+register_block(MPlayer, 'mplayer')
 
 
 
