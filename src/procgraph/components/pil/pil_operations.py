@@ -14,8 +14,8 @@ def pil_resize(value, width=None, height=None):
         width = (height * image.size[0]) / image.size[1]
     elif height is None and width is not None:
         height = (width * image.size[1]) / image.size[0]
-    else:
-        assert False
+    
+    #    raise Exception('wrong assertion')
         
     image = image.resize((width, height))
     return numpy.asarray(image.convert("RGB"))    

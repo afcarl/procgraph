@@ -183,6 +183,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         
         if isinstance(value, VariableReference):
             variable = value.variable
+            if variable in os.environ:
+                return os.environ[variable]
             if not variable in properties:
                 raise SemanticError(
                     x_not_found('variable', variable, properties), element)
@@ -190,8 +192,6 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             return expand_value(properties[variable], context, element=element)
         
         elif isinstance(value, str):
-            if value in os.environ:
-                return os.environ[value]
             return expand_references_in_string(value,
                     lambda s: expand_value(VariableReference(s),
                                            context=context, element=element))
