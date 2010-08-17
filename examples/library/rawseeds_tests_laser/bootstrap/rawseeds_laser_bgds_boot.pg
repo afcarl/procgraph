@@ -47,7 +47,8 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
     rgb --> |mencoder| 
      
 ------------ model rawseeds_laser_bgds_boot_all
-""" Tries all possible combinations of ops for BGDS bootstrapping. """
+""" Tries all possible combinations of ops for BGDS bootstrapping.
+"""
 config logdir "Directory containing Rawseeds logs."
 base = "rawseeds_laser_bgds_boot"
 

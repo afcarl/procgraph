@@ -1,9 +1,8 @@
-from procgraph.core.block import Block, Generator, ETERNITY
-from math import sqrt
-from numpy import random 
+from procgraph.core.block import Block 
 from procgraph.core.registrar import default_library
 from procgraph.core.exceptions import ModelExecutionError
 from procgraph.core.model_loader import add_models_to_library
+import traceback
  
 
 COMPULSORY = 'compulsory-param'
@@ -38,7 +37,8 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
             try:
                 result = operation(*args, **params)
             except Exception as e:
-                raise ModelExecutionError("While executing %s: %s" % \
+                traceback.print_exc()
+                raise ModelExecutionError("While executing %s: %s." % \
                                           (operation, e), block=self)
         
             

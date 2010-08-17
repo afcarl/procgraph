@@ -2,7 +2,7 @@ import sys, os, traceback
 from optparse import OptionParser
 
 from procgraph.core.model_loader import model_from_string, pg_look_for_models
-from procgraph.core.registrar import default_library
+from procgraph.core.registrar import default_library, Library
 from procgraph.core.exceptions import SemanticError, PGSyntaxError 
 from procgraph.core.parsing_elements import Where
 from procgraph.core.visualization import error
@@ -65,14 +65,15 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
     Instantiate a model (filename can be either a file or a known model. '''
     
     try:
-        pg_look_for_models(default_library, ignore_cache=nocache)
+        library = Library(default_library)
+        pg_look_for_models(library, ignore_cache=nocache)
         
         # load standard components
         import procgraph.components #@UnusedImport
 
-        if default_library.exists(block_type=filename):
+        if library.exists(block_type=filename):
             w = Where('command line', filename, 0)
-            model = default_library.instance(filename, name=None,
+            model = library.instance(filename, name=None,
                                              config=config, where=w)
         else:
             if not os.path.exists(filename):
@@ -84,7 +85,7 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
         
         if debug:
             model.summary()
-            sys.exit(0) 
+            return
 
         count = 0
         model.reset_execution()
@@ -114,11 +115,11 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
             s = str(where)
             error(s)
             
-        sys.exit(-2)
+        raise Exception('Semantic error')
     except PGSyntaxError as e:
         #traceback.print_exc()    
         error(e)
         error(str(e.where))
-        sys.exit(-2)
+        raise Exception('Syntax error')
             
     return model

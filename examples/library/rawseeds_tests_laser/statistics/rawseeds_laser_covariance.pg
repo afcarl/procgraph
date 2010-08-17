@@ -4,7 +4,7 @@
 # - logdir
 # - out = $logdir/rawseeds_laser_covariance.avi
 
-out = "${logdir}/out/rawseeds_laser_covariance/covariance.avi"
+out = "${logdir}/out/laser_covariance/covariance.avi"
 
 import procgraph.components.rawseeds
 import procgraph.components.pil
