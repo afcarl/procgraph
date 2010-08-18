@@ -50,7 +50,7 @@ y_dot, commands --> |sync| --> |outer| --> |expectation| -> B
 """ Tries all possible combinations of ops for BGDS bootstrapping.
 """
 config logdir "Directory containing Rawseeds logs."
-base = "rawseeds_laser_bgds_boot"
+base = "laser_bgds_boot"
 
 |rawseeds_laser_bgds_boot logdir=$logdir deriv_op=identity  grad_op=identity outdir="${base}/GI_DI"|
 |rawseeds_laser_bgds_boot logdir=$logdir deriv_op=sign      grad_op=identity  outdir="${base}/GI_DS"|

@@ -30,3 +30,4 @@ prefix = "camera_mean"
 |rawseeds_camera_mean_generalized logdir=$logdir prefix=$prefix|
  rawseeds_camera_mean_generalized.after_op = astype
  rawseeds_camera_mean_generalized.after = {dtype: uint8}
+# rawseeds_camera_mean_generalized.after.dtype = uint8
