@@ -24,6 +24,10 @@ register_simple_block(numpy.square, 'square')
 register_simple_block(numpy.log, 'long')
 register_simple_block(numpy.abs, 'abs')
 register_simple_block(numpy.sign, 'sign')
+register_simple_block(lambda x, y: numpy.dstack((x, y)), 'dstack', num_inputs=2)
+register_simple_block(lambda x, y: numpy.hstack((x, y)), 'hstack', num_inputs=2)
+register_simple_block(lambda x, y: numpy.vstack((x, y)), 'vstack', num_inputs=2)
+
  
 def my_take(a, axis, indices):
     a = numpy.array(a)
@@ -39,7 +43,7 @@ def my_take(a, axis, indices):
 #                                              axis=COMPULSORY, indices=COMPULSORY))
 
 register_simple_block(my_take, 'take',
-    params={'axis':COMPULSORY, 'indices':COMPULSORY})
+    params={'axis':0, 'indices':COMPULSORY})
 
 
 from numpy import multiply, array
