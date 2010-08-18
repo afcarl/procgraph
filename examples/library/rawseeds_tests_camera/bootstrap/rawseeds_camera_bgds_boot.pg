@@ -9,7 +9,6 @@ config display_fps = 0.2                   "Frames per second for movie"
 
 
 outdir = "${logdir}/out/${prefix}/"
-mencoder.file = "${outdir}/movie.avi"
 odometry.file = "${logdir}/ODOMETRY_XYT.csv.bz2"
 
 
