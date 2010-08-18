@@ -39,9 +39,13 @@ class BlockConnection:
 class Model(Generator, ModelLoadAndSave):
     ''' A Model is a block and a generator. '''
     
-    def __init__(self, name, model_name):
+    def __init__(self, name, model_name, config):
         ''' Name is the personal name of this instance.
-            model_name is this model's name '''
+            model_name is this model's name.
+            
+            model_name is used for visualization and serialization
+            config is usef only for serialization.
+             '''
         if name is None:
             name = 'unnamed-block'
         assert isinstance(name, str)
@@ -346,6 +350,14 @@ class Model(Generator, ModelLoadAndSave):
             
         for name, conn in self.name2block_connection.items():
             info("- %s: %s" % (name, conn))
-     
+#     
+#    def procgraph_serialization(self):
+#        blocks = dict([ (name, block.procgraph_serialization()) \
+#                       for name, block in self.name2block])
+#        signals = 
+#        inputs = 
+#        outputs = 
+#        
+#        return {'model'}
 
 

@@ -102,7 +102,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         raise TypeError('I expect a ParsedModel instance, not a "%s".' % 
                         parsed_model.__class__.__name__)
         
-    model = Model(name=name, model_name=parsed_model.name)
+    model = Model(name=name, model_name=parsed_model.name, config=config)
     
     # First we get the names of the config variables.
     # In the mean time we check that we don't have doubles.
