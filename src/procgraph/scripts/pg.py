@@ -122,4 +122,4 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
         error(str(e.where))
         raise Exception('Syntax error')
             
-    return model
+    #return model

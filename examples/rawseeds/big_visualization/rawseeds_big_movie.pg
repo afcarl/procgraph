@@ -1,4 +1,7 @@
 --- model rawseeds_big_movie
+""" Creates a big movie file displaying all data """
+config logdir "Rawseeds log directory"
+
 import procgraph.components.rawseeds 
 import procgraph.components.cv 
 import procgraph.components.pil
@@ -66,9 +69,13 @@ rgb --> |mencoder file=$out fps=30|
 
 
 --- model svs_pipeline
+""" Pipeline for SVS data"""
 w = 240
 h = 180
 |input name=cam| --> |gray2rgb| -->  |resize width=$w height=$h| --> |output name=rgb|
 
 --- model rf_display
+""" Makes a plot of range finder data"""
+config title "title for the plot"
+config y_max "Maximum value for the y axis"
 |input name=y|  -> |plot width=320 height=160 title=$title y_max=$max y_min=0| --> |output name=display_laser|
