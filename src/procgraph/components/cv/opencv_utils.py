@@ -2,6 +2,7 @@ import numpy
 
 from procgraph.components  import  check_2d_array 
 from procgraph.components.basic import  register_simple_block
+from procgraph.components.checks import assert_gray_image
 
 try:
     import cv #@UnresolvedImport
@@ -61,7 +62,8 @@ def gradient(grayscale, aperture_size=3):
     Input:  a 2D numpy array with float32 
     Outpt:  gx, gy: a 2D numpy array with float32   """    
         
-        
+    assert_gray_image(grayscale)
+    
     im = numpy_to_cv(grayscale)
     shape = (im.width, im.height)
     sobel = cv.CreateImage(shape, cv.IPL_DEPTH_32F, 1)
@@ -88,6 +90,7 @@ def smooth(grayscale, gaussian_std=5.0):
         
         * a 2D  numpy float32 array.
     """    
+    assert_gray_image(grayscale)
 
     check_2d_array(grayscale, name="input to gradient() ")
     grayscale = grayscale.astype('float32')
