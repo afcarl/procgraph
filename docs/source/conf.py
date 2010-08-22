@@ -29,7 +29,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.todo', 'sphinx.ext.coverage',
               'sphinx.ext.pngmath', 'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode',
-              'procgraph.sphinx']
+              'procgraph.sphinx', 'sphinxtogithub']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['my_templates']
@@ -41,7 +41,7 @@ source_suffix = '.rst'
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = 'main'
 
 # General information about the project.
 project = u'procgraph'
@@ -95,7 +95,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'sphinxdoc'
+html_theme = 'haiku'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
