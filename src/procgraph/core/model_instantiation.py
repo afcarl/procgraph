@@ -1,4 +1,4 @@
-import os, re
+import os, re, sys
 from copy import deepcopy
 from pyparsing import ParseResults
 
@@ -231,12 +231,13 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     for x in parsed_model.imports:
         package = x.package
-        debug_main("Importing package %s" % package)
-        try:
-            __import__(package)
-        except Exception as e:
-            raise SemanticError('Could not import package "%s": %s' % \
-                                    (package, e), element=x)
+        if not package in sys.modules:
+            debug_main("Importing package %s" % package)
+            try:
+                __import__(package)
+            except Exception as e:
+                raise SemanticError('Could not import package "%s": %s' % \
+                                        (package, e), element=x)
     
     # Extract load and save statements
     for x in parsed_model.load_statements:
