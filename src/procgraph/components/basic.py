@@ -3,6 +3,7 @@ from procgraph.core.registrar import default_library
 from procgraph.core.exceptions import ModelExecutionError
 from procgraph.core.model_loader import add_models_to_library
 import traceback
+import inspect
  
 
 COMPULSORY = 'compulsory-param'
@@ -14,7 +15,9 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
     parameters = dict(params)
 
     class GenericOperation(Block):
-            
+        my_operation = operation
+        defined_in = None
+          
         def init(self):
             for key, value in parameters.items():
                 if not value in [COMPULSORY, TIMESTAMP]:
@@ -51,12 +54,16 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
     return GenericOperation
     
 def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}):
+    # Get a module to which we can associate this block
+    frm = inspect.stack()[1]
+    mod = inspect.getmodule(frm[0])
+    
     assert name is None or isinstance(name, str)
     if name is None:
         name = function.__name__
     
     block = make_generic(num_inputs, num_outputs, function, params=params)
-    
+    block.defined_in = mod
     default_library.register(name, block)
 
 def register_block(block_class, name=None):
@@ -66,7 +73,11 @@ def register_block(block_class, name=None):
     default_library.register(name, block_class)
 
 def register_model_spec(model_spec):
-    add_models_to_library(default_library, model_spec)
+    frm = inspect.stack()[1]
+    mod = inspect.getmodule(frm[0])
+    assert mod is not None
+    defined_in = mod
+    add_models_to_library(default_library, model_spec, defined_in=defined_in)
 
 
 #def procgraph_block(original_class):

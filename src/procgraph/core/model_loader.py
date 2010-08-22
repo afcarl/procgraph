@@ -10,10 +10,12 @@ from procgraph.core.registrar import default_library, Library
 
 PATH_ENV_VAR = 'PROCGRAPH_PATH'
 
-class ModelSpec():
+class ModelSpec(object):
     ''' Class used to register as a block type '''
     def __init__(self, parsed_model):
         self.parsed_model = parsed_model
+        # the module to which this model is associated
+        self.defined_in = None
         
     def __call__(self, name, config, library):
         parsed_model = self.parsed_model 
@@ -40,21 +42,26 @@ class ModelSpec():
         return model
 
 
-def pg_look_for_models(library, additional_paths=None, ignore_cache=False):
+def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_cache=False,
+                       assign_to_module=None):
     ''' Call this function at the beginning of the executions.
     It scans the disk for model definitions, and register
     them as available block types. 
     Other than the paths that are passed by argument,
     it looks into the ones in the PROCGRAPH_PATH environment
-    variable (colon separated list of paths)
+    variable (colon separated list of paths), unless ignore_env is True.
+    
+    assign_to_module is a string that gives the nominal module the model
+    is associated to -- this is only used for the documentation generation. 
     '''
     
     paths = []
     if additional_paths:
         paths.extend(additional_paths)
-        
-    if PATH_ENV_VAR in os.environ:
-        paths.extend(os.environ[PATH_ENV_VAR].split(':'))
+    
+    if not ignore_env:
+        if PATH_ENV_VAR in os.environ:
+            paths.extend(os.environ[PATH_ENV_VAR].split(':'))
         
     if not paths:
         warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
@@ -99,28 +106,40 @@ def pg_look_for_models(library, additional_paths=None, ignore_cache=False):
                 prev = library.name2block[parsed_model.name].parsed_model.where
                 raise SemanticError('Found model "%s" in %s, already in  %s. ' % \
                             (parsed_model.name, f, prev.filename))
-            library.register(parsed_model.name, ModelSpec(parsed_model))
+            model_spec = ModelSpec(parsed_model)
+            model_spec.defined_in = assign_to_module
+            library.register(parsed_model.name, model_spec)
 
   
-def pg_add_parsed_model_to_library(parsed_model, library):
+def pg_add_parsed_model_to_library(parsed_model, library, defined_in=None):
     assert parsed_model.name is not None
     if library.exists(parsed_model.name):
         prev = library.name2block[parsed_model.name].parsed_model.where
         raise SemanticError('I already have registered "%s" from %s. ' % \
                             (parsed_model.name, prev.filename))
     # print "Registering model '%s' " % parsed_model.name
+
+    model_spec = ModelSpec(parsed_model)
+    model_spec.defined_in = defined_in    
+    assert defined_in is not None
+    library.register(parsed_model.name, model_spec)
+
+
+def add_models_to_library(library, string, name=None, filename=None, defined_in=None):
+    '''
+    defined_in: module to display in documentation
+    '''
+    if filename is None and defined_in is not None:
+        filename = defined_in.__file__
     
-    library.register(parsed_model.name, ModelSpec(parsed_model))
-
-
-def add_models_to_library(library, string, name=None, filename=None):
     models = parse_model(string, filename=filename)
     if models[0].name is None:
         assert name is not None
         models[0].name = name
         
     for model in models:
-        pg_add_parsed_model_to_library(parsed_model=model, library=library)
+        pg_add_parsed_model_to_library(parsed_model=model, library=library,
+                                       defined_in=defined_in)
         
                
 def model_from_string(model_spec, name=None, config=None, library=None, filename=None):

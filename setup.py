@@ -7,9 +7,10 @@ setup(name='procgraph',
       install_requires=['pyparsing'],
       entry_points={
          'console_scripts': [
-           'pg = procgraph.scripts.pg:main'
+           'pg = procgraph.scripts.pg:main',
+           'pgdoc = procgraph.core.pgdoc:main'
         ]
-      }, 
+      },
 )
 
 
