@@ -1,0 +1,52 @@
+import numpy
+
+from procgraph.core.block import Block
+from procgraph.core.exceptions import BadInput
+from procgraph.components.basic import register_block, register_model_spec
+
+def isiterable(x):
+    try:
+        iter(x)
+        return True
+    except TypeError:
+        return False
+
+
+class ForwardDifference12(Block):
+    ''' Computes ``x[t+1] - x[t]`` normalized with timestamp. '''
+    def init(self):
+        self.define_input_signals(['x12', 't12'])
+        self.define_output_signals(['x_dot'])
+        
+    def update(self):
+        x = self.input.x12
+        t = self.input.t12
+        if not isiterable(x) or len(x) != 2:
+            raise BadInput('Expected arrays of 2 elements', self, 'x')
+        if not isiterable(t) or len(t) != 2:
+            raise BadInput('Expected arrays of 2 elements', self, 't')
+       
+        delta = t[1] - t[0]
+        
+        if not delta > 0:
+            raise BadInput('Bad timestamp sequence % s' % t, self, 't')
+
+        # if this is a sequence of bytes, let's promove them to floats
+        if x[0].dtype == numpy.dtype('uint8'):
+            diff = x[1].astype('float32') - x[0].astype('float32')
+        else:
+            diff = x[1] - x[0]
+        time = t[0]
+        x_dot = diff / numpy.float32(delta)
+        self.set_output('x_dot', x_dot, timestamp=time)  
+
+register_block(ForwardDifference12, 'two_step_difference')
+
+register_model_spec("""
+--- model derivative2
+|input name=x| --> |last_n_samples n=2| --> x,t
+
+   x, t --> |two_step_difference| --> |output name=x_dot|
+    
+""")
+
