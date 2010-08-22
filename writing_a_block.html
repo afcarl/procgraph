@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Creating new blocks &mdash; procgraph v0.1 documentation</title>
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+	 
+<!--	
+   <style type="text/css">
+   .pagetoc { 
+	max-width: 30%;
+	display: block; float: right; margin-left: 3em; background-color: white; border: solid 2px gray;}
+   </style>
+-->
+<style type="text/css">
+
+div.input, div.output, div.configuration { margin-top: 1em; padding-right: 2em;}
+div.input, div.output, div.configuration {max-width: 30%; float:left; display: block }
+div.input:before{ content: "Input"; font-weight: bold; }
+div.output:before{ content: "Output"; font-weight: bold; }
+div.configuration:before{ content: "Configuration"; font-weight: bold; }
+
+div.implementation { clear: left; }
+div.implementation:before{ content: "Implementation notes"; font-weight: bold; }
+
+h2,h3 { clear: left;}
+
+h1 { background-color: #ddf; padding: 1em;}
+h3 { background-color: #ddd; padding: 5px;}
+</style>
+
+   <style type="text/css">
+
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+/*
+	div.twitterbadge {
+		float: right;
+		margin-left: 2em;
+	}
+
+	img.bigpicture {
+		margin: 1em;
+		max-width: 90%;
+	}
+	
+	.header h2 {
+		color: #990033 !important;
+		font-size: 200% !important;
+	}
+	.content {
+
+	}
+	.content p, .content p {
+		max-width: 40em;
+	}
+	
+	.content h1 { 
+		display: none;
+	}
+	h2, h3 {  
+		border-bottom: solid 2px orange;
+		max-width: 40em;
+	}
+	
+	h1 { font-size: 200%;}
+	h2 { font-size: 150%;}
+	h3 { font-size: 125%;}
+	
+		
+	pre{
+		max-width: 60em;
+	
+	}
+	
+	body {  font-size: 120%; font-family: "Droid Serif", serif; }
+	
+	h1,h2,h3 { 
+  font-family: "Lobster", serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 6px 6px 6px #ccc;
+}
+
+div.header h2 {
+    font-size: 1.3em;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: none !important;
+    color: #aaa;
+    border: 0;
+    margin-top: -3px;
+    padding: 0;
+}
+
+.col1 strong, .col2 strong { 
+	font-family: "Lobster", serif; color: #990033;text-shadow: 6px 6px 6px #ccc;
+	font-size: 160%;
+ }
+
+.compmake-brand {
+	font-family: "Lobster", serif;
+	font-size: 120%;
+}
+
+a.reference em, a.external em {
+	font-style: normal !important;
+}
+*/
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<!--<link  href="http://fonts.googleapis.com/css?family=Cardo" rel="stylesheet" type="text/css" >-->
+
+
+<script src="http://yui.yahooapis.com/3.1.0/build/yui/yui-min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.0/build/cssreset/reset-context-min.css"></link>
+<script src="http://www.remarkbox.com/deploy/remarkbox-min.js"></script>
+<script type="text/javascript">
+YUI().use('remarkbox', function (Y) {
+Y.Remarkbox.remarkson.elements("p,code");
+Y.Remarkbox.remarkson.ids("para,tnt");
+Y.Remarkbox.remarkson.classes("rmkit,contentfeedback");
+Y.Remarkbox.remarktype.pointer("right");
+Y.Remarkbox.remarktype.strongcolor("#ECFCE8");
+Y.Remarkbox.remarktype.strongcolortext("#000000");
+Y.Remarkbox.remarktype.lightcolor("#FF8040");
+Y.Remarkbox.remarktype.lightcolortext("#800000");
+Y.Remarkbox.remarktype.alwaysvisible("true");
+Y.Remarkbox.remarktype.offsetx("-3em");
+Y.Remarkbox.remarktype.offsety("-2em");
+Y.Remarkbox.remarktype.allowanonymous("true");
+Y.Remarkbox.render();
+});
+</script>
+
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>procgraph v0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Creating new blocks</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="creating-new-blocks">
+<span id="id1"></span><h1>Creating new blocks<a class="headerlink" href="#creating-new-blocks" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="turning-simple-instantaneous-functions-into-blocks">
+<h2>Turning simple instantaneous functions into blocks<a class="headerlink" href="#turning-simple-instantaneous-functions-into-blocks" title="Permalink to this headline">¶</a></h2>
+<p><strong>To write.*</strong></p>
+</div>
+<div class="section" id="more-complicated-blocks">
+<h2>More complicated blocks<a class="headerlink" href="#more-complicated-blocks" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="the-init-method">
+<h3>The init() method<a class="headerlink" href="#the-init-method" title="Permalink to this headline">¶</a></h3>
+<p>Do not use your class&#8217;s constructor to initialize the block. There are
+all sorts of issues with custom constructors that make writing things
+such as module serialization hard.</p>
+<p>Instead, <a href="#id2"><span class="problematic" id="id3">|procgraph|</span></a> provides the facilities you need for configuration,
+initialization, etc.</p>
+<dl class="docutils">
+<dt>The init() method is supposed to set up</dt>
+<dd>method: basic usage.</dd>
+</dl>
+<p>The return value of init() is ignored, except in one special case described in the
+next section.</p>
+<p>Advanced init() usage &#8211; partial initialization</p>
+<p>Note that there some special cases for which initialization cannot be
+completed before until the block is in the model and sigals are connected.
+One typical example is when we want to write a block that can operate
+on multiple signal, of which we do not know the number. Consider as an example
+the case in which we want to write a block performing a &#8220;min&#8221; operation.:</p>
+<div class="highlight-python"><pre># three values
+|constant value=1| -&gt; x
+|constant value=2| -&gt; y
+|constant value=3| -&gt; z
+
+# take the min
+x,y,z -&gt; |min| -&gt; minimum</pre>
+</div>
+<p>When the block min is initialized, it is outside the block</p>
+</div>
+<div class="section" id="the-update-method">
+<h3>The update() method<a class="headerlink" href="#the-update-method" title="Permalink to this headline">¶</a></h3>
+<ul>
+<li><p class="first">If the computation is not finished, return Block.UPDATE_NOT_FINISHED.
+This will tell procgraph to consider the computation still pending,
+and update() will be called again in the future with the same input signals.</p>
+<p>All other return values are just ignored by procgraph.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="writing-generators">
+<h2>Writing generators<a class="headerlink" href="#writing-generators" title="Permalink to this headline">¶</a></h2>
+<p><strong>To write.*</strong></p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-4']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>
