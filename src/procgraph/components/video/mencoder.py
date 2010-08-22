@@ -51,7 +51,7 @@ class MEncoder(Block):
                     '-ovc', 'lavc', '-lavcopts',
                      'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
                      '-o', self.file]
-            print 'command line: %s' % " ".join(args)
+            self.info('command line: %s' % " ".join(args))
                      
             if self.config.quiet:
                 self.process = subprocess.Popen(args,

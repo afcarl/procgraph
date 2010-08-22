@@ -18,7 +18,7 @@ class RawseedsCamFiles(Generator):
             raise Exception('The file "%s" is not a directory.' % dirname)
         
         # TODO: use proper logging
-        print "Reading directory listings from %s" % dirname
+        self.info("Reading directory listings from %s" % dirname)
         all_files = os.listdir(dirname)
         
         regexp = '(\w+)_(\d+)\.(\d+)\.png'
@@ -39,7 +39,7 @@ class RawseedsCamFiles(Generator):
             raise Exception('No frames found in dir "%s".' % dirname)
         
         
-        print "Read %s frames -- sorting." % len(frames)
+        self.info("Read %s frames -- sorting." % len(frames))
         frames.sort(key=lambda x: x[0])
         
         self.state.frames = frames
@@ -50,7 +50,7 @@ class RawseedsCamFiles(Generator):
         self.define_input_signals([])
         self.define_output_signals([self.config.name])
         
-        print "Camera log ready for %s" % self.get_config('name')
+        self.info("Camera log ready for %s" % self.config.name)
         
     def next_data_status(self):
         k = self.state.next_frame
