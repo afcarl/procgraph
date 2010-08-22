@@ -6,7 +6,17 @@ from procgraph.components.basic import  register_simple_block
 from procgraph.components import check_2d_array
 
 
-def posneg(value, max_value=None):
+
+def skim_top(a, top_percent):
+    ''' Cuts off the top percentile '''
+    assert top_percent >= 0 and top_percent < 90
+    from scipy import stats
+    
+    threshold = stats.scoreatpercentile(a.flat, 100 - top_percent) 
+    return numpy.minimum(a, threshold)
+    
+    
+def posneg(value, max_value=None, skim=0):
     """ 
     Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
     
@@ -21,17 +31,23 @@ def posneg(value, max_value=None):
         raise Exception('I expected a H x W image, got shape %s.' % str(value.shape))
     
     if max_value is None:
-        max_value = numpy.max(abs(value))
+        abs_value = abs(value)
+        if skim != 0:
+            abs_value = skim_top(abs_value, skim)
+            
+        max_value = numpy.max(abs_value)
+
         if max_value == 0:
         #    raise ValueError('You asked to normalize a matrix which is all 0')
             result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
             return result
 
     
-    value = value / max_value
+    positive = minimum(maximum(value, 0), max_value) / max_value
+    negative = maximum(minimum(value, 0), -max_value) / -max_value
+    positive_part = (positive * 255).astype('uint8')
+    negative_part = (negative * 255).astype('uint8')
 
-    positive_part = abs((maximum(value, 0)) * 255).astype('uint8')
-    negative_part = abs((minimum(value, 0)) * 255).astype('uint8')
     result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
     
     
@@ -43,7 +59,7 @@ def posneg(value, max_value=None):
     return result
 
 
-register_simple_block(posneg, params={'max_value': None})
+register_simple_block(posneg, params={'max_value': None, 'skim': 0})
 
 
 def scale(value, min_value=None, max_value=None,
