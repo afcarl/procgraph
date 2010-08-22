@@ -7,6 +7,7 @@ from PIL import ImageDraw, ImageFont
 from procgraph.core.block import Block 
 from procgraph.components.pil.pil_conversions import Image_from_array
 from procgraph.components.basic import register_block
+from procgraph.core.visualization import info, error
 
 
 class Text(Block):
@@ -43,29 +44,38 @@ register_block(Text, 'text')
 
 # cache of fonts
 
-def find_file(filename):
-    a = subprocess.Popen(['locate', filename], stdout=subprocess.PIPE); 
-    lines = a.stdout.read();
-    if len(lines) == 0:
-        print('Cannot find filename "%s" anywhere' % filename)
-        return None
-    return lines.split('\n')[0]
-
+def find_file(font_name):
+    try:
+        pattern = '*%s*.ttf' % font_name
+        a = subprocess.Popen(['locate', pattern], stdout=subprocess.PIPE); 
+        lines = a.stdout.read();
+        if len(lines) == 0:
+            error('Cannot find filename respecting pattern "%s" anywhere' % pattern)
+            return None
+        options = lines.split('\n')
+        guess = lines[0]
+        info('Found %d matches for %s, using  "%s".' % (len(options), pattern, guess))
+        return guess
+    except Exception as e:
+        error('Cannot run "locate": %s' % e)
+        return None 
+    
 fonts = {}
 def get_font(name, size):
     tuple = (name, size)
     if not fonts.has_key(tuple):
-        if not os.path.exists(name):
-            print('Could not find file "%s", searching' % name)
+        filename = name + '.ttf'
+        if not os.path.exists(filename):
+            info('Could not find file "%s", searching using "locate"...' % filename)
             name = find_file(name)
             if name is None:
-                print('Could not find file "%s" anywhere, using default font' % name)
+                error('Could not find file "%s" anywhere, using default font' % name)
                 fonts[tuple] = ImageFont.load_default()
             else:
-                print('Using file  "%s".' % name)
                 fonts[tuple] = ImageFont.truetype(name, size)
         else:
-            fonts[tuple] = ImageFont.truetype(name, size)
+            info('Using font in file %s' % filename)
+            fonts[tuple] = ImageFont.truetype(filename, size)
     
     return fonts[tuple]
 
