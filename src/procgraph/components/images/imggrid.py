@@ -20,10 +20,13 @@ class ImageGrid(Block):
                 return
             check_rgb_or_grayscale(self, i)
             
-        cols = self.get_config('cols')
+        cols = self.config.cols
         
         if cols is None:
-            cols = ceil(sqrt(n))
+            cols = int(ceil(sqrt(n)))
+            
+        if not isinstance(cols, int):
+            raise Exception('Expected an integer for cols, not %s.' % cols)
             
         rows = int(ceil(n * 1.0 / cols))
         
