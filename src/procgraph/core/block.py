@@ -292,6 +292,16 @@ class Block(object):
         return s
     
     
+    def info(self, s):
+        ''' Writes an info message '''
+        from procgraph.core.visualization import info as pg_info
+        pg_info(self.name + ': ' + s)
+        
+    def debug(self, s):
+        ''' Writes a debug message '''
+        from procgraph.core.visualization import debug as pg_debug
+        pg_debug(self.name + ': ' + s)
+    
 class Generator(Block):
     # TODO: change interface
     
