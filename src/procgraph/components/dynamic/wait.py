@@ -22,16 +22,15 @@ class Wait(Block):
         # output signals get the same name as the inputs
         self.define_output_signals(self.get_input_signals_names())
         
-        self.set_state('count', 0)
-        print 'Initializing'
+        self.state.count = 0
 
     def update(self):
-        count = self.get_state('count')
+        count = self.state.count
         count += 1
         self.set_state('count', count)
         #print 'Counting %s' %count
         # make something happen after we have waited enough
-        if count >= self.get_config('n'): 
+        if count >= self.config.n: 
             # Just copy the input to the output
             for i in range(self.num_input_signals()):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))

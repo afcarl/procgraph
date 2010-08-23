@@ -22,8 +22,7 @@ class Sieve(Block):
         self.define_output_signals(self.get_input_signals_names())
         
         self.get_config('n')
-        self.set_state('count', 0)
-        print 'Initializing'
+        self.set_state('count', 0) 
 
     def update(self):
         count = self.get_state('count')
