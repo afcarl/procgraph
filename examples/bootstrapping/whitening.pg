@@ -1,9 +1,0 @@
------------------------ model whitening
-
-|input name=x| --> x --> |expectation| --> |wait n=20| --> mean
-
-  x, mean --> |-| --> x_n 
-  
-  x_n, x_n --> |outer| --> |expectation| --> P
-  
-  P, x --> |solve| --> |output name=x_white|

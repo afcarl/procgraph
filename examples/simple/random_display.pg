@@ -1,4 +1,0 @@
-
-|clock| --> |history|  --> |wait n=2000| --> x, t
-
-x --> |fps_limit fps=1| -> |plot|

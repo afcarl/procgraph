@@ -1,4 +1,0 @@
---- model rawseedscam2video
-import procgraph.components.rawseeds 
-
-|RawseedsCam dir=$log|  --> y -->  |mencoder file=$video|
