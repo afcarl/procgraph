@@ -8,9 +8,18 @@ from procgraph.core.parsing_elements import Where
 from procgraph.core.visualization import error
 
 
+
 def main(): 
     parser = OptionParser()
+
+    def load_module(option, opt_str, value, parser):
+        print 'Importing module %s' % value
+        __import__(value)
      
+    parser.add_option("-m", "--import", dest='module',
+                  action="callback", callback=load_module,
+                  type="string", help='Loads the specified module')
+
     parser.add_option("--debug", action="store_true",
                       default=False, dest="debug",
                       help="Displays debug information on the model.")
@@ -77,7 +86,7 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
                                              config=config, where=w)
         else:
             if not os.path.exists(filename):
-                raise Exception('Uknown file "%s".' % filename)
+                raise Exception('Uknown model or file "%s".' % filename)
 
             model_spec = open(filename).read()
             model = model_from_string(model_spec, config=config,
