@@ -1,0 +1,1 @@
+Make sure that the installation of package resources works

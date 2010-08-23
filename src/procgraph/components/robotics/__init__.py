@@ -1,11 +1,3 @@
-'''
-.. _`library:robotics`:
-
-``robotics`` block library
-====================
-
-|towrite|
-
-'''
+''' Routines specific to robotics. '''
 
 import pose2velocity

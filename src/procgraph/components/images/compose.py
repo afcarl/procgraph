@@ -16,10 +16,12 @@ def place_at(canvas, image, xpix, ypix):
 
 class Compose(Block):
     '''
-    Arguments:
-    - width, height  pixels
-    - positions a string that evals to a structure such as 
-    compose.positions = "{'y': [0,0], 'ys': [320,20]}"
+    Configuration:
+    
+    - ``width``, ``height``: dimension in  pixels
+    - ``positions``: a structure giving the position of each signal in the canvas. Example: :: 
+      
+          compose.positions = {y: [0,0], ys: [320,20]}
     '''
     def init(self):
         self.define_output_signals(['canvas'])

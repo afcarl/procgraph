@@ -80,13 +80,16 @@ register_block(Info, 'Info')
           
 
 class Constant(Block):
-    ''' Creates a numerical constant that never changes.::
+    ''' Creates a numerical constant that never changes.
+    
+        Example: ::
     
             |constant value=42 name=meaning| -> ...
             
-        Two parameters
-        * value, necessary
-        * name, optional signal name (default: const)
+        Two parameters:
+        
+        * ``value``, necessary
+        * ``name``, optional signal name (default: const)
     ''' 
         
     def init(self):

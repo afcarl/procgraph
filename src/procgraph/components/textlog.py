@@ -1,4 +1,4 @@
-from procgraph.components.rawseeds.file_utils import expand_environment
+from procgraph.components.file_utils import expand_environment
 from procgraph.core.block import Generator
 from procgraph.core.exceptions import ModelExecutionError
 import traceback

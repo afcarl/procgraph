@@ -1,16 +1,5 @@
 '''
-.. _`library:signals`:
-
-``signals`` block library
-====================
-
-|towrite|
-
-
-.. automodule:: procgraph.signals.extract
-
-.. automodule:: procgraph.signals.join
-  
+Simple routins for signals extraction, combination.  
 '''
 
 import join

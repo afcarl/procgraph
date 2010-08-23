@@ -12,10 +12,11 @@ PATH_ENV_VAR = 'PROCGRAPH_PATH'
 
 class ModelSpec(object):
     ''' Class used to register as a block type '''
-    def __init__(self, parsed_model):
+    def __init__(self, parsed_model, defined_in):
         self.parsed_model = parsed_model
         # the module to which this model is associated
-        self.defined_in = None
+        self.defined_in = defined_in
+        assert defined_in is not None
         
     def __call__(self, name, config, library):
         parsed_model = self.parsed_model 
@@ -75,11 +76,11 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
         for root, dirs, files in os.walk(path): #@UnusedVariable
             for f in files: 
                 if fnmatch.fnmatch(f, '*.pg'):
-                    all_files.add(os.path.join(root, f))
+                    all_files.add((path, os.path.join(root, f)))
                     
         #print "Scanning %s " % path
             
-    for f in all_files:
+    for path, f in all_files:
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
         
@@ -106,8 +107,11 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
                 prev = library.name2block[parsed_model.name].parsed_model.where
                 raise SemanticError('Found model "%s" in %s, already in  %s. ' % \
                             (parsed_model.name, f, prev.filename))
-            model_spec = ModelSpec(parsed_model)
-            model_spec.defined_in = assign_to_module
+                
+            if assign_to_module is None:
+                assign_to_module = path
+            model_spec = ModelSpec(parsed_model, assign_to_module)
+
             library.register(parsed_model.name, model_spec)
 
   
@@ -119,9 +123,7 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in=None):
                             (parsed_model.name, prev.filename))
     # print "Registering model '%s' " % parsed_model.name
 
-    model_spec = ModelSpec(parsed_model)
-    model_spec.defined_in = defined_in    
-    assert defined_in is not None
+    model_spec = ModelSpec(parsed_model, defined_in)
     library.register(parsed_model.name, model_spec)
 
 

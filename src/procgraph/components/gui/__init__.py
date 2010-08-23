@@ -1,10 +1,5 @@
-'''
-.. _`library:gui`:
+''' Blocks using Matplotlib to display data. 
 
-``gui`` block library
-====================
-
-**(to write)**
 '''
 
 import plot

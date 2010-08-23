@@ -1,12 +1,4 @@
-'''
-.. _`library:numpy_ops`:
-
-``numpy_ops`` block library
-====================
-
-|towrite|
-
-'''
+''' Various operations wrapping numpy functions. '''
 
 import filters
 import gradient1d

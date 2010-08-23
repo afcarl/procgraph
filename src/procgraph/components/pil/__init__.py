@@ -1,12 +1,4 @@
-'''
-.. _`library:pil`:
-
-``pil`` block library
-====================
-
-|towrite|
-
-'''
+''' Blocks for image operations based on the PIL library '''
 
 import pil_operations
 import pil_conversions
