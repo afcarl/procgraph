@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>numpy_ops block library &mdash; procgraph v0.1 documentation</title>
+    <title>&lt;no title&gt; &mdash; procgraph v0.1 documentation</title>
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
@@ -176,7 +176,7 @@ Y.Remarkbox.render();
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
           <span>procgraph v0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>numpy_ops block library</span></h2>
+        <h2 class="heading"><span>&lt;no title&gt;</span></h2>
       </div>
       <div class="topnav">
       
@@ -188,226 +188,24 @@ Y.Remarkbox.render();
       <div class="content">
         
         
-  <span class="target" id="module-procgraph.components.numpy_ops"></span><div class="section" id="numpy-ops-block-library">
-<span id="library-numpy-ops"></span><h1><tt class="docutils literal"><span class="pre">numpy_ops</span></tt> block library<a class="headerlink" href="#numpy-ops-block-library" title="Permalink to this headline">¶</a></h1>
-<p><a href="#id6"><span class="problematic" id="id7">|towrite|</span></a></p>
-</div>
-<span class="target" id="module-procgraph.components.cv"></span><div class="section" id="cv-block-library">
-<span id="library-cv"></span><h1><tt class="docutils literal"><span class="pre">cv</span></tt> block library<a class="headerlink" href="#cv-block-library" title="Permalink to this headline">¶</a></h1>
-<p>The <tt class="docutils literal"><span class="pre">cv</span></tt> library contains blocks that use OpenCV.</p>
-<p><strong>Packages dependencies</strong></p>
-<ul class="simple">
-<li><tt class="docutils literal"><span class="pre">opencv</span></tt> (or <tt class="docutils literal"><span class="pre">cv</span></tt>)</li>
-</ul>
-<div class="section" id="block-list">
-<h2>Block list<a class="headerlink" href="#block-list" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="gradient">
-<span id="block-gradient"></span><h3>gradient<a class="headerlink" href="#gradient" title="Permalink to this headline">¶</a></h3>
-<div class="configuration container">
-<dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">aperture</span></tt></dt>
-<dd>Aperture parameter (1,**3**,5,7,...).</dd>
-</dl>
-</div>
-<div class="input container">
-A 2D numpy array.</div>
-<div class="output container">
-<dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">gx</span></tt> </dt>
-<dd>Gradient along x. A 2D numpy float32 array.</dd>
-<dt><tt class="docutils literal"><span class="pre">gy</span></tt></dt>
-<dd>Gradient along y. A 2D numpy float32 array.</dd>
-</dl>
-</div>
-</div>
-<div class="section" id="smooth">
-<span id="block-smooth"></span><h3>smooth<a class="headerlink" href="#smooth" title="Permalink to this headline">¶</a></h3>
-<div class="configuration container">
-<dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">gaussian_std</span></tt></dt>
-<dd>Standard deviation of gaussian kernel, in pixel.</dd>
-</dl>
-</div>
-<div class="input container">
-A 2D numpy array.</div>
-<div class="output container">
-A 2D numpy float32 array.</div>
-</div>
-</div>
-<div class="section" id="module-documentation">
-<h2>Module documentation<a class="headerlink" href="#module-documentation" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
-<span class="target" id="module-procgraph.components.dynamic"></span><div class="section" id="dynamic-block-library">
-<span id="library-dynamic"></span><h1><tt class="docutils literal"><span class="pre">dynamic</span></tt> block library<a class="headerlink" href="#dynamic-block-library" title="Permalink to this headline">¶</a></h1>
-<p>This library contains blocks that perform operations with time.</p>
-<p>This library is autoloaded.</p>
-<p><strong>Software dependencies</strong></p>
-<p>None</p>
-<p><strong>Examples</strong></p>
-<div class="section" id="id1">
-<h2>Block list<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="wait">
-<span id="block-wait"></span><h3>wait<a class="headerlink" href="#wait" title="Permalink to this headline">¶</a></h3>
-<p>This block ignores the first <tt class="docutils literal"><span class="pre">n</span></tt> samples from the input, and then acts
-as the identity. This is useful if the preceding block has unreliable
-input at the beginning.</p>
-<div class="configuration container">
-<dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">n</span></tt> </dt>
-<dd>Number of initial samples to ignore.</dd>
-</dl>
-</div>
-</div>
-<div class="section" id="sieve">
-<span id="block-sieve"></span><h3>sieve<a class="headerlink" href="#sieve" title="Permalink to this headline">¶</a></h3>
-<p>This block only allows 1 / <tt class="docutils literal"><span class="pre">n</span></tt> th of samples to pass through. Useful to decimate
-data.</p>
-<div class="configuration container">
-<dl class="docutils">
-<dt><tt class="docutils literal"><span class="pre">n</span></tt></dt>
-<dd>Fraction of samples to pass through.</dd>
-</dl>
-</div>
-</div>
-<div class="section" id="sync">
-<span id="block-sync"></span><h3>sync<a class="headerlink" href="#sync" title="Permalink to this headline">¶</a></h3>
-<p>This block synchronizes a group of signals.</p>
-<p><strong>To write long description</strong></p>
-<div class="input container">
-Variable number of input.</div>
-<div class="output container">
-As many as the input.</div>
-</div>
-<div class="section" id="derivative">
-<span id="block-derivative"></span><h3>derivative<a class="headerlink" href="#derivative" title="Permalink to this headline">¶</a></h3>
-<p>This block computes the derivative of the input value.
-The derivative is computed by convolving the input with the (non causal) filter
-<tt class="docutils literal"><span class="pre">[-1</span> <span class="pre">0</span> <span class="pre">1]</span> <span class="pre">/</span> <span class="pre">(2*dt)</span></tt>.</p>
-<div class="input container">
-A numpy array.</div>
-<div class="output container">
-The derivative of the array.</div>
-</div>
-<div class="section" id="history">
-<span id="block-history"></span><h3>history<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h3>
-<p>** to write **</p>
-</div>
-<div class="section" id="historyn">
-<span id="block-historyn"></span><h3>historyn<a class="headerlink" href="#historyn" title="Permalink to this headline">¶</a></h3>
-<p>** to write **</p>
-</div>
-</div>
-</div>
-<span class="target" id="module-procgraph.components.images"></span><div class="section" id="images-block-library">
-<span id="library-images"></span><h1><tt class="docutils literal"><span class="pre">images</span></tt> block library<a class="headerlink" href="#images-block-library" title="Permalink to this headline">¶</a></h1>
-<p>The <tt class="docutils literal"><span class="pre">images</span></tt> library contains blocks that perform basic operations
-on images.</p>
-<p>This library is autoloaded.</p>
-<p>See also:</p>
-<ul class="simple">
-<li><a class="reference internal" href="#library-cv"><em>cv block library</em></a></li>
-<li><a class="reference internal" href="#library-pil"><em>pil block library</em></a></li>
-</ul>
-<p><strong>Software dependencies</strong></p>
-<p>None</p>
-<p><strong>Example</strong></p>
-<p>Convert a RGB image to grayscale, and back to a RGB image:</p>
-<div class="highlight-python"><pre>|input| -&gt; |rgb2gray| -&gt; |gray2rgb| -&gt; |output| </pre>
-</div>
-<div class="section" id="id2">
-<h2>Block list<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="rgb2gray">
-<span id="block-rgb2gray"></span><h3>rgb2gray<a class="headerlink" href="#rgb2gray" title="Permalink to this headline">¶</a></h3>
-<div class="configuration container">
-None</div>
-<div class="input container">
-A grayscale image.</div>
-<div class="output container">
-An RGB image.</div>
-<div class="implementation container">
-Thin wrapper for :function:gray2rgb.</div>
-</div>
-<div class="section" id="gray2rgb">
-<span id="block-gray2rgb"></span><h3>gray2rgb<a class="headerlink" href="#gray2rgb" title="Permalink to this headline">¶</a></h3>
-<div class="configuration container">
-None</div>
-<div class="input container">
-A RGB image.</div>
-<div class="output container">
-A grayscale image.</div>
-<div class="implementation container">
-Thin wrapper for :function:rgb2grayscale.</div>
-</div>
-<div class="section" id="compose">
-<span id="block-compose"></span><h3>compose<a class="headerlink" href="#compose" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id8"><span class="problematic" id="id9">|towrite|</span></a></p>
-</div>
-<div class="section" id="grid">
-<span id="block-grid"></span><h3>grid<a class="headerlink" href="#grid" title="Permalink to this headline">¶</a></h3>
-<p id="block-posneg"><a href="#id10"><span class="problematic" id="id11">|towrite|</span></a></p>
-</div>
-<div class="section" id="posneg">
-<h3>posneg<a class="headerlink" href="#posneg" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id12"><span class="problematic" id="id13">|towrite|</span></a></p>
-</div>
-<div class="section" id="scale">
-<span id="block-scale"></span><h3>scale<a class="headerlink" href="#scale" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id14"><span class="problematic" id="id15">|towrite|</span></a></p>
-</div>
-</div>
-<div class="section" id="id3">
-<h2>Module documentation<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="procgraph.components.images.filters.gray2rgb">
-<tt class="descclassname">procgraph.components.images.filters.</tt><tt class="descname">gray2rgb</tt><big>(</big><em>gray</em><big>)</big><a class="reference internal" href="modules/procgraph/components/images/filters.html#gray2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.images.filters.gray2rgb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.</p>
-</dd></dl>
-
-</div>
-</div>
-<span class="target" id="module-procgraph.components.pil"></span><div class="section" id="pil-block-library">
-<span id="library-pil"></span><h1><tt class="docutils literal"><span class="pre">pil</span></tt> block library<a class="headerlink" href="#pil-block-library" title="Permalink to this headline">¶</a></h1>
-<p><a href="#id16"><span class="problematic" id="id17">|towrite|</span></a></p>
-</div>
-<span class="target" id="module-procgraph.components.statistics"></span><div class="section" id="statistics-block-library">
-<span id="library-statistics"></span><h1><tt class="docutils literal"><span class="pre">statistics</span></tt> block library<a class="headerlink" href="#statistics-block-library" title="Permalink to this headline">¶</a></h1>
-<p><a href="#id18"><span class="problematic" id="id19">|towrite|</span></a></p>
-<div class="section" id="id4">
-<h2>Block list<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="cov2corr">
-<span id="block-cov2corr"></span><h3>cov2corr<a class="headerlink" href="#cov2corr" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id20"><span class="problematic" id="id21">|towrite|</span></a></p>
-</div>
-<div class="section" id="expectation">
-<span id="block-expectation"></span><h3>expectation<a class="headerlink" href="#expectation" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id22"><span class="problematic" id="id23">|towrite|</span></a></p>
-</div>
-<div class="section" id="variance">
-<span id="block-variance"></span><h3>variance<a class="headerlink" href="#variance" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id24"><span class="problematic" id="id25">|towrite|</span></a></p>
-</div>
-<div class="section" id="covariance">
-<span id="block-covariance"></span><h3>covariance<a class="headerlink" href="#covariance" title="Permalink to this headline">¶</a></h3>
-<p><a href="#id26"><span class="problematic" id="id27">|towrite|</span></a></p>
-</div>
-</div>
-<div class="section" id="id5">
-<h2>Module documentation<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
-<span class="target" id="module-procgraph.components.robotics"></span><div class="section" id="robotics-block-library">
-<span id="library-robotics"></span><h1><tt class="docutils literal"><span class="pre">robotics</span></tt> block library<a class="headerlink" href="#robotics-block-library" title="Permalink to this headline">¶</a></h1>
-<p><a href="#id28"><span class="problematic" id="id29">|towrite|</span></a></p>
-</div>
-<span class="target" id="module-procgraph.components.signals"></span><div class="section" id="signals-block-library">
-<span id="library-signals"></span><h1><tt class="docutils literal"><span class="pre">signals</span></tt> block library<a class="headerlink" href="#signals-block-library" title="Permalink to this headline">¶</a></h1>
-<p><a href="#id30"><span class="problematic" id="id31">|towrite|</span></a></p>
-</div>
-<span class="target" id="module-procgraph.components.rawseeds"></span><div class="section" id="rawseeds-block-library">
-<span id="library-rawseeds"></span><h1><tt class="docutils literal"><span class="pre">rawseeds</span></tt> block library<a class="headerlink" href="#rawseeds-block-library" title="Permalink to this headline">¶</a></h1>
-<p><a href="#id32"><span class="problematic" id="id33">|towrite|</span></a></p>
-</div>
+  <p># .. automodule:: procgraph.components.numpy_ops
+#
+#
+# .. automodule:: procgraph.components.cv
+#
+# .. automodule:: procgraph.components.dynamic
+#
+# .. automodule:: procgraph.components.images
+#
+# .. automodule:: procgraph.components.pil
+#
+# .. automodule:: procgraph.components.statistics
+#
+# .. automodule:: procgraph.components.robotics
+#
+# .. automodule:: procgraph.components.signals
+#
+# .. automodule:: procgraph.components.rawseeds</p>
 
 
       </div>

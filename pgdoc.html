@@ -1,0 +1,1025 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Summary &mdash; procgraph v0.1 documentation</title>
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+	 
+<!--	
+   <style type="text/css">
+   .pagetoc { 
+	max-width: 30%;
+	display: block; float: right; margin-left: 3em; background-color: white; border: solid 2px gray;}
+   </style>
+-->
+<style type="text/css">
+
+div.input, div.output, div.configuration { margin-top: 1em; padding-right: 2em;}
+div.input, div.output, div.configuration {max-width: 30%; float:left; display: block }
+div.input:before{ content: "Input"; font-weight: bold; }
+div.output:before{ content: "Output"; font-weight: bold; }
+div.configuration:before{ content: "Configuration"; font-weight: bold; }
+
+div.implementation { clear: left; }
+div.implementation:before{ content: "Implementation notes"; font-weight: bold; }
+
+h2,h3 { clear: left;}
+
+h1 { background-color: #ddf; padding: 1em;}
+h3 { background-color: #ddd; padding: 5px;}
+</style>
+
+   <style type="text/css">
+
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+/*
+	div.twitterbadge {
+		float: right;
+		margin-left: 2em;
+	}
+
+	img.bigpicture {
+		margin: 1em;
+		max-width: 90%;
+	}
+	
+	.header h2 {
+		color: #990033 !important;
+		font-size: 200% !important;
+	}
+	.content {
+
+	}
+	.content p, .content p {
+		max-width: 40em;
+	}
+	
+	.content h1 { 
+		display: none;
+	}
+	h2, h3 {  
+		border-bottom: solid 2px orange;
+		max-width: 40em;
+	}
+	
+	h1 { font-size: 200%;}
+	h2 { font-size: 150%;}
+	h3 { font-size: 125%;}
+	
+		
+	pre{
+		max-width: 60em;
+	
+	}
+	
+	body {  font-size: 120%; font-family: "Droid Serif", serif; }
+	
+	h1,h2,h3 { 
+  font-family: "Lobster", serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 6px 6px 6px #ccc;
+}
+
+div.header h2 {
+    font-size: 1.3em;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: none !important;
+    color: #aaa;
+    border: 0;
+    margin-top: -3px;
+    padding: 0;
+}
+
+.col1 strong, .col2 strong { 
+	font-family: "Lobster", serif; color: #990033;text-shadow: 6px 6px 6px #ccc;
+	font-size: 160%;
+ }
+
+.compmake-brand {
+	font-family: "Lobster", serif;
+	font-size: 120%;
+}
+
+a.reference em, a.external em {
+	font-style: normal !important;
+}
+*/
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<!--<link  href="http://fonts.googleapis.com/css?family=Cardo" rel="stylesheet" type="text/css" >-->
+
+
+<script src="http://yui.yahooapis.com/3.1.0/build/yui/yui-min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.0/build/cssreset/reset-context-min.css"></link>
+<script src="http://www.remarkbox.com/deploy/remarkbox-min.js"></script>
+<script type="text/javascript">
+YUI().use('remarkbox', function (Y) {
+Y.Remarkbox.remarkson.elements("p,code");
+Y.Remarkbox.remarkson.ids("para,tnt");
+Y.Remarkbox.remarkson.classes("rmkit,contentfeedback");
+Y.Remarkbox.remarktype.pointer("right");
+Y.Remarkbox.remarktype.strongcolor("#ECFCE8");
+Y.Remarkbox.remarktype.strongcolortext("#000000");
+Y.Remarkbox.remarktype.lightcolor("#FF8040");
+Y.Remarkbox.remarktype.lightcolortext("#800000");
+Y.Remarkbox.remarktype.alwaysvisible("true");
+Y.Remarkbox.remarktype.offsetx("-3em");
+Y.Remarkbox.remarktype.offsety("-2em");
+Y.Remarkbox.remarktype.allowanonymous("true");
+Y.Remarkbox.render();
+});
+</script>
+
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>procgraph v0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Summary</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="summary">
+<span id="pgdoc-procgraph-components"></span><h1>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#module-procgraph-components"><em>Module procgraph.components</em></a></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-info"><em>Info</em></a></td>
+<td>Prints the inputs</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-clock"><em>clock</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-constant"><em>constant</em></a></td>
+<td>Creates a numerical constant that never changes.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-gain"><em>gain</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-identity"><em>identity</em></a></td>
+<td>This block outputs the inputs. This is an example</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-print"><em>print</em></a></td>
+<td>Prints the inputs</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rand"><em>rand</em></a></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-dynamic"><em>Module procgraph.components.dynamic</em></a></p>
+<p>Blocks performing operations with a dynamic nature.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-derivative"><em>derivative</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-derivative2"><em>derivative2</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-forward-difference"><em>forward_difference</em></a></td>
+<td>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t-1]</span></tt> normalized with timestamp.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-fps-data-limit"><em>fps_data_limit</em></a></td>
+<td>This block limits the output update to a certain framerate.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-history"><em>history</em></a></td>
+<td>This block collects the history of a quantity,</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-historyt"><em>historyt</em></a></td>
+<td>This block collects the history of a quantity,</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-last-n-samples"><em>last_n_samples</em></a></td>
+<td>This block collects the last n samples of a quantity,</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-sieve"><em>sieve</em></a></td>
+<td>This block only transmits every n steps.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-sync"><em>sync</em></a></td>
+<td>This block synchronizes a set of N sensor streams.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-sync2"><em>sync2</em></a></td>
+<td>This block synchronizes a set of N sensor streams.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-two-step-difference"><em>two_step_difference</em></a></td>
+<td>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t]</span></tt> normalized with timestamp.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-wait"><em>wait</em></a></td>
+<td>This block waits a given number of updates before transmitting the</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-gui"><em>Module procgraph.components.gui</em></a></p>
+<p>Blocks using Matplotlib to display data.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-fps-limit"><em>fps_limit</em></a></td>
+<td>This block limits the output update to a certain framerate.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-plot"><em>plot</em></a></td>
+<td>Just plots the vector instantaneously</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-images"><em>Module procgraph.components.images</em></a></p>
+<p>Blocks for basic operations on images.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-compose"><em>compose</em></a></td>
+<td>Configuration:</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-gray2rgb"><em>gray2rgb</em></a></td>
+<td>Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-grayscale"><em>grayscale</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-grid"><em>grid</em></a></td>
+<td>A block that creates a larger image by arranging them in a grid.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-posneg"><em>posneg</em></a></td>
+<td>Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-rgb2gray"><em>rgb2gray</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-scale"><em>scale</em></a></td>
+<td>Provides a RGB representation of the values by interpolating the range</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-misc"><em>Module procgraph.components.misc</em></a></p>
+<p>Miscellaneous functions to be better organized.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-as-json"><em>as_json</em></a></td>
+<td>Converts the input into a JSON string.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-pickle"><em>pickle</em></a></td>
+<td>Dumps the input as a pickle file.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-to-file"><em>to_file</em></a></td>
+<td>Prints the input line by line to a given file.</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-numpy-ops"><em>Module procgraph.components.numpy_ops</em></a></p>
+<p>Various operations wrapping numpy functions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block"><em>*</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#id39"><em>+</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#id41"><em>-</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#id43"><em>/</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-abs"><em>abs</em></a></td>
+<td>absolute(x[, out])</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-astype"><em>astype</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-dstack"><em>dstack</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-gradient1d"><em>gradient1d</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-hstack"><em>hstack</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-long"><em>long</em></a></td>
+<td>log(x[, out])</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-outer"><em>outer</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-select"><em>select</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-sign"><em>sign</em></a></td>
+<td>sign(x[, out])</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-square"><em>square</em></a></td>
+<td>square(x[, out])</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-take"><em>take</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-vstack"><em>vstack</em></a></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-robotics"><em>Module procgraph.components.robotics</em></a></p>
+<p>Routines specific to robotics.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-pose2commands"><em>pose2commands</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-pose2vel"><em>pose2vel_</em></a></td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-signals"><em>Module procgraph.components.signals</em></a></p>
+<p>Simple routins for signals extraction, combination.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-extract"><em>extract</em></a></td>
+<td>This block extracts some of the components</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-join"><em>join</em></a></td>
+<td>This block joins multiple signals into one.</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-statistics"><em>Module procgraph.components.statistics</em></a></p>
+<p>Blocks for common statistical operations.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-cov2corr"><em>cov2corr</em></a></td>
+<td>Compute the correlation matrix from the covariance matrix.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-covariance"><em>covariance</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-expectation"><em>expectation</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-normalize"><em>normalize</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-soft-variance"><em>soft_variance</em></a></td>
+<td>Computes soft variance (expectation of error absolute value)</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-variance"><em>variance</em></a></td>
+<td>Computes the variance</td>
+</tr>
+</tbody>
+</table>
+<p><a class="reference internal" href="#module-procgraph-components-video"><em>Module procgraph.components.video</em></a></p>
+<p>Blocks for encoding/decoding video based on MPlayer.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr><td><a class="reference internal" href="#block-simplecompression"><em>SimpleCompression</em></a></td>
+<td>None</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-mencoder"><em>mencoder</em></a></td>
+<td>Encodes a video stream.</td>
+</tr>
+<tr><td><a class="reference internal" href="#block-mplayer"><em>mplayer</em></a></td>
+<td>Plays a video stream.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="module-procgraph-components">
+<span id="id1"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components</span></tt><a class="headerlink" href="#module-procgraph-components" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="block-info">
+<span id="id2"></span><h2>Block <tt class="docutils literal"><span class="pre">Info</span></tt><a class="headerlink" href="#block-info" title="Permalink to this headline">¶</a></h2>
+<p>Prints the inputs</p>
+</div>
+<div class="section" id="block-clock">
+<span id="id3"></span><h2>Block <tt class="docutils literal"><span class="pre">clock</span></tt><a class="headerlink" href="#block-clock" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-constant">
+<span id="id4"></span><h2>Block <tt class="docutils literal"><span class="pre">constant</span></tt><a class="headerlink" href="#block-constant" title="Permalink to this headline">¶</a></h2>
+<p>Creates a numerical constant that never changes.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>|constant value=42 name=meaning| -&gt; ...</pre>
+</div>
+<p>Two parameters:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">value</span></tt>, necessary</li>
+<li><tt class="docutils literal"><span class="pre">name</span></tt>, optional signal name (default: const)</li>
+</ul>
+</div>
+<div class="section" id="block-gain">
+<span id="id5"></span><h2>Block <tt class="docutils literal"><span class="pre">gain</span></tt><a class="headerlink" href="#block-gain" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-identity">
+<span id="id6"></span><h2>Block <tt class="docutils literal"><span class="pre">identity</span></tt><a class="headerlink" href="#block-identity" title="Permalink to this headline">¶</a></h2>
+<p>This block outputs the inputs. This is an example</p>
+<p>of a block whose signal configuration is dynamics:
+init() gets called twice.</p>
+</div>
+<div class="section" id="block-print">
+<span id="id7"></span><h2>Block <tt class="docutils literal"><span class="pre">print</span></tt><a class="headerlink" href="#block-print" title="Permalink to this headline">¶</a></h2>
+<p>Prints the inputs</p>
+</div>
+<div class="section" id="block-rand">
+<span id="id8"></span><h2>Block <tt class="docutils literal"><span class="pre">rand</span></tt><a class="headerlink" href="#block-rand" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-dynamic">
+<span id="id9"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.dynamic</span></tt><a class="headerlink" href="#module-procgraph-components-dynamic" title="Permalink to this headline">¶</a></h1>
+<p>Blocks performing operations with a dynamic nature.</p>
+<p>This library contains blocks that perform operations with time.
+This library is autoloaded.</p>
+<div class="section" id="block-derivative">
+<span id="id10"></span><h2>Block <tt class="docutils literal"><span class="pre">derivative</span></tt><a class="headerlink" href="#block-derivative" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-derivative2">
+<span id="id11"></span><h2>Block <tt class="docutils literal"><span class="pre">derivative2</span></tt><a class="headerlink" href="#block-derivative2" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-forward-difference">
+<span id="id12"></span><h2>Block <tt class="docutils literal"><span class="pre">forward_difference</span></tt><a class="headerlink" href="#block-forward-difference" title="Permalink to this headline">¶</a></h2>
+<p>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t-1]</span></tt> normalized with timestamp.</p>
+</div>
+<div class="section" id="block-fps-data-limit">
+<span id="id13"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_data_limit</span></tt><a class="headerlink" href="#block-fps-data-limit" title="Permalink to this headline">¶</a></h2>
+<p>This block limits the output update to a certain framerate.</p>
+</div>
+<div class="section" id="block-history">
+<span id="id14"></span><h2>Block <tt class="docutils literal"><span class="pre">history</span></tt><a class="headerlink" href="#block-history" title="Permalink to this headline">¶</a></h2>
+<p>This block collects the history of a quantity,</p>
+<p>and outputs (x, t).</p>
+<p>Arguments:
+- interval (seconds)  interval to record</p>
+<p>Output:
+- x
+- t</p>
+</div>
+<div class="section" id="block-historyt">
+<span id="id15"></span><h2>Block <tt class="docutils literal"><span class="pre">historyt</span></tt><a class="headerlink" href="#block-historyt" title="Permalink to this headline">¶</a></h2>
+<p>This block collects the history of a quantity,</p>
+<p>and outputs (x, t).</p>
+<p>Arguments:
+- interval (seconds)  interval to record</p>
+<p>Output:
+- a tuple (x,y)</p>
+</div>
+<div class="section" id="block-last-n-samples">
+<span id="id16"></span><h2>Block <tt class="docutils literal"><span class="pre">last_n_samples</span></tt><a class="headerlink" href="#block-last-n-samples" title="Permalink to this headline">¶</a></h2>
+<p>This block collects the last n samples of a quantity,</p>
+<p>and outputs (x, timestamp).</p>
+<p>Arguments:
+- n, number of samples</p>
+<p>Output:
+- x
+- t</p>
+</div>
+<div class="section" id="block-sieve">
+<span id="id17"></span><h2>Block <tt class="docutils literal"><span class="pre">sieve</span></tt><a class="headerlink" href="#block-sieve" title="Permalink to this headline">¶</a></h2>
+<p>This block only transmits every n steps.</p>
+<p>Config:
+- n</p>
+<p>Input: variable
+Output: variable (same as input)</p>
+</div>
+<div class="section" id="block-sync">
+<span id="id18"></span><h2>Block <tt class="docutils literal"><span class="pre">sync</span></tt><a class="headerlink" href="#block-sync" title="Permalink to this headline">¶</a></h2>
+<p>This block synchronizes a set of N sensor streams.</p>
+<p>The first signal is called the &#8220;master&#8221; signal.
+The other (N-1) are slaves.</p>
+<p>We guarantee that:
+- if the slaves are faster than the master,</p>
+<blockquote>
+then we output exactly the same</blockquote>
+<p>Master  *  *  *   *   *
+Slave   ++++++++++++++++</p>
+<p>Master  *  *  *   *   *
+output? v  v  x   v
+Slave   +    +      +
+output? v    v      v</p>
+</div>
+<div class="section" id="block-sync2">
+<span id="id19"></span><h2>Block <tt class="docutils literal"><span class="pre">sync2</span></tt><a class="headerlink" href="#block-sync2" title="Permalink to this headline">¶</a></h2>
+<p>This block synchronizes a set of N sensor streams.</p>
+<p>The first signal is called the &#8220;master&#8221; signal.
+The other (N-1) are slaves.</p>
+</div>
+<div class="section" id="block-two-step-difference">
+<span id="id20"></span><h2>Block <tt class="docutils literal"><span class="pre">two_step_difference</span></tt><a class="headerlink" href="#block-two-step-difference" title="Permalink to this headline">¶</a></h2>
+<p>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t]</span></tt> normalized with timestamp.</p>
+</div>
+<div class="section" id="block-wait">
+<span id="id21"></span><h2>Block <tt class="docutils literal"><span class="pre">wait</span></tt><a class="headerlink" href="#block-wait" title="Permalink to this headline">¶</a></h2>
+<p>This block waits a given number of updates before transmitting the</p>
+<p>output.</p>
+<p>Config:
+- n (number of updates)</p>
+<p>Input: variable
+Output: variable (same as input)</p>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-gui">
+<span id="id22"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.gui</span></tt><a class="headerlink" href="#module-procgraph-components-gui" title="Permalink to this headline">¶</a></h1>
+<p>Blocks using Matplotlib to display data.</p>
+<div class="section" id="block-fps-limit">
+<span id="id23"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_limit</span></tt><a class="headerlink" href="#block-fps-limit" title="Permalink to this headline">¶</a></h2>
+<p>This block limits the output update to a certain framerate.</p>
+<p>Note that this uses realtime wall clock time &#8211; not the data time!
+This is mean for real-time applications, such as visualization.</p>
+</div>
+<div class="section" id="block-plot">
+<span id="id24"></span><h2>Block <tt class="docutils literal"><span class="pre">plot</span></tt><a class="headerlink" href="#block-plot" title="Permalink to this headline">¶</a></h2>
+<p>Just plots the vector instantaneously</p>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-images">
+<span id="id25"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.images</span></tt><a class="headerlink" href="#module-procgraph-components-images" title="Permalink to this headline">¶</a></h1>
+<p>Blocks for basic operations on images.</p>
+<p>The  module contains blocks that perform basic operations
+on images. The library is autoloaded and has no software dependency.</p>
+<p>For more complex operations see also:</p>
+<ul class="simple">
+<li><em class="xref std std-ref">module:procgraph.components.cv</em></li>
+<li><em class="xref std std-ref">module:procgraph.components.pil</em></li>
+</ul>
+<p><strong>Example</strong></p>
+<p>Convert a RGB image to grayscale, and back to a RGB image::</p>
+<div class="highlight-python"><pre>|input| -&gt; |rgb2gray| -&gt; |gray2rgb| -&gt; |output|</pre>
+</div>
+<div class="section" id="block-compose">
+<span id="id26"></span><h2>Block <tt class="docutils literal"><span class="pre">compose</span></tt><a class="headerlink" href="#block-compose" title="Permalink to this headline">¶</a></h2>
+<p>Configuration:</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">width</span></tt>, <tt class="docutils literal"><span class="pre">height</span></tt>: dimension in  pixels</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">positions</span></tt>: a structure giving the position of each signal in the canvas. Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">compose</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="p">{</span><span class="n">y</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">ys</span><span class="p">:</span> <span class="p">[</span><span class="mi">320</span><span class="p">,</span><span class="mi">20</span><span class="p">]}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="block-gray2rgb">
+<span id="id27"></span><h2>Block <tt class="docutils literal"><span class="pre">gray2rgb</span></tt><a class="headerlink" href="#block-gray2rgb" title="Permalink to this headline">¶</a></h2>
+<p>Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.</p>
+</div>
+<div class="section" id="block-grayscale">
+<span id="id28"></span><h2>Block <tt class="docutils literal"><span class="pre">grayscale</span></tt><a class="headerlink" href="#block-grayscale" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-grid">
+<span id="id29"></span><h2>Block <tt class="docutils literal"><span class="pre">grid</span></tt><a class="headerlink" href="#block-grid" title="Permalink to this headline">¶</a></h2>
+<p>A block that creates a larger image by arranging them in a grid.</p>
+</div>
+<div class="section" id="block-posneg">
+<span id="id30"></span><h2>Block <tt class="docutils literal"><span class="pre">posneg</span></tt><a class="headerlink" href="#block-posneg" title="Permalink to this headline">¶</a></h2>
+<p>Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.</p>
+</div>
+<div class="section" id="block-rgb2gray">
+<span id="id31"></span><h2>Block <tt class="docutils literal"><span class="pre">rgb2gray</span></tt><a class="headerlink" href="#block-rgb2gray" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-scale">
+<span id="id32"></span><h2>Block <tt class="docutils literal"><span class="pre">scale</span></tt><a class="headerlink" href="#block-scale" title="Permalink to this headline">¶</a></h2>
+<p>Provides a RGB representation of the values by interpolating the range</p>
+<blockquote>
+[min(value),max(value)] into the colorspace [min_color, max_color].</blockquote>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">value:      a numpy array with finite values squeeze()able to (W,H).
+min_value:  If specified, this is taken to be the threshold. Everything</p>
+<blockquote>
+below min_value is considered to be equal to min_value.</blockquote>
+<p class="last">max_value:  Optional upper threshold.
+min_color:  color associated to minimum value. Default: [1,1,1] = white.
+max_color:  color associated to maximum value. Default: [0,0,0] = black.</p>
+</dd>
+<dt>Raises:</dt>
+<dd>ValueError: if min_value == max_value</dd>
+</dl>
+<p>Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.</p>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-misc">
+<span id="id33"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.misc</span></tt><a class="headerlink" href="#module-procgraph-components-misc" title="Permalink to this headline">¶</a></h1>
+<p>Miscellaneous functions to be better organized.</p>
+<div class="section" id="block-as-json">
+<span id="id34"></span><h2>Block <tt class="docutils literal"><span class="pre">as_json</span></tt><a class="headerlink" href="#block-as-json" title="Permalink to this headline">¶</a></h2>
+<p>Converts the input into a JSON string.</p>
+</div>
+<div class="section" id="block-pickle">
+<span id="id35"></span><h2>Block <tt class="docutils literal"><span class="pre">pickle</span></tt><a class="headerlink" href="#block-pickle" title="Permalink to this headline">¶</a></h2>
+<p>Dumps the input as a pickle file.</p>
+</div>
+<div class="section" id="block-to-file">
+<span id="id36"></span><h2>Block <tt class="docutils literal"><span class="pre">to_file</span></tt><a class="headerlink" href="#block-to-file" title="Permalink to this headline">¶</a></h2>
+<p>Prints the input line by line to a given file.</p>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-numpy-ops">
+<span id="id37"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.numpy_ops</span></tt><a class="headerlink" href="#module-procgraph-components-numpy-ops" title="Permalink to this headline">¶</a></h1>
+<p>Various operations wrapping numpy functions.</p>
+<div class="section" id="block">
+<span id="id38"></span><h2>Block <tt class="docutils literal"><span class="pre">*</span></tt><a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id39">
+<span id="id40"></span><h2>Block <tt class="docutils literal"><span class="pre">+</span></tt><a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id41">
+<span id="id42"></span><h2>Block <tt class="docutils literal"><span class="pre">-</span></tt><a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="id43">
+<span id="id44"></span><h2>Block <tt class="docutils literal"><span class="pre">/</span></tt><a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-abs">
+<span id="id45"></span><h2>Block <tt class="docutils literal"><span class="pre">abs</span></tt><a class="headerlink" href="#block-abs" title="Permalink to this headline">¶</a></h2>
+<p>absolute(x[, out])</p>
+<p>Calculate the absolute value element-wise.</p>
+</div>
+<div class="section" id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Input array.</dd>
+</dl>
+</div>
+<div class="section" id="returns">
+<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>res <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd>An ndarray containing the absolute value of
+each element in <cite>x</cite>.  For complex input, <tt class="docutils literal"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">ib</span></tt>, the
+absolute value is <img class="math" src="images/math/8e716b4a5c93f943a2dd01628bbd3f9defec4da7.png" alt="\sqrt{ a^2 + b^2 }"/>.</dd>
+</dl>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">array([ 1.2,  1.2])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="mf">1.2</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+<span class="go">1.5620499351813308</span>
+</pre></div>
+</div>
+<p>Plot the function over <tt class="docutils literal"><span class="pre">[-10,</span> <span class="pre">10]</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Plot the function over the complex plane:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">xx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xx</span><span class="p">),</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="block-astype">
+<span id="id46"></span><h2>Block <tt class="docutils literal"><span class="pre">astype</span></tt><a class="headerlink" href="#block-astype" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-dstack">
+<span id="id47"></span><h2>Block <tt class="docutils literal"><span class="pre">dstack</span></tt><a class="headerlink" href="#block-dstack" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-gradient1d">
+<span id="id48"></span><h2>Block <tt class="docutils literal"><span class="pre">gradient1d</span></tt><a class="headerlink" href="#block-gradient1d" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-hstack">
+<span id="id49"></span><h2>Block <tt class="docutils literal"><span class="pre">hstack</span></tt><a class="headerlink" href="#block-hstack" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-long">
+<span id="id50"></span><h2>Block <tt class="docutils literal"><span class="pre">long</span></tt><a class="headerlink" href="#block-long" title="Permalink to this headline">¶</a></h2>
+<p>log(x[, out])</p>
+<p>Natural logarithm, element-wise.</p>
+<p>The natural logarithm <cite>log</cite> is the inverse of the exponential function,
+so that <cite>log(exp(x)) = x</cite>. The natural logarithm is logarithm in base <cite>e</cite>.</p>
+</div>
+<div class="section" id="id51">
+<h2>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Input value.</dd>
+</dl>
+</div>
+<div class="section" id="id52">
+<h2>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd>The natural logarithm of <cite>x</cite>, element-wise.</dd>
+</dl>
+</div>
+<div class="section" id="see-also">
+<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
+<p>log10, log2, log1p</p>
+</div>
+<div class="section" id="notes">
+<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
+<p>Logarithm is a multivalued function: for each <cite>x</cite> there is an infinite
+number of <cite>z</cite> such that <cite>exp(z) = x</cite>. The convention is to return the <cite>z</cite>
+whose imaginary part lies in <cite>[-pi, pi]</cite>.</p>
+<p>For real-valued input data types, <cite>log</cite> always returns real output. For
+each value that cannot be expressed as a real number or infinity, it
+yields <tt class="docutils literal"><span class="pre">nan</span></tt> and sets the <cite>invalid</cite> floating point error flag.</p>
+<p>For complex-valued input, <cite>log</cite> is a complex analytical function that
+has a branch cut <cite>[-inf, 0]</cite> and is continuous from above on it. <cite>log</cite>
+handles the floating-point negative zero as an infinitesimal negative
+number, conforming to the C99 standard.</p>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<table class="docutils footnote" frame="void" id="id53" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[1]</td><td>M. Abramowitz and I.A. Stegun, &#8220;Handbook of Mathematical Functions&#8221;,
+10th printing, 1964, pp. 67. <a class="reference external" href="http://www.math.sfu.ca/~cbm/aands/">http://www.math.sfu.ca/~cbm/aands/</a></td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id54" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[2]</td><td>Wikipedia, &#8220;Logarithm&#8221;. <a class="reference external" href="http://en.wikipedia.org/wiki/Logarithm">http://en.wikipedia.org/wiki/Logarithm</a></td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id55">
+<h2>Examples<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="go">array([  0.,   1.,   2., -Inf])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="block-outer">
+<span id="id56"></span><h2>Block <tt class="docutils literal"><span class="pre">outer</span></tt><a class="headerlink" href="#block-outer" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-select">
+<span id="id57"></span><h2>Block <tt class="docutils literal"><span class="pre">select</span></tt><a class="headerlink" href="#block-select" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-sign">
+<span id="id58"></span><h2>Block <tt class="docutils literal"><span class="pre">sign</span></tt><a class="headerlink" href="#block-sign" title="Permalink to this headline">¶</a></h2>
+<p>sign(x[, out])</p>
+<p>Returns an element-wise indication of the sign of a number.</p>
+<p>The <cite>sign</cite> function returns <tt class="docutils literal"><span class="pre">-1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0,</span> <span class="pre">0</span> <span class="pre">if</span> <span class="pre">x==0,</span> <span class="pre">1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></tt>.</p>
+</div>
+<div class="section" id="id59">
+<h2>Parameters<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Input values.</dd>
+</dl>
+</div>
+<div class="section" id="id60">
+<h2>Returns<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd>The sign of <cite>x</cite>.</dd>
+</dl>
+</div>
+<div class="section" id="id61">
+<h2>Examples<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">([</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
+<span class="go">array([-1.,  1.])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="block-square">
+<span id="id62"></span><h2>Block <tt class="docutils literal"><span class="pre">square</span></tt><a class="headerlink" href="#block-square" title="Permalink to this headline">¶</a></h2>
+<p>square(x[, out])</p>
+<p>Return the element-wise square of the input.</p>
+</div>
+<div class="section" id="id63">
+<h2>Parameters<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Input data.</dd>
+</dl>
+</div>
+<div class="section" id="id64">
+<h2>Returns<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>out <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
+<dd>Element-wise <cite>x*x</cite>, of the same shape and dtype as <cite>x</cite>.
+Returns scalar if <cite>x</cite> is a scalar.</dd>
+</dl>
+</div>
+<div class="section" id="id65">
+<h2>See Also<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h2>
+<p>numpy.linalg.matrix_power
+sqrt
+power</p>
+</div>
+<div class="section" id="id66">
+<h2>Examples<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="go">array([-1.-0.j,  1.+0.j])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="block-take">
+<span id="id67"></span><h2>Block <tt class="docutils literal"><span class="pre">take</span></tt><a class="headerlink" href="#block-take" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-vstack">
+<span id="id68"></span><h2>Block <tt class="docutils literal"><span class="pre">vstack</span></tt><a class="headerlink" href="#block-vstack" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-robotics">
+<span id="id69"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.robotics</span></tt><a class="headerlink" href="#module-procgraph-components-robotics" title="Permalink to this headline">¶</a></h1>
+<p>Routines specific to robotics.</p>
+<div class="section" id="block-pose2commands">
+<span id="id70"></span><h2>Block <tt class="docutils literal"><span class="pre">pose2commands</span></tt><a class="headerlink" href="#block-pose2commands" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-pose2vel">
+<span id="id71"></span><h2>Block <tt class="docutils literal"><span class="pre">pose2vel_</span></tt><a class="headerlink" href="#block-pose2vel" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-signals">
+<span id="id72"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.signals</span></tt><a class="headerlink" href="#module-procgraph-components-signals" title="Permalink to this headline">¶</a></h1>
+<p>Simple routins for signals extraction, combination.</p>
+<div class="section" id="block-extract">
+<span id="id73"></span><h2>Block <tt class="docutils literal"><span class="pre">extract</span></tt><a class="headerlink" href="#block-extract" title="Permalink to this headline">¶</a></h2>
+<p>This block extracts some of the components</p>
+<p>Arguments:</p>
+<ul class="simple">
+<li>index</li>
+</ul>
+</div>
+<div class="section" id="block-join">
+<span id="id74"></span><h2>Block <tt class="docutils literal"><span class="pre">join</span></tt><a class="headerlink" href="#block-join" title="Permalink to this headline">¶</a></h2>
+<p>This block joins multiple signals into one.</p>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-statistics">
+<span id="id75"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.statistics</span></tt><a class="headerlink" href="#module-procgraph-components-statistics" title="Permalink to this headline">¶</a></h1>
+<p>Blocks for common statistical operations.</p>
+<div class="section" id="block-cov2corr">
+<span id="id76"></span><h2>Block <tt class="docutils literal"><span class="pre">cov2corr</span></tt><a class="headerlink" href="#block-cov2corr" title="Permalink to this headline">¶</a></h2>
+<p>Compute the correlation matrix from the covariance matrix.</p>
+<p>If zero_diagonal = True, the diagonal is set to 0 instead of 1.</p>
+</div>
+<div class="section" id="block-covariance">
+<span id="id77"></span><h2>Block <tt class="docutils literal"><span class="pre">covariance</span></tt><a class="headerlink" href="#block-covariance" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-expectation">
+<span id="id78"></span><h2>Block <tt class="docutils literal"><span class="pre">expectation</span></tt><a class="headerlink" href="#block-expectation" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-normalize">
+<span id="id79"></span><h2>Block <tt class="docutils literal"><span class="pre">normalize</span></tt><a class="headerlink" href="#block-normalize" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-soft-variance">
+<span id="id80"></span><h2>Block <tt class="docutils literal"><span class="pre">soft_variance</span></tt><a class="headerlink" href="#block-soft-variance" title="Permalink to this headline">¶</a></h2>
+<p>Computes soft variance (expectation of error absolute value)</p>
+</div>
+<div class="section" id="block-variance">
+<span id="id81"></span><h2>Block <tt class="docutils literal"><span class="pre">variance</span></tt><a class="headerlink" href="#block-variance" title="Permalink to this headline">¶</a></h2>
+<p>Computes the variance</p>
+</div>
+</div>
+<div class="section" id="module-procgraph-components-video">
+<span id="id82"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.video</span></tt><a class="headerlink" href="#module-procgraph-components-video" title="Permalink to this headline">¶</a></h1>
+<p>Blocks for encoding/decoding video based on MPlayer.</p>
+<div class="section" id="block-simplecompression">
+<span id="id83"></span><h2>Block <tt class="docutils literal"><span class="pre">SimpleCompression</span></tt><a class="headerlink" href="#block-simplecompression" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="block-mencoder">
+<span id="id84"></span><h2>Block <tt class="docutils literal"><span class="pre">mencoder</span></tt><a class="headerlink" href="#block-mencoder" title="Permalink to this headline">¶</a></h2>
+<p>Encodes a video stream.</p>
+<p>Input: H x W x 3  uint8  numpy array representing RGB image.
+Config:</p>
+<blockquote>
+<ul class="simple">
+<li>file</li>
+<li>vcodec   mpeg4</li>
+<li>vbitrate 1000000</li>
+</ul>
+</blockquote>
+<p>Note that allowed codec and bitrate depend on your version of mencoder.</p>
+</div>
+<div class="section" id="block-mplayer">
+<span id="id85"></span><h2>Block <tt class="docutils literal"><span class="pre">mplayer</span></tt><a class="headerlink" href="#block-mplayer" title="Permalink to this headline">¶</a></h2>
+<p>Plays a video stream.</p>
+<dl class="docutils">
+<dt>Config:</dt>
+<dd><ul class="first last simple">
+<li>file</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-4']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

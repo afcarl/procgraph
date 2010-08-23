@@ -1,0 +1,807 @@
+.. |towrite| replace:: **to write** 
+
+.. _`pgdoc:procgraph.components`:
+
+Summary 
+============================================================
+
+
+:ref:`module:procgraph.components`
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`Info <block:Info>`                                                                                                                                                                                 Prints the inputs                                                                                                                                                                                       
+:ref:`clock <block:clock>`                                                                                                                                                                               None                                                                                                                                                                                                    
+:ref:`constant <block:constant>`                                                                                                                                                                         Creates a numerical constant that never changes.                                                                                                                                                        
+:ref:`gain <block:gain>`                                                                                                                                                                                 None                                                                                                                                                                                                    
+:ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs. This is an example                                                                                                                                                       
+:ref:`print <block:print>`                                                                                                                                                                               Prints the inputs                                                                                                                                                                                       
+:ref:`rand <block:rand>`                                                                                                                                                                                 None                                                                                                                                                                                                    
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.dynamic`
+
+Blocks performing operations with a dynamic nature.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`derivative <block:derivative>`                                                                                                                                                                     None                                                                                                                                                                                                    
+:ref:`derivative2 <block:derivative2>`                                                                                                                                                                   None                                                                                                                                                                                                    
+:ref:`forward_difference <block:forward_difference>`                                                                                                                                                     Computes ``x[t+1] - x[t-1]`` normalized with timestamp.                                                                                                                                                 
+:ref:`fps_data_limit <block:fps_data_limit>`                                                                                                                                                             This block limits the output update to a certain framerate.                                                                                                                                             
+:ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity,                                                                                                                                                          
+:ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the history of a quantity,                                                                                                                                                          
+:ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last n samples of a quantity,                                                                                                                                                   
+:ref:`sieve <block:sieve>`                                                                                                                                                                               This block only transmits every n steps.                                                                                                                                                                
+:ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of N sensor streams.                                                                                                                                                      
+:ref:`sync2 <block:sync2>`                                                                                                                                                                               This block synchronizes a set of N sensor streams.                                                                                                                                                      
+:ref:`two_step_difference <block:two_step_difference>`                                                                                                                                                   Computes ``x[t+1] - x[t]`` normalized with timestamp.                                                                                                                                                   
+:ref:`wait <block:wait>`                                                                                                                                                                                 This block waits a given number of updates before transmitting the                                                                                                                                      
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.gui`
+
+Blocks using Matplotlib to display data.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`fps_limit <block:fps_limit>`                                                                                                                                                                       This block limits the output update to a certain framerate.                                                                                                                                             
+:ref:`plot <block:plot>`                                                                                                                                                                                 Just plots the vector instantaneously                                                                                                                                                                   
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.images`
+
+Blocks for basic operations on images.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`compose <block:compose>`                                                                                                                                                                           Configuration:                                                                                                                                                                                          
+:ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.                                                                                                                                 
+:ref:`grayscale <block:grayscale>`                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
+:ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.                                                                                                                          
+:ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         None                                                                                                                                                                                                    
+:ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range                                                                                                                                  
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.misc`
+
+Miscellaneous functions to be better organized.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`as_json <block:as_json>`                                                                                                                                                                           Converts the input into a JSON string.                                                                                                                                                                  
+:ref:`pickle <block:pickle>`                                                                                                                                                                             Dumps the input as a pickle file.                                                                                                                                                                       
+:ref:`to_file <block:to_file>`                                                                                                                                                                           Prints the input line by line to a given file.                                                                                                                                                          
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.numpy_ops`
+
+Various operations wrapping numpy functions.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`* <block:*>`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`+ <block:+>`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`- <block:->`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`/ <block:/>`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`abs <block:abs>`                                                                                                                                                                                   absolute(x[, out])                                                                                                                                                                                      
+:ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`dstack <block:dstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
+:ref:`hstack <block:hstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`long <block:long>`                                                                                                                                                                                 log(x[, out])                                                                                                                                                                                           
+:ref:`outer <block:outer>`                                                                                                                                                                               None                                                                                                                                                                                                    
+:ref:`select <block:select>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`sign <block:sign>`                                                                                                                                                                                 sign(x[, out])                                                                                                                                                                                          
+:ref:`square <block:square>`                                                                                                                                                                             square(x[, out])                                                                                                                                                                                        
+:ref:`take <block:take>`                                                                                                                                                                                 None                                                                                                                                                                                                    
+:ref:`vstack <block:vstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.robotics`
+
+Routines specific to robotics.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`pose2commands <block:pose2commands>`                                                                                                                                                               None                                                                                                                                                                                                    
+:ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       None                                                                                                                                                                                                    
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.signals`
+
+Simple routins for signals extraction, combination.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`extract <block:extract>`                                                                                                                                                                           This block extracts some of the components                                                                                                                                                              
+:ref:`join <block:join>`                                                                                                                                                                                 This block joins multiple signals into one.                                                                                                                                                             
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.statistics`
+
+Blocks for common statistical operations.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`cov2corr <block:cov2corr>`                                                                                                                                                                         Compute the correlation matrix from the covariance matrix.                                                                                                                                              
+:ref:`covariance <block:covariance>`                                                                                                                                                                     None                                                                                                                                                                                                    
+:ref:`expectation <block:expectation>`                                                                                                                                                                   None                                                                                                                                                                                                    
+:ref:`normalize <block:normalize>`                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`soft_variance <block:soft_variance>`                                                                                                                                                               Computes soft variance (expectation of error absolute value)                                                                                                                                            
+:ref:`variance <block:variance>`                                                                                                                                                                         Computes the variance                                                                                                                                                                                   
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.video`
+
+Blocks for encoding/decoding video based on MPlayer.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`SimpleCompression <block:SimpleCompression>`                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`mencoder <block:mencoder>`                                                                                                                                                                         Encodes a video stream.                                                                                                                                                                                 
+:ref:`mplayer <block:mplayer>`                                                                                                                                                                           Plays a video stream.                                                                                                                                                                                   
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+.. _`module:procgraph.components`:
+
+Module ``procgraph.components``
+============================================================
+
+
+.. _`block:Info`:
+
+Block ``Info``
+------------------------------------------------------------
+Prints the inputs
+
+.. _`block:clock`:
+
+Block ``clock``
+------------------------------------------------------------
+.. _`block:constant`:
+
+Block ``constant``
+------------------------------------------------------------
+Creates a numerical constant that never changes.
+
+
+Example: ::
+
+    |constant value=42 name=meaning| -> ...
+
+Two parameters:
+
+* ``value``, necessary
+* ``name``, optional signal name (default: const)
+
+.. _`block:gain`:
+
+Block ``gain``
+------------------------------------------------------------
+.. _`block:identity`:
+
+Block ``identity``
+------------------------------------------------------------
+This block outputs the inputs. This is an example
+
+of a block whose signal configuration is dynamics:
+init() gets called twice.
+
+.. _`block:print`:
+
+Block ``print``
+------------------------------------------------------------
+Prints the inputs
+
+.. _`block:rand`:
+
+Block ``rand``
+------------------------------------------------------------
+.. _`module:procgraph.components.dynamic`:
+
+Module ``procgraph.components.dynamic``
+============================================================
+
+
+Blocks performing operations with a dynamic nature.
+
+
+
+This library contains blocks that perform operations with time.
+This library is autoloaded.
+
+.. _`block:derivative`:
+
+Block ``derivative``
+------------------------------------------------------------
+.. _`block:derivative2`:
+
+Block ``derivative2``
+------------------------------------------------------------
+.. _`block:forward_difference`:
+
+Block ``forward_difference``
+------------------------------------------------------------
+Computes ``x[t+1] - x[t-1]`` normalized with timestamp.
+
+.. _`block:fps_data_limit`:
+
+Block ``fps_data_limit``
+------------------------------------------------------------
+This block limits the output update to a certain framerate.
+
+.. _`block:history`:
+
+Block ``history``
+------------------------------------------------------------
+This block collects the history of a quantity,
+
+and outputs (x, t).
+
+Arguments:
+- interval (seconds)  interval to record
+
+Output:
+- x
+- t
+
+.. _`block:historyt`:
+
+Block ``historyt``
+------------------------------------------------------------
+This block collects the history of a quantity,
+
+and outputs (x, t).
+
+Arguments:
+- interval (seconds)  interval to record
+
+Output:
+- a tuple (x,y)
+
+.. _`block:last_n_samples`:
+
+Block ``last_n_samples``
+------------------------------------------------------------
+This block collects the last n samples of a quantity,
+
+and outputs (x, timestamp).
+
+Arguments:
+- n, number of samples
+
+Output:
+- x
+- t
+
+.. _`block:sieve`:
+
+Block ``sieve``
+------------------------------------------------------------
+This block only transmits every n steps.
+
+
+Config:
+- n
+
+Input: variable
+Output: variable (same as input)
+
+.. _`block:sync`:
+
+Block ``sync``
+------------------------------------------------------------
+This block synchronizes a set of N sensor streams.
+
+
+The first signal is called the "master" signal.
+The other (N-1) are slaves.
+
+We guarantee that:
+- if the slaves are faster than the master,
+  then we output exactly the same
+
+
+
+Master  *  *  *   *   *
+Slave   ++++++++++++++++
+
+Master  *  *  *   *   *
+output? v  v  x   v
+Slave   +    +      +
+output? v    v      v
+
+.. _`block:sync2`:
+
+Block ``sync2``
+------------------------------------------------------------
+This block synchronizes a set of N sensor streams.
+
+
+The first signal is called the "master" signal.
+The other (N-1) are slaves.
+
+.. _`block:two_step_difference`:
+
+Block ``two_step_difference``
+------------------------------------------------------------
+Computes ``x[t+1] - x[t]`` normalized with timestamp.
+
+.. _`block:wait`:
+
+Block ``wait``
+------------------------------------------------------------
+This block waits a given number of updates before transmitting the
+
+output.
+
+Config:
+- n (number of updates)
+
+Input: variable
+Output: variable (same as input)
+
+.. _`module:procgraph.components.gui`:
+
+Module ``procgraph.components.gui``
+============================================================
+
+
+Blocks using Matplotlib to display data.
+
+.. _`block:fps_limit`:
+
+Block ``fps_limit``
+------------------------------------------------------------
+This block limits the output update to a certain framerate.
+
+
+Note that this uses realtime wall clock time -- not the data time!
+This is mean for real-time applications, such as visualization.
+
+.. _`block:plot`:
+
+Block ``plot``
+------------------------------------------------------------
+Just plots the vector instantaneously
+
+.. _`module:procgraph.components.images`:
+
+Module ``procgraph.components.images``
+============================================================
+
+
+Blocks for basic operations on images.
+
+
+The  module contains blocks that perform basic operations
+on images. The library is autoloaded and has no software dependency.
+
+For more complex operations see also:
+
+* :ref:`module:procgraph.components.cv`
+* :ref:`module:procgraph.components.pil`
+
+
+**Example**
+
+Convert a RGB image to grayscale, and back to a RGB image:::
+
+
+    |input| -> |rgb2gray| -> |gray2rgb| -> |output|
+
+.. _`block:compose`:
+
+Block ``compose``
+------------------------------------------------------------
+Configuration:
+
+
+- ``width``, ``height``: dimension in  pixels
+- ``positions``: a structure giving the position of each signal in the canvas. Example: ::
+
+      compose.positions = {y: [0,0], ys: [320,20]}
+
+.. _`block:gray2rgb`:
+
+Block ``gray2rgb``
+------------------------------------------------------------
+Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
+
+.. _`block:grayscale`:
+
+Block ``grayscale``
+------------------------------------------------------------
+.. _`block:grid`:
+
+Block ``grid``
+------------------------------------------------------------
+A block that creates a larger image by arranging them in a grid.
+
+.. _`block:posneg`:
+
+Block ``posneg``
+------------------------------------------------------------
+Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+
+.. _`block:rgb2gray`:
+
+Block ``rgb2gray``
+------------------------------------------------------------
+.. _`block:scale`:
+
+Block ``scale``
+------------------------------------------------------------
+Provides a RGB representation of the values by interpolating the range
+
+    [min(value),max(value)] into the colorspace [min_color, max_color].
+
+Args:
+  value:      a numpy array with finite values squeeze()able to (W,H).
+  min_value:  If specified, this is taken to be the threshold. Everything
+              below min_value is considered to be equal to min_value.
+  max_value:  Optional upper threshold.
+  min_color:  color associated to minimum value. Default: [1,1,1] = white.
+  max_color:  color associated to maximum value. Default: [0,0,0] = black.
+
+Raises:
+  ValueError: if min_value == max_value
+
+Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
+
+.. _`module:procgraph.components.misc`:
+
+Module ``procgraph.components.misc``
+============================================================
+
+
+Miscellaneous functions to be better organized.
+
+.. _`block:as_json`:
+
+Block ``as_json``
+------------------------------------------------------------
+Converts the input into a JSON string.
+
+.. _`block:pickle`:
+
+Block ``pickle``
+------------------------------------------------------------
+Dumps the input as a pickle file.
+
+.. _`block:to_file`:
+
+Block ``to_file``
+------------------------------------------------------------
+Prints the input line by line to a given file.
+
+.. _`module:procgraph.components.numpy_ops`:
+
+Module ``procgraph.components.numpy_ops``
+============================================================
+
+
+Various operations wrapping numpy functions.
+
+.. _`block:*`:
+
+Block ``*``
+------------------------------------------------------------
+.. _`block:+`:
+
+Block ``+``
+------------------------------------------------------------
+.. _`block:-`:
+
+Block ``-``
+------------------------------------------------------------
+.. _`block:/`:
+
+Block ``/``
+------------------------------------------------------------
+.. _`block:abs`:
+
+Block ``abs``
+------------------------------------------------------------
+absolute(x[, out])
+
+
+Calculate the absolute value element-wise.
+
+Parameters
+----------
+x : array_like
+    Input array.
+
+Returns
+-------
+res : ndarray
+    An ndarray containing the absolute value of
+    each element in `x`.  For complex input, ``a + ib``, the
+    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+
+Examples
+--------
+>>> x = np.array([-1.2, 1.2])
+>>> np.absolute(x)
+array([ 1.2,  1.2])
+>>> np.absolute(1.2 + 1j)
+1.5620499351813308
+
+Plot the function over ``[-10, 10]``:
+
+>>> import matplotlib.pyplot as plt
+
+>>> x = np.linspace(-10, 10, 101)
+>>> plt.plot(x, np.absolute(x))
+>>> plt.show()
+
+Plot the function over the complex plane:
+
+>>> xx = x + 1j * x[:, np.newaxis]
+>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+>>> plt.show()
+
+.. _`block:astype`:
+
+Block ``astype``
+------------------------------------------------------------
+.. _`block:dstack`:
+
+Block ``dstack``
+------------------------------------------------------------
+.. _`block:gradient1d`:
+
+Block ``gradient1d``
+------------------------------------------------------------
+.. _`block:hstack`:
+
+Block ``hstack``
+------------------------------------------------------------
+.. _`block:long`:
+
+Block ``long``
+------------------------------------------------------------
+log(x[, out])
+
+
+Natural logarithm, element-wise.
+
+The natural logarithm `log` is the inverse of the exponential function,
+so that `log(exp(x)) = x`. The natural logarithm is logarithm in base `e`.
+
+Parameters
+----------
+x : array_like
+    Input value.
+
+Returns
+-------
+y : ndarray
+    The natural logarithm of `x`, element-wise.
+
+See Also
+--------
+log10, log2, log1p
+
+Notes
+-----
+Logarithm is a multivalued function: for each `x` there is an infinite
+number of `z` such that `exp(z) = x`. The convention is to return the `z`
+whose imaginary part lies in `[-pi, pi]`.
+
+For real-valued input data types, `log` always returns real output. For
+each value that cannot be expressed as a real number or infinity, it
+yields ``nan`` and sets the `invalid` floating point error flag.
+
+For complex-valued input, `log` is a complex analytical function that
+has a branch cut `[-inf, 0]` and is continuous from above on it. `log`
+handles the floating-point negative zero as an infinitesimal negative
+number, conforming to the C99 standard.
+
+References
+----------
+.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
+       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
+.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+
+Examples
+--------
+>>> np.log([1, np.e, np.e**2, 0])
+array([  0.,   1.,   2., -Inf])
+
+.. _`block:outer`:
+
+Block ``outer``
+------------------------------------------------------------
+.. _`block:select`:
+
+Block ``select``
+------------------------------------------------------------
+.. _`block:sign`:
+
+Block ``sign``
+------------------------------------------------------------
+sign(x[, out])
+
+
+Returns an element-wise indication of the sign of a number.
+
+The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+
+Parameters
+----------
+x : array_like
+  Input values.
+
+Returns
+-------
+y : ndarray
+  The sign of `x`.
+
+Examples
+--------
+>>> np.sign([-5., 4.5])
+array([-1.,  1.])
+>>> np.sign(0)
+0
+
+.. _`block:square`:
+
+Block ``square``
+------------------------------------------------------------
+square(x[, out])
+
+
+Return the element-wise square of the input.
+
+Parameters
+----------
+x : array_like
+    Input data.
+
+Returns
+-------
+out : ndarray
+    Element-wise `x*x`, of the same shape and dtype as `x`.
+    Returns scalar if `x` is a scalar.
+
+See Also
+--------
+numpy.linalg.matrix_power
+sqrt
+power
+
+Examples
+--------
+>>> np.square([-1j, 1])
+array([-1.-0.j,  1.+0.j])
+
+.. _`block:take`:
+
+Block ``take``
+------------------------------------------------------------
+.. _`block:vstack`:
+
+Block ``vstack``
+------------------------------------------------------------
+.. _`module:procgraph.components.robotics`:
+
+Module ``procgraph.components.robotics``
+============================================================
+
+
+Routines specific to robotics.
+
+.. _`block:pose2commands`:
+
+Block ``pose2commands``
+------------------------------------------------------------
+.. _`block:pose2vel_`:
+
+Block ``pose2vel_``
+------------------------------------------------------------
+.. _`module:procgraph.components.signals`:
+
+Module ``procgraph.components.signals``
+============================================================
+
+
+Simple routins for signals extraction, combination.
+
+.. _`block:extract`:
+
+Block ``extract``
+------------------------------------------------------------
+This block extracts some of the components
+
+
+Arguments:
+
+- index
+
+.. _`block:join`:
+
+Block ``join``
+------------------------------------------------------------
+This block joins multiple signals into one.
+
+.. _`module:procgraph.components.statistics`:
+
+Module ``procgraph.components.statistics``
+============================================================
+
+
+Blocks for common statistical operations.
+
+.. _`block:cov2corr`:
+
+Block ``cov2corr``
+------------------------------------------------------------
+Compute the correlation matrix from the covariance matrix.
+
+If zero_diagonal = True, the diagonal is set to 0 instead of 1.
+
+.. _`block:covariance`:
+
+Block ``covariance``
+------------------------------------------------------------
+.. _`block:expectation`:
+
+Block ``expectation``
+------------------------------------------------------------
+.. _`block:normalize`:
+
+Block ``normalize``
+------------------------------------------------------------
+.. _`block:soft_variance`:
+
+Block ``soft_variance``
+------------------------------------------------------------
+Computes soft variance (expectation of error absolute value)
+
+.. _`block:variance`:
+
+Block ``variance``
+------------------------------------------------------------
+Computes the variance
+
+.. _`module:procgraph.components.video`:
+
+Module ``procgraph.components.video``
+============================================================
+
+
+Blocks for encoding/decoding video based on MPlayer.
+
+.. _`block:SimpleCompression`:
+
+Block ``SimpleCompression``
+------------------------------------------------------------
+.. _`block:mencoder`:
+
+Block ``mencoder``
+------------------------------------------------------------
+Encodes a video stream.
+
+
+Input: H x W x 3  uint8  numpy array representing RGB image.
+Config:
+    - file
+    - vcodec   mpeg4
+    - vbitrate 1000000
+
+Note that allowed codec and bitrate depend on your version of mencoder.
+
+.. _`block:mplayer`:
+
+Block ``mplayer``
+------------------------------------------------------------
+Plays a video stream.
+
+
+Config:
+    - file
+

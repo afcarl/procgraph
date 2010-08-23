@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>User API &mdash; procgraph v0.1 documentation</title>
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+	 
+<!--	
+   <style type="text/css">
+   .pagetoc { 
+	max-width: 30%;
+	display: block; float: right; margin-left: 3em; background-color: white; border: solid 2px gray;}
+   </style>
+-->
+<style type="text/css">
+
+div.input, div.output, div.configuration { margin-top: 1em; padding-right: 2em;}
+div.input, div.output, div.configuration {max-width: 30%; float:left; display: block }
+div.input:before{ content: "Input"; font-weight: bold; }
+div.output:before{ content: "Output"; font-weight: bold; }
+div.configuration:before{ content: "Configuration"; font-weight: bold; }
+
+div.implementation { clear: left; }
+div.implementation:before{ content: "Implementation notes"; font-weight: bold; }
+
+h2,h3 { clear: left;}
+
+h1 { background-color: #ddf; padding: 1em;}
+h3 { background-color: #ddd; padding: 5px;}
+</style>
+
+   <style type="text/css">
+
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+/*
+	div.twitterbadge {
+		float: right;
+		margin-left: 2em;
+	}
+
+	img.bigpicture {
+		margin: 1em;
+		max-width: 90%;
+	}
+	
+	.header h2 {
+		color: #990033 !important;
+		font-size: 200% !important;
+	}
+	.content {
+
+	}
+	.content p, .content p {
+		max-width: 40em;
+	}
+	
+	.content h1 { 
+		display: none;
+	}
+	h2, h3 {  
+		border-bottom: solid 2px orange;
+		max-width: 40em;
+	}
+	
+	h1 { font-size: 200%;}
+	h2 { font-size: 150%;}
+	h3 { font-size: 125%;}
+	
+		
+	pre{
+		max-width: 60em;
+	
+	}
+	
+	body {  font-size: 120%; font-family: "Droid Serif", serif; }
+	
+	h1,h2,h3 { 
+  font-family: "Lobster", serif;
+  font-style: normal;
+  font-weight: 400;
+  text-shadow: 6px 6px 6px #ccc;
+}
+
+div.header h2 {
+    font-size: 1.3em;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-transform: none !important;
+    color: #aaa;
+    border: 0;
+    margin-top: -3px;
+    padding: 0;
+}
+
+.col1 strong, .col2 strong { 
+	font-family: "Lobster", serif; color: #990033;text-shadow: 6px 6px 6px #ccc;
+	font-size: 160%;
+ }
+
+.compmake-brand {
+	font-family: "Lobster", serif;
+	font-size: 120%;
+}
+
+a.reference em, a.external em {
+	font-style: normal !important;
+}
+*/
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<!--<link  href="http://fonts.googleapis.com/css?family=Cardo" rel="stylesheet" type="text/css" >-->
+
+
+<script src="http://yui.yahooapis.com/3.1.0/build/yui/yui-min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.1.0/build/cssreset/reset-context-min.css"></link>
+<script src="http://www.remarkbox.com/deploy/remarkbox-min.js"></script>
+<script type="text/javascript">
+YUI().use('remarkbox', function (Y) {
+Y.Remarkbox.remarkson.elements("p,code");
+Y.Remarkbox.remarkson.ids("para,tnt");
+Y.Remarkbox.remarkson.classes("rmkit,contentfeedback");
+Y.Remarkbox.remarktype.pointer("right");
+Y.Remarkbox.remarktype.strongcolor("#ECFCE8");
+Y.Remarkbox.remarktype.strongcolortext("#000000");
+Y.Remarkbox.remarktype.lightcolor("#FF8040");
+Y.Remarkbox.remarktype.lightcolortext("#800000");
+Y.Remarkbox.remarktype.alwaysvisible("true");
+Y.Remarkbox.remarktype.offsetx("-3em");
+Y.Remarkbox.remarktype.offsety("-2em");
+Y.Remarkbox.remarktype.allowanonymous("true");
+Y.Remarkbox.render();
+});
+</script>
+
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>procgraph v0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>User API</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="user-api">
+<h1>User API<a class="headerlink" href="#user-api" title="Permalink to this headline">¶</a></h1>
+<p>to write</p>
+</div>
+<div class="section" id="module-procgraph.core.block">
+<span id="block-builder-api"></span><h1>Block-builder API<a class="headerlink" href="#module-procgraph.core.block" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="procgraph.core.block.Block">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block.</tt><tt class="descname">Block</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="procgraph.core.block.Block.canonicalize_input">
+<tt class="descname">canonicalize_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.canonicalize_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.canonicalize_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the signal spec (either string or id) to string
+(useful because more user-friendly).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.canonicalize_output">
+<tt class="descname">canonicalize_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.canonicalize_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.canonicalize_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the signal spec (either string or id) to string
+(useful because more user-friendly).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.debug">
+<tt class="descname">debug</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a debug message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.from_outside_set_input">
+<tt class="descname">from_outside_set_input</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.from_outside_set_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.from_outside_set_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an input value. This is used from outside, not 
+from the block. (This is overloaded by Model)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input">
+<tt class="descname">get_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of an input signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_signals_names">
+<tt class="descname">get_input_signals_names</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_signals_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of names of currently defined input signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_signals_timestamps">
+<tt class="descname">get_input_signals_timestamps</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_signals_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the input signals timestamps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_signals_values">
+<tt class="descname">get_input_signals_values</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_signals_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the input signals values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_timestamp">
+<tt class="descname">get_input_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timestamp of an input signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_io_repr">
+<tt class="descname">get_io_repr</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_io_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_io_repr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a representation of io ports for this block.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output">
+<tt class="descname">get_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of an output signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output_signals_names">
+<tt class="descname">get_output_signals_names</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output_signals_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_signals_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of names of currently defined output signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output_signals_timestamps">
+<tt class="descname">get_output_signals_timestamps</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output_signals_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_signals_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the output values timestamps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output_timestamp">
+<tt class="descname">get_output_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timestamp of an output signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_state">
+<tt class="descname">get_state</tt><big>(</big><em>varname</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be called during init() and update() .</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_state_vars">
+<tt class="descname">get_state_vars</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_state_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_state_vars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the names for the state variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.info">
+<tt class="descname">info</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an info message</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the block. Return</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.is_valid_input_name">
+<tt class="descname">is_valid_input_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.is_valid_input_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.is_valid_input_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that num_or_id (string or int) is a valid handle
+for one of the signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.is_valid_output_name">
+<tt class="descname">is_valid_output_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.is_valid_output_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.is_valid_output_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that num_or_id (string or int) is a valid handle
+for one of the signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.set_output">
+<tt class="descname">set_output</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp=None</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.set_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.set_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an output value. If timestamp is omitted, it
+will default to the maximum of the input signals timestamp.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>varname</em>, <em>value</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be called during init() and update().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the block function.
+Use set_state() for temporary storage.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-4']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>
