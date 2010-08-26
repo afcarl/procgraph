@@ -241,13 +241,13 @@ Y.Remarkbox.render();
 <td>This block limits the output update to a certain framerate.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-history"><em>history</em></a></td>
-<td>This block collects the history of a quantity,</td>
+<td>This block collects the history of a quantity, and outputs (x, t).</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-historyt"><em>historyt</em></a></td>
-<td>This block collects the history of a quantity,</td>
+<td>This block collects the history of a quantity, and outputs (x, t).</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-last-n-samples"><em>last_n_samples</em></a></td>
-<td>This block collects the last n samples of a quantity,</td>
+<td>This block collects the last n samples of a quantity, and outputs (x, timestamp).</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-sieve"><em>sieve</em></a></td>
 <td>This block only transmits every n steps.</td>
@@ -262,7 +262,7 @@ Y.Remarkbox.render();
 <td>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t]</span></tt> normalized with timestamp.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-wait"><em>wait</em></a></td>
-<td>This block waits a given number of updates before transmitting the</td>
+<td>This block waits a given number of updates before transmitting the output.</td>
 </tr>
 </tbody>
 </table>
@@ -309,7 +309,7 @@ Y.Remarkbox.render();
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-scale"><em>scale</em></a></td>
-<td>Provides a RGB representation of the values by interpolating the range</td>
+<td>Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].</td>
 </tr>
 </tbody>
 </table>
@@ -431,7 +431,7 @@ Y.Remarkbox.render();
 </colgroup>
 <tbody valign="top">
 <tr><td><a class="reference internal" href="#block-cov2corr"><em>cov2corr</em></a></td>
-<td>Compute the correlation matrix from the covariance matrix.</td>
+<td>Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-covariance"><em>covariance</em></a></td>
 <td>None</td>
@@ -531,8 +531,7 @@ This library is autoloaded.</p>
 </div>
 <div class="section" id="block-history">
 <span id="id14"></span><h2>Block <tt class="docutils literal"><span class="pre">history</span></tt><a class="headerlink" href="#block-history" title="Permalink to this headline">¶</a></h2>
-<p>This block collects the history of a quantity,</p>
-<p>and outputs (x, t).</p>
+<p>This block collects the history of a quantity, and outputs (x, t).</p>
 <p>Arguments:
 - interval (seconds)  interval to record</p>
 <p>Output:
@@ -541,8 +540,7 @@ This library is autoloaded.</p>
 </div>
 <div class="section" id="block-historyt">
 <span id="id15"></span><h2>Block <tt class="docutils literal"><span class="pre">historyt</span></tt><a class="headerlink" href="#block-historyt" title="Permalink to this headline">¶</a></h2>
-<p>This block collects the history of a quantity,</p>
-<p>and outputs (x, t).</p>
+<p>This block collects the history of a quantity, and outputs (x, t).</p>
 <p>Arguments:
 - interval (seconds)  interval to record</p>
 <p>Output:
@@ -550,8 +548,7 @@ This library is autoloaded.</p>
 </div>
 <div class="section" id="block-last-n-samples">
 <span id="id16"></span><h2>Block <tt class="docutils literal"><span class="pre">last_n_samples</span></tt><a class="headerlink" href="#block-last-n-samples" title="Permalink to this headline">¶</a></h2>
-<p>This block collects the last n samples of a quantity,</p>
-<p>and outputs (x, timestamp).</p>
+<p>This block collects the last n samples of a quantity, and outputs (x, timestamp).</p>
 <p>Arguments:
 - n, number of samples</p>
 <p>Output:
@@ -598,8 +595,7 @@ The other (N-1) are slaves.</p>
 </div>
 <div class="section" id="block-wait">
 <span id="id21"></span><h2>Block <tt class="docutils literal"><span class="pre">wait</span></tt><a class="headerlink" href="#block-wait" title="Permalink to this headline">¶</a></h2>
-<p>This block waits a given number of updates before transmitting the</p>
-<p>output.</p>
+<p>This block waits a given number of updates before transmitting the output.</p>
 <p>Config:
 - n (number of updates)</p>
 <p>Input: variable
@@ -667,9 +663,7 @@ on images. The library is autoloaded and has no software dependency.</p>
 </div>
 <div class="section" id="block-scale">
 <span id="id32"></span><h2>Block <tt class="docutils literal"><span class="pre">scale</span></tt><a class="headerlink" href="#block-scale" title="Permalink to this headline">¶</a></h2>
-<p>Provides a RGB representation of the values by interpolating the range</p>
-<p>[min(value),max(value)] into the colorspace [min_color, max_color].</p>
-<blockquote>
+<p>Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].</p>
 <p>Input: a numpy array with finite values squeeze()able to (W,H).</p>
 <p>Configuration:</p>
 <ul>
@@ -688,7 +682,6 @@ on images. The library is autoloaded and has no software dependency.</p>
 </ul>
 <p>Raises <tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if min_value == max_value</p>
 <p>Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.</p>
-</blockquote>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-misc">
@@ -947,8 +940,7 @@ power</p>
 <p>Blocks for common statistical operations.</p>
 <div class="section" id="block-cov2corr">
 <span id="id76"></span><h2>Block <tt class="docutils literal"><span class="pre">cov2corr</span></tt><a class="headerlink" href="#block-cov2corr" title="Permalink to this headline">¶</a></h2>
-<p>Compute the correlation matrix from the covariance matrix.</p>
-<p>If zero_diagonal = True, the diagonal is set to 0 instead of 1.</p>
+<p>Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.</p>
 </div>
 <div class="section" id="block-covariance">
 <span id="id77"></span><h2>Block <tt class="docutils literal"><span class="pre">covariance</span></tt><a class="headerlink" href="#block-covariance" title="Permalink to this headline">¶</a></h2>
