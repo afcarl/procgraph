@@ -198,22 +198,22 @@ Y.Remarkbox.render();
 </colgroup>
 <tbody valign="top">
 <tr><td><a class="reference internal" href="#block-info"><em>Info</em></a></td>
-<td>Prints the inputs</td>
+<td>Prints more compact information about the inputs than <a class="reference internal" href="#block-print"><em>Block print</em></a>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-clock"><em>clock</em></a></td>
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-constant"><em>constant</em></a></td>
-<td>Creates a numerical constant that never changes.</td>
+<td>Output a numerical constant that never changes.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-gain"><em>gain</em></a></td>
-<td>None</td>
+<td>FIXME: to be replaced by simpler function.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-identity"><em>identity</em></a></td>
-<td>This block outputs the inputs. This is an example</td>
+<td>This block outputs the inputs, unchanged.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-print"><em>print</em></a></td>
-<td>Prints the inputs</td>
+<td>Print a representation of the input values along with their timestamp.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-rand"><em>rand</em></a></td>
 <td>None</td>
@@ -253,7 +253,7 @@ Y.Remarkbox.render();
 <td>This block only transmits every n steps.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-sync"><em>sync</em></a></td>
-<td>This block synchronizes a set of N sensor streams.</td>
+<td>This block synchronizes a set of streams to the first stream (the master).</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-sync2"><em>sync2</em></a></td>
 <td>This block synchronizes a set of N sensor streams.</td>
@@ -462,7 +462,7 @@ Y.Remarkbox.render();
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-mencoder"><em>mencoder</em></a></td>
-<td>Encodes a video stream.</td>
+<td>Encodes a video stream using <tt class="docutils literal"><span class="pre">mencoder</span></tt>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-mplayer"><em>mplayer</em></a></td>
 <td>Plays a video stream.</td>
@@ -474,14 +474,15 @@ Y.Remarkbox.render();
 <span id="id1"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components</span></tt><a class="headerlink" href="#module-procgraph-components" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="block-info">
 <span id="id2"></span><h2>Block <tt class="docutils literal"><span class="pre">Info</span></tt><a class="headerlink" href="#block-info" title="Permalink to this headline">¶</a></h2>
-<p>Prints the inputs</p>
+<p>Prints more compact information about the inputs than <a class="reference internal" href="#block-print"><em>Block print</em></a>.</p>
+<p>For numpy arrays it prints their shape and dtype instead of their values.</p>
 </div>
 <div class="section" id="block-clock">
 <span id="id3"></span><h2>Block <tt class="docutils literal"><span class="pre">clock</span></tt><a class="headerlink" href="#block-clock" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="block-constant">
 <span id="id4"></span><h2>Block <tt class="docutils literal"><span class="pre">constant</span></tt><a class="headerlink" href="#block-constant" title="Permalink to this headline">¶</a></h2>
-<p>Creates a numerical constant that never changes.</p>
+<p>Output a numerical constant that never changes.</p>
 <p>Example:</p>
 <div class="highlight-python"><pre>|constant value=42 name=meaning| -&gt; ...</pre>
 </div>
@@ -493,16 +494,17 @@ Y.Remarkbox.render();
 </div>
 <div class="section" id="block-gain">
 <span id="id5"></span><h2>Block <tt class="docutils literal"><span class="pre">gain</span></tt><a class="headerlink" href="#block-gain" title="Permalink to this headline">¶</a></h2>
+<p>FIXME: to be replaced by simpler function.</p>
 </div>
 <div class="section" id="block-identity">
 <span id="id6"></span><h2>Block <tt class="docutils literal"><span class="pre">identity</span></tt><a class="headerlink" href="#block-identity" title="Permalink to this headline">¶</a></h2>
-<p>This block outputs the inputs. This is an example</p>
-<p>of a block whose signal configuration is dynamics:
+<p>This block outputs the inputs, unchanged.</p>
+<p>This is an example of a block whose signal configuration is dynamics:
 init() gets called twice.</p>
 </div>
 <div class="section" id="block-print">
 <span id="id7"></span><h2>Block <tt class="docutils literal"><span class="pre">print</span></tt><a class="headerlink" href="#block-print" title="Permalink to this headline">¶</a></h2>
-<p>Prints the inputs</p>
+<p>Print a representation of the input values along with their timestamp.</p>
 </div>
 <div class="section" id="block-rand">
 <span id="id8"></span><h2>Block <tt class="docutils literal"><span class="pre">rand</span></tt><a class="headerlink" href="#block-rand" title="Permalink to this headline">¶</a></h2>
@@ -566,19 +568,23 @@ Output: variable (same as input)</p>
 </div>
 <div class="section" id="block-sync">
 <span id="id18"></span><h2>Block <tt class="docutils literal"><span class="pre">sync</span></tt><a class="headerlink" href="#block-sync" title="Permalink to this headline">¶</a></h2>
-<p>This block synchronizes a set of N sensor streams.</p>
+<p>This block synchronizes a set of streams to the first stream (the master).</p>
 <p>The first signal is called the &#8220;master&#8221; signal.
 The other (N-1) are slaves.</p>
-<p>We guarantee that:
-- if the slaves are faster than the master,</p>
-<blockquote>
-then we output exactly the same</blockquote>
-<p>Master  *  *  *   *   *
-Slave   ++++++++++++++++</p>
-<p>Master  *  *  *   *   *
+<p>We guarantee that:</p>
+<ul class="simple">
+<li>if the slaves are faster than the master,
+then we output exactly the same.</li>
+</ul>
+<p>Example diagrams:</p>
+<div class="highlight-python"><pre>Master  *  *  *   *   *
+Slave   ++++++++++++++++
+
+Master  *  *  *   *   *
 output? v  v  x   v
 Slave   +    +      +
-output? v    v      v</p>
+output? v    v      v</pre>
+</div>
 </div>
 <div class="section" id="block-sync2">
 <span id="id19"></span><h2>Block <tt class="docutils literal"><span class="pre">sync2</span></tt><a class="headerlink" href="#block-sync2" title="Permalink to this headline">¶</a></h2>
@@ -662,22 +668,27 @@ on images. The library is autoloaded and has no software dependency.</p>
 <div class="section" id="block-scale">
 <span id="id32"></span><h2>Block <tt class="docutils literal"><span class="pre">scale</span></tt><a class="headerlink" href="#block-scale" title="Permalink to this headline">¶</a></h2>
 <p>Provides a RGB representation of the values by interpolating the range</p>
+<p>[min(value),max(value)] into the colorspace [min_color, max_color].</p>
 <blockquote>
-[min(value),max(value)] into the colorspace [min_color, max_color].</blockquote>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><p class="first">value:      a numpy array with finite values squeeze()able to (W,H).
-min_value:  If specified, this is taken to be the threshold. Everything</p>
-<blockquote>
-below min_value is considered to be equal to min_value.</blockquote>
-<p class="last">max_value:  Optional upper threshold.
-min_color:  color associated to minimum value. Default: [1,1,1] = white.
-max_color:  color associated to maximum value. Default: [0,0,0] = black.</p>
+<p>Input: a numpy array with finite values squeeze()able to (W,H).</p>
+<p>Configuration:</p>
+<ul>
+<li><dl class="first docutils">
+<dt><tt class="docutils literal"><span class="pre">min_value</span></tt>:  If specified, this is taken to be the threshold. Everything</dt>
+<dd><p class="first last">below min_value is considered to be equal to min_value.</p>
 </dd>
-<dt>Raises:</dt>
-<dd>ValueError: if min_value == max_value</dd>
 </dl>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">max_value</span></tt>:  Optional upper threshold.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">min_color</span></tt>:  color associated to minimum value. Default: [1,1,1] = white.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">max_color</span></tt>:  color associated to maximum value. Default: [0,0,0] = black.</p>
+</li>
+</ul>
+<p>Raises <tt class="xref py py-class docutils literal"><span class="pre">ValueError</span></tt> if min_value == max_value</p>
 <p>Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.</p>
+</blockquote>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-misc">
@@ -965,16 +976,15 @@ power</p>
 </div>
 <div class="section" id="block-mencoder">
 <span id="id84"></span><h2>Block <tt class="docutils literal"><span class="pre">mencoder</span></tt><a class="headerlink" href="#block-mencoder" title="Permalink to this headline">¶</a></h2>
-<p>Encodes a video stream.</p>
-<p>Input: H x W x 3  uint8  numpy array representing RGB image.
-Config:</p>
-<blockquote>
+<p>Encodes a video stream using <tt class="docutils literal"><span class="pre">mencoder</span></tt>.</p>
+<p>Input: H x W x 3  uint8  numpy array representing RGB image.</p>
+<p>Configuration:</p>
 <ul class="simple">
 <li>file</li>
 <li>vcodec   mpeg4</li>
 <li>vbitrate 1000000</li>
+<li>quiet</li>
 </ul>
-</blockquote>
 <p>Note that allowed codec and bitrate depend on your version of mencoder.</p>
 </div>
 <div class="section" id="block-mplayer">
