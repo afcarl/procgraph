@@ -9,7 +9,7 @@ import inspect
 COMPULSORY = 'compulsory-param'
 TIMESTAMP = 'timestamp-param'
 
-def make_generic(num_inputs, num_outputs, operation, params={}):
+def make_generic(num_inputs, num_outputs, operation, params={}, docs=None):
 
     # make a copy
     parameters = dict(params)
@@ -17,6 +17,7 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
     class GenericOperation(Block):
         my_operation = operation
         defined_in = None
+        doc = docs
           
         def init(self):
             for key, value in parameters.items():
@@ -53,7 +54,7 @@ def make_generic(num_inputs, num_outputs, operation, params={}):
         
     return GenericOperation
     
-def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}):
+def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}, doc=None):
     # Get a module to which we can associate this block
     frm = inspect.stack()[1]
     mod = inspect.getmodule(frm[0])
@@ -62,7 +63,7 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, para
     if name is None:
         name = function.__name__
     
-    block = make_generic(num_inputs, num_outputs, function, params=params)
+    block = make_generic(num_inputs, num_outputs, function, params=params, docs=doc)
     block.defined_in = mod
     default_library.register(name, block)
 

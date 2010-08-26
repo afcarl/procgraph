@@ -31,8 +31,10 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.viewcode', 'sphinx.ext.intersphinx',
               'sphinxtogithub']
 
-intersphinx_mapping = {'http://docs.python.org/': None}
-
+intersphinx_mapping = {'http://docs.python.org/': None,
+    'http://matplotlib.sourceforge.net/': None,
+    'http://docs.scipy.org/doc/numpy/': None}
+    
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['my_templates']
 

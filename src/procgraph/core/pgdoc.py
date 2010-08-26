@@ -5,6 +5,7 @@ from procgraph.core.model_loader import pg_look_for_models, ModelSpec
 from procgraph.core.registrar import default_library 
 from procgraph.core.block import Block
 import sys
+import os
 
 
 # type = 'model', 'block', 'simple_block'
@@ -97,7 +98,10 @@ def collect_info(block_type, block_generator):
             while  module.__doc__ is None:
                 module = module.__package__
                 
-            desc, desc_rest = split_docstring(func.__doc__)
+            doc = block_generator.doc
+            if doc is None:
+                doc = func.__doc__
+            desc, desc_rest = split_docstring(doc)
             
             #func.__file__
             #print block_type, 'SIMPLE_BLOCK', func, func.__name__, func.__module__
@@ -120,6 +124,9 @@ def collect_info(block_type, block_generator):
 #    print " - source\t", source
 #    print " - desc \t", str(desc)
 #    print " - desc_rest \t", str(desc_rest)[:30], '...'
+
+    if source.endswith('.pyc'):
+        source = source[:-1]
 
     return ModelDoc(name=block_type, source=source, type=type,
                     module=module, implementation=implementation,
@@ -162,8 +169,18 @@ def main():
      
     parser.add_option("--output", default='pgdoc.rst', help="HTML output file.")
     parser.add_option("--label", default=None, help="Adds a RST label to the generated docs.")
+    parser.add_option("--translate", action='append', default=[], help="directory=url")
 
     (options, args) = parser.parse_args()
+    
+    
+    translate = {}
+    for couple in options.translate:
+        root, reference = couple.split('=', 1)
+        root = os.path.realpath(root)
+        translate[root] = reference 
+        
+    print translate  
     
     if not args:
         print "Give at least one module"
@@ -243,11 +260,23 @@ def main():
             f.write('Block ``%s``\n' % block.name)
             f.write('-' * 60 + '\n')
             
+            url = get_source_ref(block.source, translate)
+            f.write('Implemented in %s. \n\n' % url)
+            
             if block.desc:
                 f.write(block.desc + '\n\n')
             if block.desc_rest:
                 f.write(block.desc_rest + '\n\n')
-                
+
+def get_source_ref(source, translation):
+    source = os.path.realpath(source)
+    for prefix, ref   in translation.items():
+        if source.startswith(prefix):
+            rest = source[len(prefix):]
+            print rest
+            url = ref + '/' + rest
+            return '`%s <%s>`_' % (rest, url) 
+    return source 
         
 def module_anchor(name):
     return ".. _`module:%s`:\n\n" % name
