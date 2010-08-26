@@ -53,6 +53,7 @@ def trim(docstring):
     return result
 
 def split_docstring(s):
+    ''' Splits a docstring in a tuple (first, rest). '''
     if s is None:
         return None, None
     s = trim(s)
@@ -60,8 +61,14 @@ def split_docstring(s):
     valid_lines = filter(None, map(str.strip, all_lines))
     if valid_lines:
         for i in range(len(all_lines)):
-            if all_lines[i]:
-                return all_lines[i], '\n'.join(all_lines[i + 1:]) 
+            if all_lines[i]: # found first
+                # join all non-empty lines with the first
+                j = i
+                while j < len(all_lines) - 1 and all_lines[j].strip():
+                    j += 1
+                first = ' '.join(all_lines[i:(j + 1)])
+                rest = '\n'.join(all_lines[j + 1:])
+                return first, rest
         assert False
     else:
         return None, None

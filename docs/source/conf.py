@@ -29,7 +29,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.todo', 'sphinx.ext.coverage',
               'sphinx.ext.pngmath', 'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode', 'sphinx.ext.intersphinx',
-              'procgraph.sphinx', 'sphinxtogithub']
+              'sphinxtogithub']
 
 intersphinx_mapping = {'http://docs.python.org/': None}
 

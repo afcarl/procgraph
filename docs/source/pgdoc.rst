@@ -9,33 +9,33 @@ Summary
 :ref:`module:procgraph.components`
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`Info <block:Info>`                                                                                                                                                                                 Prints the inputs                                                                                                                                                                                       
+:ref:`Info <block:Info>`                                                                                                                                                                                 Prints more compact information about the inputs than :ref:`block:print`.                                                                                                                               
 :ref:`clock <block:clock>`                                                                                                                                                                               None                                                                                                                                                                                                    
-:ref:`constant <block:constant>`                                                                                                                                                                         Creates a numerical constant that never changes.                                                                                                                                                        
-:ref:`gain <block:gain>`                                                                                                                                                                                 None                                                                                                                                                                                                    
-:ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs. This is an example                                                                                                                                                       
-:ref:`print <block:print>`                                                                                                                                                                               Prints the inputs                                                                                                                                                                                       
+:ref:`constant <block:constant>`                                                                                                                                                                         Output a numerical constant that never changes.                                                                                                                                                         
+:ref:`gain <block:gain>`                                                                                                                                                                                 FIXME: to be replaced by simpler function.                                                                                                                                                              
+:ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs, unchanged.                                                                                                                                                               
+:ref:`print <block:print>`                                                                                                                                                                               Print a representation of the input values along with their timestamp.                                                                                                                                  
 :ref:`rand <block:rand>`                                                                                                                                                                                 None                                                                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
 :ref:`module:procgraph.components.dynamic`
 
-Blocks performing operations with a dynamic nature.
+Blocks performing operations with a dynamic nature. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`derivative <block:derivative>`                                                                                                                                                                     None                                                                                                                                                                                                    
 :ref:`derivative2 <block:derivative2>`                                                                                                                                                                   None                                                                                                                                                                                                    
 :ref:`forward_difference <block:forward_difference>`                                                                                                                                                     Computes ``x[t+1] - x[t-1]`` normalized with timestamp.                                                                                                                                                 
 :ref:`fps_data_limit <block:fps_data_limit>`                                                                                                                                                             This block limits the output update to a certain framerate.                                                                                                                                             
-:ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity,                                                                                                                                                          
-:ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the history of a quantity,                                                                                                                                                          
-:ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last n samples of a quantity,                                                                                                                                                   
+:ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity, and outputs (x, t).                                                                                                                                      
+:ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the history of a quantity, and outputs (x, t).                                                                                                                                      
+:ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last n samples of a quantity, and outputs (x, timestamp).                                                                                                                       
 :ref:`sieve <block:sieve>`                                                                                                                                                                               This block only transmits every n steps.                                                                                                                                                                
-:ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of N sensor streams.                                                                                                                                                      
+:ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of streams to the first stream (the master).                                                                                                                              
 :ref:`sync2 <block:sync2>`                                                                                                                                                                               This block synchronizes a set of N sensor streams.                                                                                                                                                      
 :ref:`two_step_difference <block:two_step_difference>`                                                                                                                                                   Computes ``x[t+1] - x[t]`` normalized with timestamp.                                                                                                                                                   
-:ref:`wait <block:wait>`                                                                                                                                                                                 This block waits a given number of updates before transmitting the                                                                                                                                      
+:ref:`wait <block:wait>`                                                                                                                                                                                 This block waits a given number of updates before transmitting the output.                                                                                                                              
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -51,7 +51,7 @@ Blocks using Matplotlib to display data.
 
 :ref:`module:procgraph.components.images`
 
-Blocks for basic operations on images.
+Blocks for basic operations on images. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`compose <block:compose>`                                                                                                                                                                           Configuration:                                                                                                                                                                                          
@@ -60,7 +60,7 @@ Blocks for basic operations on images.
 :ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
 :ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.                                                                                                                          
 :ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         None                                                                                                                                                                                                    
-:ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range                                                                                                                                  
+:ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].                                                              
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -124,7 +124,7 @@ Simple routins for signals extraction, combination.
 Blocks for common statistical operations.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`cov2corr <block:cov2corr>`                                                                                                                                                                         Compute the correlation matrix from the covariance matrix.                                                                                                                                              
+:ref:`cov2corr <block:cov2corr>`                                                                                                                                                                         Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.                                                                              
 :ref:`covariance <block:covariance>`                                                                                                                                                                     None                                                                                                                                                                                                    
 :ref:`expectation <block:expectation>`                                                                                                                                                                   None                                                                                                                                                                                                    
 :ref:`normalize <block:normalize>`                                                                                                                                                                       None                                                                                                                                                                                                    
@@ -139,7 +139,7 @@ Blocks for encoding/decoding video based on MPlayer.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`SimpleCompression <block:SimpleCompression>`                                                                                                                                                       None                                                                                                                                                                                                    
-:ref:`mencoder <block:mencoder>`                                                                                                                                                                         Encodes a video stream.                                                                                                                                                                                 
+:ref:`mencoder <block:mencoder>`                                                                                                                                                                         Encodes a video stream using ``mencoder``.                                                                                                                                                              
 :ref:`mplayer <block:mplayer>`                                                                                                                                                                           Plays a video stream.                                                                                                                                                                                   
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
@@ -154,7 +154,9 @@ Module ``procgraph.components``
 
 Block ``Info``
 ------------------------------------------------------------
-Prints the inputs
+Prints more compact information about the inputs than :ref:`block:print`. 
+
+For numpy arrays it prints their shape and dtype instead of their values.
 
 .. _`block:clock`:
 
@@ -164,8 +166,7 @@ Block ``clock``
 
 Block ``constant``
 ------------------------------------------------------------
-Creates a numerical constant that never changes.
-
+Output a numerical constant that never changes. 
 
 Example: ::
 
@@ -180,20 +181,22 @@ Two parameters:
 
 Block ``gain``
 ------------------------------------------------------------
+FIXME: to be replaced by simpler function.
+
 .. _`block:identity`:
 
 Block ``identity``
 ------------------------------------------------------------
-This block outputs the inputs. This is an example
+This block outputs the inputs, unchanged. 
 
-of a block whose signal configuration is dynamics:
+This is an example of a block whose signal configuration is dynamics:
 init() gets called twice.
 
 .. _`block:print`:
 
 Block ``print``
 ------------------------------------------------------------
-Prints the inputs
+Print a representation of the input values along with their timestamp.
 
 .. _`block:rand`:
 
@@ -205,8 +208,7 @@ Module ``procgraph.components.dynamic``
 ============================================================
 
 
-Blocks performing operations with a dynamic nature.
-
+Blocks performing operations with a dynamic nature. 
 
 
 This library contains blocks that perform operations with time.
@@ -236,9 +238,7 @@ This block limits the output update to a certain framerate.
 
 Block ``history``
 ------------------------------------------------------------
-This block collects the history of a quantity,
-
-and outputs (x, t).
+This block collects the history of a quantity, and outputs (x, t). 
 
 Arguments:
 - interval (seconds)  interval to record
@@ -251,9 +251,7 @@ Output:
 
 Block ``historyt``
 ------------------------------------------------------------
-This block collects the history of a quantity,
-
-and outputs (x, t).
+This block collects the history of a quantity, and outputs (x, t). 
 
 Arguments:
 - interval (seconds)  interval to record
@@ -265,9 +263,7 @@ Output:
 
 Block ``last_n_samples``
 ------------------------------------------------------------
-This block collects the last n samples of a quantity,
-
-and outputs (x, timestamp).
+This block collects the last n samples of a quantity, and outputs (x, timestamp). 
 
 Arguments:
 - n, number of samples
@@ -280,8 +276,7 @@ Output:
 
 Block ``sieve``
 ------------------------------------------------------------
-This block only transmits every n steps.
-
+This block only transmits every n steps. 
 
 Config:
 - n
@@ -293,32 +288,31 @@ Output: variable (same as input)
 
 Block ``sync``
 ------------------------------------------------------------
-This block synchronizes a set of N sensor streams.
-
+This block synchronizes a set of streams to the first stream (the master). 
 
 The first signal is called the "master" signal.
 The other (N-1) are slaves.
 
 We guarantee that:
+
 - if the slaves are faster than the master,
-  then we output exactly the same
+  then we output exactly the same.
 
+Example diagrams: ::
 
+    Master  *  *  *   *   *
+    Slave   ++++++++++++++++
 
-Master  *  *  *   *   *
-Slave   ++++++++++++++++
-
-Master  *  *  *   *   *
-output? v  v  x   v
-Slave   +    +      +
-output? v    v      v
+    Master  *  *  *   *   *
+    output? v  v  x   v
+    Slave   +    +      +
+    output? v    v      v
 
 .. _`block:sync2`:
 
 Block ``sync2``
 ------------------------------------------------------------
-This block synchronizes a set of N sensor streams.
-
+This block synchronizes a set of N sensor streams. 
 
 The first signal is called the "master" signal.
 The other (N-1) are slaves.
@@ -333,9 +327,7 @@ Computes ``x[t+1] - x[t]`` normalized with timestamp.
 
 Block ``wait``
 ------------------------------------------------------------
-This block waits a given number of updates before transmitting the
-
-output.
+This block waits a given number of updates before transmitting the output. 
 
 Config:
 - n (number of updates)
@@ -355,8 +347,7 @@ Blocks using Matplotlib to display data.
 
 Block ``fps_limit``
 ------------------------------------------------------------
-This block limits the output update to a certain framerate.
-
+This block limits the output update to a certain framerate. 
 
 Note that this uses realtime wall clock time -- not the data time!
 This is mean for real-time applications, such as visualization.
@@ -373,8 +364,7 @@ Module ``procgraph.components.images``
 ============================================================
 
 
-Blocks for basic operations on images.
-
+Blocks for basic operations on images. 
 
 The  module contains blocks that perform basic operations
 on images. The library is autoloaded and has no software dependency.
@@ -396,8 +386,7 @@ Convert a RGB image to grayscale, and back to a RGB image:::
 
 Block ``compose``
 ------------------------------------------------------------
-Configuration:
-
+Configuration: 
 
 - ``width``, ``height``: dimension in  pixels
 - ``positions``: a structure giving the position of each signal in the canvas. Example: ::
@@ -434,20 +423,19 @@ Block ``rgb2gray``
 
 Block ``scale``
 ------------------------------------------------------------
-Provides a RGB representation of the values by interpolating the range
+Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color]. 
 
-    [min(value),max(value)] into the colorspace [min_color, max_color].
+Input: a numpy array with finite values squeeze()able to (W,H).
 
-Args:
-  value:      a numpy array with finite values squeeze()able to (W,H).
-  min_value:  If specified, this is taken to be the threshold. Everything
-              below min_value is considered to be equal to min_value.
-  max_value:  Optional upper threshold.
-  min_color:  color associated to minimum value. Default: [1,1,1] = white.
-  max_color:  color associated to maximum value. Default: [0,0,0] = black.
+Configuration:
 
-Raises:
-  ValueError: if min_value == max_value
+-  ``min_value``:  If specified, this is taken to be the threshold. Everything
+                     below min_value is considered to be equal to min_value.
+-  ``max_value``:  Optional upper threshold.
+-  ``min_color``:  color associated to minimum value. Default: [1,1,1] = white.
+-  ``max_color``:  color associated to maximum value. Default: [0,0,0] = black.
+
+Raises :py:class:`.ValueError` if min_value == max_value
 
 Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
 
@@ -505,8 +493,7 @@ Block ``/``
 
 Block ``abs``
 ------------------------------------------------------------
-absolute(x[, out])
-
+absolute(x[, out]) 
 
 Calculate the absolute value element-wise.
 
@@ -564,8 +551,7 @@ Block ``hstack``
 
 Block ``long``
 ------------------------------------------------------------
-log(x[, out])
-
+log(x[, out]) 
 
 Natural logarithm, element-wise.
 
@@ -624,8 +610,7 @@ Block ``select``
 
 Block ``sign``
 ------------------------------------------------------------
-sign(x[, out])
-
+sign(x[, out]) 
 
 Returns an element-wise indication of the sign of a number.
 
@@ -652,8 +637,7 @@ array([-1.,  1.])
 
 Block ``square``
 ------------------------------------------------------------
-square(x[, out])
-
+square(x[, out]) 
 
 Return the element-wise square of the input.
 
@@ -715,8 +699,7 @@ Simple routins for signals extraction, combination.
 
 Block ``extract``
 ------------------------------------------------------------
-This block extracts some of the components
-
+This block extracts some of the components 
 
 Arguments:
 
@@ -740,9 +723,7 @@ Blocks for common statistical operations.
 
 Block ``cov2corr``
 ------------------------------------------------------------
-Compute the correlation matrix from the covariance matrix.
-
-If zero_diagonal = True, the diagonal is set to 0 instead of 1.
+Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
 
 .. _`block:covariance`:
 
@@ -784,14 +765,16 @@ Block ``SimpleCompression``
 
 Block ``mencoder``
 ------------------------------------------------------------
-Encodes a video stream.
-
+Encodes a video stream using ``mencoder``. 
 
 Input: H x W x 3  uint8  numpy array representing RGB image.
-Config:
-    - file
-    - vcodec   mpeg4
-    - vbitrate 1000000
+
+Configuration:
+
+- file
+- vcodec   mpeg4
+- vbitrate 1000000
+- quiet
 
 Note that allowed codec and bitrate depend on your version of mencoder.
 
@@ -799,8 +782,7 @@ Note that allowed codec and bitrate depend on your version of mencoder.
 
 Block ``mplayer``
 ------------------------------------------------------------
-Plays a video stream.
-
+Plays a video stream. 
 
 Config:
     - file

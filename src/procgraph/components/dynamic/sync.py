@@ -16,24 +16,25 @@ def add_last(queue, object):
     
 class Sync(Generator):
     ''' 
-    This block synchronizes a set of N sensor streams.
+    This block synchronizes a set of streams to the first stream (the master).
     
     The first signal is called the "master" signal.
     The other (N-1) are slaves.
     
     We guarantee that:
-    - if the slaves are faster than the master,
-      then we output exactly the same
-      
-      
-      
-    Master  *  *  *   *   *
-    Slave   ++++++++++++++++
     
-    Master  *  *  *   *   *
-    output? v  v  x   v  
-    Slave   +    +      +   
-    output? v    v      v
+    - if the slaves are faster than the master,
+      then we output exactly the same.
+      
+    Example diagrams: ::
+      
+        Master  *  *  *   *   *
+        Slave   ++++++++++++++++
+        
+        Master  *  *  *   *   *
+        output? v  v  x   v  
+        Slave   +    +      +   
+        output? v    v      v
     '''
     def init(self):
         # say we are not ready if the inputs were not defined.

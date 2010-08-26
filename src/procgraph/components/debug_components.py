@@ -5,8 +5,9 @@ from procgraph.components.basic import register_block
 
 
 class Identity(Block):
-    ''' This block outputs the inputs. This is an example 
-        of a block whose signal configuration is dynamics:
+    ''' This block outputs the inputs, unchanged. 
+    
+        This is an example of a block whose signal configuration is dynamics:
         init() gets called twice. '''
     
     def init(self):
@@ -27,20 +28,17 @@ register_block(Identity, 'identity')
           
 
 class Print(Block):
-    ''' Prints the inputs '''
+    ''' Print a representation of the input values along with their timestamp. '''
     
     def init(self):
         # say we are not ready if the inputs were not defined.
         if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
+            return Block.INIT_NOT_FINISHED 
         
-        #print self.get_input_signals_names()
         # output signals get the same name as the inputs
         self.define_output_signals([])
         
-    def update(self):
-        # Just copy the input to the output
-        # print self.get_input_signals_names()
+    def update(self): 
         for i in range(self.num_input_signals()):
             print 'P %s %s %s' % (self.canonicalize_input(i),
                                   self.get_input_timestamp(i),
@@ -51,20 +49,22 @@ register_block(Print, 'print')
 
         
 class Info(Block):
-    ''' Prints the inputs '''
+    ''' Prints more compact information about the inputs than :ref:`block:print`.
+    
+        For numpy arrays it prints their shape and dtype instead of their values. 
+        
+    '''
     
     def init(self):
         # say we are not ready if the inputs were not defined.
         if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
+            return Block.INIT_NOT_FINISHED 
         
-        #print self.get_input_signals_names()
         # output signals get the same name as the inputs
         self.define_output_signals([])
         
     def update(self):
-        # Just copy the input to the output
-        # print self.get_input_signals_names()
+        # Just copy the input to the output 
         for i in range(self.num_input_signals()):
             val = self.get_input(i)
             if isinstance(val, numpy.ndarray):
@@ -80,7 +80,7 @@ register_block(Info, 'Info')
           
 
 class Constant(Block):
-    ''' Creates a numerical constant that never changes.
+    ''' Output a numerical constant that never changes.
     
         Example: ::
     
@@ -110,6 +110,7 @@ register_block(Constant, 'constant')
  
 
 class Gain(Block):
+    ''' FIXME: to be replaced by simpler function. '''
 
     def init(self):
         #self.set_config_default('gain', 1)

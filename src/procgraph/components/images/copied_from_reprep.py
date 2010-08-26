@@ -65,18 +65,19 @@ register_simple_block(posneg, params={'max_value': None, 'skim': 0})
 def scale(value, min_value=None, max_value=None,
                  min_color=[1, 1, 1], max_color=[0, 0, 0]):
     """ Provides a RGB representation of the values by interpolating the range 
-        [min(value),max(value)] into the colorspace [min_color, max_color].
+    [min(value),max(value)] into the colorspace [min_color, max_color].
     
-    Args:
-      value:      a numpy array with finite values squeeze()able to (W,H).
-      min_value:  If specified, this is taken to be the threshold. Everything
-                  below min_value is considered to be equal to min_value.
-      max_value:  Optional upper threshold.
-      min_color:  color associated to minimum value. Default: [1,1,1] = white.
-      max_color:  color associated to maximum value. Default: [0,0,0] = black.
+    Input: a numpy array with finite values squeeze()able to (W,H).
     
-    Raises:
-      ValueError: if min_value == max_value
+    Configuration:
+    
+    -  ``min_value``:  If specified, this is taken to be the threshold. Everything
+                         below min_value is considered to be equal to min_value.
+    -  ``max_value``:  Optional upper threshold.
+    -  ``min_color``:  color associated to minimum value. Default: [1,1,1] = white.
+    -  ``max_color``:  color associated to maximum value. Default: [0,0,0] = black.
+    
+    Raises :py:class:`.ValueError` if min_value == max_value
     
     Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
       

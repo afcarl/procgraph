@@ -8,13 +8,16 @@ from procgraph.components.basic import register_block
  
  
 class MEncoder(Block):
-    ''' Encodes a video stream.
+    ''' Encodes a video stream using ``mencoder``.
     
     Input: H x W x 3  uint8  numpy array representing RGB image.
-    Config: 
-        - file 
-        - vcodec   mpeg4
-        - vbitrate 1000000
+    
+    Configuration: 
+    
+    - file 
+    - vcodec   mpeg4
+    - vbitrate 1000000
+    - quiet 
     
     Note that allowed codec and bitrate depend on your version of mencoder.
     ''' 
