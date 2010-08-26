@@ -28,6 +28,7 @@ Blocks performing operations with a dynamic nature.
 :ref:`derivative2 <block:derivative2>`                                                                                                                                                                   None                                                                                                                                                                                                    
 :ref:`forward_difference <block:forward_difference>`                                                                                                                                                     Computes ``x[t+1] - x[t-1]`` normalized with timestamp.                                                                                                                                                 
 :ref:`fps_data_limit <block:fps_data_limit>`                                                                                                                                                             This block limits the output update to a certain framerate.                                                                                                                                             
+:ref:`fps_print <block:fps_print>`                                                                                                                                                                       Prints the fps count for the input.                                                                                                                                                                     
 :ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity, and outputs (x, t).                                                                                                                                      
 :ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the history of a quantity, and outputs (x, t).                                                                                                                                      
 :ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last n samples of a quantity, and outputs (x, timestamp).                                                                                                                       
@@ -84,18 +85,18 @@ Various operations wrapping numpy functions.
 :ref:`+ <block:+>`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`- <block:->`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`/ <block:/>`                                                                                                                                                                                       None                                                                                                                                                                                                    
-:ref:`abs <block:abs>`                                                                                                                                                                                   absolute(x[, out])                                                                                                                                                                                      
+:ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
 :ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`dstack <block:dstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
 :ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
-:ref:`hstack <block:hstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`long <block:long>`                                                                                                                                                                                 log(x[, out])                                                                                                                                                                                           
-:ref:`outer <block:outer>`                                                                                                                                                                               None                                                                                                                                                                                                    
+:ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
+:ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
+:ref:`outer <block:outer>`                                                                                                                                                                               Wrapper around :py:func:`numpy.multiply.outer`.                                                                                                                                                         
 :ref:`select <block:select>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`sign <block:sign>`                                                                                                                                                                                 sign(x[, out])                                                                                                                                                                                          
-:ref:`square <block:square>`                                                                                                                                                                             square(x[, out])                                                                                                                                                                                        
+:ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
+:ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
 :ref:`take <block:take>`                                                                                                                                                                                 None                                                                                                                                                                                                    
-:ref:`vstack <block:vstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`vstack <block:vstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.vstack`.                                                                                                                                                                 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -128,8 +129,8 @@ Blocks for common statistical operations.
 :ref:`covariance <block:covariance>`                                                                                                                                                                     None                                                                                                                                                                                                    
 :ref:`expectation <block:expectation>`                                                                                                                                                                   None                                                                                                                                                                                                    
 :ref:`normalize <block:normalize>`                                                                                                                                                                       None                                                                                                                                                                                                    
-:ref:`soft_variance <block:soft_variance>`                                                                                                                                                               Computes soft variance (expectation of error absolute value)                                                                                                                                            
-:ref:`variance <block:variance>`                                                                                                                                                                         Computes the variance                                                                                                                                                                                   
+:ref:`soft_variance <block:soft_variance>`                                                                                                                                                               Computes the element-wise "soft" variance (expectation of error absolute value)                                                                                                                         
+:ref:`variance <block:variance>`                                                                                                                                                                         Computes the element-wise variance.                                                                                                                                                                     
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -154,6 +155,8 @@ Module ``procgraph.components``
 
 Block ``Info``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 Prints more compact information about the inputs than :ref:`block:print`. 
 
 For numpy arrays it prints their shape and dtype instead of their values.
@@ -162,10 +165,14 @@ For numpy arrays it prints their shape and dtype instead of their values.
 
 Block ``clock``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 .. _`block:constant`:
 
 Block ``constant``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 Output a numerical constant that never changes. 
 
 Example: ::
@@ -181,12 +188,16 @@ Two parameters:
 
 Block ``gain``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 FIXME: to be replaced by simpler function.
 
 .. _`block:identity`:
 
 Block ``identity``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 This block outputs the inputs, unchanged. 
 
 This is an example of a block whose signal configuration is dynamics:
@@ -196,12 +207,16 @@ init() gets called twice.
 
 Block ``print``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 Print a representation of the input values along with their timestamp.
 
 .. _`block:rand`:
 
 Block ``rand``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 .. _`module:procgraph.components.dynamic`:
 
 Module ``procgraph.components.dynamic``
@@ -218,26 +233,44 @@ This library is autoloaded.
 
 Block ``derivative``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative.py>`_. 
+
 .. _`block:derivative2`:
 
 Block ``derivative2``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py>`_. 
+
 .. _`block:forward_difference`:
 
 Block ``forward_difference``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative.py>`_. 
+
 Computes ``x[t+1] - x[t-1]`` normalized with timestamp.
 
 .. _`block:fps_data_limit`:
 
 Block ``fps_data_limit``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/fps_data_limit.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_data_limit.py>`_. 
+
 This block limits the output update to a certain framerate.
+
+.. _`block:fps_print`:
+
+Block ``fps_print``
+------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/fps_print.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_print.py>`_. 
+
+Prints the fps count for the input.
 
 .. _`block:history`:
 
 Block ``history``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
+
 This block collects the history of a quantity, and outputs (x, t). 
 
 Arguments:
@@ -251,6 +284,8 @@ Output:
 
 Block ``historyt``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/historyt.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/historyt.py>`_. 
+
 This block collects the history of a quantity, and outputs (x, t). 
 
 Arguments:
@@ -263,6 +298,8 @@ Output:
 
 Block ``last_n_samples``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
+
 This block collects the last n samples of a quantity, and outputs (x, timestamp). 
 
 Arguments:
@@ -276,6 +313,8 @@ Output:
 
 Block ``sieve``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/sieve.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sieve.py>`_. 
+
 This block only transmits every n steps. 
 
 Config:
@@ -288,6 +327,8 @@ Output: variable (same as input)
 
 Block ``sync``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/sync.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync.py>`_. 
+
 This block synchronizes a set of streams to the first stream (the master). 
 
 The first signal is called the "master" signal.
@@ -312,6 +353,8 @@ Example diagrams: ::
 
 Block ``sync2``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/sync2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync2.py>`_. 
+
 This block synchronizes a set of N sensor streams. 
 
 The first signal is called the "master" signal.
@@ -321,12 +364,16 @@ The other (N-1) are slaves.
 
 Block ``two_step_difference``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py>`_. 
+
 Computes ``x[t+1] - x[t]`` normalized with timestamp.
 
 .. _`block:wait`:
 
 Block ``wait``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/dynamic/wait.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/wait.py>`_. 
+
 This block waits a given number of updates before transmitting the output. 
 
 Config:
@@ -347,6 +394,8 @@ Blocks using Matplotlib to display data.
 
 Block ``fps_limit``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/gui/fps_limit.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/fps_limit.py>`_. 
+
 This block limits the output update to a certain framerate. 
 
 Note that this uses realtime wall clock time -- not the data time!
@@ -356,6 +405,8 @@ This is mean for real-time applications, such as visualization.
 
 Block ``plot``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/gui/plot.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/plot.py>`_. 
+
 Just plots the vector instantaneously
 
 .. _`module:procgraph.components.images`:
@@ -386,6 +437,8 @@ Convert a RGB image to grayscale, and back to a RGB image:::
 
 Block ``compose``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/compose.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/compose.py>`_. 
+
 Configuration: 
 
 - ``width``, ``height``: dimension in  pixels
@@ -397,32 +450,44 @@ Configuration:
 
 Block ``gray2rgb``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
 Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
 
 .. _`block:grayscale`:
 
 Block ``grayscale``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
 .. _`block:grid`:
 
 Block ``grid``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/imggrid.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/imggrid.py>`_. 
+
 A block that creates a larger image by arranging them in a grid.
 
 .. _`block:posneg`:
 
 Block ``posneg``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
+
 Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
 
 .. _`block:rgb2gray`:
 
 Block ``rgb2gray``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
 .. _`block:scale`:
 
 Block ``scale``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
+
 Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color]. 
 
 Input: a numpy array with finite values squeeze()able to (W,H).
@@ -451,18 +516,24 @@ Miscellaneous functions to be better organized.
 
 Block ``as_json``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/misc/json_misc.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/json_misc.py>`_. 
+
 Converts the input into a JSON string.
 
 .. _`block:pickle`:
 
 Block ``pickle``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/misc/pickling.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/pickling.py>`_. 
+
 Dumps the input as a pickle file.
 
 .. _`block:to_file`:
 
 Block ``to_file``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/misc/to_file.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/to_file.py>`_. 
+
 Prints the input line by line to a given file.
 
 .. _`module:procgraph.components.numpy_ops`:
@@ -477,200 +548,114 @@ Various operations wrapping numpy functions.
 
 Block ``*``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:+`:
 
 Block ``+``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:-`:
 
 Block ``-``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:/`:
 
 Block ``/``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:abs`:
 
 Block ``abs``
 ------------------------------------------------------------
-absolute(x[, out]) 
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Calculate the absolute value element-wise.
-
-Parameters
-----------
-x : array_like
-    Input array.
-
-Returns
--------
-res : ndarray
-    An ndarray containing the absolute value of
-    each element in `x`.  For complex input, ``a + ib``, the
-    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
-
-Examples
---------
->>> x = np.array([-1.2, 1.2])
->>> np.absolute(x)
-array([ 1.2,  1.2])
->>> np.absolute(1.2 + 1j)
-1.5620499351813308
-
-Plot the function over ``[-10, 10]``:
-
->>> import matplotlib.pyplot as plt
-
->>> x = np.linspace(-10, 10, 101)
->>> plt.plot(x, np.absolute(x))
->>> plt.show()
-
-Plot the function over the complex plane:
-
->>> xx = x + 1j * x[:, np.newaxis]
->>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
->>> plt.show()
+Wrapper around :py:func:`numpy.core.umath.absolute`.
 
 .. _`block:astype`:
 
 Block ``astype``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:dstack`:
 
 Block ``dstack``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+Wrapper around :py:func:`numpy.dstack`.
+
 .. _`block:gradient1d`:
 
 Block ``gradient1d``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/gradient1d.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/gradient1d.py>`_. 
+
 .. _`block:hstack`:
 
 Block ``hstack``
 ------------------------------------------------------------
-.. _`block:long`:
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Block ``long``
+Wrapper around :py:func:`numpy.hstack`.
+
+.. _`block:log`:
+
+Block ``log``
 ------------------------------------------------------------
-log(x[, out]) 
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Natural logarithm, element-wise.
-
-The natural logarithm `log` is the inverse of the exponential function,
-so that `log(exp(x)) = x`. The natural logarithm is logarithm in base `e`.
-
-Parameters
-----------
-x : array_like
-    Input value.
-
-Returns
--------
-y : ndarray
-    The natural logarithm of `x`, element-wise.
-
-See Also
---------
-log10, log2, log1p
-
-Notes
------
-Logarithm is a multivalued function: for each `x` there is an infinite
-number of `z` such that `exp(z) = x`. The convention is to return the `z`
-whose imaginary part lies in `[-pi, pi]`.
-
-For real-valued input data types, `log` always returns real output. For
-each value that cannot be expressed as a real number or infinity, it
-yields ``nan`` and sets the `invalid` floating point error flag.
-
-For complex-valued input, `log` is a complex analytical function that
-has a branch cut `[-inf, 0]` and is continuous from above on it. `log`
-handles the floating-point negative zero as an infinitesimal negative
-number, conforming to the C99 standard.
-
-References
-----------
-.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
-
-Examples
---------
->>> np.log([1, np.e, np.e**2, 0])
-array([  0.,   1.,   2., -Inf])
+Wrapper around :py:func:`numpy.core.umath.log`.
 
 .. _`block:outer`:
 
 Block ``outer``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+Wrapper around :py:func:`numpy.multiply.outer`.
+
 .. _`block:select`:
 
 Block ``select``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:sign`:
 
 Block ``sign``
 ------------------------------------------------------------
-sign(x[, out]) 
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Returns an element-wise indication of the sign of a number.
-
-The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
-
-Parameters
-----------
-x : array_like
-  Input values.
-
-Returns
--------
-y : ndarray
-  The sign of `x`.
-
-Examples
---------
->>> np.sign([-5., 4.5])
-array([-1.,  1.])
->>> np.sign(0)
-0
+Wrapper around :py:func:`numpy.core.umath.sign`.
 
 .. _`block:square`:
 
 Block ``square``
 ------------------------------------------------------------
-square(x[, out]) 
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Return the element-wise square of the input.
-
-Parameters
-----------
-x : array_like
-    Input data.
-
-Returns
--------
-out : ndarray
-    Element-wise `x*x`, of the same shape and dtype as `x`.
-    Returns scalar if `x` is a scalar.
-
-See Also
---------
-numpy.linalg.matrix_power
-sqrt
-power
-
-Examples
---------
->>> np.square([-1j, 1])
-array([-1.-0.j,  1.+0.j])
+Wrapper around :py:func:`numpy.core.umath.square`.
 
 .. _`block:take`:
 
 Block ``take``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 .. _`block:vstack`:
 
 Block ``vstack``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+Wrapper around :py:func:`numpy.vstack`.
+
 .. _`module:procgraph.components.robotics`:
 
 Module ``procgraph.components.robotics``
@@ -683,10 +668,14 @@ Routines specific to robotics.
 
 Block ``pose2commands``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/robotics/pose2velocity.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/pose2velocity.py>`_. 
+
 .. _`block:pose2vel_`:
 
 Block ``pose2vel_``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/robotics/pose2velocity.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/pose2velocity.py>`_. 
+
 .. _`module:procgraph.components.signals`:
 
 Module ``procgraph.components.signals``
@@ -699,6 +688,8 @@ Simple routins for signals extraction, combination.
 
 Block ``extract``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/signals/extract.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/extract.py>`_. 
+
 This block extracts some of the components 
 
 Arguments:
@@ -709,6 +700,8 @@ Arguments:
 
 Block ``join``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/signals/join.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/join.py>`_. 
+
 This block joins multiple signals into one.
 
 .. _`module:procgraph.components.statistics`:
@@ -723,31 +716,43 @@ Blocks for common statistical operations.
 
 Block ``cov2corr``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/statistics/cov2corr.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/cov2corr.py>`_. 
+
 Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
 
 .. _`block:covariance`:
 
 Block ``covariance``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/statistics/covariance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/covariance.py>`_. 
+
 .. _`block:expectation`:
 
 Block ``expectation``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/statistics/expectation.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/expectation.py>`_. 
+
 .. _`block:normalize`:
 
 Block ``normalize``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/statistics/covariance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/covariance.py>`_. 
+
 .. _`block:soft_variance`:
 
 Block ``soft_variance``
 ------------------------------------------------------------
-Computes soft variance (expectation of error absolute value)
+Implemented in `/src/procgraph/components/statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py>`_. 
+
+Computes the element-wise "soft" variance (expectation of error absolute value)
 
 .. _`block:variance`:
 
 Block ``variance``
 ------------------------------------------------------------
-Computes the variance
+Implemented in `/src/procgraph/components/statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py>`_. 
+
+Computes the element-wise variance.
 
 .. _`module:procgraph.components.video`:
 
@@ -761,10 +766,14 @@ Blocks for encoding/decoding video based on MPlayer.
 
 Block ``SimpleCompression``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/video/simple_compression.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/simple_compression.py>`_. 
+
 .. _`block:mencoder`:
 
 Block ``mencoder``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/video/mencoder.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mencoder.py>`_. 
+
 Encodes a video stream using ``mencoder``. 
 
 Input: H x W x 3  uint8  numpy array representing RGB image.
@@ -782,6 +791,8 @@ Note that allowed codec and bitrate depend on your version of mencoder.
 
 Block ``mplayer``
 ------------------------------------------------------------
+Implemented in `/src/procgraph/components/video/mplayer.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mplayer.py>`_. 
+
 Plays a video stream. 
 
 Config:

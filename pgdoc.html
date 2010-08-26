@@ -240,6 +240,9 @@ Y.Remarkbox.render();
 <tr><td><a class="reference internal" href="#block-fps-data-limit"><em>fps_data_limit</em></a></td>
 <td>This block limits the output update to a certain framerate.</td>
 </tr>
+<tr><td><a class="reference internal" href="#block-fps-print"><em>fps_print</em></a></td>
+<td>Prints the fps count for the input.</td>
+</tr>
 <tr><td><a class="reference internal" href="#block-history"><em>history</em></a></td>
 <td>This block collects the history of a quantity, and outputs (x, t).</td>
 </tr>
@@ -343,50 +346,50 @@ Y.Remarkbox.render();
 <tr><td><a class="reference internal" href="#block"><em>*</em></a></td>
 <td>None</td>
 </tr>
-<tr><td><a class="reference internal" href="#id39"><em>+</em></a></td>
+<tr><td><a class="reference internal" href="#id52"><em>+</em></a></td>
 <td>None</td>
 </tr>
-<tr><td><a class="reference internal" href="#id41"><em>-</em></a></td>
+<tr><td><a class="reference internal" href="#id55"><em>-</em></a></td>
 <td>None</td>
 </tr>
-<tr><td><a class="reference internal" href="#id43"><em>/</em></a></td>
+<tr><td><a class="reference internal" href="#id58"><em>/</em></a></td>
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-abs"><em>abs</em></a></td>
-<td>absolute(x[, out])</td>
+<td>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.absolute()</span></tt>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-astype"><em>astype</em></a></td>
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-dstack"><em>dstack</em></a></td>
-<td>None</td>
+<td>Wrapper around <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.dstack.html#numpy.dstack" title="(in NumPy v2.0.dev8529)"><tt class="docutils literal"><span class="pre">numpy.dstack</span></tt></a>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-gradient1d"><em>gradient1d</em></a></td>
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-hstack"><em>hstack</em></a></td>
-<td>None</td>
+<td>Wrapper around <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html#numpy.hstack" title="(in NumPy v2.0.dev8529)"><tt class="docutils literal"><span class="pre">numpy.hstack</span></tt></a>.</td>
 </tr>
-<tr><td><a class="reference internal" href="#block-long"><em>long</em></a></td>
-<td>log(x[, out])</td>
+<tr><td><a class="reference internal" href="#block-log"><em>log</em></a></td>
+<td>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.log()</span></tt>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-outer"><em>outer</em></a></td>
-<td>None</td>
+<td>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.multiply.outer()</span></tt>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-select"><em>select</em></a></td>
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-sign"><em>sign</em></a></td>
-<td>sign(x[, out])</td>
+<td>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.sign()</span></tt>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-square"><em>square</em></a></td>
-<td>square(x[, out])</td>
+<td>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.square()</span></tt>.</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-take"><em>take</em></a></td>
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-vstack"><em>vstack</em></a></td>
-<td>None</td>
+<td>Wrapper around <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.vstack.html#numpy.vstack" title="(in NumPy v2.0.dev8529)"><tt class="docutils literal"><span class="pre">numpy.vstack</span></tt></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -443,10 +446,10 @@ Y.Remarkbox.render();
 <td>None</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-soft-variance"><em>soft_variance</em></a></td>
-<td>Computes soft variance (expectation of error absolute value)</td>
+<td>Computes the element-wise &#8220;soft&#8221; variance (expectation of error absolute value)</td>
 </tr>
 <tr><td><a class="reference internal" href="#block-variance"><em>variance</em></a></td>
-<td>Computes the variance</td>
+<td>Computes the element-wise variance.</td>
 </tr>
 </tbody>
 </table>
@@ -474,14 +477,17 @@ Y.Remarkbox.render();
 <span id="id1"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components</span></tt><a class="headerlink" href="#module-procgraph-components" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="block-info">
 <span id="id2"></span><h2>Block <tt class="docutils literal"><span class="pre">Info</span></tt><a class="headerlink" href="#block-info" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 <p>Prints more compact information about the inputs than <a class="reference internal" href="#block-print"><em>Block print</em></a>.</p>
 <p>For numpy arrays it prints their shape and dtype instead of their values.</p>
 </div>
 <div class="section" id="block-clock">
 <span id="id3"></span><h2>Block <tt class="docutils literal"><span class="pre">clock</span></tt><a class="headerlink" href="#block-clock" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 </div>
 <div class="section" id="block-constant">
-<span id="id4"></span><h2>Block <tt class="docutils literal"><span class="pre">constant</span></tt><a class="headerlink" href="#block-constant" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>Block <tt class="docutils literal"><span class="pre">constant</span></tt><a class="headerlink" href="#block-constant" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 <p>Output a numerical constant that never changes.</p>
 <p>Example:</p>
 <div class="highlight-python"><pre>|constant value=42 name=meaning| -&gt; ...</pre>
@@ -493,44 +499,58 @@ Y.Remarkbox.render();
 </ul>
 </div>
 <div class="section" id="block-gain">
-<span id="id5"></span><h2>Block <tt class="docutils literal"><span class="pre">gain</span></tt><a class="headerlink" href="#block-gain" title="Permalink to this headline">¶</a></h2>
+<span id="id7"></span><h2>Block <tt class="docutils literal"><span class="pre">gain</span></tt><a class="headerlink" href="#block-gain" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 <p>FIXME: to be replaced by simpler function.</p>
 </div>
 <div class="section" id="block-identity">
-<span id="id6"></span><h2>Block <tt class="docutils literal"><span class="pre">identity</span></tt><a class="headerlink" href="#block-identity" title="Permalink to this headline">¶</a></h2>
+<span id="id9"></span><h2>Block <tt class="docutils literal"><span class="pre">identity</span></tt><a class="headerlink" href="#block-identity" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 <p>This block outputs the inputs, unchanged.</p>
 <p>This is an example of a block whose signal configuration is dynamics:
 init() gets called twice.</p>
 </div>
 <div class="section" id="block-print">
-<span id="id7"></span><h2>Block <tt class="docutils literal"><span class="pre">print</span></tt><a class="headerlink" href="#block-print" title="Permalink to this headline">¶</a></h2>
+<span id="id11"></span><h2>Block <tt class="docutils literal"><span class="pre">print</span></tt><a class="headerlink" href="#block-print" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 <p>Print a representation of the input values along with their timestamp.</p>
 </div>
 <div class="section" id="block-rand">
-<span id="id8"></span><h2>Block <tt class="docutils literal"><span class="pre">rand</span></tt><a class="headerlink" href="#block-rand" title="Permalink to this headline">¶</a></h2>
+<span id="id13"></span><h2>Block <tt class="docutils literal"><span class="pre">rand</span></tt><a class="headerlink" href="#block-rand" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py">/src/procgraph/components/debug_components.py</a>.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-dynamic">
-<span id="id9"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.dynamic</span></tt><a class="headerlink" href="#module-procgraph-components-dynamic" title="Permalink to this headline">¶</a></h1>
+<span id="id15"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.dynamic</span></tt><a class="headerlink" href="#module-procgraph-components-dynamic" title="Permalink to this headline">¶</a></h1>
 <p>Blocks performing operations with a dynamic nature.</p>
 <p>This library contains blocks that perform operations with time.
 This library is autoloaded.</p>
 <div class="section" id="block-derivative">
-<span id="id10"></span><h2>Block <tt class="docutils literal"><span class="pre">derivative</span></tt><a class="headerlink" href="#block-derivative" title="Permalink to this headline">¶</a></h2>
+<span id="id16"></span><h2>Block <tt class="docutils literal"><span class="pre">derivative</span></tt><a class="headerlink" href="#block-derivative" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative.py">/src/procgraph/components/dynamic/derivative.py</a>.</p>
 </div>
 <div class="section" id="block-derivative2">
-<span id="id11"></span><h2>Block <tt class="docutils literal"><span class="pre">derivative2</span></tt><a class="headerlink" href="#block-derivative2" title="Permalink to this headline">¶</a></h2>
+<span id="id17"></span><h2>Block <tt class="docutils literal"><span class="pre">derivative2</span></tt><a class="headerlink" href="#block-derivative2" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py">/src/procgraph/components/dynamic/derivative2.py</a>.</p>
 </div>
 <div class="section" id="block-forward-difference">
-<span id="id12"></span><h2>Block <tt class="docutils literal"><span class="pre">forward_difference</span></tt><a class="headerlink" href="#block-forward-difference" title="Permalink to this headline">¶</a></h2>
+<span id="id18"></span><h2>Block <tt class="docutils literal"><span class="pre">forward_difference</span></tt><a class="headerlink" href="#block-forward-difference" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative.py">/src/procgraph/components/dynamic/derivative.py</a>.</p>
 <p>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t-1]</span></tt> normalized with timestamp.</p>
 </div>
 <div class="section" id="block-fps-data-limit">
-<span id="id13"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_data_limit</span></tt><a class="headerlink" href="#block-fps-data-limit" title="Permalink to this headline">¶</a></h2>
+<span id="id20"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_data_limit</span></tt><a class="headerlink" href="#block-fps-data-limit" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_data_limit.py">/src/procgraph/components/dynamic/fps_data_limit.py</a>.</p>
 <p>This block limits the output update to a certain framerate.</p>
 </div>
+<div class="section" id="block-fps-print">
+<span id="id21"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_print</span></tt><a class="headerlink" href="#block-fps-print" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_print.py">/src/procgraph/components/dynamic/fps_print.py</a>.</p>
+<p>Prints the fps count for the input.</p>
+</div>
 <div class="section" id="block-history">
-<span id="id14"></span><h2>Block <tt class="docutils literal"><span class="pre">history</span></tt><a class="headerlink" href="#block-history" title="Permalink to this headline">¶</a></h2>
+<span id="id22"></span><h2>Block <tt class="docutils literal"><span class="pre">history</span></tt><a class="headerlink" href="#block-history" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py">/src/procgraph/components/dynamic/history.py</a>.</p>
 <p>This block collects the history of a quantity, and outputs (x, t).</p>
 <p>Arguments:
 - interval (seconds)  interval to record</p>
@@ -539,7 +559,8 @@ This library is autoloaded.</p>
 - t</p>
 </div>
 <div class="section" id="block-historyt">
-<span id="id15"></span><h2>Block <tt class="docutils literal"><span class="pre">historyt</span></tt><a class="headerlink" href="#block-historyt" title="Permalink to this headline">¶</a></h2>
+<span id="id23"></span><h2>Block <tt class="docutils literal"><span class="pre">historyt</span></tt><a class="headerlink" href="#block-historyt" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/historyt.py">/src/procgraph/components/dynamic/historyt.py</a>.</p>
 <p>This block collects the history of a quantity, and outputs (x, t).</p>
 <p>Arguments:
 - interval (seconds)  interval to record</p>
@@ -547,7 +568,8 @@ This library is autoloaded.</p>
 - a tuple (x,y)</p>
 </div>
 <div class="section" id="block-last-n-samples">
-<span id="id16"></span><h2>Block <tt class="docutils literal"><span class="pre">last_n_samples</span></tt><a class="headerlink" href="#block-last-n-samples" title="Permalink to this headline">¶</a></h2>
+<span id="id24"></span><h2>Block <tt class="docutils literal"><span class="pre">last_n_samples</span></tt><a class="headerlink" href="#block-last-n-samples" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py">/src/procgraph/components/dynamic/history.py</a>.</p>
 <p>This block collects the last n samples of a quantity, and outputs (x, timestamp).</p>
 <p>Arguments:
 - n, number of samples</p>
@@ -556,7 +578,8 @@ This library is autoloaded.</p>
 - t</p>
 </div>
 <div class="section" id="block-sieve">
-<span id="id17"></span><h2>Block <tt class="docutils literal"><span class="pre">sieve</span></tt><a class="headerlink" href="#block-sieve" title="Permalink to this headline">¶</a></h2>
+<span id="id26"></span><h2>Block <tt class="docutils literal"><span class="pre">sieve</span></tt><a class="headerlink" href="#block-sieve" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sieve.py">/src/procgraph/components/dynamic/sieve.py</a>.</p>
 <p>This block only transmits every n steps.</p>
 <p>Config:
 - n</p>
@@ -564,7 +587,8 @@ This library is autoloaded.</p>
 Output: variable (same as input)</p>
 </div>
 <div class="section" id="block-sync">
-<span id="id18"></span><h2>Block <tt class="docutils literal"><span class="pre">sync</span></tt><a class="headerlink" href="#block-sync" title="Permalink to this headline">¶</a></h2>
+<span id="id27"></span><h2>Block <tt class="docutils literal"><span class="pre">sync</span></tt><a class="headerlink" href="#block-sync" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync.py">/src/procgraph/components/dynamic/sync.py</a>.</p>
 <p>This block synchronizes a set of streams to the first stream (the master).</p>
 <p>The first signal is called the &#8220;master&#8221; signal.
 The other (N-1) are slaves.</p>
@@ -584,17 +608,20 @@ output? v    v      v</pre>
 </div>
 </div>
 <div class="section" id="block-sync2">
-<span id="id19"></span><h2>Block <tt class="docutils literal"><span class="pre">sync2</span></tt><a class="headerlink" href="#block-sync2" title="Permalink to this headline">¶</a></h2>
+<span id="id28"></span><h2>Block <tt class="docutils literal"><span class="pre">sync2</span></tt><a class="headerlink" href="#block-sync2" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync2.py">/src/procgraph/components/dynamic/sync2.py</a>.</p>
 <p>This block synchronizes a set of N sensor streams.</p>
 <p>The first signal is called the &#8220;master&#8221; signal.
 The other (N-1) are slaves.</p>
 </div>
 <div class="section" id="block-two-step-difference">
-<span id="id20"></span><h2>Block <tt class="docutils literal"><span class="pre">two_step_difference</span></tt><a class="headerlink" href="#block-two-step-difference" title="Permalink to this headline">¶</a></h2>
+<span id="id29"></span><h2>Block <tt class="docutils literal"><span class="pre">two_step_difference</span></tt><a class="headerlink" href="#block-two-step-difference" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py">/src/procgraph/components/dynamic/derivative2.py</a>.</p>
 <p>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t]</span></tt> normalized with timestamp.</p>
 </div>
 <div class="section" id="block-wait">
-<span id="id21"></span><h2>Block <tt class="docutils literal"><span class="pre">wait</span></tt><a class="headerlink" href="#block-wait" title="Permalink to this headline">¶</a></h2>
+<span id="id31"></span><h2>Block <tt class="docutils literal"><span class="pre">wait</span></tt><a class="headerlink" href="#block-wait" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/wait.py">/src/procgraph/components/dynamic/wait.py</a>.</p>
 <p>This block waits a given number of updates before transmitting the output.</p>
 <p>Config:
 - n (number of updates)</p>
@@ -603,21 +630,23 @@ Output: variable (same as input)</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-gui">
-<span id="id22"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.gui</span></tt><a class="headerlink" href="#module-procgraph-components-gui" title="Permalink to this headline">¶</a></h1>
+<span id="id32"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.gui</span></tt><a class="headerlink" href="#module-procgraph-components-gui" title="Permalink to this headline">¶</a></h1>
 <p>Blocks using Matplotlib to display data.</p>
 <div class="section" id="block-fps-limit">
-<span id="id23"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_limit</span></tt><a class="headerlink" href="#block-fps-limit" title="Permalink to this headline">¶</a></h2>
+<span id="id33"></span><h2>Block <tt class="docutils literal"><span class="pre">fps_limit</span></tt><a class="headerlink" href="#block-fps-limit" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/fps_limit.py">/src/procgraph/components/gui/fps_limit.py</a>.</p>
 <p>This block limits the output update to a certain framerate.</p>
 <p>Note that this uses realtime wall clock time &#8211; not the data time!
 This is mean for real-time applications, such as visualization.</p>
 </div>
 <div class="section" id="block-plot">
-<span id="id24"></span><h2>Block <tt class="docutils literal"><span class="pre">plot</span></tt><a class="headerlink" href="#block-plot" title="Permalink to this headline">¶</a></h2>
+<span id="id34"></span><h2>Block <tt class="docutils literal"><span class="pre">plot</span></tt><a class="headerlink" href="#block-plot" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/plot.py">/src/procgraph/components/gui/plot.py</a>.</p>
 <p>Just plots the vector instantaneously</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-images">
-<span id="id25"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.images</span></tt><a class="headerlink" href="#module-procgraph-components-images" title="Permalink to this headline">¶</a></h1>
+<span id="id35"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.images</span></tt><a class="headerlink" href="#module-procgraph-components-images" title="Permalink to this headline">¶</a></h1>
 <p>Blocks for basic operations on images.</p>
 <p>The  module contains blocks that perform basic operations
 on images. The library is autoloaded and has no software dependency.</p>
@@ -631,7 +660,8 @@ on images. The library is autoloaded and has no software dependency.</p>
 <div class="highlight-python"><pre>|input| -&gt; |rgb2gray| -&gt; |gray2rgb| -&gt; |output|</pre>
 </div>
 <div class="section" id="block-compose">
-<span id="id26"></span><h2>Block <tt class="docutils literal"><span class="pre">compose</span></tt><a class="headerlink" href="#block-compose" title="Permalink to this headline">¶</a></h2>
+<span id="id36"></span><h2>Block <tt class="docutils literal"><span class="pre">compose</span></tt><a class="headerlink" href="#block-compose" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/compose.py">/src/procgraph/components/images/compose.py</a>.</p>
 <p>Configuration:</p>
 <ul>
 <li><p class="first"><tt class="docutils literal"><span class="pre">width</span></tt>, <tt class="docutils literal"><span class="pre">height</span></tt>: dimension in  pixels</p>
@@ -644,25 +674,31 @@ on images. The library is autoloaded and has no software dependency.</p>
 </ul>
 </div>
 <div class="section" id="block-gray2rgb">
-<span id="id27"></span><h2>Block <tt class="docutils literal"><span class="pre">gray2rgb</span></tt><a class="headerlink" href="#block-gray2rgb" title="Permalink to this headline">¶</a></h2>
+<span id="id37"></span><h2>Block <tt class="docutils literal"><span class="pre">gray2rgb</span></tt><a class="headerlink" href="#block-gray2rgb" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py">/src/procgraph/components/images/filters.py</a>.</p>
 <p>Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.</p>
 </div>
 <div class="section" id="block-grayscale">
-<span id="id28"></span><h2>Block <tt class="docutils literal"><span class="pre">grayscale</span></tt><a class="headerlink" href="#block-grayscale" title="Permalink to this headline">¶</a></h2>
+<span id="id38"></span><h2>Block <tt class="docutils literal"><span class="pre">grayscale</span></tt><a class="headerlink" href="#block-grayscale" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py">/src/procgraph/components/images/filters.py</a>.</p>
 </div>
 <div class="section" id="block-grid">
-<span id="id29"></span><h2>Block <tt class="docutils literal"><span class="pre">grid</span></tt><a class="headerlink" href="#block-grid" title="Permalink to this headline">¶</a></h2>
+<span id="id40"></span><h2>Block <tt class="docutils literal"><span class="pre">grid</span></tt><a class="headerlink" href="#block-grid" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/imggrid.py">/src/procgraph/components/images/imggrid.py</a>.</p>
 <p>A block that creates a larger image by arranging them in a grid.</p>
 </div>
 <div class="section" id="block-posneg">
-<span id="id30"></span><h2>Block <tt class="docutils literal"><span class="pre">posneg</span></tt><a class="headerlink" href="#block-posneg" title="Permalink to this headline">¶</a></h2>
+<span id="id41"></span><h2>Block <tt class="docutils literal"><span class="pre">posneg</span></tt><a class="headerlink" href="#block-posneg" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py">/src/procgraph/components/images/copied_from_reprep.py</a>.</p>
 <p>Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.</p>
 </div>
 <div class="section" id="block-rgb2gray">
-<span id="id31"></span><h2>Block <tt class="docutils literal"><span class="pre">rgb2gray</span></tt><a class="headerlink" href="#block-rgb2gray" title="Permalink to this headline">¶</a></h2>
+<span id="id42"></span><h2>Block <tt class="docutils literal"><span class="pre">rgb2gray</span></tt><a class="headerlink" href="#block-rgb2gray" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py">/src/procgraph/components/images/filters.py</a>.</p>
 </div>
 <div class="section" id="block-scale">
-<span id="id32"></span><h2>Block <tt class="docutils literal"><span class="pre">scale</span></tt><a class="headerlink" href="#block-scale" title="Permalink to this headline">¶</a></h2>
+<span id="id44"></span><h2>Block <tt class="docutils literal"><span class="pre">scale</span></tt><a class="headerlink" href="#block-scale" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py">/src/procgraph/components/images/copied_from_reprep.py</a>.</p>
 <p>Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].</p>
 <p>Input: a numpy array with finite values squeeze()able to (W,H).</p>
 <p>Configuration:</p>
@@ -685,245 +721,118 @@ on images. The library is autoloaded and has no software dependency.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-misc">
-<span id="id33"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.misc</span></tt><a class="headerlink" href="#module-procgraph-components-misc" title="Permalink to this headline">¶</a></h1>
+<span id="id46"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.misc</span></tt><a class="headerlink" href="#module-procgraph-components-misc" title="Permalink to this headline">¶</a></h1>
 <p>Miscellaneous functions to be better organized.</p>
 <div class="section" id="block-as-json">
-<span id="id34"></span><h2>Block <tt class="docutils literal"><span class="pre">as_json</span></tt><a class="headerlink" href="#block-as-json" title="Permalink to this headline">¶</a></h2>
+<span id="id47"></span><h2>Block <tt class="docutils literal"><span class="pre">as_json</span></tt><a class="headerlink" href="#block-as-json" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/json_misc.py">/src/procgraph/components/misc/json_misc.py</a>.</p>
 <p>Converts the input into a JSON string.</p>
 </div>
 <div class="section" id="block-pickle">
-<span id="id35"></span><h2>Block <tt class="docutils literal"><span class="pre">pickle</span></tt><a class="headerlink" href="#block-pickle" title="Permalink to this headline">¶</a></h2>
+<span id="id48"></span><h2>Block <tt class="docutils literal"><span class="pre">pickle</span></tt><a class="headerlink" href="#block-pickle" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/pickling.py">/src/procgraph/components/misc/pickling.py</a>.</p>
 <p>Dumps the input as a pickle file.</p>
 </div>
 <div class="section" id="block-to-file">
-<span id="id36"></span><h2>Block <tt class="docutils literal"><span class="pre">to_file</span></tt><a class="headerlink" href="#block-to-file" title="Permalink to this headline">¶</a></h2>
+<span id="id49"></span><h2>Block <tt class="docutils literal"><span class="pre">to_file</span></tt><a class="headerlink" href="#block-to-file" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/to_file.py">/src/procgraph/components/misc/to_file.py</a>.</p>
 <p>Prints the input line by line to a given file.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-numpy-ops">
-<span id="id37"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.numpy_ops</span></tt><a class="headerlink" href="#module-procgraph-components-numpy-ops" title="Permalink to this headline">¶</a></h1>
+<span id="id50"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.numpy_ops</span></tt><a class="headerlink" href="#module-procgraph-components-numpy-ops" title="Permalink to this headline">¶</a></h1>
 <p>Various operations wrapping numpy functions.</p>
 <div class="section" id="block">
-<span id="id38"></span><h2>Block <tt class="docutils literal"><span class="pre">*</span></tt><a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="id39">
-<span id="id40"></span><h2>Block <tt class="docutils literal"><span class="pre">+</span></tt><a class="headerlink" href="#id39" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="id41">
-<span id="id42"></span><h2>Block <tt class="docutils literal"><span class="pre">-</span></tt><a class="headerlink" href="#id41" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="id43">
-<span id="id44"></span><h2>Block <tt class="docutils literal"><span class="pre">/</span></tt><a class="headerlink" href="#id43" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="block-abs">
-<span id="id45"></span><h2>Block <tt class="docutils literal"><span class="pre">abs</span></tt><a class="headerlink" href="#block-abs" title="Permalink to this headline">¶</a></h2>
-<p>absolute(x[, out])</p>
-<p>Calculate the absolute value element-wise.</p>
-</div>
-<div class="section" id="parameters">
-<h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
-<dd>Input array.</dd>
-</dl>
-</div>
-<div class="section" id="returns">
-<h2>Returns<a class="headerlink" href="#returns" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>res <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>An ndarray containing the absolute value of
-each element in <cite>x</cite>.  For complex input, <tt class="docutils literal"><span class="pre">a</span> <span class="pre">+</span> <span class="pre">ib</span></tt>, the
-absolute value is <img class="math" src="images/math/8e716b4a5c93f943a2dd01628bbd3f9defec4da7.png" alt="\sqrt{ a^2 + b^2 }"/>.</dd>
-</dl>
-</div>
-<div class="section" id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="go">array([ 1.2,  1.2])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="mf">1.2</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>
-<span class="go">1.5620499351813308</span>
-</pre></div>
-</div>
-<p>Plot the function over <tt class="docutils literal"><span class="pre">[-10,</span> <span class="pre">10]</span></tt>:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-</pre></div>
-</div>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">absolute</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Plot the function over the complex plane:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">xx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="n">x</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">xx</span><span class="p">),</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="block-astype">
-<span id="id46"></span><h2>Block <tt class="docutils literal"><span class="pre">astype</span></tt><a class="headerlink" href="#block-astype" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="block-dstack">
-<span id="id47"></span><h2>Block <tt class="docutils literal"><span class="pre">dstack</span></tt><a class="headerlink" href="#block-dstack" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="block-gradient1d">
-<span id="id48"></span><h2>Block <tt class="docutils literal"><span class="pre">gradient1d</span></tt><a class="headerlink" href="#block-gradient1d" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="block-hstack">
-<span id="id49"></span><h2>Block <tt class="docutils literal"><span class="pre">hstack</span></tt><a class="headerlink" href="#block-hstack" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="block-long">
-<span id="id50"></span><h2>Block <tt class="docutils literal"><span class="pre">long</span></tt><a class="headerlink" href="#block-long" title="Permalink to this headline">¶</a></h2>
-<p>log(x[, out])</p>
-<p>Natural logarithm, element-wise.</p>
-<p>The natural logarithm <cite>log</cite> is the inverse of the exponential function,
-so that <cite>log(exp(x)) = x</cite>. The natural logarithm is logarithm in base <cite>e</cite>.</p>
-</div>
-<div class="section" id="id51">
-<h2>Parameters<a class="headerlink" href="#id51" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
-<dd>Input value.</dd>
-</dl>
+<span id="id51"></span><h2>Block <tt class="docutils literal"><span class="pre">*</span></tt><a class="headerlink" href="#block" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
 </div>
 <div class="section" id="id52">
-<h2>Returns<a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>The natural logarithm of <cite>x</cite>, element-wise.</dd>
-</dl>
-</div>
-<div class="section" id="see-also">
-<h2>See Also<a class="headerlink" href="#see-also" title="Permalink to this headline">¶</a></h2>
-<p>log10, log2, log1p</p>
-</div>
-<div class="section" id="notes">
-<h2>Notes<a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h2>
-<p>Logarithm is a multivalued function: for each <cite>x</cite> there is an infinite
-number of <cite>z</cite> such that <cite>exp(z) = x</cite>. The convention is to return the <cite>z</cite>
-whose imaginary part lies in <cite>[-pi, pi]</cite>.</p>
-<p>For real-valued input data types, <cite>log</cite> always returns real output. For
-each value that cannot be expressed as a real number or infinity, it
-yields <tt class="docutils literal"><span class="pre">nan</span></tt> and sets the <cite>invalid</cite> floating point error flag.</p>
-<p>For complex-valued input, <cite>log</cite> is a complex analytical function that
-has a branch cut <cite>[-inf, 0]</cite> and is continuous from above on it. <cite>log</cite>
-handles the floating-point negative zero as an infinitesimal negative
-number, conforming to the C99 standard.</p>
-</div>
-<div class="section" id="references">
-<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
-<table class="docutils footnote" frame="void" id="id53" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[1]</td><td>M. Abramowitz and I.A. Stegun, &#8220;Handbook of Mathematical Functions&#8221;,
-10th printing, 1964, pp. 67. <a class="reference external" href="http://www.math.sfu.ca/~cbm/aands/">http://www.math.sfu.ca/~cbm/aands/</a></td></tr>
-</tbody>
-</table>
-<table class="docutils footnote" frame="void" id="id54" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label">[2]</td><td>Wikipedia, &#8220;Logarithm&#8221;. <a class="reference external" href="http://en.wikipedia.org/wiki/Logarithm">http://en.wikipedia.org/wiki/Logarithm</a></td></tr>
-</tbody>
-</table>
+<span id="id53"></span><h2>Block <tt class="docutils literal"><span class="pre">+</span></tt><a class="headerlink" href="#id52" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
 </div>
 <div class="section" id="id55">
-<h2>Examples<a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">e</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="go">array([  0.,   1.,   2., -Inf])</span>
-</pre></div>
+<span id="id56"></span><h2>Block <tt class="docutils literal"><span class="pre">-</span></tt><a class="headerlink" href="#id55" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
 </div>
+<div class="section" id="id58">
+<span id="id59"></span><h2>Block <tt class="docutils literal"><span class="pre">/</span></tt><a class="headerlink" href="#id58" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+</div>
+<div class="section" id="block-abs">
+<span id="id61"></span><h2>Block <tt class="docutils literal"><span class="pre">abs</span></tt><a class="headerlink" href="#block-abs" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.absolute()</span></tt>.</p>
+</div>
+<div class="section" id="block-astype">
+<span id="id63"></span><h2>Block <tt class="docutils literal"><span class="pre">astype</span></tt><a class="headerlink" href="#block-astype" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+</div>
+<div class="section" id="block-dstack">
+<span id="id65"></span><h2>Block <tt class="docutils literal"><span class="pre">dstack</span></tt><a class="headerlink" href="#block-dstack" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.dstack.html#numpy.dstack" title="(in NumPy v2.0.dev8529)"><tt class="docutils literal"><span class="pre">numpy.dstack</span></tt></a>.</p>
+</div>
+<div class="section" id="block-gradient1d">
+<span id="id67"></span><h2>Block <tt class="docutils literal"><span class="pre">gradient1d</span></tt><a class="headerlink" href="#block-gradient1d" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/gradient1d.py">/src/procgraph/components/numpy_ops/gradient1d.py</a>.</p>
+</div>
+<div class="section" id="block-hstack">
+<span id="id68"></span><h2>Block <tt class="docutils literal"><span class="pre">hstack</span></tt><a class="headerlink" href="#block-hstack" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.hstack.html#numpy.hstack" title="(in NumPy v2.0.dev8529)"><tt class="docutils literal"><span class="pre">numpy.hstack</span></tt></a>.</p>
+</div>
+<div class="section" id="block-log">
+<span id="id70"></span><h2>Block <tt class="docutils literal"><span class="pre">log</span></tt><a class="headerlink" href="#block-log" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.log()</span></tt>.</p>
 </div>
 <div class="section" id="block-outer">
-<span id="id56"></span><h2>Block <tt class="docutils literal"><span class="pre">outer</span></tt><a class="headerlink" href="#block-outer" title="Permalink to this headline">¶</a></h2>
+<span id="id72"></span><h2>Block <tt class="docutils literal"><span class="pre">outer</span></tt><a class="headerlink" href="#block-outer" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.multiply.outer()</span></tt>.</p>
 </div>
 <div class="section" id="block-select">
-<span id="id57"></span><h2>Block <tt class="docutils literal"><span class="pre">select</span></tt><a class="headerlink" href="#block-select" title="Permalink to this headline">¶</a></h2>
+<span id="id74"></span><h2>Block <tt class="docutils literal"><span class="pre">select</span></tt><a class="headerlink" href="#block-select" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
 </div>
 <div class="section" id="block-sign">
-<span id="id58"></span><h2>Block <tt class="docutils literal"><span class="pre">sign</span></tt><a class="headerlink" href="#block-sign" title="Permalink to this headline">¶</a></h2>
-<p>sign(x[, out])</p>
-<p>Returns an element-wise indication of the sign of a number.</p>
-<p>The <cite>sign</cite> function returns <tt class="docutils literal"><span class="pre">-1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&lt;</span> <span class="pre">0,</span> <span class="pre">0</span> <span class="pre">if</span> <span class="pre">x==0,</span> <span class="pre">1</span> <span class="pre">if</span> <span class="pre">x</span> <span class="pre">&gt;</span> <span class="pre">0</span></tt>.</p>
-</div>
-<div class="section" id="id59">
-<h2>Parameters<a class="headerlink" href="#id59" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
-<dd>Input values.</dd>
-</dl>
-</div>
-<div class="section" id="id60">
-<h2>Returns<a class="headerlink" href="#id60" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>y <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>The sign of <cite>x</cite>.</dd>
-</dl>
-</div>
-<div class="section" id="id61">
-<h2>Examples<a class="headerlink" href="#id61" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">([</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">])</span>
-<span class="go">array([-1.,  1.])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="go">0</span>
-</pre></div>
-</div>
+<span id="id76"></span><h2>Block <tt class="docutils literal"><span class="pre">sign</span></tt><a class="headerlink" href="#block-sign" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.sign()</span></tt>.</p>
 </div>
 <div class="section" id="block-square">
-<span id="id62"></span><h2>Block <tt class="docutils literal"><span class="pre">square</span></tt><a class="headerlink" href="#block-square" title="Permalink to this headline">¶</a></h2>
-<p>square(x[, out])</p>
-<p>Return the element-wise square of the input.</p>
-</div>
-<div class="section" id="id63">
-<h2>Parameters<a class="headerlink" href="#id63" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>x <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
-<dd>Input data.</dd>
-</dl>
-</div>
-<div class="section" id="id64">
-<h2>Returns<a class="headerlink" href="#id64" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>out <span class="classifier-delimiter">:</span> <span class="classifier">ndarray</span></dt>
-<dd>Element-wise <cite>x*x</cite>, of the same shape and dtype as <cite>x</cite>.
-Returns scalar if <cite>x</cite> is a scalar.</dd>
-</dl>
-</div>
-<div class="section" id="id65">
-<h2>See Also<a class="headerlink" href="#id65" title="Permalink to this headline">¶</a></h2>
-<p>numpy.linalg.matrix_power
-sqrt
-power</p>
-</div>
-<div class="section" id="id66">
-<h2>Examples<a class="headerlink" href="#id66" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="go">array([-1.-0.j,  1.+0.j])</span>
-</pre></div>
-</div>
+<span id="id78"></span><h2>Block <tt class="docutils literal"><span class="pre">square</span></tt><a class="headerlink" href="#block-square" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.core.umath.square()</span></tt>.</p>
 </div>
 <div class="section" id="block-take">
-<span id="id67"></span><h2>Block <tt class="docutils literal"><span class="pre">take</span></tt><a class="headerlink" href="#block-take" title="Permalink to this headline">¶</a></h2>
+<span id="id80"></span><h2>Block <tt class="docutils literal"><span class="pre">take</span></tt><a class="headerlink" href="#block-take" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
 </div>
 <div class="section" id="block-vstack">
-<span id="id68"></span><h2>Block <tt class="docutils literal"><span class="pre">vstack</span></tt><a class="headerlink" href="#block-vstack" title="Permalink to this headline">¶</a></h2>
+<span id="id82"></span><h2>Block <tt class="docutils literal"><span class="pre">vstack</span></tt><a class="headerlink" href="#block-vstack" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py">/src/procgraph/components/numpy_ops/filters.py</a>.</p>
+<p>Wrapper around <a class="reference external" href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.vstack.html#numpy.vstack" title="(in NumPy v2.0.dev8529)"><tt class="docutils literal"><span class="pre">numpy.vstack</span></tt></a>.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-robotics">
-<span id="id69"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.robotics</span></tt><a class="headerlink" href="#module-procgraph-components-robotics" title="Permalink to this headline">¶</a></h1>
+<span id="id84"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.robotics</span></tt><a class="headerlink" href="#module-procgraph-components-robotics" title="Permalink to this headline">¶</a></h1>
 <p>Routines specific to robotics.</p>
 <div class="section" id="block-pose2commands">
-<span id="id70"></span><h2>Block <tt class="docutils literal"><span class="pre">pose2commands</span></tt><a class="headerlink" href="#block-pose2commands" title="Permalink to this headline">¶</a></h2>
+<span id="id85"></span><h2>Block <tt class="docutils literal"><span class="pre">pose2commands</span></tt><a class="headerlink" href="#block-pose2commands" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/pose2velocity.py">/src/procgraph/components/robotics/pose2velocity.py</a>.</p>
 </div>
 <div class="section" id="block-pose2vel">
-<span id="id71"></span><h2>Block <tt class="docutils literal"><span class="pre">pose2vel_</span></tt><a class="headerlink" href="#block-pose2vel" title="Permalink to this headline">¶</a></h2>
+<span id="id86"></span><h2>Block <tt class="docutils literal"><span class="pre">pose2vel_</span></tt><a class="headerlink" href="#block-pose2vel" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/pose2velocity.py">/src/procgraph/components/robotics/pose2velocity.py</a>.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-signals">
-<span id="id72"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.signals</span></tt><a class="headerlink" href="#module-procgraph-components-signals" title="Permalink to this headline">¶</a></h1>
+<span id="id88"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.signals</span></tt><a class="headerlink" href="#module-procgraph-components-signals" title="Permalink to this headline">¶</a></h1>
 <p>Simple routins for signals extraction, combination.</p>
 <div class="section" id="block-extract">
-<span id="id73"></span><h2>Block <tt class="docutils literal"><span class="pre">extract</span></tt><a class="headerlink" href="#block-extract" title="Permalink to this headline">¶</a></h2>
+<span id="id89"></span><h2>Block <tt class="docutils literal"><span class="pre">extract</span></tt><a class="headerlink" href="#block-extract" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/extract.py">/src/procgraph/components/signals/extract.py</a>.</p>
 <p>This block extracts some of the components</p>
 <p>Arguments:</p>
 <ul class="simple">
@@ -931,43 +840,52 @@ power</p>
 </ul>
 </div>
 <div class="section" id="block-join">
-<span id="id74"></span><h2>Block <tt class="docutils literal"><span class="pre">join</span></tt><a class="headerlink" href="#block-join" title="Permalink to this headline">¶</a></h2>
+<span id="id90"></span><h2>Block <tt class="docutils literal"><span class="pre">join</span></tt><a class="headerlink" href="#block-join" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/join.py">/src/procgraph/components/signals/join.py</a>.</p>
 <p>This block joins multiple signals into one.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-statistics">
-<span id="id75"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.statistics</span></tt><a class="headerlink" href="#module-procgraph-components-statistics" title="Permalink to this headline">¶</a></h1>
+<span id="id91"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.statistics</span></tt><a class="headerlink" href="#module-procgraph-components-statistics" title="Permalink to this headline">¶</a></h1>
 <p>Blocks for common statistical operations.</p>
 <div class="section" id="block-cov2corr">
-<span id="id76"></span><h2>Block <tt class="docutils literal"><span class="pre">cov2corr</span></tt><a class="headerlink" href="#block-cov2corr" title="Permalink to this headline">¶</a></h2>
+<span id="id92"></span><h2>Block <tt class="docutils literal"><span class="pre">cov2corr</span></tt><a class="headerlink" href="#block-cov2corr" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/cov2corr.py">/src/procgraph/components/statistics/cov2corr.py</a>.</p>
 <p>Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.</p>
 </div>
 <div class="section" id="block-covariance">
-<span id="id77"></span><h2>Block <tt class="docutils literal"><span class="pre">covariance</span></tt><a class="headerlink" href="#block-covariance" title="Permalink to this headline">¶</a></h2>
+<span id="id93"></span><h2>Block <tt class="docutils literal"><span class="pre">covariance</span></tt><a class="headerlink" href="#block-covariance" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/covariance.py">/src/procgraph/components/statistics/covariance.py</a>.</p>
 </div>
 <div class="section" id="block-expectation">
-<span id="id78"></span><h2>Block <tt class="docutils literal"><span class="pre">expectation</span></tt><a class="headerlink" href="#block-expectation" title="Permalink to this headline">¶</a></h2>
+<span id="id94"></span><h2>Block <tt class="docutils literal"><span class="pre">expectation</span></tt><a class="headerlink" href="#block-expectation" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/expectation.py">/src/procgraph/components/statistics/expectation.py</a>.</p>
 </div>
 <div class="section" id="block-normalize">
-<span id="id79"></span><h2>Block <tt class="docutils literal"><span class="pre">normalize</span></tt><a class="headerlink" href="#block-normalize" title="Permalink to this headline">¶</a></h2>
+<span id="id95"></span><h2>Block <tt class="docutils literal"><span class="pre">normalize</span></tt><a class="headerlink" href="#block-normalize" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/covariance.py">/src/procgraph/components/statistics/covariance.py</a>.</p>
 </div>
 <div class="section" id="block-soft-variance">
-<span id="id80"></span><h2>Block <tt class="docutils literal"><span class="pre">soft_variance</span></tt><a class="headerlink" href="#block-soft-variance" title="Permalink to this headline">¶</a></h2>
-<p>Computes soft variance (expectation of error absolute value)</p>
+<span id="id97"></span><h2>Block <tt class="docutils literal"><span class="pre">soft_variance</span></tt><a class="headerlink" href="#block-soft-variance" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py">/src/procgraph/components/statistics/variance.py</a>.</p>
+<p>Computes the element-wise &#8220;soft&#8221; variance (expectation of error absolute value)</p>
 </div>
 <div class="section" id="block-variance">
-<span id="id81"></span><h2>Block <tt class="docutils literal"><span class="pre">variance</span></tt><a class="headerlink" href="#block-variance" title="Permalink to this headline">¶</a></h2>
-<p>Computes the variance</p>
+<span id="id98"></span><h2>Block <tt class="docutils literal"><span class="pre">variance</span></tt><a class="headerlink" href="#block-variance" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py">/src/procgraph/components/statistics/variance.py</a>.</p>
+<p>Computes the element-wise variance.</p>
 </div>
 </div>
 <div class="section" id="module-procgraph-components-video">
-<span id="id82"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.video</span></tt><a class="headerlink" href="#module-procgraph-components-video" title="Permalink to this headline">¶</a></h1>
+<span id="id100"></span><h1>Module <tt class="docutils literal"><span class="pre">procgraph.components.video</span></tt><a class="headerlink" href="#module-procgraph-components-video" title="Permalink to this headline">¶</a></h1>
 <p>Blocks for encoding/decoding video based on MPlayer.</p>
 <div class="section" id="block-simplecompression">
-<span id="id83"></span><h2>Block <tt class="docutils literal"><span class="pre">SimpleCompression</span></tt><a class="headerlink" href="#block-simplecompression" title="Permalink to this headline">¶</a></h2>
+<span id="id101"></span><h2>Block <tt class="docutils literal"><span class="pre">SimpleCompression</span></tt><a class="headerlink" href="#block-simplecompression" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/simple_compression.py">/src/procgraph/components/video/simple_compression.py</a>.</p>
 </div>
 <div class="section" id="block-mencoder">
-<span id="id84"></span><h2>Block <tt class="docutils literal"><span class="pre">mencoder</span></tt><a class="headerlink" href="#block-mencoder" title="Permalink to this headline">¶</a></h2>
+<span id="id102"></span><h2>Block <tt class="docutils literal"><span class="pre">mencoder</span></tt><a class="headerlink" href="#block-mencoder" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mencoder.py">/src/procgraph/components/video/mencoder.py</a>.</p>
 <p>Encodes a video stream using <tt class="docutils literal"><span class="pre">mencoder</span></tt>.</p>
 <p>Input: H x W x 3  uint8  numpy array representing RGB image.</p>
 <p>Configuration:</p>
@@ -980,7 +898,8 @@ power</p>
 <p>Note that allowed codec and bitrate depend on your version of mencoder.</p>
 </div>
 <div class="section" id="block-mplayer">
-<span id="id85"></span><h2>Block <tt class="docutils literal"><span class="pre">mplayer</span></tt><a class="headerlink" href="#block-mplayer" title="Permalink to this headline">¶</a></h2>
+<span id="id103"></span><h2>Block <tt class="docutils literal"><span class="pre">mplayer</span></tt><a class="headerlink" href="#block-mplayer" title="Permalink to this headline">¶</a></h2>
+<p>Implemented in <a class="reference external" href="https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mplayer.py">/src/procgraph/components/video/mplayer.py</a>.</p>
 <p>Plays a video stream.</p>
 <dl class="docutils">
 <dt>Config:</dt>
