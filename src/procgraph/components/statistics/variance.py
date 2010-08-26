@@ -2,11 +2,12 @@ from procgraph.components.basic import register_model_spec
 
 register_model_spec("""
 --- model variance 
-''' Computes the variance '''
+''' Computes the element-wise variance. '''
+config wait = 100 "Number of samples to wait before declaring the expectation valid."
 
-|input name=x| --> |expectation| --> Ex
+|input name=x| --> x --> |expectation| --> |wait n=$wait| --> Ex
 
-   x, Ex --> |-| --> error 
+   x, Ex --> |sync| --> |-| --> error 
    
    error -> |square| --> |expectation| --> |output name=var_x|
     
@@ -14,10 +15,12 @@ register_model_spec("""
 
 register_model_spec("""
 --- model soft_variance 
-''' Computes soft variance (expectation of error absolute value) '''
-|input name=x| --> |expectation| --> Ex
+''' Computes the element-wise "soft" variance (expectation of error absolute value) '''
+config wait = 100 "Number of samples to wait before declaring the expectation valid."
 
-   x, Ex --> |-| --> error 
+|input name=x| --> |expectation| --> |wait n=$wait| --> Ex
+
+   x, Ex --> |sync| --> |-| --> error 
    
    error -> |abs| --> |expectation| --> |output name=var_x|
     
