@@ -3,6 +3,7 @@ import cPickle as pickle
 
 from procgraph.core.model_instantiation import create_from_parsing_results
 from procgraph.core.visualization import warning, debug
+import inspect
 create_from_parsing_results
 from procgraph.core.parsing import parse_model, ParsedModel
 from procgraph.core.exceptions import SemanticError
@@ -115,7 +116,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
             library.register(parsed_model.name, model_spec)
 
   
-def pg_add_parsed_model_to_library(parsed_model, library, defined_in=None):
+def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
     assert parsed_model.name is not None
     if library.exists(parsed_model.name):
         prev = library.name2block[parsed_model.name].parsed_model.where
@@ -129,7 +130,8 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in=None):
 
 def add_models_to_library(library, string, name=None, filename=None, defined_in=None):
     '''
-    defined_in: module to display in documentation
+    defined_in: module object (to display in documentation)
+        (Compulsory!)
     '''
     if filename is None and defined_in is not None:
         filename = defined_in.__file__
@@ -161,9 +163,12 @@ def model_from_string(model_spec, name=None, config=None, library=None, filename
     for x in parsed_models:
         assert isinstance(x, ParsedModel)
     
-    if len(parsed_models) > 0:            
+    if len(parsed_models) > 1: 
+        frm = inspect.stack()[1]
+        mod = inspect.getmodule(frm[0])
+                
         for support in parsed_models[1:]:
-            pg_add_parsed_model_to_library(support, library)
+            pg_add_parsed_model_to_library(support, library, defined_in=mod)
 
     parsed_model = parsed_models[0]
     

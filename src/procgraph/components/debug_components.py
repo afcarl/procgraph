@@ -76,7 +76,7 @@ class Info(Block):
                                 s)
 
 
-register_block(Info, 'Info') 
+register_block(Info, 'info') 
           
 
 class Constant(Block):

@@ -19,7 +19,7 @@ ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input 
                       'output config desc desc_rest')
 ModelInput = namedtuple('ModelInput', 'name desc desc_rest')
 ModelOutput = namedtuple('ModelOutput', 'name desc desc_rest')
-ModelConfig = namedtuple('ModelConfig', 'name default desc desc_rest')
+ModelConfig = namedtuple('ModelConfig', 'name default has_default desc desc_rest')
 ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest')
 
 
@@ -88,6 +88,15 @@ def collect_info(block_type, block_generator):
         source = parsed_model.where.filename
         desc, desc_rest = split_docstring(parsed_model.docstring) 
         
+        config = []
+        for c in parsed_model.config:
+            cdesc, cdesc_rest = split_docstring(c.docstring)
+            
+            config.append(ModelConfig(name=c.variable,
+                                      has_default=c.has_default,
+                                      default=c.default,
+                                      desc=cdesc, desc_rest=cdesc_rest))
+            
     elif issubclass(block_generator, Block):
         if block_generator.__name__ == 'GenericOperation':
             func = block_generator.my_operation
@@ -103,6 +112,7 @@ def collect_info(block_type, block_generator):
                 doc = func.__doc__
             desc, desc_rest = split_docstring(doc)
             
+            config = []
             #func.__file__
             #print block_type, 'SIMPLE_BLOCK', func, func.__name__, func.__module__
         else:
@@ -115,6 +125,8 @@ def collect_info(block_type, block_generator):
                 module = module.__package__
                 #print "changing to %s" % str(module)
             desc, desc_rest = split_docstring(block_generator.__doc__) 
+            
+            config = []
 
     else: 
         assert False
@@ -131,7 +143,7 @@ def collect_info(block_type, block_generator):
     return ModelDoc(name=block_type, source=source, type=type,
                     module=module, implementation=implementation,
                     desc=desc, desc_rest=desc_rest,
-                    input=None, output=None, config=None)
+                    input=None, output=None, config=config)
 
      
 
@@ -244,40 +256,60 @@ def main():
         module = modules[module_name]
         
         f.write(module_anchor(module.name))
+        f.write(rst_class('procgraph:module'))
         f.write('Module ``%s``\n' % module.name)
         f.write('=' * 60 + '\n\n\n')
 
 
         if module.desc:
+            f.write(rst_class('procgraph:desc'))
             f.write(module.desc + '\n\n')
         if module.desc_rest:
+            f.write(rst_class('procgraph:desc_rest'))
             f.write(module.desc_rest + '\n\n')
         
         for block_name in sorted(module.blocks):
             block = module.blocks[block_name]
             
             f.write(block_anchor(block.name))
-            f.write('Block ``%s``\n' % block.name)
+            f.write(rst_class('procgraph:block'))
+            f.write('%s\n' % block.name)
             f.write('-' * 60 + '\n')
-            
-            url = get_source_ref(block.source, translate)
-            f.write('Implemented in %s. \n\n' % url)
             
             if block.desc:
                 f.write(block.desc + '\n\n')
             if block.desc_rest:
                 f.write(block.desc_rest + '\n\n')
+                
+            if block.config:
+                f.write(rst_class('procgraph:parameters'))
+                f.write('Parameters\n')
+                f.write('^' * 60 + '\n\n')
+                for c in block.config:
+                    if c.default is not None:
+                        f.write('- ``%s`` (default: %s): %s\n\n' % 
+                                (c.name, c.default, c.desc))
+                    else:
+                        f.write('- ``%s``: %s\n\n' % (c.name, c.desc))
+                    
+            
+            url = get_source_ref(block.source, translate)
+            f.write(rst_class('procgraph:source'))
+            f.write('Implemented in %s. \n\n\n' % url)
 
 def get_source_ref(source, translation):
     source = os.path.realpath(source)
     for prefix, ref   in translation.items():
         if source.startswith(prefix):
-            rest = source[len(prefix):]
-            print rest
+            rest = source[len(prefix):] 
             url = ref + '/' + rest
             return '`%s <%s>`_' % (rest, url) 
     return source 
         
+
+def rst_class(c):
+    return '\n.. rst-class:: %s\n\n' % c
+
 def module_anchor(name):
     return ".. _`module:%s`:\n\n" % name
 

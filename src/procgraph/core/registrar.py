@@ -1,3 +1,4 @@
+from procgraph.core.exceptions import ModelExecutionError, ModelWriterError
 
 
 class Library:
@@ -34,7 +35,11 @@ class Library:
                              block_type)
         if block_type in self.name2block:
             generator = self.name2block[block_type]
-            block = generator(name=name, config=config, library=parent_library)
+            try:
+                block = generator(name=name, config=config, library=parent_library)
+            except TypeError as e:
+                raise Exception('Could not instance a block of type "%s": %s' % 
+                                          (block_type, e))
         else: 
             assert self.parent
             block = self.parent.instance(block_type, name, config,

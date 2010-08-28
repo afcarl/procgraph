@@ -5,7 +5,7 @@ from procgraph.components.basic import register_block
 # Make it generic?
 class Extract(Block):
     ''' 
-    This block extracts some of the components 
+    This block extracts some of the components of a vector.
     
     Arguments:
     

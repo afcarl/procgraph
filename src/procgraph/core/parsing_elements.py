@@ -2,6 +2,11 @@ import sys
 from pyparsing import lineno, col
 
 class Where:
+    ''' An object of this class represents a place in a file. 
+    
+    All parsed elements contain a reference to a :py:class:`Where` object
+    so that we can output pretty error messages.
+    '''
     def __init__(self, filename, string, character=None, line=None, column=None):
         self.filename = filename
         self.string = string
@@ -50,11 +55,7 @@ class Where:
         write(space + '^\n')
         write(space + '|\n')
         write(space + 'here\n')
-        
-        
-    #def __str__(self):
-    #    return "{filename: %s, line %d, col %d}" % (self.filename, self.line, self.col)
-
+         
 
 class ParsedElement:
     def __init__(self):
@@ -191,12 +192,13 @@ class ParsedAssignment(ParsedElement):
           
 
 class ConfigStatement(ParsedElement):
-    def __init__(self, variable, default, docstring):
+    def __init__(self, variable, has_default, default, docstring):
         ParsedElement.__init__(self)
         assert isinstance(variable, str)
         assert docstring is None or isinstance(docstring, str)
         self.variable = variable
         self.default = default
+        self.has_default = has_default
         self.docstring = docstring 
         
     def __repr__(self):
@@ -205,9 +207,10 @@ class ConfigStatement(ParsedElement):
     @staticmethod
     def from_tokens(tokens):
         variable = tokens.get('variable')
+        has_default = 'default' in tokens
         default = tokens.get('default', None)
         docstring = tokens.get('docstring', None)
-        return ConfigStatement(variable, default, docstring)
+        return ConfigStatement(variable, has_default, default, docstring)
 
       
 class Connection(ParsedElement):
@@ -238,9 +241,6 @@ class ParsedModel(ParsedElement):
     def __init__(self, name, docstring, elements):
         ParsedElement.__init__(self)
         assert name is None or isinstance(name, str)
-#        if not isinstance(name, str):
-#            raise ValueError('Expected name to be a string not a %s "%s".' %\
-#                             (name.__class__.__name__))
         assert docstring is None or isinstance(docstring, str) 
         self.name = name
         self.docstring = docstring

@@ -147,32 +147,50 @@ Blocks for encoding/decoding video based on MPlayer.
 
 .. _`module:procgraph.components`:
 
+
+.. rst-class:: procgraph:module
+
 Module ``procgraph.components``
 ============================================================
 
 
 .. _`block:Info`:
 
-Block ``Info``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
+.. rst-class:: procgraph:block
+
+Info
+------------------------------------------------------------
 Prints more compact information about the inputs than :ref:`block:print`. 
 
 For numpy arrays it prints their shape and dtype instead of their values.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
+
 .. _`block:clock`:
 
-Block ``clock``
+
+.. rst-class:: procgraph:block
+
+clock
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 
 .. _`block:constant`:
 
-Block ``constant``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
+.. rst-class:: procgraph:block
+
+constant
+------------------------------------------------------------
 Output a numerical constant that never changes. 
 
 Example: ::
@@ -184,46 +202,89 @@ Two parameters:
 * ``value``, necessary
 * ``name``, optional signal name (default: const)
 
-.. _`block:gain`:
 
-Block ``gain``
-------------------------------------------------------------
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
+
+.. _`block:gain`:
+
+
+.. rst-class:: procgraph:block
+
+gain
+------------------------------------------------------------
 FIXME: to be replaced by simpler function.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 
 .. _`block:identity`:
 
-Block ``identity``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
+.. rst-class:: procgraph:block
+
+identity
+------------------------------------------------------------
 This block outputs the inputs, unchanged. 
 
 This is an example of a block whose signal configuration is dynamics:
 init() gets called twice.
 
-.. _`block:print`:
 
-Block ``print``
-------------------------------------------------------------
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
+
+.. _`block:print`:
+
+
+.. rst-class:: procgraph:block
+
+print
+------------------------------------------------------------
 Print a representation of the input values along with their timestamp.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
 
 .. _`block:rand`:
 
-Block ``rand``
+
+.. rst-class:: procgraph:block
+
+rand
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
+
 .. _`module:procgraph.components.dynamic`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.dynamic``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Blocks performing operations with a dynamic nature. 
+
+
+.. rst-class:: procgraph:desc_rest
 
 
 This library contains blocks that perform operations with time.
@@ -231,46 +292,82 @@ This library is autoloaded.
 
 .. _`block:derivative`:
 
-Block ``derivative``
+
+.. rst-class:: procgraph:block
+
+derivative
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative.py>`_. 
+
 
 .. _`block:derivative2`:
 
-Block ``derivative2``
+
+.. rst-class:: procgraph:block
+
+derivative2
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py>`_. 
+
 
 .. _`block:forward_difference`:
 
-Block ``forward_difference``
+
+.. rst-class:: procgraph:block
+
+forward_difference
 ------------------------------------------------------------
+Computes ``x[t+1] - x[t-1]`` normalized with timestamp.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative.py>`_. 
 
-Computes ``x[t+1] - x[t-1]`` normalized with timestamp.
 
 .. _`block:fps_data_limit`:
 
-Block ``fps_data_limit``
+
+.. rst-class:: procgraph:block
+
+fps_data_limit
 ------------------------------------------------------------
+This block limits the output update to a certain framerate.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/dynamic/fps_data_limit.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_data_limit.py>`_. 
 
-This block limits the output update to a certain framerate.
 
 .. _`block:fps_print`:
 
-Block ``fps_print``
+
+.. rst-class:: procgraph:block
+
+fps_print
 ------------------------------------------------------------
+Prints the fps count for the input.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/dynamic/fps_print.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_print.py>`_. 
 
-Prints the fps count for the input.
 
 .. _`block:history`:
 
-Block ``history``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
 
+.. rst-class:: procgraph:block
+
+history
+------------------------------------------------------------
 This block collects the history of a quantity, and outputs (x, t). 
 
 Arguments:
@@ -280,12 +377,19 @@ Output:
 - x
 - t
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
+
+
 .. _`block:historyt`:
 
-Block ``historyt``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/historyt.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/historyt.py>`_. 
 
+.. rst-class:: procgraph:block
+
+historyt
+------------------------------------------------------------
 This block collects the history of a quantity, and outputs (x, t). 
 
 Arguments:
@@ -294,12 +398,19 @@ Arguments:
 Output:
 - a tuple (x,y)
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/historyt.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/historyt.py>`_. 
+
+
 .. _`block:last_n_samples`:
 
-Block ``last_n_samples``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
 
+.. rst-class:: procgraph:block
+
+last_n_samples
+------------------------------------------------------------
 This block collects the last n samples of a quantity, and outputs (x, timestamp). 
 
 Arguments:
@@ -309,12 +420,19 @@ Output:
 - x
 - t
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
+
+
 .. _`block:sieve`:
 
-Block ``sieve``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/sieve.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sieve.py>`_. 
 
+.. rst-class:: procgraph:block
+
+sieve
+------------------------------------------------------------
 This block only transmits every n steps. 
 
 Config:
@@ -323,12 +441,19 @@ Config:
 Input: variable
 Output: variable (same as input)
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/sieve.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sieve.py>`_. 
+
+
 .. _`block:sync`:
 
-Block ``sync``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/sync.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync.py>`_. 
 
+.. rst-class:: procgraph:block
+
+sync
+------------------------------------------------------------
 This block synchronizes a set of streams to the first stream (the master). 
 
 The first signal is called the "master" signal.
@@ -349,31 +474,52 @@ Example diagrams: ::
     Slave   +    +      +
     output? v    v      v
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/sync.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync.py>`_. 
+
+
 .. _`block:sync2`:
 
-Block ``sync2``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/sync2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync2.py>`_. 
 
+.. rst-class:: procgraph:block
+
+sync2
+------------------------------------------------------------
 This block synchronizes a set of N sensor streams. 
 
 The first signal is called the "master" signal.
 The other (N-1) are slaves.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/sync2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync2.py>`_. 
+
+
 .. _`block:two_step_difference`:
 
-Block ``two_step_difference``
+
+.. rst-class:: procgraph:block
+
+two_step_difference
 ------------------------------------------------------------
+Computes ``x[t+1] - x[t]`` normalized with timestamp.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py>`_. 
 
-Computes ``x[t+1] - x[t]`` normalized with timestamp.
 
 .. _`block:wait`:
 
-Block ``wait``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/dynamic/wait.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/wait.py>`_. 
 
+.. rst-class:: procgraph:block
+
+wait
+------------------------------------------------------------
 This block waits a given number of updates before transmitting the output. 
 
 Config:
@@ -382,40 +528,75 @@ Config:
 Input: variable
 Output: variable (same as input)
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/wait.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/wait.py>`_. 
+
+
 .. _`module:procgraph.components.gui`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.gui``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Blocks using Matplotlib to display data.
 
 .. _`block:fps_limit`:
 
-Block ``fps_limit``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/gui/fps_limit.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/fps_limit.py>`_. 
 
+.. rst-class:: procgraph:block
+
+fps_limit
+------------------------------------------------------------
 This block limits the output update to a certain framerate. 
 
 Note that this uses realtime wall clock time -- not the data time!
 This is mean for real-time applications, such as visualization.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/gui/fps_limit.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/fps_limit.py>`_. 
+
+
 .. _`block:plot`:
 
-Block ``plot``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/gui/plot.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/plot.py>`_. 
 
+.. rst-class:: procgraph:block
+
+plot
+------------------------------------------------------------
 Just plots the vector instantaneously
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/gui/plot.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/gui/plot.py>`_. 
+
+
 .. _`module:procgraph.components.images`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.images``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Blocks for basic operations on images. 
+
+
+.. rst-class:: procgraph:desc_rest
 
 The  module contains blocks that perform basic operations
 on images. The library is autoloaded and has no software dependency.
@@ -435,10 +616,11 @@ Convert a RGB image to grayscale, and back to a RGB image:::
 
 .. _`block:compose`:
 
-Block ``compose``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/images/compose.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/compose.py>`_. 
 
+.. rst-class:: procgraph:block
+
+compose
+------------------------------------------------------------
 Configuration: 
 
 - ``width``, ``height``: dimension in  pixels
@@ -446,48 +628,90 @@ Configuration:
 
       compose.positions = {y: [0,0], ys: [320,20]}
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/compose.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/compose.py>`_. 
+
+
 .. _`block:gray2rgb`:
 
-Block ``gray2rgb``
+
+.. rst-class:: procgraph:block
+
+gray2rgb
 ------------------------------------------------------------
+Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
 
-Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
 
 .. _`block:grayscale`:
 
-Block ``grayscale``
+
+.. rst-class:: procgraph:block
+
+grayscale
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
 
 .. _`block:grid`:
 
-Block ``grid``
+
+.. rst-class:: procgraph:block
+
+grid
 ------------------------------------------------------------
+A block that creates a larger image by arranging them in a grid.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/images/imggrid.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/imggrid.py>`_. 
 
-A block that creates a larger image by arranging them in a grid.
 
 .. _`block:posneg`:
 
-Block ``posneg``
+
+.. rst-class:: procgraph:block
+
+posneg
 ------------------------------------------------------------
+Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
 
-Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
 
 .. _`block:rgb2gray`:
 
-Block ``rgb2gray``
+
+.. rst-class:: procgraph:block
+
+rgb2gray
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
 
 .. _`block:scale`:
 
-Block ``scale``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
 
+.. rst-class:: procgraph:block
+
+scale
+------------------------------------------------------------
 Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color]. 
 
 Input: a numpy array with finite values squeeze()able to (W,H).
@@ -504,276 +728,545 @@ Raises :py:class:`.ValueError` if min_value == max_value
 
 Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
+
+
 .. _`module:procgraph.components.misc`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.misc``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Miscellaneous functions to be better organized.
 
 .. _`block:as_json`:
 
-Block ``as_json``
+
+.. rst-class:: procgraph:block
+
+as_json
 ------------------------------------------------------------
+Converts the input into a JSON string.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/misc/json_misc.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/json_misc.py>`_. 
 
-Converts the input into a JSON string.
 
 .. _`block:pickle`:
 
-Block ``pickle``
+
+.. rst-class:: procgraph:block
+
+pickle
 ------------------------------------------------------------
+Dumps the input as a pickle file.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/misc/pickling.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/pickling.py>`_. 
 
-Dumps the input as a pickle file.
 
 .. _`block:to_file`:
 
-Block ``to_file``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/misc/to_file.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/to_file.py>`_. 
 
+.. rst-class:: procgraph:block
+
+to_file
+------------------------------------------------------------
 Prints the input line by line to a given file.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/misc/to_file.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/to_file.py>`_. 
+
+
 .. _`module:procgraph.components.numpy_ops`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.numpy_ops``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Various operations wrapping numpy functions.
 
 .. _`block:*`:
 
-Block ``*``
+
+.. rst-class:: procgraph:block
+
+*
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:+`:
 
-Block ``+``
+
+.. rst-class:: procgraph:block
+
++
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:-`:
 
-Block ``-``
+
+.. rst-class:: procgraph:block
+
+-
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:/`:
 
-Block ``/``
+
+.. rst-class:: procgraph:block
+
+/
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:abs`:
 
-Block ``abs``
+
+.. rst-class:: procgraph:block
+
+abs
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.absolute`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.core.umath.absolute`.
 
 .. _`block:astype`:
 
-Block ``astype``
+
+.. rst-class:: procgraph:block
+
+astype
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:dstack`:
 
-Block ``dstack``
+
+.. rst-class:: procgraph:block
+
+dstack
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.dstack`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.dstack`.
 
 .. _`block:gradient1d`:
 
-Block ``gradient1d``
+
+.. rst-class:: procgraph:block
+
+gradient1d
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/gradient1d.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/gradient1d.py>`_. 
+
 
 .. _`block:hstack`:
 
-Block ``hstack``
+
+.. rst-class:: procgraph:block
+
+hstack
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.hstack`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.hstack`.
 
 .. _`block:log`:
 
-Block ``log``
+
+.. rst-class:: procgraph:block
+
+log
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.log`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.core.umath.log`.
 
 .. _`block:outer`:
 
-Block ``outer``
+
+.. rst-class:: procgraph:block
+
+outer
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.multiply.outer`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.multiply.outer`.
 
 .. _`block:select`:
 
-Block ``select``
+
+.. rst-class:: procgraph:block
+
+select
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:sign`:
 
-Block ``sign``
+
+.. rst-class:: procgraph:block
+
+sign
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.sign`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.core.umath.sign`.
 
 .. _`block:square`:
 
-Block ``square``
+
+.. rst-class:: procgraph:block
+
+square
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.square`.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
-Wrapper around :py:func:`numpy.core.umath.square`.
 
 .. _`block:take`:
 
-Block ``take``
+
+.. rst-class:: procgraph:block
+
+take
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
 
 .. _`block:vstack`:
 
-Block ``vstack``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
+.. rst-class:: procgraph:block
+
+vstack
+------------------------------------------------------------
 Wrapper around :py:func:`numpy.vstack`.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
 .. _`module:procgraph.components.robotics`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.robotics``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Routines specific to robotics.
 
 .. _`block:pose2commands`:
 
-Block ``pose2commands``
+
+.. rst-class:: procgraph:block
+
+pose2commands
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/robotics/pose2velocity.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/pose2velocity.py>`_. 
+
 
 .. _`block:pose2vel_`:
 
-Block ``pose2vel_``
+
+.. rst-class:: procgraph:block
+
+pose2vel_
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/robotics/pose2velocity.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/pose2velocity.py>`_. 
 
+
 .. _`module:procgraph.components.signals`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.signals``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Simple routins for signals extraction, combination.
 
 .. _`block:extract`:
 
-Block ``extract``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/signals/extract.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/extract.py>`_. 
 
+.. rst-class:: procgraph:block
+
+extract
+------------------------------------------------------------
 This block extracts some of the components 
 
 Arguments:
 
 - index
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/signals/extract.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/extract.py>`_. 
+
+
 .. _`block:join`:
 
-Block ``join``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/signals/join.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/join.py>`_. 
 
+.. rst-class:: procgraph:block
+
+join
+------------------------------------------------------------
 This block joins multiple signals into one.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/signals/join.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/join.py>`_. 
+
+
 .. _`module:procgraph.components.statistics`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.statistics``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Blocks for common statistical operations.
 
 .. _`block:cov2corr`:
 
-Block ``cov2corr``
+
+.. rst-class:: procgraph:block
+
+cov2corr
 ------------------------------------------------------------
+Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/statistics/cov2corr.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/cov2corr.py>`_. 
 
-Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
 
 .. _`block:covariance`:
 
-Block ``covariance``
+
+.. rst-class:: procgraph:block
+
+covariance
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/statistics/covariance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/covariance.py>`_. 
+
 
 .. _`block:expectation`:
 
-Block ``expectation``
+
+.. rst-class:: procgraph:block
+
+expectation
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/statistics/expectation.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/expectation.py>`_. 
+
 
 .. _`block:normalize`:
 
-Block ``normalize``
+
+.. rst-class:: procgraph:block
+
+normalize
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/statistics/covariance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/covariance.py>`_. 
+
 
 .. _`block:soft_variance`:
 
-Block ``soft_variance``
+
+.. rst-class:: procgraph:block
+
+soft_variance
 ------------------------------------------------------------
+Computes the element-wise "soft" variance (expectation of error absolute value)
+
+
+.. rst-class:: procgraph:parameters
+
+Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
+
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py>`_. 
 
-Computes the element-wise "soft" variance (expectation of error absolute value)
 
 .. _`block:variance`:
 
-Block ``variance``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py>`_. 
 
+.. rst-class:: procgraph:block
+
+variance
+------------------------------------------------------------
 Computes the element-wise variance.
 
+
+.. rst-class:: procgraph:parameters
+
+Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py>`_. 
+
+
 .. _`module:procgraph.components.video`:
+
+
+.. rst-class:: procgraph:module
 
 Module ``procgraph.components.video``
 ============================================================
 
 
+
+.. rst-class:: procgraph:desc
+
 Blocks for encoding/decoding video based on MPlayer.
 
 .. _`block:SimpleCompression`:
 
-Block ``SimpleCompression``
+
+.. rst-class:: procgraph:block
+
+SimpleCompression
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:source
+
 Implemented in `/src/procgraph/components/video/simple_compression.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/simple_compression.py>`_. 
+
 
 .. _`block:mencoder`:
 
-Block ``mencoder``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/video/mencoder.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mencoder.py>`_. 
 
+.. rst-class:: procgraph:block
+
+mencoder
+------------------------------------------------------------
 Encodes a video stream using ``mencoder``. 
 
 Input: H x W x 3  uint8  numpy array representing RGB image.
@@ -787,14 +1280,27 @@ Configuration:
 
 Note that allowed codec and bitrate depend on your version of mencoder.
 
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/video/mencoder.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mencoder.py>`_. 
+
+
 .. _`block:mplayer`:
 
-Block ``mplayer``
-------------------------------------------------------------
-Implemented in `/src/procgraph/components/video/mplayer.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mplayer.py>`_. 
 
+.. rst-class:: procgraph:block
+
+mplayer
+------------------------------------------------------------
 Plays a video stream. 
 
 Config:
     - file
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/video/mplayer.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/mplayer.py>`_. 
+
 

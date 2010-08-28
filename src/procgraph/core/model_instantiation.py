@@ -145,7 +145,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     
     # 1. We put the configuration defaults
     for c in parsed_model.config:
-        if c.default is not None:
+        if c.has_default:
             all_config.append((c.variable, c.default, c))
 
     # 2. We put the user-passed values
