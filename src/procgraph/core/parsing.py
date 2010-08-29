@@ -5,7 +5,7 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
 from procgraph.core.parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
     ParsedSignalList , Connection, Where, LoadStatement, SaveStatement, \
-    ConfigStatement
+ output_from_tokens, input_from_tokens, config_from_tokens
 from procgraph.core.exceptions import PGSyntaxError
 
 
@@ -192,11 +192,19 @@ def parse_model(string, filename=None):
     
     config = S('config') + good_name('variable') + O(S('=') + value('default')) + \
         O(quoted('docstring'))
-    config.setParseAction(wrap(ConfigStatement.from_tokens))
+    config.setParseAction(wrap(config_from_tokens))
+    
+    input = S('input') + good_name('name') + O(quoted('docstring'))
+    input.setParseAction(wrap(input_from_tokens))
+
+    output = S('output') + good_name('name') + O(quoted('docstring'))
+    output.setParseAction(wrap(output_from_tokens))
+    
     
     dataio = loading ^ saving
     
-    action = connection ^ assignment ^ comment ^ import_statement ^ dataio ^ config
+    action = connection ^ assignment ^ comment ^ import_statement ^ dataio ^ \
+         config ^ input ^ output
     
     newline = S(lineEnd)
     

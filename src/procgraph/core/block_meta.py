@@ -5,16 +5,43 @@ import sys
 FIXED = 'fixed-signal'
 VARIABLE = 'variable-signal'
 
-BlockConfig = namedtuple('BlockConfig', 'variable has_default default desc desc_rest')
-BlockInput = namedtuple('BlockInput', 'type name min max desc desc_rest')
-BlockOutput = namedtuple('BlockOutput', 'type name min max desc desc_rest')
+#BlockConfig = namedtuple('BlockConfig', 'variable has_default default desc desc_rest where')
+#BlockInput = namedtuple('BlockInput', 'type name min max desc desc_rest where')
+#BlockOutput = namedtuple('BlockOutput', 'type name  desc desc_rest where')
+
+class BlockConfig:
+    def __init__(self, variable, has_default, default, desc, desc_rest, where):
+        self.variable = variable
+        self.has_default = has_default
+        self.default = default
+        self.desc = desc
+        self.desc_rest = desc_rest
+        self.where = where
+        
+class BlockInput:
+    def __init__(self, type, name, min, max, desc, desc_rest, where):
+        self.type = type
+        self.name = name
+        self.min = min
+        self.max = max
+        self.desc = desc
+        self.desc_rest = desc_rest
+        self.where = where
+        
+class BlockOutput:
+    def __init__(self, type, name, desc, desc_rest, where):
+        self.type = type
+        self.name = name
+        self.desc = desc
+        self.desc_rest = desc_rest
+        self.where = where
 
 def block_config(name, description=None, default='not-given'):
     desc, desc_rest = split_docstring(description)
     has_default = default != 'not-given'
     if filter(lambda x: x.variable == name, BlockMeta.tmp_config):
         raise BlockWriterError('Already described config variable "%s".' % name)
-    BlockMeta.tmp_config.append(BlockConfig(name, has_default, default, desc, desc_rest))
+    BlockMeta.tmp_config.append(BlockConfig(name, has_default, default, desc, desc_rest, None))
 
 def block_input(name, description=None):
     desc, desc_rest = split_docstring(description)
@@ -22,14 +49,14 @@ def block_input(name, description=None):
         raise BlockWriterError('Already described input variable "%s".' % name)
     if BlockMeta.tmp_input and BlockMeta.tmp_input[-1].type == VARIABLE:
         raise BlockWriterError('Cannot mix variable and fixed input.')
-    BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None, desc, desc_rest))
+    BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None, desc, desc_rest, None))
 
 def block_input_is_variable(description=None, min=None, max=None):
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_input:
         raise BlockWriterError('Cannot mix variable and fixed input'
                                ' or variable with variable.')
-    BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max, desc, desc_rest))
+    BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max, desc, desc_rest, None))
     
 def block_output(name, description=None):
     desc, desc_rest = split_docstring(description)
@@ -38,14 +65,14 @@ def block_output(name, description=None):
     if BlockMeta.tmp_output and BlockMeta.tmp_output[-1].type == VARIABLE:
         raise BlockWriterError('Cannot mix variable and fixed output.')
     
-    BlockMeta.tmp_output.append(BlockOutput(FIXED, name, None, None, desc, desc_rest))
+    BlockMeta.tmp_output.append(BlockOutput(FIXED, name, desc, desc_rest, None))
     
 def block_output_is_variable(description=None, suffix=None):
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_output:
         raise BlockWriterError('Cannot mix variable and fixed output'
                                ' or variable with variable.')
-    BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix, None, None, desc, desc_rest))
+    BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix, desc, desc_rest, None))
     
 class BlockMeta(type):
     tmp_config = []

@@ -39,17 +39,22 @@ def collect_info(block_type, block_generator):
         source = parsed_model.where.filename
         desc, desc_rest = split_docstring(parsed_model.docstring) 
         
-        config = []
-        for c in parsed_model.config:
-            cdesc, cdesc_rest = split_docstring(c.docstring)
-            
-            config.append(BlockConfig(variable=c.variable,
-                                      has_default=c.has_default,
-                                      default=c.default,
-                                      desc=cdesc, desc_rest=cdesc_rest))
-
-        input = []
-        output = []
+        config = parsed_model.config
+        input = parsed_model.input
+        output = parsed_model.output
+#
+#
+#        config = []
+#        for c in parsed_model.config:
+#            cdesc, cdesc_rest = split_docstring(c.docstring)
+#            
+#            config.append(BlockConfig(variable=c.variable,
+#                                      has_default=c.has_default,
+#                                      default=c.default,
+#                                      desc=cdesc, desc_rest=cdesc_rest))
+#
+#        input = []
+#        output = []
         
     elif issubclass(block_generator, Block):
         if block_generator.__name__ == 'GenericOperation':
@@ -150,20 +155,16 @@ def main():
         root, reference = couple.split('=', 1)
         root = os.path.realpath(root)
         translate[root] = reference 
-        
-    print translate  
+         
     
     if not args:
         print "Give at least one module"
         sys.exit(-1)
         
     for module in args:
-        __import__(module)
-    #import procgraph.components
-    #import bootstrap_experiments_201008
+        __import__(module) 
     
-    library = default_library
-    #pg_look_for_models(library)
+    library = default_library 
     
     all_modules = get_all_info(library)
     # only retain the ones that we have to document 

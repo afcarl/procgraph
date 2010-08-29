@@ -1,5 +1,7 @@
 import sys
 from pyparsing import lineno, col
+from procgraph.core.block_meta import split_docstring, BlockInput, FIXED, \
+    BlockOutput, BlockConfig
 
 class Where:
     ''' An object of this class represents a place in a file. 
@@ -190,28 +192,77 @@ class ParsedAssignment(ParsedElement):
     def from_tokens(tokens):
         return ParsedAssignment(tokens['key'], tokens['value'])
           
+#
+#class ConfigStatement(ParsedElement):
+#    def __init__(self, variable, has_default, default, docstring):
+#        ParsedElement.__init__(self)
+#        assert isinstance(variable, str)
+#        assert docstring is None or isinstance(docstring, str)
+#        self.variable = variable
+#        self.default = default
+#        self.has_default = has_default
+#        self.docstring = docstring 
+#        
+#    def __repr__(self):
+#        return 'Config(%s(=%s))' % (self.variable, self.default)
+#
+#    @staticmethod
+#    def from_tokens(tokens):
+#        variable = tokens.get('variable')
+#        has_default = 'default' in tokens
+#        default = tokens.get('default', None)
+#        docstring = tokens.get('docstring', None)
+#        return ConfigStatement(variable, has_default, default, docstring)
 
-class ConfigStatement(ParsedElement):
-    def __init__(self, variable, has_default, default, docstring):
-        ParsedElement.__init__(self)
-        assert isinstance(variable, str)
-        assert docstring is None or isinstance(docstring, str)
-        self.variable = variable
-        self.default = default
-        self.has_default = has_default
-        self.docstring = docstring 
+def config_from_tokens(tokens):
+    variable = tokens.get('variable')
+    has_default = 'default' in tokens
+    default = tokens.get('default', None)
+    docstring = tokens.get('docstring', None)
+    #return ConfigStatement(variable, has_default, default, docstring)
+    desc, desc_rest = split_docstring(docstring)
+    return BlockConfig(variable, has_default, default, desc, desc_rest, None)
+
+#class InputStatement: #(ParsedElement):
+#    def __init__(self, name, docstring):
+#        ParsedElement.__init__(self)
+#        assert isinstance(name, str)
+#        assert docstring is None or isinstance(docstring, str)
+#        
+#        self.block_input = BlockInput(FIXED, name, None, None, desc, desc_rest)
+ 
+def output_from_tokens(tokens):
+    name = tokens.get('name')
+    docstring = tokens.get('docstring', None)
+    
+    desc, desc_rest = split_docstring(docstring)
+    
+    return BlockOutput(FIXED, name, desc, desc_rest, None)
+
+
+def input_from_tokens(tokens):
+    name = tokens.get('name')
+    docstring = tokens.get('docstring', None)
+    
+    desc, desc_rest = split_docstring(docstring)
+    return BlockInput(FIXED, name, None, None, desc, desc_rest, None)
         
-    def __repr__(self):
-        return 'Config(%s(=%s))' % (self.variable, self.default)
 
-    @staticmethod
-    def from_tokens(tokens):
-        variable = tokens.get('variable')
-        has_default = 'default' in tokens
-        default = tokens.get('default', None)
-        docstring = tokens.get('docstring', None)
-        return ConfigStatement(variable, has_default, default, docstring)
-
+#
+#class OutputStatement(ParsedElement):
+#    def __init__(self, name, docstring):
+#        ParsedElement.__init__(self)
+#        assert isinstance(name, str)
+#        assert docstring is None or isinstance(docstring, str)
+#        desc, desc_rest = split_docstring(docstring)
+#        self.block_output = BlockOutput(FIXED, name, desc, desc_rest)
+#    
+#    @staticmethod
+#    def from_tokens(tokens):
+#        name = tokens.get('name')
+#        docstring = tokens.get('docstring', None)
+#        return OutputStatement(name, docstring)
+#   
       
 class Connection(ParsedElement):
     def __init__(self, elements):
@@ -248,7 +299,9 @@ class ParsedModel(ParsedElement):
         select = lambda T: [x for x in elements if isinstance(x, T)]
         
         self.connections = select(Connection)
-        self.config = select(ConfigStatement)
+        self.config = select(BlockConfig)
+        self.output = select(BlockOutput)
+        self.input = select(BlockInput)
         self.load_statements = select(LoadStatement)
         self.save_statements = select(SaveStatement)
         self.imports = select(ImportStatement)
