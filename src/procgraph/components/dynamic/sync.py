@@ -1,8 +1,9 @@
-from procgraph.core.block import Block, Generator
+from procgraph  import Block, Generator, block_input_is_variable, block_output_is_variable
 from collections import namedtuple
 from procgraph.components.basic import register_block
 
 Sample = namedtuple('Sample', 'timestamp value')
+
 
 
 def oldest(queue):
@@ -36,6 +37,10 @@ class Sync(Generator):
         Slave   +    +      +   
         output? v    v      v
     '''
+    
+    block_input_is_variable('Signals to synchronize. The first is the master.', min=2)
+    block_output_is_variable('Synchronized signals.')
+    
     def init(self):
         # say we are not ready if the inputs were not defined.
         if not self.are_input_signals_defined():

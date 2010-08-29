@@ -2,6 +2,8 @@ from procgraph.core.exceptions import BlockWriterError, ModelWriterError, \
     ModelExecutionError
 from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy, \
     ConfigProxy
+from collections import namedtuple
+from procgraph.core.block_meta import BlockMeta
 
 # Timestamp to use for constant times
 ETERNITY = 'constant-time'
@@ -14,6 +16,7 @@ class Value:
         self.timestamp = timestamp
 
 class Block(object):
+    __metaclass__ = BlockMeta
 
     # Housekeeping
     def __init__(self, name, config, library):
@@ -293,14 +296,39 @@ class Block(object):
     
     
     def info(self, s):
-        ''' Writes an info message '''
+        ''' Writes an info message. '''
         from procgraph.core.visualization import info as pg_info
         pg_info(self.name + ': ' + s)
         
     def debug(self, s):
-        ''' Writes a debug message '''
+        ''' Writes a debug message. '''
         from procgraph.core.visualization import debug as pg_debug
         pg_debug(self.name + ': ' + s)
+    
+    # New interface for defining inputs
+    # There are three types of inputs:
+#    INPUT_NAMED = 'input-named'
+#    INPUT_MANY = 'input-many'
+#    BlockInput = namedtuple('BlockInput', 'type name min max desc')
+#    inputs = []
+#
+#    @classmethod
+#    def input(cls, name, desc=None):
+#        if cls.inputs and cls.inputs[-1].type == Block.INPUT_MANY:
+#            raise BlockWriterError('Already specified multiple inputs.')
+#        cls.inputs.append(Block.BlockInput(type=Block.INPUT_NAMED,
+#                                     name=name, min=None, max=None,
+#                                     desc=desc))
+#    
+#    @classmethod    
+#    def input_arbitrary(cls, desc=None, min=1, max=1000):
+#        if cls.inputs:
+#            raise BlockWriterError('Asked to specify multiple inputs, but inputs'
+#                                   ' already specified: %s' % cls.inputs)
+#        cls.inputs.append(Block.BlockInput(type=Block.INPUT_MANY,
+#                                     name=None, min=None, max=None,
+#                                     desc=desc))
+    
     
 class Generator(Block):
     # TODO: change interface

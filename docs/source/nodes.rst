@@ -17,20 +17,20 @@ In the case of a Model: only type A is supported.
 In the case of a Block, we allow all 3.
 
 	class TypeA(Block):
-		input('input1', 'desc')
-		input('input2', 'desc')
-		output('input2', 'desc')
+		block_config()
+		block_input('input1', 'desc')
+		block_input('input2', 'desc')
+		block_output('out', 'desc')
 		...
 		
-		
 	class TypeB(Block):
-		input_variable('Signals to be summed.', min=K)
-		output('output2', 'Sum of the signals.')
+		block_input_is_variable('Signals to be summed (at least 2).', min=2)
+		block_output('output2', 'Sum of the signals.')
 		...
 
 	class TypeC(Block):
-		input_variable('Signals to be summed.', min=K)
-		output_variable('Synchronized signals.')
+		block_input_is_variable('Signals to be summed.', min=K)
+		block_output_is_variable('Synchronized signals.')
 		
 
 In the case of a simple block

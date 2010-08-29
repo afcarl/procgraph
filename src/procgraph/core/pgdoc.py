@@ -6,6 +6,7 @@ from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
 import sys
 import os
+from procgraph.core.block_meta import split_docstring, BlockConfig, FIXED
 
 
 # type = 'model', 'block', 'simple_block'
@@ -17,63 +18,13 @@ type_simple_block = 'simple_block'
 
 ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input '
                       'output config desc desc_rest')
-ModelInput = namedtuple('ModelInput', 'name desc desc_rest')
-ModelOutput = namedtuple('ModelOutput', 'name desc desc_rest')
-ModelConfig = namedtuple('ModelConfig', 'name default has_default desc desc_rest')
+
+#ModelInput = namedtuple('ModelInput', 'name desc desc_rest')
+#ModelOutput = namedtuple('ModelOutput', 'name desc desc_rest')
+#ModelConfig = namedtuple('ModelConfig', 'name default has_default desc desc_rest')
+
 ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest')
 
-
-def trim(docstring):
-    if not docstring:
-        return ''
-    lines = docstring.expandtabs().splitlines()
-
-    # Determine minimum indentation (first line doesn't count):
-    indent = sys.maxint
-    for line in lines[1:]:
-        stripped = line.lstrip()
-        if stripped:
-            indent = min(indent, len(line) - len(stripped))
-
-    # Remove indentation (first line is special):
-    trimmed = [lines[0].strip()]
-    if indent < sys.maxint:
-        for line in lines[1:]:
-            trimmed.append(line[indent:].rstrip())
-
-    # Strip off trailing and leading blank lines:
-    while trimmed and not trimmed[-1]:
-        trimmed.pop()
-    while trimmed and not trimmed[0]:
-        trimmed.pop(0)
-    
-    result = '\n'.join(trimmed)
-    
-    #print 'input: """%s"""' % docstring
-    #print 'result: """%s"""' % result
-    return result
-
-def split_docstring(s):
-    ''' Splits a docstring in a tuple (first, rest). '''
-    if s is None:
-        return None, None
-    s = trim(s)
-    all_lines = s.split('\n') 
-    valid_lines = filter(None, map(str.strip, all_lines))
-    if valid_lines:
-        for i in range(len(all_lines)):
-            if all_lines[i]: # found first
-                # join all non-empty lines with the first
-                j = i
-                while j < len(all_lines) - 1 and all_lines[j].strip():
-                    j += 1
-                first = ' '.join(all_lines[i:(j + 1)])
-                rest = '\n'.join(all_lines[j + 1:])
-                return first, rest
-        assert False
-    else:
-        return None, None
-    
 
 def collect_info(block_type, block_generator):
     #print block_type
@@ -92,11 +43,14 @@ def collect_info(block_type, block_generator):
         for c in parsed_model.config:
             cdesc, cdesc_rest = split_docstring(c.docstring)
             
-            config.append(ModelConfig(name=c.variable,
+            config.append(BlockConfig(variable=c.variable,
                                       has_default=c.has_default,
                                       default=c.default,
                                       desc=cdesc, desc_rest=cdesc_rest))
-            
+
+        input = []
+        output = []
+        
     elif issubclass(block_generator, Block):
         if block_generator.__name__ == 'GenericOperation':
             func = block_generator.my_operation
@@ -113,6 +67,9 @@ def collect_info(block_type, block_generator):
             desc, desc_rest = split_docstring(doc)
             
             config = []
+            input = [] # TODO
+            output = []
+
             #func.__file__
             #print block_type, 'SIMPLE_BLOCK', func, func.__name__, func.__module__
         else:
@@ -126,7 +83,9 @@ def collect_info(block_type, block_generator):
                 #print "changing to %s" % str(module)
             desc, desc_rest = split_docstring(block_generator.__doc__) 
             
-            config = []
+            config = block_generator.config
+            input = block_generator.input
+            output = block_generator.output
 
     else: 
         assert False
@@ -143,7 +102,7 @@ def collect_info(block_type, block_generator):
     return ModelDoc(name=block_type, source=source, type=type,
                     module=module, implementation=implementation,
                     desc=desc, desc_rest=desc_rest,
-                    input=None, output=None, config=config)
+                    input=input, output=output, config=config)
 
      
 
@@ -281,17 +240,42 @@ def main():
             if block.desc_rest:
                 f.write(block.desc_rest + '\n\n')
                 
+  
+                
             if block.config:
                 f.write(rst_class('procgraph:parameters'))
-                f.write('Parameters\n')
+                f.write('Configuration\n')
                 f.write('^' * 60 + '\n\n')
                 for c in block.config:
-                    if c.default is not None:
+                    if c.has_default:
                         f.write('- ``%s`` (default: %s): %s\n\n' % 
-                                (c.name, c.default, c.desc))
+                                (c.variable, c.default, c.desc))
                     else:
-                        f.write('- ``%s``: %s\n\n' % (c.name, c.desc))
-                    
+                        f.write('- ``%s``: %s\n\n' % (c.variable, c.desc))
+                        # TODO: add desc_rest
+      
+            if block.input:
+                f.write(rst_class('procgraph:input'))
+                f.write('Input\n')
+                f.write('^' * 60 + '\n\n')
+                for i in block.input:
+                    if i.type == FIXED:
+                        f.write('- ``%s``: %s\n\n' % 
+                                (i.name, i.desc))
+                    else:
+                        f.write('%s (variable: %s <= n <= %s)\n\n' % (i.desc, i.min, i.max))
+
+            if block.output:
+                f.write(rst_class('procgraph:output'))
+                f.write('Output\n')
+                f.write('^' * 60 + '\n\n')
+                for o in block.output:
+                    if o.type == FIXED:
+                        f.write('- ``%s``: %s\n\n' % 
+                                (o.name, o.desc))
+                    else:
+                        f.write('%s (variable number)\n\n' % (o.desc))
+              
             
             url = get_source_ref(block.source, translate)
             f.write(rst_class('procgraph:source'))

@@ -9,11 +9,11 @@ Summary
 :ref:`module:procgraph.components`
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`Info <block:Info>`                                                                                                                                                                                 Prints more compact information about the inputs than :ref:`block:print`.                                                                                                                               
 :ref:`clock <block:clock>`                                                                                                                                                                               None                                                                                                                                                                                                    
 :ref:`constant <block:constant>`                                                                                                                                                                         Output a numerical constant that never changes.                                                                                                                                                         
 :ref:`gain <block:gain>`                                                                                                                                                                                 FIXME: to be replaced by simpler function.                                                                                                                                                              
 :ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs, unchanged.                                                                                                                                                               
+:ref:`info <block:info>`                                                                                                                                                                                 Prints more compact information about the inputs than :ref:`block:print`.                                                                                                                               
 :ref:`print <block:print>`                                                                                                                                                                               Print a representation of the input values along with their timestamp.                                                                                                                                  
 :ref:`rand <block:rand>`                                                                                                                                                                                 None                                                                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
@@ -102,9 +102,10 @@ Various operations wrapping numpy functions.
 
 :ref:`module:procgraph.components.robotics`
 
-Routines specific to robotics.
+Some functions specific to robotics applications.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`laser_display <block:laser_display>`                                                                                                                                                               Produces a plot of a range-finder scan.                                                                                                                                                                 
 :ref:`pose2commands <block:pose2commands>`                                                                                                                                                               None                                                                                                                                                                                                    
 :ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       None                                                                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
@@ -115,7 +116,7 @@ Routines specific to robotics.
 Simple routins for signals extraction, combination.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`extract <block:extract>`                                                                                                                                                                           This block extracts some of the components                                                                                                                                                              
+:ref:`extract <block:extract>`                                                                                                                                                                           This block extracts some of the components of a vector.                                                                                                                                                 
 :ref:`join <block:join>`                                                                                                                                                                                 This block joins multiple signals into one.                                                                                                                                                             
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
@@ -152,23 +153,6 @@ Blocks for encoding/decoding video based on MPlayer.
 
 Module ``procgraph.components``
 ============================================================
-
-
-.. _`block:Info`:
-
-
-.. rst-class:: procgraph:block
-
-Info
-------------------------------------------------------------
-Prints more compact information about the inputs than :ref:`block:print`. 
-
-For numpy arrays it prints their shape and dtype instead of their values.
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
 
 
 .. _`block:clock`:
@@ -234,6 +218,23 @@ This block outputs the inputs, unchanged.
 
 This is an example of a block whose signal configuration is dynamics:
 init() gets called twice.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+
+
+.. _`block:info`:
+
+
+.. rst-class:: procgraph:block
+
+info
+------------------------------------------------------------
+Prints more compact information about the inputs than :ref:`block:print`. 
+
+For numpy arrays it prints their shape and dtype instead of their values.
 
 
 .. rst-class:: procgraph:source
@@ -473,6 +474,22 @@ Example diagrams: ::
     output? v  v  x   v
     Slave   +    +      +
     output? v    v      v
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signals to synchronize. The first is the master. (variable: 2 <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Synchronized signals. (variable number)
 
 
 .. rst-class:: procgraph:source
@@ -1043,7 +1060,26 @@ Module ``procgraph.components.robotics``
 
 .. rst-class:: procgraph:desc
 
-Routines specific to robotics.
+Some functions specific to robotics applications.
+
+.. _`block:laser_display`:
+
+
+.. rst-class:: procgraph:block
+
+laser_display
+------------------------------------------------------------
+Produces a plot of a range-finder scan. 
+
+
+display_sick.groups = [{ indices: [0,179], theta: [-1.57,+1.57],
+         color: 'r', origin: [0,0,0]}]
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/robotics/laser_display.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/laser_display.py>`_. 
+
 
 .. _`block:pose2commands`:
 
@@ -1092,7 +1128,7 @@ Simple routins for signals extraction, combination.
 
 extract
 ------------------------------------------------------------
-This block extracts some of the components 
+This block extracts some of the components of a vector. 
 
 Arguments:
 
@@ -1199,7 +1235,7 @@ Computes the element-wise "soft" variance (expectation of error absolute value)
 
 .. rst-class:: procgraph:parameters
 
-Parameters
+Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
@@ -1222,7 +1258,7 @@ Computes the element-wise variance.
 
 .. rst-class:: procgraph:parameters
 
-Parameters
+Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
@@ -1269,16 +1305,31 @@ mencoder
 ------------------------------------------------------------
 Encodes a video stream using ``mencoder``. 
 
-Input: H x W x 3  uint8  numpy array representing RGB image.
-
-Configuration:
-
-- file
-- vcodec   mpeg4
-- vbitrate 1000000
-- quiet
-
 Note that allowed codec and bitrate depend on your version of mencoder.
+
+
+.. rst-class:: procgraph:parameters
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: Output file (AVI format.)
+
+- ``fps`` (default: 10): Framerate of resulting movie.
+
+- ``vcodec`` (default: mpeg4): Codec to use.
+
+- ``vbitrate`` (default: 1000000): Bitrate -- default is reasonable.
+
+- ``quiet`` (default: True): If True, suppress mencoder's messages
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``image``: H x W x 3  uint8 numpy array representing an RGB image.
 
 
 .. rst-class:: procgraph:source
