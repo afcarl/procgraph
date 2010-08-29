@@ -1,18 +1,19 @@
-from procgraph.core.block import Block
-from procgraph.components.basic import register_block
-
+from procgraph import Block, block_alias, block_config, block_output, block_input
+ 
 
 class Sieve(Block):
     ''' 
-    This block only transmits every n steps. 
+    This block decimates the data in time by transmitting
+    only one in ``n`` updates.
+    '''
     
-    Config:
-    - n  
-
-    Input: variable 
-    Output: variable (same as input)
-
-    ''' 
+    block_alias('sieve')
+    
+    block_config('n', 'Decimation level; ``n = 3`` means transmit one in three.')
+    
+    block_input('data', 'Arbitrary input signals.')
+    block_output('decimated', 'Decimated signals.')
+     
     def init(self):
         # say we are not ready if the inputs were not defined.
         if not self.are_input_signals_defined():
@@ -36,7 +37,4 @@ class Sieve(Block):
 
         count += 1
         self.set_state('count', count)
-        
-register_block(Sieve, 'sieve')
-
-  
+         

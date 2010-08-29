@@ -1,12 +1,11 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess 
 
-
-from procgraph import Block, block_config, block_input 
+from procgraph import Block, block_config, block_input, block_alias
 
 from procgraph.components  import check_rgb_or_grayscale
 from procgraph.core.model_loadsave import make_sure_dir_exists
-from procgraph.components.basic import register_block
+
  
  
 class MEncoder(Block):
@@ -14,6 +13,8 @@ class MEncoder(Block):
     
     Note that allowed codec and bitrate depend on your version of mencoder.
     ''' 
+    block_alias('mencoder')
+    
     block_input('image', 'H x W x 3  uint8 numpy array representing an RGB image.') 
     
     block_config('file', 'Output file (AVI format.)')
@@ -68,4 +69,3 @@ class MEncoder(Block):
         self.process.stdin.write(image.data)
         self.process.stdin.flush()
 
-register_block(MEncoder, 'mencoder')

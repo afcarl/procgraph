@@ -1,10 +1,11 @@
 import numpy
 
-from procgraph.core.block import Block
+from procgraph  import Block, block_input, block_output, block_alias
 from procgraph.core.exceptions import BadInput
-from procgraph.components.basic import register_block, register_model_spec
+from procgraph.components.basic import  register_model_spec
 
 def isiterable(x):
+    ''' Checks that an object is iterable. '''
     try:
         iter(x)
         return True
@@ -13,14 +14,24 @@ def isiterable(x):
 
 
 class ForwardDifference(Block):
-    ''' Computes ``x[t+1] - x[t-1]`` normalized with timestamp. '''
+    ''' Computes ``x[t+1] - x[t-1]`` normalized with timestamp. 
+    
+        You want to attach this to :ref:`block:last_n_samples`.
+    '''
+    block_alias('forward_difference')
+    
+    block_input('x123', 'An array with the last 3 values of x.')
+    block_input('t123', 'An array with the last 3 values of the timestamp.')
+    
+    block_output('x_dot', 'Derivative of x')
+    
     def init(self):
         self.define_input_signals(['x123', 't123'])
         self.define_output_signals(['x_dot'])
         
     def update(self):
-        x = self.get_input('x123')
-        t = self.get_input('t123')
+        x = self.input.x123
+        t = self.input.t123
         if not isiterable(x) or len(x) != 3:
             raise BadInput('Expected arrays of 3 elements', self, 'x')
         if not isiterable(t) or len(t) != 3:
@@ -38,12 +49,15 @@ class ForwardDifference(Block):
             diff = x[2] - x[0]
         time = t[1]
         x_dot = diff / numpy.float32(delta)
-        self.set_output('x_dot', x_dot, timestamp=time)  
-
-register_block(ForwardDifference, 'forward_difference')
+        self.set_output('x_dot', x_dot, timestamp=time)   
 
 register_model_spec("""
 --- model derivative 
+''' Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``).
+    See also :ref:`block:derivative2`.                   '''
+input x "quantity to derive"
+output x_dot "approximate derivative"
+
 |input name=x| --> |last_n_samples n=3| --> x,t
 
    x, t --> |forward_difference| --> |output name=x_dot|

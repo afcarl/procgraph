@@ -1,19 +1,18 @@
-from procgraph.core.block import Block
-from procgraph.components.basic import register_block
+from procgraph  import Block, block_alias, block_config, block_output
 
     
 class HistoryT(Block):
     ''' 
-    This block collects the history of a quantity,
-    and outputs (x, t).
-    
-    Arguments:
-    - interval (seconds)  interval to record
-    
-    Output:
-    - a tuple (x,y)
+    This block collects the signals samples of a signals,
+    and outputs *one* signal containing a tuple  ``(t,x)``. 
+    See also :ref:`block:last_n_samples` and :ref:`block:history`.
     ''' 
-        
+    block_alias('historyt')
+    
+    block_config('interval', 'Length of interval (seconds).')
+    
+    block_output('history', 'Tuple ``(t,x)`` containing two arrays.')
+    
     def init(self):
         self.set_config_default('interval', 10)
         
@@ -40,8 +39,4 @@ class HistoryT(Block):
     
     
         self.output.history = (t, x)
-
-        
-register_block(HistoryT, 'historyt')
-
-
+ 

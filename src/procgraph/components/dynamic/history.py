@@ -1,20 +1,18 @@
-from procgraph.core.block import Block
-from procgraph.components.basic import register_block
-
-    
+from procgraph  import Block, block_alias, block_config, block_output
+     
 class History(Block):
     ''' 
     This block collects the history of a quantity,
-    and outputs (x, t).
-    
-    Arguments:
-    - interval (seconds)  interval to record
-    
-    Output:
-    - x
-    - t
+    and outputs two signals ``x`` and ``t``. 
+    See also :ref:`block:historyt` and :ref:`block:last_n_samples`.
     ''' 
-        
+    block_alias('history')
+    
+    block_config('interval', 'Length of the interval to record.')
+    
+    block_output('x', 'Sequence of values.')
+    block_output('t', 'Sequence of timestamps.')
+    
     def init(self):
         self.set_config_default('interval', 10)
         
@@ -42,22 +40,19 @@ class History(Block):
             
         self.set_output('x', x) 
         self.set_output('t', t)
-        
-register_block(History, 'history')
-
-
+         
 class HistoryN(Block):
     ''' 
-    This block collects the last n samples of a quantity,
-    and outputs (x, timestamp).
-    
-    Arguments:
-    - n, number of samples
-    
-    Output:
-    - x
-    - t
+    This block collects the last N samples of a signals,
+    and outputs two signals ``x`` and ``t``. 
+    See also :ref:`block:historyt` and :ref:`block:history`.
     ''' 
+    block_alias('last_n_samples')
+    
+    block_config('n', 'Number of samples to retain.')
+    
+    block_output('x', 'Sequence of values.')
+    block_output('t', 'Sequence of timestamps.')
         
     def init(self):
         self.get_config('n')
@@ -86,9 +81,4 @@ class HistoryN(Block):
             
         if len(x) == n:
             self.set_output('x', x) 
-            self.set_output('t', t)
-        
-register_block(HistoryN, 'last_n_samples')
-
-        
-
+            self.set_output('t', t) 

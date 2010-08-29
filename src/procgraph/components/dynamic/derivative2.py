@@ -1,8 +1,8 @@
 import numpy
 
-from procgraph.core.block import Block
+from procgraph  import Block, block_input, block_output, block_alias
 from procgraph.core.exceptions import BadInput
-from procgraph.components.basic import register_block, register_model_spec
+from procgraph.components.basic import  register_model_spec
 
 def isiterable(x):
     try:
@@ -14,6 +14,14 @@ def isiterable(x):
 
 class ForwardDifference12(Block):
     ''' Computes ``x[t+1] - x[t]`` normalized with timestamp. '''
+    
+    block_alias('two_step_difference')
+    
+    block_input('x12', 'An array with the last 2 values of x.')
+    block_input('t12', 'An array with the last 2 values of the timestamp.')
+    
+    block_output('x_dot', 'Derivative of x')
+    
     def init(self):
         self.define_input_signals(['x12', 't12'])
         self.define_output_signals(['x_dot'])
@@ -39,11 +47,14 @@ class ForwardDifference12(Block):
         time = t[0]
         x_dot = diff / numpy.float32(delta)
         self.set_output('x_dot', x_dot, timestamp=time)  
-
-register_block(ForwardDifference12, 'two_step_difference')
-
+ 
 register_model_spec("""
 --- model derivative2
+''' Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``).
+    See also :ref:`block:derivative`.       '''
+input x "quantity to derive"
+output x_dot "approximate derivative"
+
 |input name=x| --> |last_n_samples n=2| --> x,t
 
    x, t --> |two_step_difference| --> |output name=x_dot|

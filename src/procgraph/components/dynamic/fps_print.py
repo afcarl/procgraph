@@ -1,9 +1,11 @@
-from procgraph.core.block import Block
-from procgraph.components.basic import register_block
-
-class FPSPrint(Block):
-    ''' Prints the fps count for the input. ''' 
+from procgraph  import Block, block_input_is_variable, block_alias
      
+class FPSPrint(Block):
+    ''' Prints the fps count for the input signals. '''
+    block_alias('fps_print')
+     
+    block_input_is_variable(min=1)
+    
     def init(self):
         # say we are not ready if the inputs were not defined.
         if not self.are_input_signals_defined():
@@ -26,8 +28,4 @@ class FPSPrint(Block):
 
         self.state.last_timestamp = current
         
-        
-register_block(FPSPrint, 'fps_print')
-
-
-
+         

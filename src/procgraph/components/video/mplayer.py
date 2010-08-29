@@ -3,17 +3,20 @@ import subprocess, os, numpy
  
 from procgraph.core.block import Generator 
 from procgraph.core.exceptions import ModelExecutionError
-from procgraph.components.basic import register_block
+
+from procgraph import block_alias, block_config, block_output
 
  
 class MPlayer(Generator):
-    ''' Plays a video stream.
-    
-    Config: 
-        - file 
+    ''' Decodes a video stream. ''' 
 
-    ''' 
-     
+    block_alias('mplayer')
+    
+    block_config('file', 'Input video file. Any format that ``mplayer`` understands.')
+    block_config('quiet', 'If true, suppress messages from mplayer.', default=True)
+    
+    block_output('video', 'RGB stream as numpy array.')
+         
     def init(self):
         self.define_input_signals([])
         self.define_output_signals(["video"])
@@ -92,9 +95,7 @@ class MPlayer(Generator):
     def next_data_status(self):
         # FIXME check EOF
         return (True, self.get_state('timestamp'))
-
-register_block(MPlayer, 'mplayer')
-
+ 
 
 
 # backported from 2.7

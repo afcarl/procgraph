@@ -6,12 +6,9 @@ from procgraph.core.registrar import default_library
 from procgraph.core.block import Block
 import sys
 import os
-from procgraph.core.block_meta import split_docstring, BlockConfig, FIXED
+from procgraph.core.block_meta import split_docstring, FIXED
 
-
-# type = 'model', 'block', 'simple_block'
-# implementation: either Class or wrapped function
-# 'desc' is the first line of a docstring, 'desc_rest' are the remaining lines
+ 
 type_block = 'block'
 type_model = 'model'
 type_simple_block = 'simple_block'
@@ -19,15 +16,10 @@ type_simple_block = 'simple_block'
 ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input '
                       'output config desc desc_rest')
 
-#ModelInput = namedtuple('ModelInput', 'name desc desc_rest')
-#ModelOutput = namedtuple('ModelOutput', 'name desc desc_rest')
-#ModelConfig = namedtuple('ModelConfig', 'name default has_default desc desc_rest')
-
 ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest')
 
 
-def collect_info(block_type, block_generator):
-    #print block_type
+def collect_info(block_type, block_generator): 
     
     if isinstance(block_generator, ModelSpec):
         parsed_model = block_generator.parsed_model
@@ -41,20 +33,7 @@ def collect_info(block_type, block_generator):
         
         config = parsed_model.config
         input = parsed_model.input
-        output = parsed_model.output
-#
-#
-#        config = []
-#        for c in parsed_model.config:
-#            cdesc, cdesc_rest = split_docstring(c.docstring)
-#            
-#            config.append(BlockConfig(variable=c.variable,
-#                                      has_default=c.has_default,
-#                                      default=c.default,
-#                                      desc=cdesc, desc_rest=cdesc_rest))
-#
-#        input = []
-#        output = []
+        output = parsed_model.output 
         
     elif issubclass(block_generator, Block):
         if block_generator.__name__ == 'GenericOperation':
@@ -93,13 +72,7 @@ def collect_info(block_type, block_generator):
             output = block_generator.output
 
     else: 
-        assert False
-#    print " - type\t", type
-#    print " - implementation\t", implementation
-#    print " - module\t", module
-#    print " - source\t", source
-#    print " - desc \t", str(desc)
-#    print " - desc_rest \t", str(desc_rest)[:30], '...'
+        assert False 
 
     if source.endswith('.pyc'):
         source = source[:-1]
@@ -203,6 +176,9 @@ def main():
         
         for block_name in sorted(module.blocks):
             block = module.blocks[block_name]
+
+            if block.desc is None:
+                print 'Warning: %s does not have a description.' % block_name
             
             desc = str(block.desc) 
             name = block_reference(block.name)
@@ -238,13 +214,12 @@ def main():
             
             if block.desc:
                 f.write(block.desc + '\n\n')
+                
             if block.desc_rest:
                 f.write(block.desc_rest + '\n\n')
                 
-  
-                
             if block.config:
-                f.write(rst_class('procgraph:parameters'))
+                f.write(rst_class('procgraph:config'))
                 f.write('Configuration\n')
                 f.write('^' * 60 + '\n\n')
                 for c in block.config:

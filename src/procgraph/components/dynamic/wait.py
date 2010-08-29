@@ -1,5 +1,5 @@
-from procgraph.core.block import Block 
-from procgraph.components.basic import register_block
+from procgraph import Block, block_alias, block_config, \
+    block_output_is_variable, block_input_is_variable
         
 class Wait(Block):
     ''' 
@@ -14,6 +14,14 @@ class Wait(Block):
     
 
     ''' 
+    block_alias('wait')
+    
+    block_config('n', 'Number of updates to wait at the beginning.')
+    
+    block_input_is_variable('Arbitrary signals.')
+    block_output_is_variable('Arbitrary signals, minus the first ``n`` updates.')
+    
+    
     def init(self):
         # say we are not ready if the inputs were not defined.
         if not self.are_input_signals_defined():
@@ -34,5 +42,4 @@ class Wait(Block):
             # Just copy the input to the output
             for i in range(self.num_input_signals()):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
-
-register_block(Wait, 'wait')
+ 

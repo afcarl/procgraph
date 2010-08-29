@@ -1,14 +1,10 @@
-from collections import namedtuple
-from procgraph.core.exceptions import BlockWriterError, ModelWriterError
 import sys
+
+from procgraph.core.exceptions import BlockWriterError, ModelWriterError
 
 FIXED = 'fixed-signal'
 VARIABLE = 'variable-signal'
-
-#BlockConfig = namedtuple('BlockConfig', 'variable has_default default desc desc_rest where')
-#BlockInput = namedtuple('BlockInput', 'type name min max desc desc_rest where')
-#BlockOutput = namedtuple('BlockOutput', 'type name  desc desc_rest where')
-
+ 
 class BlockConfig:
     def __init__(self, variable, has_default, default, desc, desc_rest, where):
         self.variable = variable
@@ -35,6 +31,11 @@ class BlockOutput:
         self.desc = desc
         self.desc_rest = desc_rest
         self.where = where
+
+def block_alias(name):
+    assert isinstance(name, str)
+    BlockMeta.aliases.append(name)
+    
 
 def block_config(name, description=None, default='not-given'):
     desc, desc_rest = split_docstring(description)
@@ -75,6 +76,7 @@ def block_output_is_variable(description=None, suffix=None):
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix, desc, desc_rest, None))
     
 class BlockMeta(type):
+    aliases = []
     tmp_config = []
     tmp_input = []
     tmp_output = [] 
@@ -92,7 +94,15 @@ class BlockMeta(type):
         
         if has_variable_output and not has_variable_input:
             raise ModelWriterError('Cannot have variable output without variable input.')
+        
+        if BlockMeta.aliases:
+            from procgraph.core.registrar import default_library
 
+            default_library.register(BlockMeta.aliases[0], cls)
+            if len(BlockMeta.aliases) > 1:
+                raise ModelWriterError("We don't support multiple aliases yet.")
+
+        BlockMeta.aliases = []
 
 def trim(docstring):
     if not docstring:

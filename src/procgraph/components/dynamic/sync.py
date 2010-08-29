@@ -1,10 +1,9 @@
-from procgraph  import Block, Generator, block_input_is_variable, block_output_is_variable
+from procgraph  import Block, Generator, block_input_is_variable, \
+    block_output_is_variable, block_alias 
 from collections import namedtuple
-from procgraph.components.basic import register_block
+
 
 Sample = namedtuple('Sample', 'timestamp value')
-
-
 
 def oldest(queue):
     return queue[-1]
@@ -37,6 +36,7 @@ class Sync(Generator):
         Slave   +    +      +   
         output? v    v      v
     '''
+    block_alias('sync')
     
     block_input_is_variable('Signals to synchronize. The first is the master.', min=2)
     block_output_is_variable('Synchronized signals.')
@@ -179,8 +179,4 @@ class Sync(Generator):
             timestamp = self.output[-1][0]
             return (True, timestamp)
         
-        
-    
-register_block(Sync, 'sync')
-
-
+         

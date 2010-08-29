@@ -2,7 +2,6 @@ import numpy
 
 from procgraph.components  import  check_2d_array 
 from procgraph.components.basic import  register_simple_block
-from procgraph.components.checks import assert_gray_image
 
 try:
     import cv #@UnresolvedImport

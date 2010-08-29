@@ -24,15 +24,15 @@ Summary
 Blocks performing operations with a dynamic nature. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`derivative <block:derivative>`                                                                                                                                                                     None                                                                                                                                                                                                    
-:ref:`derivative2 <block:derivative2>`                                                                                                                                                                   None                                                                                                                                                                                                    
+:ref:`derivative <block:derivative>`                                                                                                                                                                     Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``). See also :ref:`block:derivative2`.                                                                                            
+:ref:`derivative2 <block:derivative2>`                                                                                                                                                                   Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``). See also :ref:`block:derivative`.                                                                                                
 :ref:`forward_difference <block:forward_difference>`                                                                                                                                                     Computes ``x[t+1] - x[t-1]`` normalized with timestamp.                                                                                                                                                 
 :ref:`fps_data_limit <block:fps_data_limit>`                                                                                                                                                             This block limits the output update to a certain framerate.                                                                                                                                             
-:ref:`fps_print <block:fps_print>`                                                                                                                                                                       Prints the fps count for the input.                                                                                                                                                                     
-:ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity, and outputs (x, t).                                                                                                                                      
-:ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the history of a quantity, and outputs (x, t).                                                                                                                                      
-:ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last n samples of a quantity, and outputs (x, timestamp).                                                                                                                       
-:ref:`sieve <block:sieve>`                                                                                                                                                                               This block only transmits every n steps.                                                                                                                                                                
+:ref:`fps_print <block:fps_print>`                                                                                                                                                                       Prints the fps count for the input signals.                                                                                                                                                             
+:ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:last_n_samples`.                                                 
+:ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`.                            
+:ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.                                                  
+:ref:`sieve <block:sieve>`                                                                                                                                                                               This block decimates the data in time by transmitting only one in ``n`` updates.                                                                                                                        
 :ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of streams to the first stream (the master).                                                                                                                              
 :ref:`sync2 <block:sync2>`                                                                                                                                                                               This block synchronizes a set of N sensor streams.                                                                                                                                                      
 :ref:`two_step_difference <block:two_step_difference>`                                                                                                                                                   Computes ``x[t+1] - x[t]`` normalized with timestamp.                                                                                                                                                   
@@ -45,7 +45,7 @@ Blocks performing operations with a dynamic nature.
 Blocks using Matplotlib to display data.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`fps_limit <block:fps_limit>`                                                                                                                                                                       This block limits the output update to a certain framerate.                                                                                                                                             
+:ref:`fps_limit <block:fps_limit>`                                                                                                                                                                       This block limits the output update to a certain *realtime* framerate.                                                                                                                                  
 :ref:`plot <block:plot>`                                                                                                                                                                                 Just plots the vector instantaneously                                                                                                                                                                   
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
@@ -298,6 +298,24 @@ This library is autoloaded.
 
 derivative
 ------------------------------------------------------------
+Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``). See also :ref:`block:derivative2`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: quantity to derive
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x_dot``: approximate derivative
+
 
 .. rst-class:: procgraph:source
 
@@ -311,6 +329,24 @@ Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.
 
 derivative2
 ------------------------------------------------------------
+Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``). See also :ref:`block:derivative`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: quantity to derive
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x_dot``: approximate derivative
+
 
 .. rst-class:: procgraph:source
 
@@ -324,7 +360,27 @@ Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github
 
 forward_difference
 ------------------------------------------------------------
-Computes ``x[t+1] - x[t-1]`` normalized with timestamp.
+Computes ``x[t+1] - x[t-1]`` normalized with timestamp. 
+
+You want to attach this to :ref:`block:last_n_samples`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x123``: An array with the last 3 values of x.
+
+- ``t123``: An array with the last 3 values of the timestamp.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x_dot``: Derivative of x
 
 
 .. rst-class:: procgraph:source
@@ -342,6 +398,30 @@ fps_data_limit
 This block limits the output update to a certain framerate.
 
 
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``fps``: Maximum framerate.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signals to decimate. (variable: 1 <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Decimated signals. (variable number)
+
+
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/dynamic/fps_data_limit.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/fps_data_limit.py>`_. 
@@ -354,7 +434,15 @@ Implemented in `/src/procgraph/components/dynamic/fps_data_limit.py <https://git
 
 fps_print
 ------------------------------------------------------------
-Prints the fps count for the input.
+Prints the fps count for the input signals.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+None (variable: 1 <= n <= None)
 
 
 .. rst-class:: procgraph:source
@@ -369,14 +457,25 @@ Implemented in `/src/procgraph/components/dynamic/fps_print.py <https://github.c
 
 history
 ------------------------------------------------------------
-This block collects the history of a quantity, and outputs (x, t). 
+This block collects the history of a quantity, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:last_n_samples`.
 
-Arguments:
-- interval (seconds)  interval to record
 
-Output:
-- x
-- t
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``interval``: Length of the interval to record.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Sequence of values.
+
+- ``t``: Sequence of timestamps.
 
 
 .. rst-class:: procgraph:source
@@ -391,13 +490,23 @@ Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com
 
 historyt
 ------------------------------------------------------------
-This block collects the history of a quantity, and outputs (x, t). 
+This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`.
 
-Arguments:
-- interval (seconds)  interval to record
 
-Output:
-- a tuple (x,y)
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``interval``: Length of interval (seconds).
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``history``: Tuple ``(t,x)`` containing two arrays.
 
 
 .. rst-class:: procgraph:source
@@ -412,14 +521,25 @@ Implemented in `/src/procgraph/components/dynamic/historyt.py <https://github.co
 
 last_n_samples
 ------------------------------------------------------------
-This block collects the last n samples of a quantity, and outputs (x, timestamp). 
+This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.
 
-Arguments:
-- n, number of samples
 
-Output:
-- x
-- t
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``n``: Number of samples to retain.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Sequence of values.
+
+- ``t``: Sequence of timestamps.
 
 
 .. rst-class:: procgraph:source
@@ -434,13 +554,31 @@ Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com
 
 sieve
 ------------------------------------------------------------
-This block only transmits every n steps. 
+This block decimates the data in time by transmitting only one in ``n`` updates.
 
-Config:
-- n
 
-Input: variable
-Output: variable (same as input)
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``n``: Decimation level; ``n = 3`` means transmit one in three.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``data``: Arbitrary input signals.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``decimated``: Decimated signals.
 
 
 .. rst-class:: procgraph:source
@@ -525,6 +663,24 @@ two_step_difference
 Computes ``x[t+1] - x[t]`` normalized with timestamp.
 
 
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x12``: An array with the last 2 values of x.
+
+- ``t12``: An array with the last 2 values of the timestamp.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x_dot``: Derivative of x
+
+
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/derivative2.py>`_. 
@@ -544,6 +700,30 @@ Config:
 
 Input: variable
 Output: variable (same as input)
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``n``: Number of updates to wait at the beginning.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Arbitrary signals. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Arbitrary signals, minus the first ``n`` updates. (variable number)
 
 
 .. rst-class:: procgraph:source
@@ -572,10 +752,34 @@ Blocks using Matplotlib to display data.
 
 fps_limit
 ------------------------------------------------------------
-This block limits the output update to a certain framerate. 
+This block limits the output update to a certain *realtime* framerate. 
 
 Note that this uses realtime wall clock time -- not the data time!
 This is mean for real-time applications, such as visualization.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``fps``: Realtime fps limit.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Arbitrary signals. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Arbitrary signals with limited framerate. (variable number)
 
 
 .. rst-class:: procgraph:source
@@ -1233,7 +1437,7 @@ soft_variance
 Computes the element-wise "soft" variance (expectation of error absolute value)
 
 
-.. rst-class:: procgraph:parameters
+.. rst-class:: procgraph:config
 
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1256,7 +1460,7 @@ variance
 Computes the element-wise variance.
 
 
-.. rst-class:: procgraph:parameters
+.. rst-class:: procgraph:config
 
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1308,7 +1512,7 @@ Encodes a video stream using ``mencoder``.
 Note that allowed codec and bitrate depend on your version of mencoder.
 
 
-.. rst-class:: procgraph:parameters
+.. rst-class:: procgraph:config
 
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
