@@ -56,7 +56,12 @@ Blocks for basic operations on images.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`compose <block:compose>`                                                                                                                                                                           Compose several images in the same canvas.                                                                                                                                                              
+:ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.                                                                                                                                 
+:ref:`grayscale <block:grayscale>`                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
+:ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.                                                                                                                          
+:ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         None                                                                                                                                                                                                    
+:ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].                                                              
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -68,6 +73,30 @@ Miscellaneous functions to be better organized.
 :ref:`as_json <block:as_json>`                                                                                                                                                                           Converts the input into a JSON string.                                                                                                                                                                  
 :ref:`pickle <block:pickle>`                                                                                                                                                                             Dumps the input as a :py:mod:`pickle` file.                                                                                                                                                             
 :ref:`to_file <block:to_file>`                                                                                                                                                                           Prints the input line by line to a given file.                                                                                                                                                          
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+
+
+:ref:`module:procgraph.components.numpy_ops`
+
+Various operations wrapping numpy functions.
+
+======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`* <block:*>`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`+ <block:+>`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`- <block:->`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`/ <block:/>`                                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
+:ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
+:ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
+:ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
+:ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
+:ref:`outer <block:outer>`                                                                                                                                                                               Wrapper around :py:func:`numpy.multiply.outer`.                                                                                                                                                         
+:ref:`select <block:select>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
+:ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
+:ref:`take <block:take>`                                                                                                                                                                                 None                                                                                                                                                                                                    
+:ref:`vstack <block:vstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.vstack`.                                                                                                                                                                 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -97,6 +126,7 @@ Simple routins for signals extraction, combination.
 Blocks for common statistical operations.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`cov2corr <block:cov2corr>`                                                                                                                                                                         Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.                                                                              
 :ref:`covariance <block:covariance>`                                                                                                                                                                     Computes the covariance matrix of the input                                                                                                                                                             
 :ref:`expectation <block:expectation>`                                                                                                                                                                   Computes the sample expectation of a signal.                                                                                                                                                            
 :ref:`normalize <block:normalize>`                                                                                                                                                                       Removes the mean from a signal.                                                                                                                                                                         
@@ -908,6 +938,66 @@ Output
 Implemented in `/src/procgraph/components/images/compose.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/compose.py>`_. 
 
 
+.. _`block:gray2rgb`:
+
+
+.. rst-class:: procgraph:block
+
+``gray2rgb``
+------------------------------------------------------------
+Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
+
+.. _`block:grayscale`:
+
+
+.. rst-class:: procgraph:block
+
+``grayscale``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
+
 .. _`block:grid`:
 
 
@@ -945,6 +1035,135 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/images/imggrid.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/imggrid.py>`_. 
+
+
+.. _`block:posneg`:
+
+
+.. rst-class:: procgraph:block
+
+``posneg``
+------------------------------------------------------------
+Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``max_value`` (default: None): None
+
+- ``skim`` (default: 0): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
+
+
+.. _`block:rgb2gray`:
+
+
+.. rst-class:: procgraph:block
+
+``rgb2gray``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/filters.py>`_. 
+
+
+.. _`block:scale`:
+
+
+.. rst-class:: procgraph:block
+
+``scale``
+------------------------------------------------------------
+Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color]. 
+
+Input: a numpy array with finite values squeeze()able to (W,H).
+
+Configuration:
+
+-  ``min_value``:  If specified, this is taken to be the threshold. Everything
+                     below min_value is considered to be equal to min_value.
+-  ``max_value``:  Optional upper threshold.
+-  ``min_color``:  color associated to minimum value. Default: [1,1,1] = white.
+-  ``max_color``:  color associated to maximum value. Default: [0,0,0] = black.
+
+Raises :py:class:`.ValueError` if min_value == max_value
+
+Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``max_value`` (default: None): None
+
+- ``min_value`` (default: None): None
+
+- ``min_color`` (default: [1, 1, 1]): None
+
+- ``max_color`` (default: [0, 0, 0]): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/copied_from_reprep.py>`_. 
 
 
 .. _`module:procgraph.components.misc`:
@@ -1054,6 +1273,542 @@ Input
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/misc/to_file.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/misc/to_file.py>`_. 
+
+
+.. _`module:procgraph.components.numpy_ops`:
+
+
+.. rst-class:: procgraph:module
+
+Module ``procgraph.components.numpy_ops``
+============================================================
+
+
+
+.. rst-class:: procgraph:desc
+
+Various operations wrapping numpy functions.
+
+.. _`block:*`:
+
+
+.. rst-class:: procgraph:block
+
+``*``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:+`:
+
+
+.. rst-class:: procgraph:block
+
+``+``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:-`:
+
+
+.. rst-class:: procgraph:block
+
+``-``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:/`:
+
+
+.. rst-class:: procgraph:block
+
+``/``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:abs`:
+
+
+.. rst-class:: procgraph:block
+
+``abs``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.absolute`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:astype`:
+
+
+.. rst-class:: procgraph:block
+
+``astype``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``dtype``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:dstack`:
+
+
+.. rst-class:: procgraph:block
+
+``dstack``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.dstack`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:gradient1d`:
+
+
+.. rst-class:: procgraph:block
+
+``gradient1d``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/gradient1d.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/gradient1d.py>`_. 
+
+
+.. _`block:hstack`:
+
+
+.. rst-class:: procgraph:block
+
+``hstack``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.hstack`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:log`:
+
+
+.. rst-class:: procgraph:block
+
+``log``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.log`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:outer`:
+
+
+.. rst-class:: procgraph:block
+
+``outer``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.multiply.outer`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:select`:
+
+
+.. rst-class:: procgraph:block
+
+``select``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``every``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:sign`:
+
+
+.. rst-class:: procgraph:block
+
+``sign``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.sign`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:square`:
+
+
+.. rst-class:: procgraph:block
+
+``square``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.core.umath.square`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:take`:
+
+
+.. rst-class:: procgraph:block
+
+``take``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``indices``: None
+
+- ``axis`` (default: 0): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:vstack`:
+
+
+.. rst-class:: procgraph:block
+
+``vstack``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.vstack`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
 
 .. _`module:procgraph.components.robotics`:
@@ -1286,6 +2041,45 @@ Module ``procgraph.components.statistics``
 .. rst-class:: procgraph:desc
 
 Blocks for common statistical operations.
+
+.. _`block:cov2corr`:
+
+
+.. rst-class:: procgraph:block
+
+``cov2corr``
+------------------------------------------------------------
+Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``zero_diagonal`` (default: True): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/statistics/cov2corr.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/cov2corr.py>`_. 
+
 
 .. _`block:covariance`:
 
