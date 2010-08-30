@@ -1,12 +1,15 @@
 from pylab import ion, draw, imshow
 
-from procgraph.core.block import Block 
-from procgraph.components.basic import register_block
 
+from procgraph import Block, block_alias, block_config
 
 class ImagePlot(Block):
     ''' Plots an image (anything you can pass to imshow() ) '''
 
+    block_alias('imshow')
+    
+    block_input('to_plot', 'Image to plot.')
+    
     def init(self): 
         self.define_input_signals(['to_plot'])
         self.define_output_signals([])
@@ -23,6 +26,5 @@ class ImagePlot(Block):
             self.image.set_data(data)
             self.image.changed()
             draw()
-        
-register_block(ImagePlot, 'imshow')
+         
 

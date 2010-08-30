@@ -9,6 +9,7 @@ from procgraph.core.registrar import default_library, Library
 # load standard components
 import procgraph.components
 from procgraph.core.block import Block
+from procgraph.core.block_meta import block_alias
 
 # a couple of blocks for testing
 
@@ -19,7 +20,6 @@ class DoesNotDefineInput(Block):
     def init(self):
         self.define_output_signals([])
     
-default_library.register('DoesNotDefineInput', DoesNotDefineInput)
 
 
 class DoesNotDefineOutput(Block):
@@ -28,7 +28,6 @@ class DoesNotDefineOutput(Block):
     def init(self):
         self.define_input_signals([])
         
-default_library.register('DoesNotDefineOutput', DoesNotDefineOutput)
 
 
 class Generic(Block):
@@ -48,6 +47,8 @@ class Generic(Block):
             |generic|
             
     '''
+    block_alias('generic')
+    
     def init(self):
         # use default if not set
         self.set_config_default('in', 0)
@@ -58,8 +59,6 @@ class Generic(Block):
         self.define_input_signals(map(str, range(nin)))
         self.define_output_signals(map(str, range(nout)))
 
-
-default_library.register('generic', Generic)
 
 
 

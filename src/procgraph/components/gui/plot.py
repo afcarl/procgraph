@@ -4,12 +4,36 @@ import  numpy
 from PIL import Image
 from matplotlib import pylab
 
-from procgraph.core.block import Block
-from procgraph.core.exceptions import BadInput 
-from procgraph.components.basic import register_block
+from procgraph import Block, block_input_is_variable, block_output, block_alias, \
+    block_config
+from procgraph.core.exceptions import BadInput  
 
 class Plot(Block):
-    ''' Just plots the vector instantaneously '''
+    ''' Just plots the vector instantaneously.
+        
+        |towrite|
+    
+     '''
+     
+    block_alias('plot')
+    
+    block_input_is_variable('Vectors to plot.')
+    block_output('rgb', 'Resulting image.')
+    
+    block_config('width', 'Image dimension', default=320)
+    block_config('height', 'Image dimension', default=240)
+    block_config('xlabel', default=None)
+    block_config('ylabel', default=None)
+    block_config('legend', default=None)
+    block_config('title', default=None)
+    block_config('format', default='-')
+    block_config('x_min', default=None)
+    block_config('x_max', default=None)
+    block_config('y_min', default=None)
+    block_config('y_max', default=None)
+    block_config('keep', default=False)
+
+
 
     def init(self): 
         # don't define input signals
@@ -220,5 +244,4 @@ class Plot(Block):
         if not self.config.keep:
             pylab.close(self.figure.number)
             self.figure = None
-
-register_block(Plot, 'plot')
+ 

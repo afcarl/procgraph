@@ -4,14 +4,29 @@ import numpy
 
 from PIL import ImageDraw, ImageFont
 
-from procgraph.core.block import Block 
+from procgraph import Block, block_alias, block_input, block_output, block_config
 from procgraph.components.pil.pil_conversions import Image_from_array
-from procgraph.components.basic import register_block
+
+
 from procgraph.core.visualization import info, error
 
 
 class Text(Block):
-    ''' This blocks provides text overlays over an RGB image. '''
+    ''' This blocks provides text overlays over an RGB image. 
+    
+    Example: ::
+    
+        text.texts = {string: "raw image", position: [10,30], halign: left, 
+                      color: black, bg: white  }
+    
+    '''
+    
+    block_alias('text')
+    
+    block_config('texts', 'Text specification')
+    
+    block_input('rgb', 'Input image.')
+    block_output('rgb', 'Output image with overlaid text.')
     
     def init(self):
         self.define_input_signals(['rgb'])
@@ -36,10 +51,7 @@ class Text(Block):
         pixel_data = numpy.asarray(out)
         
         self.set_output(0, pixel_data)
-            
-            
-
-register_block(Text, 'text')
+             
 
 
 # cache of fonts

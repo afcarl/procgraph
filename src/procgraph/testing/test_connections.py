@@ -4,7 +4,7 @@ from procgraph.testing.utils import PGTestCase
 
 
 good_examples2 = [
-""" |rand| -> [0] res """,
+""" |constant value=2| -> [0] res """,
 
 """ # Multiple inputs
 |constant value=12| -> a

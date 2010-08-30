@@ -1,5 +1,5 @@
-from procgraph.core.block import Block
-from procgraph.components.basic import register_block
+from procgraph  import Block, block_alias, block_config, block_input, \
+    block_output
 
 
 # Make it generic?
@@ -7,11 +7,12 @@ class Extract(Block):
     ''' 
     This block extracts some of the components of a vector.
     
-    Arguments:
-    
-    - index
-    
     '''
+    block_alias('extract')
+    block_input('vector')
+    block_output('part')
+    block_config('index')
+    
     def init(self):
         self.define_input_signals(['vector'])
         self.define_output_signals(['part'])
@@ -26,7 +27,3 @@ class Extract(Block):
         
         self.set_output('part', part)
          
-        
-register_block(Extract, 'extract')
-
-

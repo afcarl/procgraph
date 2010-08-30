@@ -1,11 +1,10 @@
+import sys, os
 from collections import namedtuple
 from optparse import OptionParser
 
-from procgraph.core.model_loader import pg_look_for_models, ModelSpec
+from procgraph.core.model_loader import  ModelSpec
 from procgraph.core.registrar import default_library 
 from procgraph.core.block import Block
-import sys
-import os
 from procgraph.core.block_meta import split_docstring, FIXED
 
  
@@ -19,15 +18,42 @@ ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input 
 ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest')
 
 
+def get_module_name_with_doc(original_module_name):
+    assert isinstance(original_module_name, str) 
+  
+    original_module = __import__(original_module_name)
+    module_name = original_module_name
+    
+    while True:
+        module = __import__(module_name, fromlist=['x'])
+        if module.__doc__:
+            break
+      
+        parent_name = '.'.join(module.__name__.split('.')[:-1])
+
+        # Empty!!
+        if not parent_name:
+            module = original_module
+            break
+
+        module_name = parent_name
+
+    result = module.__name__
+    
+    #print original_module_name, '->', result
+    
+    return result
+
+
 def collect_info(block_type, block_generator): 
     
     if isinstance(block_generator, ModelSpec):
         parsed_model = block_generator.parsed_model
         type = type_model
         implementation = None
-        module = block_generator.defined_in # XXX
-        while  module.__doc__ is None:
-            module = module.__package__
+        assert isinstance(block_generator.defined_in, str)
+        module = get_module_name_with_doc(block_generator.defined_in)
+        
         source = parsed_model.where.filename
         desc, desc_rest = split_docstring(parsed_model.docstring) 
         
@@ -35,48 +61,42 @@ def collect_info(block_type, block_generator):
         input = parsed_model.input
         output = parsed_model.output 
         
-    elif issubclass(block_generator, Block):
-        if block_generator.__name__ == 'GenericOperation':
-            func = block_generator.my_operation
-            type = type_simple_block
-            implementation = func
-            source = block_generator.defined_in.__file__ # xxx
-            module = block_generator.defined_in
-            while  module.__doc__ is None:
-                module = module.__package__
-                
-            doc = block_generator.doc
-            if doc is None:
-                doc = func.__doc__
-            desc, desc_rest = split_docstring(doc)
-            
-            config = []
-            input = [] # TODO
-            output = []
-
-            #func.__file__
-            #print block_type, 'SIMPLE_BLOCK', func, func.__name__, func.__module__
+    elif issubclass(block_generator, Block): 
+        type = type_block
+        implementation = block_generator
+        
+        #print block_type, "block_generator.__module__", block_generator.__module__
+        if block_generator.defined_in:
+            original_module_name = block_generator.defined_in
+            assert isinstance(block_generator.defined_in, str)
         else:
-            type = type_block
-            implementation = block_generator
+            original_module_name = block_generator.__module__
             
-            module = __import__(block_generator.__module__, fromlist=['x'])
-            source = module.__file__
-            while  module.__doc__ is None:
-                module = module.__package__
-                #print "changing to %s" % str(module)
-            desc, desc_rest = split_docstring(block_generator.__doc__) 
+        assert isinstance(original_module_name, str)
+        
+        original_module = __import__(original_module_name, fromlist=['x'])
+        
+        source = original_module.__file__
+        module = get_module_name_with_doc(original_module_name)
             
-            config = block_generator.config
-            input = block_generator.input
-            output = block_generator.output
+        desc, desc_rest = split_docstring(block_generator.__doc__) 
+        
+        config = block_generator.config
+        input = block_generator.input
+        output = block_generator.output
 
     else: 
-        assert False 
+        assert False
+        
+    #print block_type, module
+         
 
     if source.endswith('.pyc'):
         source = source[:-1]
 
+    if not isinstance(module, str):
+        print block_type, 'has it wrong'
+    
     return ModelDoc(name=block_type, source=source, type=type,
                     module=module, implementation=implementation,
                     desc=desc, desc_rest=desc_rest,
@@ -209,7 +229,7 @@ def main():
             
             f.write(block_anchor(block.name))
             f.write(rst_class('procgraph:block'))
-            f.write('%s\n' % block.name)
+            f.write('``%s``\n' % block.name)
             f.write('-' * 60 + '\n')
             
             if block.desc:

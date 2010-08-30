@@ -3,6 +3,8 @@ from procgraph.components.basic import register_model_spec
 register_model_spec("""
 --- model variance 
 ''' Computes the element-wise variance. '''
+input x 'Any numpy array'
+output var_x 'Variance of ``x``.'
 config wait = 100 "Number of samples to wait before declaring the expectation valid."
 
 |input name=x| --> x --> |expectation| --> |wait n=$wait| --> Ex
@@ -17,6 +19,8 @@ register_model_spec("""
 --- model soft_variance 
 ''' Computes the element-wise "soft" variance (expectation of error absolute value) '''
 config wait = 100 "Number of samples to wait before declaring the expectation valid."
+input x 'Any numpy array'
+output var_x 'Soft variance of ``x``.'
 
 |input name=x| --> |expectation| --> |wait n=$wait| --> Ex
 

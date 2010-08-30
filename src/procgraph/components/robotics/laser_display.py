@@ -1,10 +1,10 @@
-from numpy import array, linspace, pi, asarray, sin, cos, minimum, \
+from numpy import array, linspace, asarray, sin, cos, minimum, \
     nonzero, logical_not, maximum
 from matplotlib import pylab
 from PIL import Image
 import tempfile
-from procgraph.components.basic import register_block
-from procgraph.core.block import Block
+
+from procgraph  import Block, block_alias, block_config, block_input, block_output
 
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 
@@ -15,9 +15,16 @@ class LaserDisplay(Block):
     
     '''
     
-    #config('theta', desc='', default=)
+    block_alias('laser_display')
+    
+    block_config('width', default=320)
+    block_config('height', default=320)
+    block_config('max_readings', default=30)
+    block_config('groups', 'How to group and draw the readings. (see example) ')
+    
+    block_input('readings')
+    block_output('image')
      
-    # input('and', 'Image name')
     # Exampl
     def init(self):
         self.define_input_signals(['readings'])
@@ -25,7 +32,6 @@ class LaserDisplay(Block):
         self.config.width = 320
         self.config.height = 320
         self.config.max_readings = 30
-        self.config.select = None
         
         self.state.theta = None
         
@@ -81,9 +87,7 @@ class LaserDisplay(Block):
         self.output.image = pylab2rgb()
 
         pylab.close(f.number)
-
-register_block(LaserDisplay, 'laser_display')
-
+ 
 
 def pylab2rgb():
     ''' Saves and returns the pixels in the current pylab figure. 

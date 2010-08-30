@@ -82,6 +82,11 @@ class BlockMeta(type):
     tmp_output = [] 
     
     def __init__(cls, clsname, bases, clsdict): 
+        if clsname == 'Generator':
+            return
+        
+        setattr(cls, 'defined_in', cls.__module__)
+        
         setattr(cls, 'config', BlockMeta.tmp_config)
         setattr(cls, 'output', BlockMeta.tmp_output)
         setattr(cls, 'input', BlockMeta.tmp_input)
@@ -95,13 +100,18 @@ class BlockMeta(type):
         if has_variable_output and not has_variable_input:
             raise ModelWriterError('Cannot have variable output without variable input.')
         
-        if BlockMeta.aliases:
-            from procgraph.core.registrar import default_library
-
-            default_library.register(BlockMeta.aliases[0], cls)
-            if len(BlockMeta.aliases) > 1:
+        if len(BlockMeta.aliases) > 1:
                 raise ModelWriterError("We don't support multiple aliases yet.")
 
+        from procgraph.core.registrar import default_library
+
+        if BlockMeta.aliases:
+            name = BlockMeta.aliases[0]
+        else:
+            name = cls.__name__
+            
+        default_library.register(name, cls)
+           
         BlockMeta.aliases = []
 
 def trim(docstring):

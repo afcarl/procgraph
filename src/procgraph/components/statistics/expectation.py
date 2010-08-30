@@ -1,8 +1,13 @@
-from procgraph.core.block import Block
-from procgraph.components.basic import register_block
+from procgraph import Block, block_alias, block_input, block_output
+
 
 class Expectation(Block):
-        
+    ''' Computes the sample expectation of a signal. '''
+    block_alias('expectation')
+    
+    block_input('x', 'Any numpy array.')
+    block_output('Ex', 'Expectation of input.')
+    
     def init(self):
         self.define_input_signals(['x'])
         self.define_output_signals(['Ex'])
@@ -22,6 +27,4 @@ class Expectation(Block):
         self.state.Ex = Ex
         self.state.num_samples = num_samples + 1
         
-        self.output.Ex = Ex
-            
-register_block(Expectation, 'expectation')
+        self.output.Ex = Ex 

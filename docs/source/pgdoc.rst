@@ -6,7 +6,9 @@ Summary
 ============================================================
 
 
-:ref:`module:procgraph.components`
+:ref:`module:procgraph.components.debug_components`
+
+Components used for debugging and unit tests.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`clock <block:clock>`                                                                                                                                                                               None                                                                                                                                                                                                    
@@ -15,7 +17,6 @@ Summary
 :ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs, unchanged.                                                                                                                                                               
 :ref:`info <block:info>`                                                                                                                                                                                 Prints more compact information about the inputs than :ref:`block:print`.                                                                                                                               
 :ref:`print <block:print>`                                                                                                                                                                               Print a representation of the input values along with their timestamp.                                                                                                                                  
-:ref:`rand <block:rand>`                                                                                                                                                                                 None                                                                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -34,7 +35,6 @@ Blocks performing operations with a dynamic nature.
 :ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.                                                  
 :ref:`sieve <block:sieve>`                                                                                                                                                                               This block decimates the data in time by transmitting only one in ``n`` updates.                                                                                                                        
 :ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of streams to the first stream (the master).                                                                                                                              
-:ref:`sync2 <block:sync2>`                                                                                                                                                                               This block synchronizes a set of N sensor streams.                                                                                                                                                      
 :ref:`two_step_difference <block:two_step_difference>`                                                                                                                                                   Computes ``x[t+1] - x[t]`` normalized with timestamp.                                                                                                                                                   
 :ref:`wait <block:wait>`                                                                                                                                                                                 This block waits a given number of updates before transmitting the output.                                                                                                                              
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
@@ -46,7 +46,7 @@ Blocks using Matplotlib to display data.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`fps_limit <block:fps_limit>`                                                                                                                                                                       This block limits the output update to a certain *realtime* framerate.                                                                                                                                  
-:ref:`plot <block:plot>`                                                                                                                                                                                 Just plots the vector instantaneously                                                                                                                                                                   
+:ref:`plot <block:plot>`                                                                                                                                                                                 Just plots the vector instantaneously.                                                                                                                                                                  
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -55,7 +55,7 @@ Blocks using Matplotlib to display data.
 Blocks for basic operations on images. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`compose <block:compose>`                                                                                                                                                                           Configuration:                                                                                                                                                                                          
+:ref:`compose <block:compose>`                                                                                                                                                                           Compose several images in the same canvas.                                                                                                                                                              
 :ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.                                                                                                                                 
 :ref:`grayscale <block:grayscale>`                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
@@ -71,7 +71,7 @@ Miscellaneous functions to be better organized.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`as_json <block:as_json>`                                                                                                                                                                           Converts the input into a JSON string.                                                                                                                                                                  
-:ref:`pickle <block:pickle>`                                                                                                                                                                             Dumps the input as a pickle file.                                                                                                                                                                       
+:ref:`pickle <block:pickle>`                                                                                                                                                                             Dumps the input as a :py:mod:`pickle` file.                                                                                                                                                             
 :ref:`to_file <block:to_file>`                                                                                                                                                                           Prints the input line by line to a given file.                                                                                                                                                          
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
@@ -85,18 +85,18 @@ Various operations wrapping numpy functions.
 :ref:`+ <block:+>`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`- <block:->`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`/ <block:/>`                                                                                                                                                                                       None                                                                                                                                                                                                    
-:ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
+:ref:`abs <block:abs>`                                                                                                                                                                                   absolute(x[, out])                                                                                                                                                                                      
 :ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
+:ref:`dstack <block:dstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
 :ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
-:ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
-:ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
+:ref:`hstack <block:hstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`log <block:log>`                                                                                                                                                                                   log(x[, out])                                                                                                                                                                                           
 :ref:`outer <block:outer>`                                                                                                                                                                               Wrapper around :py:func:`numpy.multiply.outer`.                                                                                                                                                         
 :ref:`select <block:select>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
-:ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
+:ref:`sign <block:sign>`                                                                                                                                                                                 sign(x[, out])                                                                                                                                                                                          
+:ref:`square <block:square>`                                                                                                                                                                             square(x[, out])                                                                                                                                                                                        
 :ref:`take <block:take>`                                                                                                                                                                                 None                                                                                                                                                                                                    
-:ref:`vstack <block:vstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.vstack`.                                                                                                                                                                 
+:ref:`vstack <block:vstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -106,8 +106,8 @@ Some functions specific to robotics applications.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`laser_display <block:laser_display>`                                                                                                                                                               Produces a plot of a range-finder scan.                                                                                                                                                                 
-:ref:`pose2commands <block:pose2commands>`                                                                                                                                                               None                                                                                                                                                                                                    
-:ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`pose2commands <block:pose2commands>`                                                                                                                                                               Computes the velocity commands from the odometry data.                                                                                                                                                  
+:ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       Block used by :ref:`block:pose2commands`.                                                                                                                                                               
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -127,9 +127,9 @@ Blocks for common statistical operations.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`cov2corr <block:cov2corr>`                                                                                                                                                                         Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.                                                                              
-:ref:`covariance <block:covariance>`                                                                                                                                                                     None                                                                                                                                                                                                    
-:ref:`expectation <block:expectation>`                                                                                                                                                                   None                                                                                                                                                                                                    
-:ref:`normalize <block:normalize>`                                                                                                                                                                       None                                                                                                                                                                                                    
+:ref:`covariance <block:covariance>`                                                                                                                                                                     Computes the covariance matrix of the input                                                                                                                                                             
+:ref:`expectation <block:expectation>`                                                                                                                                                                   Computes the sample expectation of a signal.                                                                                                                                                            
+:ref:`normalize <block:normalize>`                                                                                                                                                                       Removes the mean from a signal.                                                                                                                                                                         
 :ref:`soft_variance <block:soft_variance>`                                                                                                                                                               Computes the element-wise "soft" variance (expectation of error absolute value)                                                                                                                         
 :ref:`variance <block:variance>`                                                                                                                                                                         Computes the element-wise variance.                                                                                                                                                                     
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
@@ -140,32 +140,36 @@ Blocks for common statistical operations.
 Blocks for encoding/decoding video based on MPlayer.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`SimpleCompression <block:SimpleCompression>`                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`mencoder <block:mencoder>`                                                                                                                                                                         Encodes a video stream using ``mencoder``.                                                                                                                                                              
-:ref:`mplayer <block:mplayer>`                                                                                                                                                                           Plays a video stream.                                                                                                                                                                                   
+:ref:`mplayer <block:mplayer>`                                                                                                                                                                           Decodes a video stream.                                                                                                                                                                                 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
-.. _`module:procgraph.components`:
+.. _`module:procgraph.components.debug_components`:
 
 
 .. rst-class:: procgraph:module
 
-Module ``procgraph.components``
+Module ``procgraph.components.debug_components``
 ============================================================
 
+
+
+.. rst-class:: procgraph:desc
+
+Components used for debugging and unit tests.
 
 .. _`block:clock`:
 
 
 .. rst-class:: procgraph:block
 
-clock
+``clock``
 ------------------------------------------------------------
 
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/__init__.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/__init__.py>`_. 
 
 
 .. _`block:constant`:
@@ -173,7 +177,7 @@ Implemented in `/src/procgraph/components/debug_components.py <https://github.co
 
 .. rst-class:: procgraph:block
 
-constant
+``constant``
 ------------------------------------------------------------
 Output a numerical constant that never changes. 
 
@@ -187,9 +191,17 @@ Two parameters:
 * ``name``, optional signal name (default: const)
 
 
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: Constant value to output.
+
+
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/constant.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/constant.py>`_. 
 
 
 .. _`block:gain`:
@@ -197,14 +209,14 @@ Implemented in `/src/procgraph/components/debug_components.py <https://github.co
 
 .. rst-class:: procgraph:block
 
-gain
+``gain``
 ------------------------------------------------------------
 FIXME: to be replaced by simpler function.
 
 
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/__init__.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/__init__.py>`_. 
 
 
 .. _`block:identity`:
@@ -212,7 +224,7 @@ Implemented in `/src/procgraph/components/debug_components.py <https://github.co
 
 .. rst-class:: procgraph:block
 
-identity
+``identity``
 ------------------------------------------------------------
 This block outputs the inputs, unchanged. 
 
@@ -220,9 +232,25 @@ This is an example of a block whose signal configuration is dynamics:
 init() gets called twice.
 
 
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Input signals. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Output signals, equal to input. (variable number)
+
+
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/identity.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/identity.py>`_. 
 
 
 .. _`block:info`:
@@ -230,16 +258,24 @@ Implemented in `/src/procgraph/components/debug_components.py <https://github.co
 
 .. rst-class:: procgraph:block
 
-info
+``info``
 ------------------------------------------------------------
 Prints more compact information about the inputs than :ref:`block:print`. 
 
 For numpy arrays it prints their shape and dtype instead of their values.
 
 
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signals to describe. (variable: None <= n <= None)
+
+
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/info.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/info.py>`_. 
 
 
 .. _`block:print`:
@@ -247,27 +283,22 @@ Implemented in `/src/procgraph/components/debug_components.py <https://github.co
 
 .. rst-class:: procgraph:block
 
-print
+``print``
 ------------------------------------------------------------
 Print a representation of the input values along with their timestamp.
 
 
-.. rst-class:: procgraph:source
+.. rst-class:: procgraph:input
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Signals to print. (variable: None <= n <= None)
 
-.. _`block:rand`:
-
-
-.. rst-class:: procgraph:block
-
-rand
-------------------------------------------------------------
 
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/printc.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/printc.py>`_. 
 
 
 .. _`module:procgraph.components.dynamic`:
@@ -296,7 +327,7 @@ This library is autoloaded.
 
 .. rst-class:: procgraph:block
 
-derivative
+``derivative``
 ------------------------------------------------------------
 Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``). See also :ref:`block:derivative2`.
 
@@ -327,7 +358,7 @@ Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.
 
 .. rst-class:: procgraph:block
 
-derivative2
+``derivative2``
 ------------------------------------------------------------
 Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``). See also :ref:`block:derivative`.
 
@@ -358,7 +389,7 @@ Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github
 
 .. rst-class:: procgraph:block
 
-forward_difference
+``forward_difference``
 ------------------------------------------------------------
 Computes ``x[t+1] - x[t-1]`` normalized with timestamp. 
 
@@ -393,7 +424,7 @@ Implemented in `/src/procgraph/components/dynamic/derivative.py <https://github.
 
 .. rst-class:: procgraph:block
 
-fps_data_limit
+``fps_data_limit``
 ------------------------------------------------------------
 This block limits the output update to a certain framerate.
 
@@ -432,7 +463,7 @@ Implemented in `/src/procgraph/components/dynamic/fps_data_limit.py <https://git
 
 .. rst-class:: procgraph:block
 
-fps_print
+``fps_print``
 ------------------------------------------------------------
 Prints the fps count for the input signals.
 
@@ -455,7 +486,7 @@ Implemented in `/src/procgraph/components/dynamic/fps_print.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-history
+``history``
 ------------------------------------------------------------
 This block collects the history of a quantity, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:last_n_samples`.
 
@@ -488,7 +519,7 @@ Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com
 
 .. rst-class:: procgraph:block
 
-historyt
+``historyt``
 ------------------------------------------------------------
 This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`.
 
@@ -519,7 +550,7 @@ Implemented in `/src/procgraph/components/dynamic/historyt.py <https://github.co
 
 .. rst-class:: procgraph:block
 
-last_n_samples
+``last_n_samples``
 ------------------------------------------------------------
 This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.
 
@@ -552,7 +583,7 @@ Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com
 
 .. rst-class:: procgraph:block
 
-sieve
+``sieve``
 ------------------------------------------------------------
 This block decimates the data in time by transmitting only one in ``n`` updates.
 
@@ -591,7 +622,7 @@ Implemented in `/src/procgraph/components/dynamic/sieve.py <https://github.com/A
 
 .. rst-class:: procgraph:block
 
-sync
+``sync``
 ------------------------------------------------------------
 This block synchronizes a set of streams to the first stream (the master). 
 
@@ -635,30 +666,12 @@ Synchronized signals. (variable number)
 Implemented in `/src/procgraph/components/dynamic/sync.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync.py>`_. 
 
 
-.. _`block:sync2`:
-
-
-.. rst-class:: procgraph:block
-
-sync2
-------------------------------------------------------------
-This block synchronizes a set of N sensor streams. 
-
-The first signal is called the "master" signal.
-The other (N-1) are slaves.
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/procgraph/components/dynamic/sync2.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/sync2.py>`_. 
-
-
 .. _`block:two_step_difference`:
 
 
 .. rst-class:: procgraph:block
 
-two_step_difference
+``two_step_difference``
 ------------------------------------------------------------
 Computes ``x[t+1] - x[t]`` normalized with timestamp.
 
@@ -691,7 +704,7 @@ Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github
 
 .. rst-class:: procgraph:block
 
-wait
+``wait``
 ------------------------------------------------------------
 This block waits a given number of updates before transmitting the output. 
 
@@ -750,7 +763,7 @@ Blocks using Matplotlib to display data.
 
 .. rst-class:: procgraph:block
 
-fps_limit
+``fps_limit``
 ------------------------------------------------------------
 This block limits the output update to a certain *realtime* framerate. 
 
@@ -792,9 +805,57 @@ Implemented in `/src/procgraph/components/gui/fps_limit.py <https://github.com/A
 
 .. rst-class:: procgraph:block
 
-plot
+``plot``
 ------------------------------------------------------------
-Just plots the vector instantaneously
+Just plots the vector instantaneously. 
+
+|towrite|
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``width`` (default: 320): Image dimension
+
+- ``height`` (default: 240): Image dimension
+
+- ``xlabel`` (default: None): None
+
+- ``ylabel`` (default: None): None
+
+- ``legend`` (default: None): None
+
+- ``title`` (default: None): None
+
+- ``format`` (default: -): None
+
+- ``x_min`` (default: None): None
+
+- ``x_max`` (default: None): None
+
+- ``y_min`` (default: None): None
+
+- ``y_max`` (default: None): None
+
+- ``keep`` (default: False): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Vectors to plot. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``rgb``: Resulting image.
 
 
 .. rst-class:: procgraph:source
@@ -840,14 +901,42 @@ Convert a RGB image to grayscale, and back to a RGB image:::
 
 .. rst-class:: procgraph:block
 
-compose
+``compose``
 ------------------------------------------------------------
-Configuration: 
+Compose several images in the same canvas. 
 
-- ``width``, ``height``: dimension in  pixels
-- ``positions``: a structure giving the position of each signal in the canvas. Example: ::
 
-      compose.positions = {y: [0,0], ys: [320,20]}
+Example configuration: ::
+
+    compose.positions = {y: [0,0], ys: [320,20]}
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``width``: Dimension in pixels.
+
+- ``height``: Dimension in pixels.
+
+- ``positions``: A structure giving the position of each signal in the canvas.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Images to compose. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``canvas``: RGB image
 
 
 .. rst-class:: procgraph:source
@@ -860,9 +949,25 @@ Implemented in `/src/procgraph/components/images/compose.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-gray2rgb
+``gray2rgb``
 ------------------------------------------------------------
 Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -875,8 +980,24 @@ Implemented in `/src/procgraph/components/images/filters.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-grayscale
+``grayscale``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -888,9 +1009,33 @@ Implemented in `/src/procgraph/components/images/filters.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-grid
+``grid``
 ------------------------------------------------------------
 A block that creates a larger image by arranging them in a grid.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``cols``: Columns in the grid.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Images to arrange in a grid. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``grid``: Images arranged in a grid.
 
 
 .. rst-class:: procgraph:source
@@ -903,9 +1048,35 @@ Implemented in `/src/procgraph/components/images/imggrid.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-posneg
+``posneg``
 ------------------------------------------------------------
 Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``max_value`` (default: None): None
+
+- ``skim`` (default: 0): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -918,8 +1089,24 @@ Implemented in `/src/procgraph/components/images/copied_from_reprep.py <https://
 
 .. rst-class:: procgraph:block
 
-rgb2gray
+``rgb2gray``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -931,7 +1118,7 @@ Implemented in `/src/procgraph/components/images/filters.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-scale
+``scale``
 ------------------------------------------------------------
 Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color]. 
 
@@ -948,6 +1135,36 @@ Configuration:
 Raises :py:class:`.ValueError` if min_value == max_value
 
 Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``max_value`` (default: None): None
+
+- ``min_value`` (default: None): None
+
+- ``min_color`` (default: [1, 1, 1]): None
+
+- ``max_color`` (default: [0, 0, 0]): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -974,9 +1191,27 @@ Miscellaneous functions to be better organized.
 
 .. rst-class:: procgraph:block
 
-as_json
+``as_json``
 ------------------------------------------------------------
-Converts the input into a JSON string.
+Converts the input into a JSON string. 
+
+TODO: add example
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Inputs to transcribe as JSON. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``json``: JSON string.
 
 
 .. rst-class:: procgraph:source
@@ -989,9 +1224,25 @@ Implemented in `/src/procgraph/components/misc/json_misc.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-pickle
+``pickle``
 ------------------------------------------------------------
-Dumps the input as a pickle file.
+Dumps the input as a :py:mod:`pickle` file.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: File to write.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Anything pickable.
 
 
 .. rst-class:: procgraph:source
@@ -1004,9 +1255,25 @@ Implemented in `/src/procgraph/components/misc/pickling.py <https://github.com/A
 
 .. rst-class:: procgraph:block
 
-to_file
+``to_file``
 ------------------------------------------------------------
 Prints the input line by line to a given file.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: File to write.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``values``: Anything you wish to print to file.
 
 
 .. rst-class:: procgraph:source
@@ -1033,8 +1300,26 @@ Various operations wrapping numpy functions.
 
 .. rst-class:: procgraph:block
 
-*
+``*``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1046,8 +1331,26 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-+
+``+``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1059,8 +1362,26 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
--
+``-``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1072,8 +1393,26 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-/
+``/``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1085,9 +1424,61 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-abs
+``abs``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.absolute`.
+absolute(x[, out]) 
+
+Calculate the absolute value element-wise.
+
+Parameters
+----------
+x : array_like
+    Input array.
+
+Returns
+-------
+res : ndarray
+    An ndarray containing the absolute value of
+    each element in `x`.  For complex input, ``a + ib``, the
+    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
+
+Examples
+--------
+>>> x = np.array([-1.2, 1.2])
+>>> np.absolute(x)
+array([ 1.2,  1.2])
+>>> np.absolute(1.2 + 1j)
+1.5620499351813308
+
+Plot the function over ``[-10, 10]``:
+
+>>> import matplotlib.pyplot as plt
+
+>>> x = np.linspace(-10, 10, 101)
+>>> plt.plot(x, np.absolute(x))
+>>> plt.show()
+
+Plot the function over the complex plane:
+
+>>> xx = x + 1j * x[:, np.newaxis]
+>>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
+>>> plt.show()
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1100,8 +1491,32 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-astype
+``astype``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``dtype``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1113,9 +1528,25 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-dstack
+``dstack``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.dstack`.
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1128,8 +1559,24 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-gradient1d
+``gradient1d``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1141,9 +1588,25 @@ Implemented in `/src/procgraph/components/numpy_ops/gradient1d.py <https://githu
 
 .. rst-class:: procgraph:block
 
-hstack
+``hstack``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.hstack`.
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1156,9 +1619,70 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-log
+``log``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.log`.
+log(x[, out]) 
+
+Natural logarithm, element-wise.
+
+The natural logarithm `log` is the inverse of the exponential function,
+so that `log(exp(x)) = x`. The natural logarithm is logarithm in base `e`.
+
+Parameters
+----------
+x : array_like
+    Input value.
+
+Returns
+-------
+y : ndarray
+    The natural logarithm of `x`, element-wise.
+
+See Also
+--------
+log10, log2, log1p
+
+Notes
+-----
+Logarithm is a multivalued function: for each `x` there is an infinite
+number of `z` such that `exp(z) = x`. The convention is to return the `z`
+whose imaginary part lies in `[-pi, pi]`.
+
+For real-valued input data types, `log` always returns real output. For
+each value that cannot be expressed as a real number or infinity, it
+yields ``nan`` and sets the `invalid` floating point error flag.
+
+For complex-valued input, `log` is a complex analytical function that
+has a branch cut `[-inf, 0]` and is continuous from above on it. `log`
+handles the floating-point negative zero as an infinitesimal negative
+number, conforming to the C99 standard.
+
+References
+----------
+.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
+       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
+.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
+
+Examples
+--------
+>>> np.log([1, np.e, np.e**2, 0])
+array([  0.,   1.,   2., -Inf])
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1171,9 +1695,27 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-outer
+``outer``
 ------------------------------------------------------------
 Wrapper around :py:func:`numpy.multiply.outer`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1186,8 +1728,32 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-select
+``select``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``every``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1199,9 +1765,46 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-sign
+``sign``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.sign`.
+sign(x[, out]) 
+
+Returns an element-wise indication of the sign of a number.
+
+The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
+
+Parameters
+----------
+x : array_like
+  Input values.
+
+Returns
+-------
+y : ndarray
+  The sign of `x`.
+
+Examples
+--------
+>>> np.sign([-5., 4.5])
+array([-1.,  1.])
+>>> np.sign(0)
+0
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1214,9 +1817,49 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-square
+``square``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.square`.
+square(x[, out]) 
+
+Return the element-wise square of the input.
+
+Parameters
+----------
+x : array_like
+    Input data.
+
+Returns
+-------
+out : ndarray
+    Element-wise `x*x`, of the same shape and dtype as `x`.
+    Returns scalar if `x` is a scalar.
+
+See Also
+--------
+numpy.linalg.matrix_power
+sqrt
+power
+
+Examples
+--------
+>>> np.square([-1j, 1])
+array([-1.-0.j,  1.+0.j])
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1229,8 +1872,34 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-take
+``take``
 ------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``indices``: None
+
+- ``axis`` (default: 0): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1242,9 +1911,25 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 .. rst-class:: procgraph:block
 
-vstack
+``vstack``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.vstack`.
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+- ``1``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1271,13 +1956,43 @@ Some functions specific to robotics applications.
 
 .. rst-class:: procgraph:block
 
-laser_display
+``laser_display``
 ------------------------------------------------------------
 Produces a plot of a range-finder scan. 
 
 
 display_sick.groups = [{ indices: [0,179], theta: [-1.57,+1.57],
          color: 'r', origin: [0,0,0]}]
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``width`` (default: 320): None
+
+- ``height`` (default: 320): None
+
+- ``max_readings`` (default: 30): None
+
+- ``groups``: How to group and draw the readings. (see example)
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``readings``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``image``: None
 
 
 .. rst-class:: procgraph:source
@@ -1290,8 +2005,32 @@ Implemented in `/src/procgraph/components/robotics/laser_display.py <https://git
 
 .. rst-class:: procgraph:block
 
-pose2commands
+``pose2commands``
 ------------------------------------------------------------
+Computes the velocity commands from the odometry data.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``pose``: Odometry ``[x,y,theta]``.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``commands``: Estimated commands ``[vx,vy,omega]``.
+
+- ``vx``: None
+
+- ``vy``: None
+
+- ``omega``: None
+
 
 .. rst-class:: procgraph:source
 
@@ -1303,8 +2042,28 @@ Implemented in `/src/procgraph/components/robotics/pose2velocity.py <https://git
 
 .. rst-class:: procgraph:block
 
-pose2vel_
+``pose2vel_``
 ------------------------------------------------------------
+Block used by :ref:`block:pose2commands`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``q12``: Last two poses.
+
+- ``t12``: Last two timestamps.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``commands``: Estimated commands ``[vx,vy,omega]``.
+
 
 .. rst-class:: procgraph:source
 
@@ -1330,13 +2089,33 @@ Simple routins for signals extraction, combination.
 
 .. rst-class:: procgraph:block
 
-extract
+``extract``
 ------------------------------------------------------------
-This block extracts some of the components of a vector. 
+This block extracts some of the components of a vector.
 
-Arguments:
 
-- index
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``index``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``vector``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``part``: None
 
 
 .. rst-class:: procgraph:source
@@ -1349,9 +2128,25 @@ Implemented in `/src/procgraph/components/signals/extract.py <https://github.com
 
 .. rst-class:: procgraph:block
 
-join
+``join``
 ------------------------------------------------------------
 This block joins multiple signals into one.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signals to be joined together. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``joined``: Joined signals.
 
 
 .. rst-class:: procgraph:source
@@ -1378,9 +2173,33 @@ Blocks for common statistical operations.
 
 .. rst-class:: procgraph:block
 
-cov2corr
+``cov2corr``
 ------------------------------------------------------------
 Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``zero_diagonal`` (default: True): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
 
 
 .. rst-class:: procgraph:source
@@ -1393,8 +2212,34 @@ Implemented in `/src/procgraph/components/statistics/cov2corr.py <https://github
 
 .. rst-class:: procgraph:block
 
-covariance
+``covariance``
 ------------------------------------------------------------
+Computes the covariance matrix of the input
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``wait`` (default: 10): Number of sample to have reliable expectation.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Unidimensional numpy array.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``cov_x``: Square matrix representing sample covariance.
+
 
 .. rst-class:: procgraph:source
 
@@ -1406,8 +2251,26 @@ Implemented in `/src/procgraph/components/statistics/covariance.py <https://gith
 
 .. rst-class:: procgraph:block
 
-expectation
+``expectation``
 ------------------------------------------------------------
+Computes the sample expectation of a signal.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Any numpy array.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``Ex``: Expectation of input.
+
 
 .. rst-class:: procgraph:source
 
@@ -1419,8 +2282,34 @@ Implemented in `/src/procgraph/components/statistics/expectation.py <https://git
 
 .. rst-class:: procgraph:block
 
-normalize
+``normalize``
 ------------------------------------------------------------
+Removes the mean from a signal.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``wait`` (default: 10): Number of sample to have reliable expectation.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Unidimensional numpy array.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x_n``: Signal without the mean.
+
 
 .. rst-class:: procgraph:source
 
@@ -1432,7 +2321,7 @@ Implemented in `/src/procgraph/components/statistics/covariance.py <https://gith
 
 .. rst-class:: procgraph:block
 
-soft_variance
+``soft_variance``
 ------------------------------------------------------------
 Computes the element-wise "soft" variance (expectation of error absolute value)
 
@@ -1445,6 +2334,22 @@ Configuration
 - ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
 
 
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Any numpy array
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``var_x``: Soft variance of ``x``.
+
+
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/statistics/variance.py>`_. 
@@ -1455,7 +2360,7 @@ Implemented in `/src/procgraph/components/statistics/variance.py <https://github
 
 .. rst-class:: procgraph:block
 
-variance
+``variance``
 ------------------------------------------------------------
 Computes the element-wise variance.
 
@@ -1466,6 +2371,22 @@ Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Any numpy array
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``var_x``: Variance of ``x``.
 
 
 .. rst-class:: procgraph:source
@@ -1487,25 +2408,12 @@ Module ``procgraph.components.video``
 
 Blocks for encoding/decoding video based on MPlayer.
 
-.. _`block:SimpleCompression`:
-
-
-.. rst-class:: procgraph:block
-
-SimpleCompression
-------------------------------------------------------------
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/procgraph/components/video/simple_compression.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/video/simple_compression.py>`_. 
-
-
 .. _`block:mencoder`:
 
 
 .. rst-class:: procgraph:block
 
-mencoder
+``mencoder``
 ------------------------------------------------------------
 Encodes a video stream using ``mencoder``. 
 
@@ -1546,12 +2454,27 @@ Implemented in `/src/procgraph/components/video/mencoder.py <https://github.com/
 
 .. rst-class:: procgraph:block
 
-mplayer
+``mplayer``
 ------------------------------------------------------------
-Plays a video stream. 
+Decodes a video stream.
 
-Config:
-    - file
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: Input video file. Any format that ``mplayer`` understands.
+
+- ``quiet`` (default: True): If true, suppress messages from mplayer.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``video``: RGB stream as numpy array.
 
 
 .. rst-class:: procgraph:source

@@ -1,9 +1,7 @@
 import numpy
 
-from procgraph.core.block import Block 
-from procgraph.components  import assert_rgb_image
-from procgraph.components.basic import register_block
-
+from procgraph import Block, block_config, block_alias, block_input_is_variable, block_output 
+from procgraph.components  import assert_rgb_image 
         
 def place_at(canvas, image, xpix, ypix):
     #print canvas.shape, image.shape
@@ -16,13 +14,25 @@ def place_at(canvas, image, xpix, ypix):
 
 class Compose(Block):
     '''
-    Configuration:
+    Compose several images in the same canvas.
     
-    - ``width``, ``height``: dimension in  pixels
-    - ``positions``: a structure giving the position of each signal in the canvas. Example: :: 
-      
-          compose.positions = {y: [0,0], ys: [320,20]}
+    
+    Example configuration: ::
+    
+        compose.positions = {y: [0,0], ys: [320,20]}
+        
     '''
+    
+    block_alias('compose')
+    
+    block_config('width', 'Dimension in pixels.')
+    block_config('height', 'Dimension in pixels.')
+    block_config('positions', 'A structure giving the position of each signal in the canvas.')
+    
+    block_input_is_variable('Images to compose.')
+    
+    block_output('canvas', 'RGB image')
+    
     def init(self):
         self.define_output_signals(['canvas'])
         
@@ -54,7 +64,6 @@ class Compose(Block):
         
         self.set_output(0, canvas)
        
-register_block(Compose, 'compose')
 
         
         

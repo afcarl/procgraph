@@ -130,11 +130,11 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
 
 def add_models_to_library(library, string, name=None, filename=None, defined_in=None):
     '''
-    defined_in: module object (to display in documentation)
+    defined_in: module NAME (to display in documentation)
         (Compulsory!)
     '''
     if filename is None and defined_in is not None:
-        filename = defined_in.__file__
+        filename = __import__(defined_in, fromlist=['x']).__file__
     
     models = parse_model(string, filename=filename)
     if models[0].name is None:

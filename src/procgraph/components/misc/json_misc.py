@@ -1,10 +1,17 @@
-from procgraph.core.block import Block
 import simplejson as json
-from procgraph.components.basic import register_block
+
+from procgraph import Block, block_alias, block_input_is_variable, block_output 
 
 class AsJSON(Block):
-    ''' Converts the input into a JSON string. '''
+    ''' Converts the input into a JSON string. 
     
+        TODO: add example
+    '''
+
+    block_alias('as_json')
+    block_input_is_variable('Inputs to transcribe as JSON.')
+    block_output('json', 'JSON string.')
+        
     def init(self):
         # We take any number of output
         self.define_output_signals(['json'])
@@ -18,5 +25,4 @@ class AsJSON(Block):
             data[name] = value 
             
         self.output.json = json.dumps(data)  
-        
-register_block(AsJSON, 'as_json')
+         

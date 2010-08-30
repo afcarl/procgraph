@@ -1,11 +1,18 @@
-from procgraph.core.block import Block
+from procgraph import Block, block_alias, block_input, block_output
 from procgraph.core.exceptions import BadInput
 
-from procgraph.components.basic import register_block, register_model_spec
+from procgraph.components.basic import  register_model_spec
 
 from snp_geometry.pose import Pose
 
 class Pose2velocity(Block):
+    ''' Block used by :ref:`block:pose2commands`. '''
+    block_alias('pose2vel_')
+    
+    block_input('q12', 'Last two poses.')
+    block_input('t12', 'Last two timestamps.')
+    
+    block_output('commands', 'Estimated commands ``[vx,vy,omega]``.')
     
     def init(self):
         self.define_input_signals(['q12', 't12'])
@@ -35,12 +42,16 @@ class Pose2velocity(Block):
                     float(velocity.angular[2])]
         
         self.set_output('commands', commands, timestamp=t[0])
+ 
 
-register_block(Pose2velocity, 'pose2vel_')
-
-# Computes the variance
 register_model_spec("""
 --- model pose2commands
+''' Computes the velocity commands from the odometry data. '''
+input pose "Odometry ``[x,y,theta]``."
+output commands "Estimated commands ``[vx,vy,omega]``."
+output vx
+output vy
+output omega 
  
 |input name=pose| --> |last_n_samples n=2| --> |pose2vel_| --> commands 
 
