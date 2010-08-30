@@ -1,0 +1,140 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; procgraph v0.1 documentation</title>
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>procgraph v0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>&lt;no title&gt;</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <p>Types of nodes:</p>
+<blockquote>
+<dl class="docutils">
+<dt>A - fixed number of inputs, fixed number of outputs</dt>
+<dd>Most of the blocks.</dd>
+<dt>B - variable number of inputs (&gt;= K), fixed number of outputs</dt>
+<dd>For example: min, max, most numpy functions</dd>
+<dt>C - variable number of inputs (&gt;= K), same number of outputs</dt>
+<dd>For example: sync</dd>
+</dl>
+</blockquote>
+<p>In the case of a Model: only type A is supported.</p>
+<p>In the case of a Block, we allow all 3.</p>
+<blockquote>
+<dl class="docutils">
+<dt>class TypeA(Block):</dt>
+<dd>block_config()
+block_input(&#8216;input1&#8217;, &#8216;desc&#8217;)
+block_input(&#8216;input2&#8217;, &#8216;desc&#8217;)
+block_output(&#8216;out&#8217;, &#8216;desc&#8217;)
+...</dd>
+<dt>class TypeB(Block):</dt>
+<dd>block_input_is_variable(&#8216;Signals to be summed (at least 2).&#8217;, min=2)
+block_output(&#8216;output2&#8217;, &#8216;Sum of the signals.&#8217;)
+...</dd>
+<dt>class TypeC(Block):</dt>
+<dd>block_input_is_variable(&#8216;Signals to be summed.&#8217;, min=K)
+block_output_is_variable(&#8216;Synchronized signals.&#8217;)</dd>
+</dl>
+</blockquote>
+<p>In the case of a simple block</p>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="main.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>
