@@ -38,6 +38,8 @@ def block_alias(name):
     
 
 def block_config(name, description=None, default='not-given'):
+    assert isinstance(name, str)
+    assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     has_default = default != 'not-given'
     if filter(lambda x: x.variable == name, BlockMeta.tmp_config):
@@ -45,6 +47,8 @@ def block_config(name, description=None, default='not-given'):
     BlockMeta.tmp_config.append(BlockConfig(name, has_default, default, desc, desc_rest, None))
 
 def block_input(name, description=None):
+    assert isinstance(name, str)
+    assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if filter(lambda x: x.name == name, BlockMeta.tmp_input):
         raise BlockWriterError('Already described input variable "%s".' % name)
@@ -53,6 +57,7 @@ def block_input(name, description=None):
     BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None, desc, desc_rest, None))
 
 def block_input_is_variable(description=None, min=None, max=None):
+    assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_input:
         raise BlockWriterError('Cannot mix variable and fixed input'
@@ -60,6 +65,8 @@ def block_input_is_variable(description=None, min=None, max=None):
     BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max, desc, desc_rest, None))
     
 def block_output(name, description=None):
+    assert isinstance(name, str)
+    assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if filter(lambda x: x.name == name, BlockMeta.tmp_output):
         raise BlockWriterError('Already described output variable "%s".' % name)
@@ -69,6 +76,7 @@ def block_output(name, description=None):
     BlockMeta.tmp_output.append(BlockOutput(FIXED, name, desc, desc_rest, None))
     
 def block_output_is_variable(description=None, suffix=None):
+    assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_output:
         raise BlockWriterError('Cannot mix variable and fixed output'
@@ -81,8 +89,9 @@ class BlockMeta(type):
     tmp_input = []
     tmp_output = [] 
     
-    def __init__(cls, clsname, bases, clsdict): 
-        if clsname == 'Generator':
+    def __init__(cls, clsname, bases, clsdict):
+        # Do not do this for the superclasses 
+        if clsname in ['Generator', 'Block']:
             return
         
         setattr(cls, 'defined_in', cls.__module__)
@@ -113,6 +122,37 @@ class BlockMeta(type):
         default_library.register(name, cls)
            
         BlockMeta.aliases = []
+
+
+class BlockMetaSugar(object):
+    
+    @staticmethod
+    def alias(*arg, **dict):
+        block_alias(*arg, **dict)
+    
+    @staticmethod
+    def config(*arg, **dict):
+        block_config(*arg, **dict)
+    
+    @staticmethod
+    def input(*arg, **dict):
+        block_input(*arg, **dict)
+    
+    @staticmethod
+    def output(*arg, **dict):
+        block_output(*arg, **dict)
+    
+    @staticmethod
+    def output_is_variable(*arg, **dict):
+        block_output_is_variable(*arg, **dict)
+        
+    @staticmethod
+    def input_is_variable(*arg, **dict):
+        block_input_is_variable(*arg, **dict)
+
+
+
+# TODO: move this somewhere else
 
 def trim(docstring):
     if not docstring:

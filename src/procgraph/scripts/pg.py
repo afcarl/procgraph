@@ -5,7 +5,7 @@ from procgraph.core.model_loader import model_from_string, pg_look_for_models
 from procgraph.core.registrar import default_library, Library
 from procgraph.core.exceptions import SemanticError, PGSyntaxError 
 from procgraph.core.parsing_elements import Where
-from procgraph.core.visualization import error
+from procgraph.core.visualization import error, info
 
 
 
@@ -13,7 +13,7 @@ def main():
     parser = OptionParser()
 
     def load_module(option, opt_str, value, parser):
-        print 'Importing module %s' % value
+        info('Importing module %s' % value)
         __import__(value)
      
     parser.add_option("-m", "--import", dest='module',

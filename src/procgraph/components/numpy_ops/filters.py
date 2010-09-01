@@ -34,6 +34,12 @@ register_simple_block(lambda x, y: numpy.hstack((x, y)), 'hstack', num_inputs=2,
 register_simple_block(lambda x, y: numpy.vstack((x, y)), 'vstack', num_inputs=2,
       doc='Wrapper around :py:func:`numpy.vstack`.')
 
+
+register_simple_block(numpy.flipud, 'flipud', doc='Wrapper for :py:func:`numpy.flipud`.')
+register_simple_block(numpy.fliplr, 'fliplr', doc='Wrapper for :py:func:`numpy.fliplr`.')
+ 
+ 
+ 
  
 def my_take(a, axis, indices):
     a = numpy.array(a)

@@ -2,7 +2,7 @@ import os, fnmatch
 import cPickle as pickle
 
 from procgraph.core.model_instantiation import create_from_parsing_results
-from procgraph.core.visualization import warning, debug
+from procgraph.core.visualization import warning, debug, info
 import inspect
 create_from_parsing_results
 from procgraph.core.parsing import parse_model, ParsedModel
@@ -92,7 +92,12 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
             try:
                 models = pickle.load(open(cache))
             except Exception as e:
-                raise Exception('Cannot unpickle file %s: %s.' % (cache, e))
+                info('Cannot unpickle file %s: %s.' % (cache, e))
+                # XXX repeated code 
+                debug("Parsing %s" % os.path.relpath(f))
+                model_spec = open(f).read()
+                models = parse_model(model_spec, filename=f)
+                pickle.dump(models, open(cache, 'w'))   
             #print "Using cache %s" % cache
         else:
             debug("Parsing %s" % os.path.relpath(f))

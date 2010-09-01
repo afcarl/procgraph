@@ -9,8 +9,9 @@ from procgraph  import Block, block_alias, block_config, block_input, block_outp
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 
     
+    Example of configuration: ::
     
-    display_sick.groups = [{ indices: [0,179], theta: [-1.57,+1.57],
+        display_sick.groups = [{ indices: [0,179], theta: [-1.57,+1.57],
              color: 'r', origin: [0,0,0]}]
     
     '''
@@ -31,9 +32,7 @@ class LaserDisplay(Block):
         self.define_output_signals(['image'])
         self.config.width = 320
         self.config.height = 320
-        self.config.max_readings = 30
-        
-        self.state.theta = None
+        self.config.max_readings = 30 
         
     def update(self):
         
@@ -54,6 +53,7 @@ class LaserDisplay(Block):
             theta_spec = group['theta']
             origin = group.get('origin', [0, 0, 0])
             color = group.get('color', 'b.')
+            
             max_readings = group.get('max_readings', self.config.max_readings)
             group_readings = minimum(readings[indices], max_readings)
         
@@ -69,9 +69,7 @@ class LaserDisplay(Block):
             invalid, = nonzero(logical_not(valid_flag))
             
             pylab.plot(-y[valid], x[valid], color)
-            pylab.plot(-y[invalid], x[invalid] , 'r.')
-            #pylab.xlabel('<-- y')
-            #pylab.ylabel('x')
+            pylab.plot(-y[invalid], x[invalid] , 'r.') 
             
             R = max_readings * 1.1
             x_R = R * cos(theta)

@@ -85,18 +85,18 @@ Various operations wrapping numpy functions.
 :ref:`+ <block:+>`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`- <block:->`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`/ <block:/>`                                                                                                                                                                                       None                                                                                                                                                                                                    
-:ref:`abs <block:abs>`                                                                                                                                                                                   absolute(x[, out])                                                                                                                                                                                      
+:ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
 :ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`dstack <block:dstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
 :ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
-:ref:`hstack <block:hstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`log <block:log>`                                                                                                                                                                                   log(x[, out])                                                                                                                                                                                           
+:ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
+:ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
 :ref:`outer <block:outer>`                                                                                                                                                                               Wrapper around :py:func:`numpy.multiply.outer`.                                                                                                                                                         
 :ref:`select <block:select>`                                                                                                                                                                             None                                                                                                                                                                                                    
-:ref:`sign <block:sign>`                                                                                                                                                                                 sign(x[, out])                                                                                                                                                                                          
-:ref:`square <block:square>`                                                                                                                                                                             square(x[, out])                                                                                                                                                                                        
+:ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
+:ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
 :ref:`take <block:take>`                                                                                                                                                                                 None                                                                                                                                                                                                    
-:ref:`vstack <block:vstack>`                                                                                                                                                                             None                                                                                                                                                                                                    
+:ref:`vstack <block:vstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.vstack`.                                                                                                                                                                 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -706,13 +706,7 @@ Implemented in `/src/procgraph/components/dynamic/derivative2.py <https://github
 
 ``wait``
 ------------------------------------------------------------
-This block waits a given number of updates before transmitting the output. 
-
-Config:
-- n (number of updates)
-
-Input: variable
-Output: variable (same as input)
+This block waits a given number of updates before transmitting the output.
 
 
 .. rst-class:: procgraph:config
@@ -1426,43 +1420,7 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 ``abs``
 ------------------------------------------------------------
-absolute(x[, out]) 
-
-Calculate the absolute value element-wise.
-
-Parameters
-----------
-x : array_like
-    Input array.
-
-Returns
--------
-res : ndarray
-    An ndarray containing the absolute value of
-    each element in `x`.  For complex input, ``a + ib``, the
-    absolute value is :math:`\sqrt{ a^2 + b^2 }`.
-
-Examples
---------
->>> x = np.array([-1.2, 1.2])
->>> np.absolute(x)
-array([ 1.2,  1.2])
->>> np.absolute(1.2 + 1j)
-1.5620499351813308
-
-Plot the function over ``[-10, 10]``:
-
->>> import matplotlib.pyplot as plt
-
->>> x = np.linspace(-10, 10, 101)
->>> plt.plot(x, np.absolute(x))
->>> plt.show()
-
-Plot the function over the complex plane:
-
->>> xx = x + 1j * x[:, np.newaxis]
->>> plt.imshow(np.abs(xx), extent=[-10, 10, -10, 10])
->>> plt.show()
+Wrapper around :py:func:`numpy.core.umath.absolute`.
 
 
 .. rst-class:: procgraph:input
@@ -1530,6 +1488,8 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 ``dstack``
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.dstack`.
+
 
 .. rst-class:: procgraph:input
 
@@ -1590,6 +1550,8 @@ Implemented in `/src/procgraph/components/numpy_ops/gradient1d.py <https://githu
 
 ``hstack``
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.hstack`.
+
 
 .. rst-class:: procgraph:input
 
@@ -1621,52 +1583,7 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 ``log``
 ------------------------------------------------------------
-log(x[, out]) 
-
-Natural logarithm, element-wise.
-
-The natural logarithm `log` is the inverse of the exponential function,
-so that `log(exp(x)) = x`. The natural logarithm is logarithm in base `e`.
-
-Parameters
-----------
-x : array_like
-    Input value.
-
-Returns
--------
-y : ndarray
-    The natural logarithm of `x`, element-wise.
-
-See Also
---------
-log10, log2, log1p
-
-Notes
------
-Logarithm is a multivalued function: for each `x` there is an infinite
-number of `z` such that `exp(z) = x`. The convention is to return the `z`
-whose imaginary part lies in `[-pi, pi]`.
-
-For real-valued input data types, `log` always returns real output. For
-each value that cannot be expressed as a real number or infinity, it
-yields ``nan`` and sets the `invalid` floating point error flag.
-
-For complex-valued input, `log` is a complex analytical function that
-has a branch cut `[-inf, 0]` and is continuous from above on it. `log`
-handles the floating-point negative zero as an infinitesimal negative
-number, conforming to the C99 standard.
-
-References
-----------
-.. [1] M. Abramowitz and I.A. Stegun, "Handbook of Mathematical Functions",
-       10th printing, 1964, pp. 67. http://www.math.sfu.ca/~cbm/aands/
-.. [2] Wikipedia, "Logarithm". http://en.wikipedia.org/wiki/Logarithm
-
-Examples
---------
->>> np.log([1, np.e, np.e**2, 0])
-array([  0.,   1.,   2., -Inf])
+Wrapper around :py:func:`numpy.core.umath.log`.
 
 
 .. rst-class:: procgraph:input
@@ -1767,28 +1684,7 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 ``sign``
 ------------------------------------------------------------
-sign(x[, out]) 
-
-Returns an element-wise indication of the sign of a number.
-
-The `sign` function returns ``-1 if x < 0, 0 if x==0, 1 if x > 0``.
-
-Parameters
-----------
-x : array_like
-  Input values.
-
-Returns
--------
-y : ndarray
-  The sign of `x`.
-
-Examples
---------
->>> np.sign([-5., 4.5])
-array([-1.,  1.])
->>> np.sign(0)
-0
+Wrapper around :py:func:`numpy.core.umath.sign`.
 
 
 .. rst-class:: procgraph:input
@@ -1819,31 +1715,7 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 ``square``
 ------------------------------------------------------------
-square(x[, out]) 
-
-Return the element-wise square of the input.
-
-Parameters
-----------
-x : array_like
-    Input data.
-
-Returns
--------
-out : ndarray
-    Element-wise `x*x`, of the same shape and dtype as `x`.
-    Returns scalar if `x` is a scalar.
-
-See Also
---------
-numpy.linalg.matrix_power
-sqrt
-power
-
-Examples
---------
->>> np.square([-1j, 1])
-array([-1.-0.j,  1.+0.j])
+Wrapper around :py:func:`numpy.core.umath.square`.
 
 
 .. rst-class:: procgraph:input
@@ -1913,6 +1785,8 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 
 ``vstack``
 ------------------------------------------------------------
+Wrapper around :py:func:`numpy.vstack`.
+
 
 .. rst-class:: procgraph:input
 

@@ -21,28 +21,20 @@ ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest')
 def get_module_name_with_doc(original_module_name):
     assert isinstance(original_module_name, str) 
   
-    original_module = __import__(original_module_name)
     module_name = original_module_name
     
     while True:
         module = __import__(module_name, fromlist=['x'])
         if module.__doc__:
-            break
+            return module.__name__
       
         parent_name = '.'.join(module.__name__.split('.')[:-1])
 
         # Empty!!
-        if not parent_name:
-            module = original_module
-            break
+        if not parent_name or parent_name == 'procgraph':
+            return original_module_name
 
         module_name = parent_name
-
-    result = module.__name__
-    
-    #print original_module_name, '->', result
-    
-    return result
 
 
 def collect_info(block_type, block_generator): 
@@ -88,7 +80,7 @@ def collect_info(block_type, block_generator):
     else: 
         assert False
         
-    #print block_type, module
+    #  print block_type, module
          
 
     if source.endswith('.pyc'):
@@ -142,14 +134,12 @@ def main():
 
     (options, args) = parser.parse_args()
     
-    
     translate = {}
     for couple in options.translate:
         root, reference = couple.split('=', 1)
         root = os.path.realpath(root)
         translate[root] = reference 
          
-    
     if not args:
         print "Give at least one module"
         sys.exit(-1)

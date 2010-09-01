@@ -5,13 +5,6 @@ class Wait(Block):
     ''' 
     This block waits a given number of updates before transmitting the 
     output.
-    
-    Config:
-    - n (number of updates) 
-
-    Input: variable 
-    Output: variable (same as input)
-    
 
     ''' 
     block_alias('wait')
@@ -20,7 +13,6 @@ class Wait(Block):
     
     block_input_is_variable('Arbitrary signals.')
     block_output_is_variable('Arbitrary signals, minus the first ``n`` updates.')
-    
     
     def init(self):
         # say we are not ready if the inputs were not defined.

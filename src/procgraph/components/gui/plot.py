@@ -9,15 +9,24 @@ from procgraph import Block, block_input_is_variable, block_output, block_alias,
 from procgraph.core.exceptions import BadInput  
 
 class Plot(Block):
-    ''' Just plots the vector instantaneously.
-        
-        |towrite|
+    ''' Plots the inputs using matplotlib. 
     
+        This block accepts and arbitrary number of signals. 
+        Each signals is plot separately. 
+        
+        Each signal can either be:
+        
+        1.  A tuple of length 2. It is interpreted as a tuple ``(x,y)``,
+            and we plot ``x`` versus ``y`` (see also :ref:`block:make_tuple`).
+            
+        2.  A list of numbers, or a 1-dimensional numpy array of length N. 
+            In this case, it is interpreted as the y values, and we set  ``x = 1:N``. 
+        
      '''
      
     block_alias('plot')
     
-    block_input_is_variable('Vectors to plot.')
+    block_input_is_variable('Data to plot.')
     block_output('rgb', 'Resulting image.')
     
     block_config('width', 'Image dimension', default=320)
@@ -81,7 +90,7 @@ class Plot(Block):
         pylab.figure(self.figure.number)
         if self.config.title is not None:
             if self.config.title != "":
-                self.axes.set_title(self.config.title)
+                self.axes.set_title(self.config.title, fontsize=10)
         else:
             # We don't have a title ---
             t = ", ".join(self.get_input_signals_names())
@@ -148,19 +157,33 @@ class Plot(Block):
         
         for i in range(self.num_input_signals()):
             value = self.input[i]
-            if isinstance(value, tuple):
+            if value is None:
+                raise BadInput('Input is None (did you forget a |sync|?)', self, i)
+            elif isinstance(value, tuple):
                 if len(value) != 2:
                     raise BadInput('Expected tuple of length 2 instead of %d.' % 
                                    len(value), self, i)
-                x = numpy.array(value[0])
-                y = numpy.array(value[1])
                 
+                xo = value[0]
+                yo = value[1]
+                
+                if xo is None or yo is None:
+                    raise BadInput('Invalid members of tuple', self, i)
+                    
+                x = numpy.array(xo)
+                y = numpy.array(yo)
+                
+                # X must be one-dimensional
                 if len(x.shape) > 1:
                     raise BadInput('Bad x vector w/shape %s.' % str(x.shape), self, i)
                 
+                # y should be of dimensions ...?
                 if len(y.shape) > 2:
                     raise BadInput('Bad shape for y vector %s.' % str(y.shape), self, i)
                 
+                if len(x) != y.shape[0]:
+                    raise BadInput('Incompatible dimensions x: %s, y: %s' % 
+                                   (str(x.shape), str(y.shape)))
                 # TODO: check x unidimensional (T)
                 # TODO: check y compatible dimensions (T x N) 
                 
@@ -181,7 +204,6 @@ class Plot(Block):
             if len(y.shape) == 2:
                 y = y.transpose()
 
-
             if len(y.shape) == 1:
                 id = self.canonicalize_input(i)
                 self.plot_one(id, x, y, self.config.format)
@@ -191,7 +213,6 @@ class Plot(Block):
                 for k in range(num_lines):
                     id = "%s-%d" % (self.canonicalize_input(i), k)
                     yk = y[k, :]
-                    #print "Slice: %s -> %s (x: %s)" % (y.shape, yk.shape, x.shape)
                     self.plot_one(id, x, yk, self.config.format)
             # TODO: check that if one has time vector, also others have it
 
@@ -224,7 +245,6 @@ class Plot(Block):
         f = tempfile.NamedTemporaryFile(suffix='.png')
         temp_file = f.name
         
-        #temp_file = 'frame-tmp.png' # TODO use tmpfile
         pylab.savefig(temp_file)
         saving = time.clock() - start
         
@@ -244,4 +264,5 @@ class Plot(Block):
         if not self.config.keep:
             pylab.close(self.figure.number)
             self.figure = None
- 
+
+

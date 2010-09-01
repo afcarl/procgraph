@@ -1,5 +1,6 @@
 from procgraph  import Block, block_alias, block_config, block_input, \
     block_output
+from procgraph.components.basic import COMPULSORY, register_simple_block
 
 
 # Make it generic?
@@ -27,3 +28,12 @@ class Extract(Block):
         
         self.set_output('part', part)
          
+         
+def slice(signal, start, end):
+    ''' Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).'''
+    return signal[start:(end + 1)]
+
+    
+register_simple_block(slice, 'slice', params={'start':COMPULSORY, 'end':COMPULSORY})
+
+    

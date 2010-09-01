@@ -140,10 +140,5 @@ if False:
             im = im.convert("RGB")
             pixel_data = numpy.asarray(im)
             
-            self.set_output(0, pixel_data)
-            
-            # XXX This is inefficient -- we are forced to make a copy
-            # because 
-            #self.set_output(0, pixel_data[:,:,0:3].squeeze().copy())
-    
+            self.set_output(0, pixel_data) 
     

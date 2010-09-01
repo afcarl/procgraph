@@ -8,13 +8,22 @@ from procgraph.components import check_2d_array
 
 
 def skim_top(a, top_percent):
-    ''' Cuts off the top percentile '''
+    ''' Cuts off the top percentile of the array. '''
     assert top_percent >= 0 and top_percent < 90
     from scipy import stats
     
     threshold = stats.scoreatpercentile(a.flat, 100 - top_percent) 
     return numpy.minimum(a, threshold)
     
+def skim_top_and_bottom(a, percent):
+    ''' Cuts off the top and bottom percentile of the array. '''
+    assert percent >= 0 and percent < 90
+    from scipy import stats
+    
+    threshold_max = stats.scoreatpercentile(a.flat, 100 - percent) 
+    threshold_min = stats.scoreatpercentile(a.flat, percent)
+    return numpy.maximum(threshold_min, numpy.minimum(a, threshold_max))
+
     
 def posneg(value, max_value=None, skim=0):
     """ 
