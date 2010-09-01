@@ -33,6 +33,7 @@ Blocks performing operations with a dynamic nature.
 :ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:last_n_samples`.                                                 
 :ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`.                            
 :ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.                                                  
+:ref:`low_pass <block:low_pass>`                                                                                                                                                                         Implements simple low-pass filtering.                                                                                                                                                                   
 :ref:`sieve <block:sieve>`                                                                                                                                                                               This block decimates the data in time by transmitting only one in ``n`` updates.                                                                                                                        
 :ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of streams to the first stream (the master).                                                                                                                              
 :ref:`two_step_difference <block:two_step_difference>`                                                                                                                                                   Computes ``x[t+1] - x[t]`` normalized with timestamp.                                                                                                                                                   
@@ -46,7 +47,7 @@ Blocks using Matplotlib to display data.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`fps_limit <block:fps_limit>`                                                                                                                                                                       This block limits the output update to a certain *realtime* framerate.                                                                                                                                  
-:ref:`plot <block:plot>`                                                                                                                                                                                 Just plots the vector instantaneously.                                                                                                                                                                  
+:ref:`plot <block:plot>`                                                                                                                                                                                 Plots the inputs using matplotlib.                                                                                                                                                                      
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -88,6 +89,8 @@ Various operations wrapping numpy functions.
 :ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
 :ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
 :ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
+:ref:`fliplr <block:fliplr>`                                                                                                                                                                             Wrapper for :py:func:`numpy.fliplr`.                                                                                                                                                                    
+:ref:`flipud <block:flipud>`                                                                                                                                                                             Wrapper for :py:func:`numpy.flipud`.                                                                                                                                                                    
 :ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
 :ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
 :ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
@@ -106,6 +109,8 @@ Some functions specific to robotics applications.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`laser_display <block:laser_display>`                                                                                                                                                               Produces a plot of a range-finder scan.                                                                                                                                                                 
+:ref:`laser_dot_display <block:laser_dot_display>`                                                                                                                                                       Produces a plot of a range-finder scan variation (derivative).                                                                                                                                          
+:ref:`organic_scale <block:organic_scale>`                                                                                                                                                               None                                                                                                                                                                                                    
 :ref:`pose2commands <block:pose2commands>`                                                                                                                                                               Computes the velocity commands from the odometry data.                                                                                                                                                  
 :ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       Block used by :ref:`block:pose2commands`.                                                                                                                                                               
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
@@ -118,6 +123,8 @@ Simple routins for signals extraction, combination.
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`extract <block:extract>`                                                                                                                                                                           This block extracts some of the components of a vector.                                                                                                                                                 
 :ref:`join <block:join>`                                                                                                                                                                                 This block joins multiple signals into one.                                                                                                                                                             
+:ref:`make_tuple <block:make_tuple>`                                                                                                                                                                     Creates a tuple out of the input signals values.                                                                                                                                                        
+:ref:`slice <block:slice>`                                                                                                                                                                               Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).                                                                                                                        
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -578,6 +585,49 @@ Output
 Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
 
 
+.. _`block:low_pass`:
+
+
+.. rst-class:: procgraph:block
+
+``low_pass``
+------------------------------------------------------------
+Implements simple low-pass filtering. 
+
+Formula used: ::
+
+    y[k] = alpha * u[k] + (1-alpha) * y[k-1]
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``alpha``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``lowpass``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/dynamic/low_pass.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/low_pass.py>`_. 
+
+
 .. _`block:sieve`:
 
 
@@ -801,9 +851,18 @@ Implemented in `/src/procgraph/components/gui/fps_limit.py <https://github.com/A
 
 ``plot``
 ------------------------------------------------------------
-Just plots the vector instantaneously. 
+Plots the inputs using matplotlib. 
 
-|towrite|
+This block accepts and arbitrary number of signals.
+Each signals is plot separately.
+
+Each signal can either be:
+
+1.  A tuple of length 2. It is interpreted as a tuple ``(x,y)``,
+    and we plot ``x`` versus ``y`` (see also :ref:`block:make_tuple`).
+
+2.  A list of numbers, or a 1-dimensional numpy array of length N.
+    In this case, it is interpreted as the y values, and we set  ``x = 1:N``.
 
 
 .. rst-class:: procgraph:config
@@ -841,7 +900,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Vectors to plot. (variable: None <= n <= None)
+Data to plot. (variable: None <= n <= None)
 
 
 .. rst-class:: procgraph:output
@@ -1514,6 +1573,68 @@ Output
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
 
+.. _`block:fliplr`:
+
+
+.. rst-class:: procgraph:block
+
+``fliplr``
+------------------------------------------------------------
+Wrapper for :py:func:`numpy.fliplr`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:flipud`:
+
+
+.. rst-class:: procgraph:block
+
+``flipud``
+------------------------------------------------------------
+Wrapper for :py:func:`numpy.flipud`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
 .. _`block:gradient1d`:
 
 
@@ -1834,8 +1955,9 @@ Some functions specific to robotics applications.
 ------------------------------------------------------------
 Produces a plot of a range-finder scan. 
 
+Example of configuration: ::
 
-display_sick.groups = [{ indices: [0,179], theta: [-1.57,+1.57],
+    display_sick.groups = [{ indices: [0,179], theta: [-1.57,+1.57],
          color: 'r', origin: [0,0,0]}]
 
 
@@ -1872,6 +1994,96 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/robotics/laser_display.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/laser_display.py>`_. 
+
+
+.. _`block:laser_dot_display`:
+
+
+.. rst-class:: procgraph:block
+
+``laser_dot_display``
+------------------------------------------------------------
+Produces a plot of a range-finder scan variation (derivative). 
+
+It uses the same configuration as :ref:`block:laser_display`.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``width`` (default: 320): None
+
+- ``height`` (default: 320): None
+
+- ``skim`` (default: 5): None
+
+- ``groups``: How to group and draw the readings. (see example)
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``readings_dot``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``image``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/robotics/laser_dot_display.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/laser_dot_display.py>`_. 
+
+
+.. _`block:organic_scale`:
+
+
+.. rst-class:: procgraph:block
+
+``organic_scale``
+------------------------------------------------------------
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``skim`` (default: 5): None
+
+- ``skim_hist`` (default: 5): None
+
+- ``hist`` (default: 100): None
+
+- ``tau`` (default: 0.1): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value_scaled``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/robotics/organic_scale.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/robotics/organic_scale.py>`_. 
 
 
 .. _`block:pose2commands`:
@@ -2026,6 +2238,80 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/signals/join.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/join.py>`_. 
+
+
+.. _`block:make_tuple`:
+
+
+.. rst-class:: procgraph:block
+
+``make_tuple``
+------------------------------------------------------------
+Creates a tuple out of the input signals values. 
+
+Often used for plotting two signals as (x,y); see :ref:`block:plot`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Signals to unite in a tuple. (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``tuple``: Tuple containing signals.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/signals/make_tuple.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/make_tuple.py>`_. 
+
+
+.. _`block:slice`:
+
+
+.. rst-class:: procgraph:block
+
+``slice``
+------------------------------------------------------------
+Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``start``: None
+
+- ``end``: None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/signals/extract.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/signals/extract.py>`_. 
 
 
 .. _`module:procgraph.components.statistics`:
