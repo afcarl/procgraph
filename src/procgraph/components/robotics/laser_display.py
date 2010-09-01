@@ -4,7 +4,7 @@ from matplotlib import pylab
 from PIL import Image
 import tempfile
 
-from procgraph  import Block, block_alias, block_config, block_input, block_output
+from procgraph  import Block
 
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 
@@ -16,15 +16,18 @@ class LaserDisplay(Block):
     
     '''
     
-    block_alias('laser_display')
+    Block.alias('laser_display')
     
-    block_config('width', default=320)
-    block_config('height', default=320)
-    block_config('max_readings', default=30)
-    block_config('groups', 'How to group and draw the readings. (see example) ')
+    Block.config('width', default=320)
+    Block.config('height', default=320)
+    Block.config('max_readings', default=30)
+    Block.config('groups', 'How to group and draw the readings. (see example) ')
+    Block.config('title', 'By default it displays the signal name.'
+                        ' Set the empty string to disable.', default=None)
     
-    block_input('readings')
-    block_output('image')
+    Block.input('readings')
+    
+    Block.output('image')
      
     # Exampl
     def init(self):
@@ -33,6 +36,7 @@ class LaserDisplay(Block):
         self.config.width = 320
         self.config.height = 320
         self.config.max_readings = 30 
+        self.config.title = None
         
     def update(self):
         
@@ -81,6 +85,15 @@ class LaserDisplay(Block):
                 bounds[i] = minimum(bounds[i], group_bounds[i])
             
         pylab.axis(bounds)
+        
+        if self.config.title is not None:
+            if self.config.title != "":
+                pylab.title(self.config.title, fontsize=10)
+        else:
+            # We don't have a title ---
+            t = self.get_input_signals_names()[0]
+            pylab.title(t, fontsize=10)
+
         
         self.output.image = pylab2rgb()
 

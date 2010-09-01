@@ -5,6 +5,7 @@ from procgraph  import Block, block_alias, block_config, block_input, block_outp
 from procgraph.components.robotics.laser_display import pylab2rgb
 import math
 from procgraph.components.images.copied_from_reprep import skim_top_and_bottom
+from procgraph.core.exceptions import BadInput
 
 class LaserDotDisplay(Block):
     ''' Produces a plot of a range-finder scan variation (derivative). 
@@ -21,6 +22,8 @@ class LaserDotDisplay(Block):
     block_config('skim', default=5)
     
     block_config('groups', 'How to group and draw the readings. (see example) ')
+    Block.config('title', 'By default it displays the signal name.'
+                        ' Set the empty string to disable.', default=None)
     
     block_input('readings_dot')
     
@@ -37,11 +40,16 @@ class LaserDotDisplay(Block):
         self.config.skim = 10
         self.config.scale = True
         self.config.title = None
+
+        
         
     def update(self):
         
         y = array(self.input.readings_dot)
          
+        if max(abs(y)) > 1:
+            raise BadInput('I expect an input normalized in the [-1,1] range.',
+                           self, 'readings_dot')
 
         f = pylab.figure(frameon=False,
                         figsize=(self.config.width / 100.0,
@@ -64,19 +72,7 @@ class LaserDotDisplay(Block):
             
             theta = linspace(theta_spec[0], theta_spec[-1], N)
             
-            group_y = y[indices]
-            
-#            if self.config.scale:
-#                group_y = skim_top_and_bottom(group_y, self.config.skim)
-#            
-#                # Normalize y
-#                y_max = abs(group_y).max()
-#                
-#                if y_max > 0:
-#                    group_y = group_y / y_max 
-#                
-#                if indices[0] == 0:    
-#                    print group['indices'], y_max
+            group_y = y[indices] 
                 
             r = R0 + amp * group_y
             
@@ -88,6 +84,20 @@ class LaserDotDisplay(Block):
             
         M = R0 + amp * 1.2
         pylab.axis([-M, M, -M, M])
+        
+        # turn off ticks labels, they don't have meaning
+        pylab.setp(f.axes[0].get_xticklabels(), visible=False)
+        pylab.setp(f.axes[0].get_yticklabels(), visible=False)
+        
+        
+        if self.config.title is not None:
+            if self.config.title != "":
+                pylab.title(self.config.title, fontsize=10)
+        else:
+            # We don't have a title ---
+            t = self.get_input_signals_names()[0]
+            pylab.title(t, fontsize=10)
+
         
         self.output.image = pylab2rgb()
 

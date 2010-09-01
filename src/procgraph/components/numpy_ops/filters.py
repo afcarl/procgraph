@@ -79,3 +79,12 @@ def select(x, every=None):
 
 register_simple_block(select, params={'every': COMPULSORY})
 
+
+
+register_simple_block(lambda x: x / max(abs(x)), 'normalize_Linf',
+                      doc='Normalize a vector such that ``|x|_inf = max(abs(x))= 1``')
+
+
+
+
+

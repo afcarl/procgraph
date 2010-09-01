@@ -1,5 +1,5 @@
 
-from procgraph import Block, block_alias, block_config, block_input, block_output
+from procgraph import Block
 from procgraph.components.images.copied_from_reprep import skim_top_and_bottom, \
     skim_top
 
@@ -7,15 +7,18 @@ from numpy import maximum, minimum
 import numpy
 
 class OrganicScale(Block):
-    block_alias('organic_scale')
+    ''' A (almost failed) attempt to scale a signal into [-1,1] 
+        according to the history. '''  
     
-    block_input('value')
-    block_output('value_scaled')
+    Block.alias('organic_scale')
+    
+    Block.input('value')
+    Block.output('value_scaled')
         
-    block_config('skim', default=5)
-    block_config('skim_hist', default=5)
-    block_config('hist', default=100)
-    block_config('tau', default=0.1)
+    Block.config('skim', default=5)
+    Block.config('skim_hist', default=5)
+    Block.config('hist', default=100)
+    Block.config('tau', default=0.1)
 
     def init(self):
         ###

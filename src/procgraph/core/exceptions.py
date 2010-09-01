@@ -38,9 +38,18 @@ class ModelExecutionError(PGException):
         return Exception.__str__(self) + '\n' + self.block.where.__str__()
 
 class BadInput(ModelExecutionError):
+    ''' Exception thrown to communicate a problem with one
+        of the inputs to the block. '''
     def __init__(self, error, block, input_signal):
         ModelExecutionError.__init__(self, error, block)
         self.input_signal = input_signal
+
+class BadConfig(ModelExecutionError):
+    ''' Exception thrown to communicate a problem with one
+        of the configuration values passed to the block. '''
+    def __init__(self, error, block, config):
+        ModelExecutionError.__init__(self, error, block)
+        self.config = config
     
     
 # A couple of functions for pretty errors

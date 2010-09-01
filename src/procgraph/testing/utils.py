@@ -9,24 +9,25 @@ from procgraph.core.registrar import default_library, Library
 # load standard components
 import procgraph.components
 from procgraph.core.block import Block
-from procgraph.core.block_meta import block_alias
+from procgraph.core.block_meta import block_alias, block_output_is_variable, \
+    block_input_is_variable
 
 # a couple of blocks for testing
-
-
-class DoesNotDefineInput(Block):
-    ''' This (erroneous) block does not register inputs '''
-    
-    def init(self):
-        self.define_output_signals([])
-    
-
-
-class DoesNotDefineOutput(Block):
-    ''' This (erroneous) block does not register output '''
-    
-    def init(self):
-        self.define_input_signals([])
+#
+#
+#class DoesNotDefineInput(Block):
+#    ''' This (erroneous) block does not register inputs '''
+#    
+#    def init(self):
+#        self.define_output_signals([])
+#    
+#
+#
+#class DoesNotDefineOutput(Block):
+#    ''' This (erroneous) block does not register output '''
+#    
+#    def init(self):
+#        self.define_input_signals([])
         
 
 
@@ -48,6 +49,7 @@ class Generic(Block):
             
     '''
     block_alias('generic')
+     
     
     def init(self):
         # use default if not set
@@ -126,18 +128,17 @@ class PGTestCase(unittest.TestCase):
             self.assertTrue(False)
     
 
-
 class VerifyBlock(Block):
     ''' 
         This debug block verifies that config.x == config.y 
         and throws an exception if that's not the case.
     '''
-        
+    
+    Block.alias('verify')
+    
     def init(self):
         if self.config.x != self.config.y:
             raise SemanticError('Oops: "%s" != "%s".' % \
                                 (self.config.x, self.config.y), self)
         self.define_input_signals([])
-        self.define_output_signals([])
-        
-default_library.register('verify', VerifyBlock)
+        self.define_output_signals([]) 

@@ -15,17 +15,17 @@ class DelayedTest(PGTestCase):
         
         print block1
         
-    def test_check_definitions(self):
-        
-        model_desc = """ 
-            |DoesNotDefineOutput|
-        """
-        
-        self.check_semantic_error(model_desc)
-        
-        
-        model_desc = """ 
-            |DoesNotDefineInput|
-        """
-        self.check_semantic_error(model_desc)
+#    def test_check_definitions(self):
+#        
+#        model_desc = """ 
+#            |DoesNotDefineOutput|
+#        """
+#        
+#        self.check_semantic_error(model_desc)
+#        
+#        
+#        model_desc = """ 
+#            |DoesNotDefineInput|
+#        """
+#        self.check_semantic_error(model_desc)
         

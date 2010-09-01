@@ -4,15 +4,15 @@ import  numpy
 from PIL import Image
 from matplotlib import pylab
 
-from procgraph import Block, block_input_is_variable, block_output, block_alias, \
-    block_config
-from procgraph.core.exceptions import BadInput  
+from procgraph import Block
+
+from procgraph.core.exceptions import BadInput  , BadConfig
 
 class Plot(Block):
     ''' Plots the inputs using matplotlib. 
     
-        This block accepts and arbitrary number of signals. 
-        Each signals is plot separately. 
+        This block accepts an arbitrary number of signals. 
+        Each signals is treated independently and plot separately. 
         
         Each signal can either be:
         
@@ -24,25 +24,28 @@ class Plot(Block):
         
      '''
      
-    block_alias('plot')
+    Block.alias('plot')
     
-    block_input_is_variable('Data to plot.')
-    block_output('rgb', 'Resulting image.')
+    Block.config('width', 'Image dimension', default=320)
+    Block.config('height', 'Image dimension', default=240)
+    Block.config('xlabel', default=None)
+    Block.config('ylabel', default=None)
+    Block.config('legend', default=None)
+    Block.config('title', default=None)
+    Block.config('format', default='-')
+    Block.config('symmetric', 'An alternative to y_min, y_max.'
+                            ' Makes sure the plot is symmetric for y. ',
+                                default=False)
+    Block.config('x_min', default=None)
+    Block.config('x_max', default=None)
+    Block.config('y_min', default=None)
+    Block.config('y_max', default=None)
+    Block.config('keep', default=False)
+
+    Block.input_is_variable('Data to plot.')
     
-    block_config('width', 'Image dimension', default=320)
-    block_config('height', 'Image dimension', default=240)
-    block_config('xlabel', default=None)
-    block_config('ylabel', default=None)
-    block_config('legend', default=None)
-    block_config('title', default=None)
-    block_config('format', default='-')
-    block_config('x_min', default=None)
-    block_config('x_max', default=None)
-    block_config('y_min', default=None)
-    block_config('y_max', default=None)
-    block_config('keep', default=False)
-
-
+    Block.output('rgb', 'Resulting image.')
+   
 
     def init(self): 
         # don't define input signals
@@ -61,6 +64,7 @@ class Plot(Block):
         self.config.x_max = None
         self.config.y_min = None 
         self.config.y_max = None
+        self.config.symmetric = False
         
         self.config.keep = False
         
@@ -94,7 +98,7 @@ class Plot(Block):
         else:
             # We don't have a title ---
             t = ", ".join(self.get_input_signals_names())
-            self.axes.set_title(t)
+            self.axes.set_title(t, fontsize=10)
             
         if self.config.xlabel:
             self.axes.set_xlabel(self.config.xlabel)
@@ -135,7 +139,7 @@ class Plot(Block):
         self.lengths[id] = len(x)
         
         if self.limits is None:
-            self.limits = [min(x), max(x), min(y), max(y)]
+            self.limits = numpy.array([min(x), max(x), min(y), max(y)])
         else:
             self.limits[0] = min(self.limits[0], min(x))
             self.limits[1] = max(self.limits[1], max(x))
@@ -143,7 +147,7 @@ class Plot(Block):
             self.limits[3] = max(self.limits[3], max(y))
             
 
-        self.limits = map(float, self.limits)
+        #self.limits = map(float, self.limits)
         
     def update(self):
         self.limits = None
@@ -216,7 +220,7 @@ class Plot(Block):
                     self.plot_one(id, x, yk, self.config.format)
             # TODO: check that if one has time vector, also others have it
 
-        if self.limits:
+        if self.limits is not None:
             
             if self.config.x_min is not None:
                 self.limits[0] = self.config.x_min
@@ -226,6 +230,19 @@ class Plot(Block):
                 self.limits[2] = self.config.y_min
             if self.config.y_max is not None:
                 self.limits[3] = self.config.y_max
+                
+            if self.config.symmetric:
+                if self.config.y_min is not None or self.config.y_max is not None:
+                    raise BadConfig('Cannot specify symmetric together with'
+                                    'y_min or y_max.', self, 'symmetric')
+                
+                M = max(abs(self.limits[2:4]))
+                self.limits[2] = -M
+                self.limits[3] = M
+            
+            # leave some space above and below
+            self.limits[2] *= 1.1
+            self.limits[3] *= 1.1
                 
             self.axes.axis(self.limits)
             
