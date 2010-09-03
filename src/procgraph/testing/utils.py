@@ -31,36 +31,52 @@ from procgraph.core.block_meta import block_alias, block_output_is_variable, \
         
 
 
-class Generic(Block):
-    ''' This is a generic block used mainly for debug.
-        It defines inputs and outputs given by the parameters
-        "in" and "out". 
-        
-        Parameters:
-        * ``in`` (default: ``0``)
-        * ``out`` (default: ``0``)  
-        
-        For example::
-    
-            A,B,C -> |generic in=3 out=5| -> a,b,c,d,e
-            
-            # all by itself
-            |generic|
-            
-    '''
-    block_alias('generic')
-     
-    
-    def init(self):
-        # use default if not set
-        self.set_config_default('in', 0)
-        self.set_config_default('out', 0)
-        
-        nin = self.get_config('in')
-        nout = self.get_config('out')
-        self.define_input_signals(map(str, range(nin)))
-        self.define_output_signals(map(str, range(nout)))
+#class Generic(Block):
+#    ''' This is a generic block used mainly for debug.
+#        It defines inputs and outputs given by the parameters
+#        "in" and "out". 
+#        
+#        Parameters:
+#        * ``in`` (default: ``0``)
+#        * ``out`` (default: ``0``)  
+#        
+#        For example::
+#    
+#            A,B,C -> |generic in=3 out=5| -> a,b,c,d,e
+#            
+#            # all by itself
+#            |generic|
+#            
+#    '''
+#    block_alias('generic')
+#    
+#    def init(self):
+#        # use default if not set
+#        self.set_config_default('in', 0)
+#        self.set_config_default('out', 0)
+#        
+#        nin = self.get_config('in')
+#        nout = self.get_config('out')
+#        self.define_input_signals(map(str, range(nin)))
+#        self.define_output_signals(map(str, range(nout)))
 
+
+def define_generic(nin, nout):
+    class Generic(Block):
+        Block.alias('generic_in%d_out%d' % (nin, nout))
+        for i in range(nin):
+            Block.input(str(i))
+        for i in range(nout):
+            Block.output(str(i))
+        
+        def init(self):
+            self.define_input_signals(map(str, range(nin)))
+            self.define_output_signals(map(str, range(nout)))
+            pass
+
+for nin in range(0, 6):
+    for nout in range(0, 6):
+        define_generic(nin, nout)
 
 
 

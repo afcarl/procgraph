@@ -5,14 +5,14 @@ from procgraph.core.exceptions import SemanticError
  
 good_examples = [
 """
-type = generic
+type = generic_in0_out1
 
-|$type in=0 out=1| --> X
+|$type | --> X
 """,
 """
 type = gen
 
-|"${type}eric" in=0 out=1| --> X
+|"${type}eric_in0_out1"| --> X
 """
 
             
@@ -23,7 +23,7 @@ bad_examples = [
 
 """
 
-|"${type}" in=0 out=1| --> X
+|"${type}eric_in0_out1"| --> X
 """
                 
 ]   

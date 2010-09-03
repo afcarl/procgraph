@@ -6,7 +6,7 @@ class DelayedTest(PGTestCase):
     def test_delayed(self):
 
         model_desc = """
-           |generic out=3| -> |identity| -> |identity| -> |block1:identity|
+           |generic_in0_out3| -> |identity| -> |identity| -> |block1:identity|
         """
         model = model_from_string(model_desc)
         

@@ -23,30 +23,24 @@ a, b -> |+| -> c  """,
 |constant value=12| -> [0]a[0] -> |gain|  """,
 
 """ # A block by itself should be fine  
-|generic in=0 out=0|  
-|generic in=0 out=2|  """,
+|generic_in0_out0|  
+|generic_in0_out2|  """,
  
 """ # Trying some named connections (1)  
-|generic out=1| -> |generic in=1|  """,
+|generic_in0_out1| -> |generic_in1_out0|  """,
 
 """ # Trying some named connections (1)
 # Should be the same  
-|generic out=1| -> x
-x -> |generic in=1|  """,
+|generic_in0_out1| -> x
+x -> |generic_in1_out0|  """,
 
 """# Should be the same  as well
-|c1:constant value=1| -> |g1:generic in=1 out=1|
-g1.0 -> |g2:generic in=1|  """,
+|c1:constant value=1| -> |g1:generic_in1_out1|
+g1.0 -> |g2:generic_in1_out0|  """,
 
 """# Should be the same  as well
-|g1:generic out=1|
-g1.0 -> |g2:generic in=1|  """,
-
-"""# Checking if the parameters are parsed ok.
-# without it would be illegal   
-|constant value=1| -> |g1:generic|
-g1.in = 1
-"""
+|g1:generic_in0_out1|
+g1.0 -> |g2:generic_in1_out0|  """ 
 
 ]
 
@@ -85,13 +79,13 @@ a, b -> |gain|              """,
 |generic in=1 out=0|  """,
  
 """ # Double definition   
-|generic out=1| -> a  
-|generic out=1| -> a""",
+|generic_in0_out1| -> a  
+|generic_in0_out1| -> a""",
 
 
 """ # Oops, definition is left dangling...   
-|generic out=1| -> a  
-|generic out=1| -> a
+|generic_in0_out1| -> a  
+|generic_in0_out1| -> a
 g1.in = 2
 """,
 
@@ -107,14 +101,14 @@ class SemanticsTest(PGTestCase):
     def testExamples(self):
         for example in good_examples2:
             self.check_semantic_ok(example)
-             
-    def test_from_string_params(self):
-        spec = '|constant value=1| -> |g1:generic|'
-        # this should not work
-        self.assertRaises(Exception, model_from_string, spec)
-        # this should, instead
-        model_from_string(spec, config={'g1.in': 1})
-        
+#             
+#    def test_from_string_params(self):
+#        spec = '|constant value=1| -> |g1:generic|'
+#        # this should not work
+#        self.assertRaises(Exception, model_from_string, spec)
+#        # this should, instead
+#        model_from_string(spec, config={'g1.in': 1})
+#        
     
     
 class ParamsTest(PGTestCase):
