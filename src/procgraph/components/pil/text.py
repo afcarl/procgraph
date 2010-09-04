@@ -4,55 +4,123 @@ import numpy
 
 from PIL import ImageDraw, ImageFont
 
-from procgraph import Block, block_alias, block_input, block_output, block_config
+from procgraph import Block
 from procgraph.components.pil.pil_conversions import Image_from_array
 
 
 from procgraph.core.visualization import info, error
+from procgraph.core.exceptions import BadInput, BadConfig
 
 
 class Text(Block):
-    ''' This blocks provides text overlays over an RGB image. 
+    ''' This block provides text overlays over an image. 
     
-    Example: ::
+    You should provide a list of dictionary in the configuration variable 
+     ``texts``. Each dictionary in the list describes one piece of text.
+     
+    An example of valid configuration is the following: ::
     
-        text.texts = {string: "raw image", position: [10,30], halign: left, 
-                      color: black, bg: white  }
+        text.texts = [{string: "raw image", position: [10,30], halign: left, 
+                      color: black, bg: white }]
+    
+    The meaning of the fields is as follow:
+    
+    ``string``
+      Text to display. See the section below about keyword expansion.
+      
+    ``position``
+      Array of two integers giving the position of the text in the image
+      
+    ``color``
+      Text color. It can be a keyword color or an hexadecimal string (``white`` or 
+      ``#ffffff``).
+      
+    ``bg``
+      background color
+    
+    ``halign``
+      Horizontal alignment. Choose between ``left`` (default), ``center``, ``right``.
+      
+    ``valign``
+      Vertical alignment. Choose between ``top`` (default), ``middle``, ``center``.
+    
+    ``size``
+      Font size in pixels
+      
+    ``font``
+      Font family. Must be a ttf file (``Arial.ttf``)
+
+    **Expansion**: Also we expand macros in the text using ``format()``. 
+    The available keywords are:
+    
+    ``frame``
+      number of frames since the beginning
+       
+    ``time``
+      seconds since the beginning of the log
+
+    ``timestamp``
+      absolute timestamp
     
     '''
     
-    block_alias('text')
+    Block.alias('text')
     
-    block_config('texts', 'Text specification')
+    Block.config('texts', 'Text specification')
     
-    block_input('rgb', 'Input image.')
-    block_output('rgb', 'Output image with overlaid text.')
+    Block.input('rgb', 'Input image.')
+    Block.output('rgb', 'Output image with overlaid text.')
     
     def init(self):
         self.define_input_signals(['rgb'])
         self.define_output_signals(['rgb'])
+        self.state.first_timestamp = None 
     
     def update(self):
+        # TODO: add check
+        if self.state.first_timestamp is None:
+            self.state.first_timestamp = self.get_input_timestamp(0)
+            self.state.frame = 0
+        else:
+            self.state.frame += 1
+        # Add stats
+        macros = {}
+        macros['timestamp'] = self.get_input_timestamp(0)
+        macros['time'] = self.get_input_timestamp(0) - self.state.first_timestamp
+        macros['frame'] = self.state.frame
         
-        texts = self.get_config('texts')
-        
-        
-        rgb = self.get_input(0)
-
+        rgb = self.input.rgb
         im = Image_from_array(rgb)
         draw = ImageDraw.Draw(im)
         
         # {string: "raw image", position: [10,30], halign: left, 
         # color: black, bg: white  }
-        for text in texts:
+        if not isinstance(self.config.texts, list):
+            raise BadConfig('Expected list', self, 'texts')
+        
+        for text in self.config.texts:
+            text = text.copy()
+            if not 'string' in text:
+                raise BadConfig('Missing field "string" in text spec %s.' % \
+                                text.__repr__(), self, 'texts')
+            text['string'] = Text.replace(text['string'], macros)
+            p = text['position']
+            if p[0] < 0: 
+                p[0] = rgb.shape[1] + p[0]
+            if p[1] < 0: 
+                p[1] = rgb.shape[0] + p[1]
+                
             process_text(draw, text)
         
         out = im.convert("RGB")
         pixel_data = numpy.asarray(out)
         
-        self.set_output(0, pixel_data)
-             
-
+        self.output.rgb = pixel_data
+    
+    @staticmethod   
+    def replace(s, macros):
+        ''' Expand macros in the text. '''
+        return s.format(**macros)
 
 # cache of fonts
 

@@ -15,7 +15,7 @@ class Gain(Block):
         self.define_output_signals(['out'])
     
     def update(self):
-        self.set_output(0, self.get_input(0) * self.get_config('gain'))
+        self.set_output(0, self.get_input(0) * self.get_config('k'))
 
 
 class Clock(Generator):

@@ -1,21 +1,20 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess, os, numpy
  
-from procgraph.core.block import Generator 
+from procgraph.core.block import Generator, Block
 from procgraph.core.exceptions import ModelExecutionError
 
-from procgraph import block_alias, block_config, block_output
 
  
 class MPlayer(Generator):
     ''' Decodes a video stream. ''' 
 
-    block_alias('mplayer')
+    Block.alias('mplayer')
     
-    block_config('file', 'Input video file. Any format that ``mplayer`` understands.')
-    block_config('quiet', 'If true, suppress messages from mplayer.', default=True)
+    Block.config('file', 'Input video file. Any format that ``mplayer`` understands.')
+    Block.config('quiet', 'If true, suppress messages from mplayer.', default=True)
     
-    block_output('video', 'RGB stream as numpy array.')
+    Block.output('video', 'RGB stream as numpy array.')
          
     def init(self):
         self.define_input_signals([])
@@ -37,7 +36,7 @@ class MPlayer(Generator):
                     pass
                 info[key] = value
             
-        print "Video configuration: %s" % info
+        self.info("Video configuration: %s" % info)
 
         keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS"]
         id_width, id_height, id_fps = keys
@@ -54,7 +53,8 @@ class MPlayer(Generator):
         self.dtype = 'uint8'
 
         format = "rgb24"
-        # FIXME: change fifo filename 
+        # FIXME: change fifo filename
+        # FIXME FIXME 
         fifo_name = 'mencoder_fifo'
         if os.path.exists(fifo_name):
             os.unlink(fifo_name)
@@ -68,7 +68,7 @@ class MPlayer(Generator):
                 fifo_name 
                 ]
         
-        print "command line: %s" % " ".join(args)
+        self.info("command line: %s" % " ".join(args))
          
         if self.config.quiet:
             self.process = subprocess.Popen(args, stdout=open('/dev/null'),

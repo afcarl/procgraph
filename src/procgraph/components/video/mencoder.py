@@ -1,7 +1,7 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess 
 
-from procgraph import Block, block_config, block_input, block_alias
+from procgraph import Block
 
 from procgraph.components  import check_rgb_or_grayscale
 from procgraph.core.model_loadsave import make_sure_dir_exists
@@ -13,15 +13,15 @@ class MEncoder(Block):
     
     Note that allowed codec and bitrate depend on your version of mencoder.
     ''' 
-    block_alias('mencoder')
+    Block.alias('mencoder')
     
-    block_input('image', 'H x W x 3  uint8 numpy array representing an RGB image.') 
+    Block.input('image', 'H x W x 3  uint8 numpy array representing an RGB image.') 
     
-    block_config('file', 'Output file (AVI format.)')
-    block_config('fps', 'Framerate of resulting movie.', default=10)
-    block_config('vcodec', 'Codec to use.', default='mpeg4')
-    block_config('vbitrate', 'Bitrate -- default is reasonable.', default=1000000)
-    block_config('quiet', "If True, suppress mencoder's messages", default=True)
+    Block.config('file', 'Output file (AVI format.)')
+    Block.config('fps', 'Framerate of resulting movie.', default=10)
+    Block.config('vcodec', 'Codec to use.', default='mpeg4')
+    Block.config('vbitrate', 'Bitrate -- default is reasonable.', default=1000000)
+    Block.config('quiet', "If True, suppress mencoder's messages", default=True)
     
     def init(self):
         #self.set_config_default()

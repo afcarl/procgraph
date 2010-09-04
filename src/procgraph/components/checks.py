@@ -45,8 +45,8 @@ def check_rgb_or_grayscale(block, input):
     ''' 
     image = block.get_input(input)
     if not isinstance(image, numpy.ndarray):
-        raise BadInput('Expected RGB or grayscale, this is not even a ' + 
-            + 'numpy array: %s' % image.__class__.__name__, block, input)
+        raise BadInput('Expected RGB or grayscale, this is not even a ' \
+            'numpy array: %s' % image.__class__.__name__, block, input)
     if image.dtype != 'uint8':
         raise BadInput('Expected an image, got an array %s %s.' % \
                             (str(image.shape), image.dtype), block, input)
