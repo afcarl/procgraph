@@ -85,6 +85,11 @@ register_simple_block(lambda x: x / max(abs(x)), 'normalize_Linf',
                       doc='Normalize a vector such that ``|x|_inf = max(abs(x))= 1``')
 
 
+def my_minimum(value, threshold):
+    return numpy.minimum(value, threshold)
+def my_maximum(value, threshold):
+    return numpy.maximum(value, threshold)
 
-
+register_simple_block(my_minimum, 'minimum', params={'threshold': COMPULSORY})
+register_simple_block(my_maximum, 'maximum', params={'threshold': COMPULSORY})
 
