@@ -48,7 +48,7 @@ class OrganicScale(Block):
         else:
             self.state.M += self.config.tau * (M - self.state.M)
             
-        print self.state.M
+#        print self.state.M
         
         y = minimum(y, self.state.M)
         y = maximum(y, -self.state.M)
