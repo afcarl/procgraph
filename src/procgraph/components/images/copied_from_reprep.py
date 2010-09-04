@@ -110,8 +110,11 @@ def scale(value, min_value=None, max_value=None,
         min_value = numpy.min(value)
 
     if max_value == min_value:
-        raise ValueError('I end up with max_value = %s = %s = min_value.' % \
-                         (max_value, min_value))
+#        raise ValueError('I end up with max_value = %s = %s = min_value.' % \
+#                         (max_value, min_value))
+        result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
+        result[:, :, :] = 255
+        return result
 
     value01 = (value - min_value) / (max_value - min_value)
     
