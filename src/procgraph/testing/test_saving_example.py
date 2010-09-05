@@ -41,6 +41,9 @@ class TestSaving(PGTestCase):
         
         model_spec = '''
         --- model testing_saving
+        config file1
+        config file2
+        config file3
         
         |has_state x=1| --> Y
         

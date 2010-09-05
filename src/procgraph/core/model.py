@@ -39,7 +39,7 @@ class BlockConnection:
 class Model(Generator, ModelLoadAndSave):
     ''' A Model is a block and a generator. '''
     
-    def __init__(self, name, model_name, config):
+    def __init__(self, name, model_name):
         ''' Name is the personal name of this instance.
             model_name is this model's name.
             

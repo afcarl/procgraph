@@ -12,6 +12,7 @@ from procgraph.core.model import Model
 from procgraph.core.visualization import semantic_warning
 
 from procgraph.core.visualization import debug as debug_main
+from procgraph.core.block_config import resolve_config
 
 
 
@@ -92,7 +93,6 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     def debug(s):
         if False:
             debug_main('Creating %s:%s | %s' % (name, parsed_model.name, s))
-
     
     #debug_main('config: %s' % config)
     
@@ -102,60 +102,40 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
         raise TypeError('I expect a ParsedModel instance, not a "%s".' % 
                         parsed_model.__class__.__name__)
         
-    model = Model(name=name, model_name=parsed_model.name, config=config)
+    model = Model(name=name, model_name=parsed_model.name)
     
-    # First we get the names of the config variables.
-    # In the mean time we check that we don't have doubles.
-    config_variables = set()
-    config_variables_required = set()
-    for config_statement in parsed_model.config:
-        variable = config_statement.variable
-        if variable in config_variables:
-            raise SemanticError(
-            'Config variable "%s" already defined.' % variable, config_statement)
-        config_variables.add(variable)
-        if not config_statement.has_default:
-            config_variables_required.add(variable)
-            
-    # We start by checking that we got passed the correct configuration.
-    # First we check that we were only passed config formally defined. 
-    #  (This is only a warning if we are not in strict mode.)
-    # Also note that we treat the "block.variable" refs in another way.
-    passed_variables = set([x for x in config.keys() if not '.' in x])
-    passed_not_defined = passed_variables.difference(config_variables) 
-    if passed_not_defined:
-        msg = ('We were passed config (%s) which was not defined formally ' + \
-        'as a config variable. The defined ones are %s.') % (\
-                aslist(passed_not_defined), aslist(config_variables))
-        if STRICT:
-            raise SemanticError(msg, parsed_model)
-        else:
-            semantic_warning(msg, parsed_model)
-         
-    # Then we check that we passed all variables that we needed to pass
-    required_not_passed = config_variables_required.difference(passed_variables)
-    if required_not_passed:
-        msg = ('Some required config (%s) was not passed.' % \
-               aslist(required_not_passed))
-        raise SemanticError(msg, parsed_model)
-    
-    
-    # We collect here all the properties, to use in initialization.
-    all_config = [] # tuple (key, value, element)
-    
-    # 1. We put the configuration defaults
-    for c in parsed_model.config:
-        if c.has_default:
-            all_config.append((c.variable, c.default, c))
-
-    # 2. We put the user-passed values
+    # first we divide the config in normal, and recursive config
+    normal_config = {}
+    recursive_config = {}
     for key, value in config.items():
-        all_config.append((key, value, None))
+        if '.' in key:
+            recursive_config[key] = value
+        else:
+            normal_config[key] = value
+    
+    # We mix the normal config with the defaults
+    resolved = resolve_config(parsed_model.config, normal_config, model)
+    
+    # Remember config statement
+    key2element = {}
+    for c in parsed_model.config:
+        key2element[c.variable] = c
+         
+    # We collect here all the properties, to use in initialization.
+    all_config = [] # tuple (key, value, parsing_element)
+    
+    # 1. We put the resolved configuration 
+    for key, value in resolved.items():
+        all_config.append((key, value, key2element.get(key, None)))
+
+    # 2. We also put the recursive conf
+    for key, value in recursive_config.items():
+        all_config.append((key, value, key2element.get(key, None)))
 
     # 3. We process the assignments
     for assignment in parsed_model.assignments:
         # We make sure we are not overwriting configuration    
-        if assignment.key in config_variables:
+        if assignment.key in resolved:
             msg = ('Assignment to "%s" overwrites a config variable.' + \
                   ' Perhaps you want to change the default instead?') % \
                     assignment.key

@@ -12,6 +12,7 @@ examples_42 = [
 |slave my_param=42| ---> |output name=meaning| 
 
 --- model slave
+config my_param
 
 |c1:constant| --> |output name=c|
 
@@ -27,6 +28,7 @@ c1.value = $my_param
 my_param2 = 42
 
 --- model slave
+config my_param
 
 |c1:constant| --> |output name=c|
 
@@ -41,6 +43,7 @@ c1.value = $my_param
 s1.my_param = 42
 
 --- model slave
+config my_param
 
 |c1:constant| --> |output name=c|
 
@@ -56,6 +59,7 @@ my_param2 = 42
 s1.my_param = $my_param2
 
 --- model slave
+config my_param
 
 |c1:constant| --> |output name=c|
 
@@ -64,12 +68,14 @@ c1.value = $my_param
 ''', {}),
 ('''
 --- model master 
+config my_param2
 
 |s1:slave| ---> |output name=meaning| 
 
 s1.my_param = $my_param2
 
 --- model slave
+config my_param
 
 |c1:constant| --> |output name=c|
 
@@ -82,6 +88,7 @@ c1.value = $my_param
 |slave| ---> |output name=meaning| 
 
 --- model slave
+config my_param
 
 |constant| --> |output name=c|
 

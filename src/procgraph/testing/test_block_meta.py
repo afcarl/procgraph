@@ -1,86 +1,85 @@
 from procgraph.testing.utils import PGTestCase
 
-from procgraph import Block, block_config, block_input, block_input_is_variable, \
-block_output_is_variable, block_output
+from procgraph import Block
 from procgraph.core.exceptions import BlockWriterError
 
 
 def same_name_mistake_config():
     
     class MyBlock(Block):
-        block_config('x', 'description')
-        block_config('x', 'description 2', default=True)
+        Block.config('x', 'description')
+        Block.config('x', 'description 2', default=True)
 
 def same_name_mistake_input():
     
     class MyBlock(Block):
-        block_input('x')
-        block_input('x')
+        Block.input('x')
+        Block.input('x')
 
 def same_name_mistake_output():
     
     class MyBlock(Block):
-        block_output('x')
-        block_output('x')
+        Block.output('x')
+        Block.output('x')
 
 
 def bad_mixing_1():
     
     class MyBlock(Block):
-        block_output('x')
-        block_output_is_variable()
+        Block.output('x')
+        Block.output_is_variable()
         
 def bad_mixing_2():
     
     class MyBlock(Block):
-        block_output_is_variable()
-        block_output('x')
+        Block.output_is_variable()
+        Block.output('x')
         
 def bad_mixing_3():
     
     class MyBlock(Block):
-        block_input_is_variable()
-        block_input('x')
+        Block.input_is_variable()
+        Block.input('x')
         
 def bad_mixing_4():
     
     class MyBlock(Block):
-        block_input('x')
-        block_input_is_variable()
+        Block.input('x')
+        Block.input_is_variable()
 
 def bad_mixing_5():
     
     class MyBlock(Block):
-        block_input('x')
-        block_output_is_variable()
+        Block.input('x')
+        Block.output_is_variable()
 
 def bad_mixing_6():
     
     class MyBlock(Block):
-        block_output_is_variable()
-        block_input('x')
+        Block.output_is_variable()
+        Block.input('x')
         
 def bad_mixing_7():
     
     class MyBlock(Block):
-        block_output_is_variable()
+        Block.output_is_variable()
         
 def good_mixing_1():
     
     class MyBlock(Block):
-        block_input_is_variable()
-        block_output_is_variable()
+        Block.input_is_variable()
+        Block.output_is_variable()
 
 def good_mixing_2():
     
     class MyBlock(Block):
-        block_input_is_variable()
-        block_output('only one')
+        Block.input_is_variable()
+        Block.output('only one')
 
 def good_mixing_3():
     
     class MyBlock(Block):
-        block_input_is_variable()
+        Block.input_is_variable()
 
 
 
@@ -107,12 +106,12 @@ class SyntaxTestMultiple(PGTestCase):
     def test_ok(self):
 
         class MyBlock(Block):
-            block_config('x', 'description')
-            block_config('y', 'description 2', default=True)
-            block_config('z')
-            block_input('x')
-            block_input('y')
-            block_output('x')
+            Block.config('x', 'description')
+            Block.config('y', 'description 2', default=True)
+            Block.config('z')
+            Block.input('x')
+            Block.input('y')
+            Block.output('x')
             
         self.assertEqual(len(MyBlock.config), 3)
         self.assertEqual(len(MyBlock.input), 2)
