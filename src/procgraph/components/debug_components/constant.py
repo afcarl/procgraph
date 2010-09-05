@@ -21,15 +21,15 @@ class Constant(Block):
         
     def init(self):
         # XXX FIXME this will not be supported
-        self.set_config_default('name', 'const')
+        #self.set_config_default('name', 'const')
         
-        self.signal_name = self.get_config('name')
-        self.value = self.get_config('value')
-        self.define_output_signals([self.signal_name])
+        #self.signal_name = self.get_config('name')
+        #self.value = self.get_config('value')
+        self.define_output_signals(['constant'])
         self.define_input_signals([])
         
     def update(self):
-        self.set_output(0, self.value, timestamp=ETERNITY)
+        self.set_output(0, self.config.value, timestamp=ETERNITY)
         
     def __repr__(self):
         return 'Constant(%s)' % self.get_config('value')

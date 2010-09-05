@@ -7,7 +7,14 @@ from procgraph.core.registrar import default_library
 
 class HasState(Block):
     ''' A simple block for debugging purposes 
-       that puts the config "x" in the state "x". '''
+       that puts the config "x" + 1 in the state "x". '''
+       
+    Block.alias('has_state')
+    
+    Block.config('x', default=42)
+    
+    Block.output('x')
+    
     def init(self):
         # default value
         self.config.x = 42
@@ -19,8 +26,6 @@ class HasState(Block):
 
     def update(self):
         self.set_output(0, self.state.x + 1, timestamp=1)
-
-default_library.register('has_state', HasState)
 
 
 

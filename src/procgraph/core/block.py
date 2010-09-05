@@ -4,6 +4,7 @@ from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy, \
     ConfigProxy
 from collections import namedtuple
 from procgraph.core.block_meta import BlockMeta, BlockMetaSugar
+from procgraph.core.block_config import resolve_config
 
 # Timestamp to use for constant times
 ETERNITY = 'constant-time'
@@ -15,15 +16,18 @@ class Value:
             timestamp = 0
         self.timestamp = timestamp
 
+
 class Block(BlockMetaSugar):
     __metaclass__ = BlockMeta
 
-    # Housekeeping
     def __init__(self, name, config, library):
         assert isinstance(name, str)
 
         self.name = name
-        self.__config = config
+        
+        list_of_config = self.__class__.config
+        self.__config = resolve_config(list_of_config, config, self)
+        
         # this is an array containing the names/ids
         # example: ["y", 1, 2]
         self.__input_signal_names = None
@@ -130,8 +134,9 @@ class Block(BlockMetaSugar):
             self.__output_signals.append(Value())
         
     def set_config_default(self, key, value):
-        if not key in self.__config:
-            self.__config[key] = value
+        print 'Warning, trying to set default %s  %s' % (self, key)
+        #if not key in self.__config:
+        #    self.__config[key] = value
             
     def get_config(self, conf):
         if not conf in self.__config:

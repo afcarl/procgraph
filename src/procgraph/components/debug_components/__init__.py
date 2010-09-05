@@ -4,19 +4,7 @@ from procgraph import Block, Generator, block_alias
 
 import constant, identity, info, printc
 
-class Gain(Block):
-    ''' FIXME: to be replaced by simpler function. '''
-
-    block_alias('gain')
-    
-    def init(self):
-        #self.set_config_default('gain', 1)
-        self.define_input_signals(['input'])
-        self.define_output_signals(['out'])
-    
-    def update(self):
-        self.set_output(0, self.get_input(0) * self.get_config('k'))
-
+import gain
 
 class Clock(Generator):
     block_alias('clock')
@@ -34,4 +22,5 @@ class Clock(Generator):
     def next_data_status(self):
         return (True, self.get_state('clock') + self.get_config('interval'))
     
+
 

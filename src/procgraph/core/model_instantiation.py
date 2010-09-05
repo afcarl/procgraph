@@ -114,7 +114,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             raise SemanticError(
             'Config variable "%s" already defined.' % variable, config_statement)
         config_variables.add(variable)
-        if config_statement.default is None:
+        if not config_statement.has_default:
             config_variables_required.add(variable)
             
     # We start by checking that we got passed the correct configuration.
