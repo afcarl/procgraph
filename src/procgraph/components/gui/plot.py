@@ -51,23 +51,7 @@ class Plot(Block):
         # don't define input signals
         self.define_output_signals(['rgb'])
         self.line = None
-
-        # set config defaults
-        self.config.width = 320 
-        self.config.height = 240 
-        self.config.xlabel = None 
-        self.config.ylabel = None
-        self.config.legend = None
-        self.config.title = None
-        self.config.format = '-'
-        self.config.x_min = None 
-        self.config.x_max = None
-        self.config.y_min = None 
-        self.config.y_max = None
-        self.config.symmetric = False
-        
-        self.config.keep = False
-        
+ 
         # figure gets initialized in update() on the first execution
         self.figure = None
         

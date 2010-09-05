@@ -9,7 +9,7 @@ from procgraph.components.pil.pil_conversions import Image_from_array
 
 
 from procgraph.core.visualization import info, error
-from procgraph.core.exceptions import BadInput, BadConfig
+from procgraph.core.exceptions import  BadConfig
 
 
 class Text(Block):

@@ -1,9 +1,9 @@
-from procgraph.testing.utils import PGTestCase
+import pickle
 from tempfile import NamedTemporaryFile
+
+from procgraph.testing.utils import PGTestCase
 from procgraph.core.block import Block
 from procgraph.core.model_loader import model_from_string
-import pickle
-from procgraph.core.registrar import default_library
 
 class HasState(Block):
     ''' A simple block for debugging purposes 
@@ -16,8 +16,6 @@ class HasState(Block):
     Block.output('x')
     
     def init(self):
-        # default value
-        self.config.x = 42
         
         self.state.x = self.config.x
         

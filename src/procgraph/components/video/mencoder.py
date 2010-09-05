@@ -23,17 +23,11 @@ class MEncoder(Block):
     Block.config('vbitrate', 'Bitrate -- default is reasonable.', default=1000000)
     Block.config('quiet', "If True, suppress mencoder's messages", default=True)
     
-    def init(self):
-        #self.set_config_default()
+    def init(self): 
         self.process = None
         self.define_input_signals(["image"])
         self.define_output_signals([])
-        # XXX: check with the state
-        self.file = self.config.file
-        self.config.fps = 10 
-        self.config.vcodec = 'mpeg4'
-        self.config.vbitrate = 1000000
-        self.config.quiet = True
+        
         
     def update(self):
         check_rgb_or_grayscale(self, 0)
@@ -46,7 +40,7 @@ class MEncoder(Block):
             vcodec = self.config.vcodec
             vbitrate = self.config.vbitrate
         
-            make_sure_dir_exists(self.file)
+            make_sure_dir_exists(self.config.file)
                 
             format = {2: 'y8', 3: 'rgb24'}[len(image.shape)]
             
@@ -54,7 +48,7 @@ class MEncoder(Block):
                     '-rawvideo', 'w=%d:h=%d:fps=%d:format=%s' % (w, h, fps, format),
                     '-ovc', 'lavc', '-lavcopts',
                      'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
-                     '-o', self.file]
+                     '-o', self.config.file]
             self.info('command line: %s' % " ".join(args))
                      
             if self.config.quiet:

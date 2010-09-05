@@ -1,6 +1,6 @@
 from procgraph.core.block import ETERNITY
 
-from procgraph import Block, block_alias, block_config          
+from procgraph import Block          
 
 class Constant(Block):
     ''' Output a numerical constant that never changes.
@@ -15,16 +15,11 @@ class Constant(Block):
         * ``name``, optional signal name (default: const)
     ''' 
     
-    block_alias('constant')
+    Block.alias('constant')
     
-    block_config('value', 'Constant value to output.') 
+    Block.config('value', 'Constant value to output.') 
         
-    def init(self):
-        # XXX FIXME this will not be supported
-        #self.set_config_default('name', 'const')
-        
-        #self.signal_name = self.get_config('name')
-        #self.value = self.get_config('value')
+    def init(self): 
         self.define_output_signals(['constant'])
         self.define_input_signals([])
         
@@ -32,5 +27,5 @@ class Constant(Block):
         self.set_output(0, self.config.value, timestamp=ETERNITY)
         
     def __repr__(self):
-        return 'Constant(%s)' % self.get_config('value')
+        return 'Constant(%s)' % self.config.value
 

@@ -11,14 +11,13 @@ class ImageGrid(Block):
     
     Block.alias('grid')
     
-    Block.config('cols', 'Columns in the grid.')
+    Block.config('cols', 'Columns in the grid.', default=None)
     
     Block.input_is_variable('Images to arrange in a grid.')
     Block.output('grid', 'Images arranged in a grid.')
     
     def init(self):        
         self.define_output_signals(['grid'])
-        self.set_config_default('cols', None)
         
     def update(self):
         n = self.num_input_signals()

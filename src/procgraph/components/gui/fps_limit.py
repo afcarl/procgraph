@@ -1,8 +1,7 @@
 import time
 
-from procgraph import Block, block_alias, block_config, \
-    block_output_is_variable, block_input_is_variable
- 
+from procgraph import Block 
+
 
 class FPSLimit(Block):
     ''' This block limits the output update to a certain *realtime* framerate.
@@ -10,12 +9,12 @@ class FPSLimit(Block):
     Note that this uses realtime wall clock time -- not the data time!
     This is mean for real-time applications, such as visualization.''' 
      
-    block_alias('fps_limit')
+    Block.alias('fps_limit')
     
-    block_config('fps', 'Realtime fps limit.')
+    Block.config('fps', 'Realtime fps limit.')
     
-    block_input_is_variable('Arbitrary signals.')
-    block_output_is_variable('Arbitrary signals with limited framerate.')
+    Block.input_is_variable('Arbitrary signals.')
+    Block.output_is_variable('Arbitrary signals with limited framerate.')
     
     def init(self):
         # say we are not ready if the inputs were not defined.
@@ -24,8 +23,7 @@ class FPSLimit(Block):
         
         # output signals get the same name as the inputs
         self.define_output_signals(self.get_input_signals_names())
-      
-        fps = self.config.fps  #@UnusedVariable
+       
         
         self.state.last_timestamp = None
         

@@ -33,10 +33,7 @@ class LaserDisplay(Block):
     def init(self):
         self.define_input_signals(['readings'])
         self.define_output_signals(['image'])
-        self.config.width = 320
-        self.config.height = 320
-        self.config.max_readings = 30 
-        self.config.title = None
+        
         
     def update(self):
         

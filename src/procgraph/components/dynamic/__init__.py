@@ -22,3 +22,4 @@ import sync2
 
 import low_pass
 
+import last_n_samples

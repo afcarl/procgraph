@@ -134,7 +134,7 @@ class Block(BlockMetaSugar):
             self.__output_signals.append(Value())
         
     def set_config_default(self, key, value):
-        print 'Warning, trying to set default %s  %s' % (self, key)
+        raise Exception('Warning, trying to set default %s  %s' % (self, key))
         #if not key in self.__config:
         #    self.__config[key] = value
             

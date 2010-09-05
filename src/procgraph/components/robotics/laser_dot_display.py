@@ -18,8 +18,6 @@ class LaserDotDisplay(Block):
     Block.config('width', default=320)
     Block.config('height', default=320)
     
-    Block.config('skim', default=5)
-    
     Block.config('groups', 'How to group and draw the readings. (see example) ')
     Block.config('title', 'By default it displays the signal name.'
                         ' Set the empty string to disable.', default=None)
@@ -32,14 +30,6 @@ class LaserDotDisplay(Block):
     def init(self):
         self.define_input_signals(['readings_dot'])
         self.define_output_signals(['image'])
-        self.config.width = 320
-        self.config.height = 320
-        self.config.max_readings = 30
-         
-        self.config.skim = 10
-        self.config.scale = True
-        self.config.title = None
-
         
         
     def update(self):

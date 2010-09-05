@@ -8,13 +8,12 @@ class HistoryT(Block):
     ''' 
     Block.alias('historyt')
     
-    Block.config('interval', 'Length of interval (seconds).')
+    Block.config('interval', 'Length of interval (seconds).', default=10)
     
     Block.output('history', 'Tuple ``(t,x)`` containing two arrays.')
     
     def init(self):
-        self.set_config_default('interval', 10)
-        
+
         self.define_output_signals(['history'])
         self.define_input_signals(['input'])
         

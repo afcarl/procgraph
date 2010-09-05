@@ -1,15 +1,13 @@
-from procgraph  import Block, block_input_is_variable, \
-    block_output_is_variable, block_alias, block_config
-     
+from procgraph  import Block 
 
 class FPSDataLimit(Block):
     ''' This block limits the output update to a certain framerate. ''' 
-    block_alias('fps_data_limit')
+    Block.alias('fps_data_limit')
     
-    block_config('fps', 'Maximum framerate.')
+    Block.config('fps', 'Maximum framerate.')
     
-    block_input_is_variable('Signals to decimate.', min=1)
-    block_output_is_variable('Decimated signals.') 
+    Block.input_is_variable('Signals to decimate.', min=1)
+    Block.output_is_variable('Decimated signals.') 
     
     def init(self):
         # say we are not ready if the inputs were not defined.

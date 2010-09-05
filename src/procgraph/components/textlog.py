@@ -1,8 +1,7 @@
 from procgraph.components.file_utils import expand_environment
-from procgraph.core.block import Generator
 from procgraph.core.exceptions import ModelExecutionError
 import traceback
-from procgraph import Generator, block_config
+from procgraph import Generator, Block
 
 
 class TextLog(Generator):
@@ -12,7 +11,7 @@ class TextLog(Generator):
         Subclasses should overload the parse_format() static method.
     '''
     
-    block_config('file', 'Filename. If it ends with ``bz2`` it is treated as compressed.')
+    Block.config('file', 'Filename. If it ends with ``bz2`` it is treated as compressed.')
     
     def init(self):
         filename = self.config.file

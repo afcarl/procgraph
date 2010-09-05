@@ -1,10 +1,11 @@
-from procgraph import Block, block_alias, block_input_is_variable
+from procgraph import Block
 
 class Print(Block):
     ''' Print a representation of the input values along with their timestamp. '''
     
-    block_input_is_variable('Signals to print.')
-    block_alias('print')
+    Block.alias('print')
+    
+    Block.input_is_variable('Signals to print.')
     
     def init(self):
         # say we are not ready if the inputs were not defined.

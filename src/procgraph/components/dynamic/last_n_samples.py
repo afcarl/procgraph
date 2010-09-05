@@ -1,25 +1,26 @@
 from procgraph import Block
 
-class History(Block):
+class HistoryN(Block):
     ''' 
-    This block collects the history of a quantity,
+    This block collects the last N samples of a signals,
     and outputs two signals ``x`` and ``t``. 
-    See also :ref:`block:historyt` and :ref:`block:last_n_samples`.
+    See also :ref:`block:historyt` and :ref:`block:history`.
     ''' 
-    Block.alias('history')
+    Block.alias('last_n_samples')
     
-    Block.config('interval', 'Length of the interval to record.', default=10)
+    Block.config('n', 'Number of samples to retain.')
     
     Block.output('x', 'Sequence of values.')
     Block.output('t', 'Sequence of timestamps.')
-    
+        
     def init(self):
+        
         self.define_output_signals(['x', 't'])
         self.define_input_signals(['input'])
         
         self.state.x = []
-        self.state.t = []
-    
+        self.state.t = [] 
+
     def update(self):
         
         sample = self.get_input(0)
@@ -31,11 +32,11 @@ class History(Block):
         x.append(sample)
         t.append(timestamp)
         
-        
-        while abs(t[0] - t[-1]) > self.config.interval:
+        n = self.config.n
+        while len(x) > n:
             t.pop(0)
             x.pop(0)
             
-        self.output.x = x 
-        self.output.t = t 
-         
+        if len(x) == n:
+            self.output.x = x 
+            self.output.t = t 

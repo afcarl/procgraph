@@ -25,10 +25,10 @@ class Join(Block):
         for signal in names:
             sizes[signal] = None 
             
-        self.set_state('sizes', sizes)
+        self.state.sizes = sizes
             
     def update(self):
-        sizes = self.get_state('sizes')
+        sizes = self.state.sizes
         result = []
         for name in self.get_input_signals_names():
             value = self.get_input(name)
@@ -44,6 +44,6 @@ class Join(Block):
             
             result.extend(value)
         
-        self.set_output(0, numpy.array(result))
+        self.output[0] = numpy.array(result)
           
 

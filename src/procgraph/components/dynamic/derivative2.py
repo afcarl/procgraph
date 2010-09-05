@@ -1,6 +1,6 @@
 import numpy
 
-from procgraph  import Block, block_input, block_output, block_alias
+from procgraph  import Block
 from procgraph.core.exceptions import BadInput
 from procgraph.components.basic import  register_model_spec
 
@@ -15,12 +15,12 @@ def isiterable(x):
 class ForwardDifference12(Block):
     ''' Computes ``x[t+1] - x[t]`` normalized with timestamp. '''
     
-    block_alias('two_step_difference')
+    Block.alias('two_step_difference')
     
-    block_input('x12', 'An array with the last 2 values of x.')
-    block_input('t12', 'An array with the last 2 values of the timestamp.')
+    Block.input('x12', 'An array with the last 2 values of x.')
+    Block.input('t12', 'An array with the last 2 values of the timestamp.')
     
-    block_output('x_dot', 'Derivative of x')
+    Block.output('x_dot', 'Derivative of x')
     
     def init(self):
         self.define_input_signals(['x12', 't12'])

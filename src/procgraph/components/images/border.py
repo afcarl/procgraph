@@ -14,12 +14,6 @@ class Border(Block):
     Block.config('bottom', 'pixel length for bottom border', default=0)
 
     def init(self):
-        self.config.color = [1, 1, 1]
-        self.config.left = 0
-        self.config.right = 0
-        self.config.top = 0
-        self.config.bottom = 0
-        
         self.define_input_signals(['rgb'])
         self.define_output_signals(['rgb'])
         

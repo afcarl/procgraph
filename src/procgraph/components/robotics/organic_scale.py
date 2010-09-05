@@ -24,11 +24,7 @@ class OrganicScale(Block):
         ###
         self.define_input_signals(['value'])
         self.define_output_signals(['value_scaled'])
-        self.config.skim = 5
-        self.config.skim_hist = 5
-        self.config.hist = 100
-        self.config.tau = 0.1
-        ###
+
         self.state.max = []
         self.state.M = None
         

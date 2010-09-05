@@ -17,15 +17,14 @@ class Extract(Block):
         self.define_input_signals(['vector'])
         self.define_output_signals(['part'])
             
-        self.get_config('index')
-            
+
     def update(self):
-        index = self.get_config('index')
-        vector = self.get_input('vector')
+        index = self.config.index
+        vector = self.input.vector
         
         part = vector[index]
         
-        self.set_output('part', part)
+        self.output.part = part
          
          
 def slice(signal, start, end):

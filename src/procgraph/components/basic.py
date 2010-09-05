@@ -1,12 +1,9 @@
-from procgraph import Block, block_alias 
+from procgraph import Block 
 from procgraph.core.registrar import default_library
 from procgraph.core.exceptions import ModelExecutionError
 from procgraph.core.model_loader import add_models_to_library
 import traceback
-import inspect
-from procgraph.core.block_meta import block_config, block_input, block_output, \
-    split_docstring
- 
+import inspect 
 
 COMPULSORY = 'compulsory-param'
 TIMESTAMP = 'timestamp-param'
@@ -18,7 +15,7 @@ def make_generic(name, num_inputs, num_outputs,
     parameters = dict(params)
 
     class GenericOperation(Block):
-        block_alias(name)
+        Block.alias(name)
         
         # filled out later
         defined_in = None
@@ -34,18 +31,15 @@ def make_generic(name, num_inputs, num_outputs,
         for key, value in parameters.items():
             if not value in [TIMESTAMP]:
                 if value == COMPULSORY:
-                    block_config(key)
+                    Block.config(key)
                 else:
-                    block_config(key, default=value)
+                    Block.config(key, default=value)
         for i in range(num_inputs):
-            block_input(str(i))
+            Block.input(str(i))
         for i in range(num_outputs):
-            block_output(str(i))
+            Block.output(str(i))
                       
         def init(self):
-            for key, value in parameters.items():
-                if not value in [COMPULSORY, TIMESTAMP]:
-                    self.set_config_default(key, value)
             self.define_input_signals(map(str, range(num_inputs)))
             self.define_output_signals(map(str, range(num_outputs)))
    

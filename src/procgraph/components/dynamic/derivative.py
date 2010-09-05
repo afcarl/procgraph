@@ -1,6 +1,6 @@
 import numpy
 
-from procgraph  import Block, block_input, block_output, block_alias
+from procgraph import Block
 from procgraph.core.exceptions import BadInput
 from procgraph.components.basic import  register_model_spec
 
@@ -18,12 +18,12 @@ class ForwardDifference(Block):
     
         You want to attach this to :ref:`block:last_n_samples`.
     '''
-    block_alias('forward_difference')
+    Block.alias('forward_difference')
     
-    block_input('x123', 'An array with the last 3 values of x.')
-    block_input('t123', 'An array with the last 3 values of the timestamp.')
+    Block.input('x123', 'An array with the last 3 values of x.')
+    Block.input('t123', 'An array with the last 3 values of the timestamp.')
     
-    block_output('x_dot', 'Derivative of x')
+    Block.output('x_dot', 'Derivative of x')
     
     def init(self):
         self.define_input_signals(['x123', 't123'])

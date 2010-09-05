@@ -20,7 +20,6 @@ class MPlayer(Generator):
         self.define_input_signals([])
         self.define_output_signals(["video"])
         self.file = self.get_config('file')
-        self.config.quiet = True 
         
         # first we identify the video resolution
         args = 'mplayer -identify -vo null -ao null -frames 0'.split() + [self.file]
@@ -86,15 +85,13 @@ class MPlayer(Generator):
         rgb = numpy.fromfile(self.stream, dtype=dtype, count=1)
         rgb = rgb.squeeze()
         
-        t = self.get_state('timestamp')
+        self.set_output(0, value=rgb, timestamp=self.state.timestamp)
 
-        self.set_output(0, rgb, t)
-
-        self.set_state('timestamp', t + self.delta)        
+        self.state.timestamp += self.delta        
     
     def next_data_status(self):
         # FIXME check EOF
-        return (True, self.get_state('timestamp'))
+        return (True, self.state.timestamp)
  
 
 

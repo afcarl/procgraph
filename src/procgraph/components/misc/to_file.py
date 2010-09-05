@@ -1,13 +1,13 @@
 
-from procgraph import Block, block_alias, block_input, block_config
+from procgraph import Block
 
 class ToFile(Block):
     ''' Prints the input line by line to a given file.'''
-    block_alias('to_file')
+    Block.alias('to_file')
     
-    block_config('file', 'File to write.')
+    Block.config('file', 'File to write.')
 
-    block_input('values', 'Anything you wish to print to file.')
+    Block.input('values', 'Anything you wish to print to file.')
     
     def init(self):
         # We take any number of output
