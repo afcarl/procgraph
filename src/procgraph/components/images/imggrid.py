@@ -1,7 +1,6 @@
 from numpy import ceil, sqrt, zeros
 
-from procgraph import Block, block_config, block_alias, \
-                block_input_is_variable, block_output 
+from procgraph import Block
 
 from procgraph.components import check_rgb_or_grayscale
 from procgraph.components.images.compose import place_at  
@@ -10,12 +9,12 @@ from procgraph.components.images.compose import place_at
 class ImageGrid(Block):
     ''' A block that creates a larger image by arranging them in a grid. '''
     
-    block_alias('grid')
+    Block.alias('grid')
     
-    block_config('cols', 'Columns in the grid.')
+    Block.config('cols', 'Columns in the grid.')
     
-    block_input_is_variable('Images to arrange in a grid.')
-    block_output('grid', 'Images arranged in a grid.')
+    Block.input_is_variable('Images to arrange in a grid.')
+    Block.output('grid', 'Images arranged in a grid.')
     
     def init(self):        
         self.define_output_signals(['grid'])

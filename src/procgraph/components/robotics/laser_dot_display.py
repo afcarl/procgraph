@@ -1,10 +1,9 @@
+import math
 from numpy import array, linspace, sin, cos
 from matplotlib import pylab
 
-from procgraph  import Block, block_alias, block_config, block_input, block_output
+from procgraph  import Block
 from procgraph.components.robotics.laser_display import pylab2rgb
-import math
-from procgraph.components.images.copied_from_reprep import skim_top_and_bottom
 from procgraph.core.exceptions import BadInput
 
 class LaserDotDisplay(Block):
@@ -14,20 +13,20 @@ class LaserDotDisplay(Block):
      
     '''
     
-    block_alias('laser_dot_display')
+    Block.alias('laser_dot_display')
     
-    block_config('width', default=320)
-    block_config('height', default=320)
+    Block.config('width', default=320)
+    Block.config('height', default=320)
     
-    block_config('skim', default=5)
+    Block.config('skim', default=5)
     
-    block_config('groups', 'How to group and draw the readings. (see example) ')
+    Block.config('groups', 'How to group and draw the readings. (see example) ')
     Block.config('title', 'By default it displays the signal name.'
                         ' Set the empty string to disable.', default=None)
     
-    block_input('readings_dot')
+    Block.input('readings_dot')
     
-    block_output('image')
+    Block.output('image')
      
     # Exampl
     def init(self):

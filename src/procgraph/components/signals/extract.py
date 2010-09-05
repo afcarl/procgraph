@@ -1,5 +1,4 @@
-from procgraph  import Block, block_alias, block_config, block_input, \
-    block_output
+from procgraph  import Block 
 from procgraph.components.basic import COMPULSORY, register_simple_block
 
 
@@ -9,10 +8,10 @@ class Extract(Block):
     This block extracts some of the components of a vector.
     
     '''
-    block_alias('extract')
-    block_input('vector')
-    block_output('part')
-    block_config('index')
+    Block.alias('extract')
+    Block.input('vector')
+    Block.output('part')
+    Block.config('index')
     
     def init(self):
         self.define_input_signals(['vector'])

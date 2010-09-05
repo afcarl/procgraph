@@ -1,1 +1,1 @@
-pgdoc --translate `pwd`/..=https://github.com/AndreaCensi/procgraph/blob/master --label 'pgdoc:procgraph.components' --output source/pgdoc.rst procgraph.components 
+pgdoc --translate `pwd`/..=https://github.com/AndreaCensi/procgraph/blob/master --label 'pgdoc:procgraph.components' --output source/pgdoc.rst procgraph.components  procgraph.components.pil procgraph.components.cv

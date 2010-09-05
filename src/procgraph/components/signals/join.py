@@ -1,16 +1,17 @@
 import numpy
 
-from procgraph import Block, block_alias, block_input_is_variable, block_output
+from procgraph import Block 
+
 
 class Join(Block):
     ''' 
     This block joins multiple signals into one.
     '''
     
-    block_alias('join')
+    Block.alias('join')
     
-    block_input_is_variable('Signals to be joined together.')
-    block_output('joined', 'Joined signals.')
+    Block.input_is_variable('Signals to be joined together.')
+    Block.output('joined', 'Joined signals.')
     
     def init(self): 
         # say we are not ready if the inputs were not defined.

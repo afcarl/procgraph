@@ -1,5 +1,4 @@
-from procgraph import Block, block_alias, \
-    block_input_is_variable, block_output_is_variable
+from procgraph import Block
 
 class Identity(Block):
     ''' This block outputs the inputs, unchanged. 
@@ -7,9 +6,9 @@ class Identity(Block):
         This is an example of a block whose signal configuration is dynamics:
         init() gets called twice. '''
     
-    block_alias('identity')
-    block_input_is_variable('Input signals.')
-    block_output_is_variable('Output signals, equal to input.')
+    Block.alias('identity')
+    Block.input_is_variable('Input signals.')
+    Block.output_is_variable('Output signals, equal to input.')
     
     def init(self):
         # say we are not ready if the inputs were not defined.

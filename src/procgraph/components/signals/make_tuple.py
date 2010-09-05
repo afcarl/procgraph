@@ -1,4 +1,5 @@
-from procgraph import Block, block_alias, block_input_is_variable, block_output
+from procgraph import Block
+
 
 class MakeTuple(Block):
     ''' Creates a tuple out of the input signals values. 
@@ -6,11 +7,11 @@ class MakeTuple(Block):
         Often used for plotting two signals as (x,y); see :ref:`block:plot`.
     '''
     
-    block_alias('make_tuple')
+    Block.alias('make_tuple')
     
-    block_input_is_variable('Signals to unite in a tuple.')
+    Block.input_is_variable('Signals to unite in a tuple.')
     
-    block_output('tuple', 'Tuple containing signals.')
+    Block.output('tuple', 'Tuple containing signals.')
     
     def init(self):
         self.define_output_signals(['tuple'])

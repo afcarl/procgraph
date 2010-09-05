@@ -2,14 +2,14 @@ from pylab import ion, draw, imshow
 
 if False:
     
-    from procgraph import Block, block_alias, block_config
+    from procgraph import Block 
     
     class ImagePlot(Block):
         ''' Plots an image (anything you can pass to imshow() ) '''
     
-        block_alias('imshow')
+        Block.alias('imshow')
         
-        block_input('to_plot', 'Image to plot.')
+        Block.input('to_plot', 'Image to plot.')
         
         def init(self): 
             self.define_input_signals(['to_plot'])

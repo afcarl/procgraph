@@ -1,17 +1,17 @@
-from procgraph  import Block, block_alias, block_config, block_output
-     
+from procgraph import Block
+
 class History(Block):
     ''' 
     This block collects the history of a quantity,
     and outputs two signals ``x`` and ``t``. 
     See also :ref:`block:historyt` and :ref:`block:last_n_samples`.
     ''' 
-    block_alias('history')
+    Block.alias('history')
     
-    block_config('interval', 'Length of the interval to record.')
+    Block.config('interval', 'Length of the interval to record.')
     
-    block_output('x', 'Sequence of values.')
-    block_output('t', 'Sequence of timestamps.')
+    Block.output('x', 'Sequence of values.')
+    Block.output('t', 'Sequence of timestamps.')
     
     def init(self):
         self.set_config_default('interval', 10)
@@ -47,12 +47,12 @@ class HistoryN(Block):
     and outputs two signals ``x`` and ``t``. 
     See also :ref:`block:historyt` and :ref:`block:history`.
     ''' 
-    block_alias('last_n_samples')
+    Block.alias('last_n_samples')
     
-    block_config('n', 'Number of samples to retain.')
+    Block.config('n', 'Number of samples to retain.')
     
-    block_output('x', 'Sequence of values.')
-    block_output('t', 'Sequence of timestamps.')
+    Block.output('x', 'Sequence of values.')
+    Block.output('t', 'Sequence of timestamps.')
         
     def init(self):
         self.get_config('n')
@@ -60,25 +60,25 @@ class HistoryN(Block):
         self.define_output_signals(['x', 't'])
         self.define_input_signals(['input'])
         
-        self.set_state('x', [])
-        self.set_state('t', [])
-    
+        self.state.x = []
+        self.state.t = [] 
+
     def update(self):
         
         sample = self.get_input(0)
         timestamp = self.get_input_timestamp(0)
          
-        x = self.get_state('x')
-        t = self.get_state('t')
+        x = self.state.x
+        t = self.state.t
         
         x.append(sample)
         t.append(timestamp)
         
-        n = self.get_config('n')
+        n = self.config.n
         while len(x) > n:
             t.pop(0)
             x.pop(0)
             
         if len(x) == n:
-            self.set_output('x', x) 
-            self.set_output('t', t) 
+            self.output.x = x 
+            self.output.t = t 

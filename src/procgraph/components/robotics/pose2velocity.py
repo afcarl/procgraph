@@ -1,4 +1,4 @@
-from procgraph import Block, block_alias, block_input, block_output
+from procgraph import Block
 from procgraph.core.exceptions import BadInput
 
 from procgraph.components.basic import  register_model_spec
@@ -7,12 +7,12 @@ from snp_geometry.pose import Pose
 
 class Pose2velocity(Block):
     ''' Block used by :ref:`block:pose2commands`. '''
-    block_alias('pose2vel_')
+    Block.alias('pose2vel_')
     
-    block_input('q12', 'Last two poses.')
-    block_input('t12', 'Last two timestamps.')
+    Block.input('q12', 'Last two poses.')
+    Block.input('t12', 'Last two timestamps.')
     
-    block_output('commands', 'Estimated commands ``[vx,vy,omega]``.')
+    Block.output('commands', 'Estimated commands ``[vx,vy,omega]``.')
     
     def init(self):
         self.define_input_signals(['q12', 't12'])

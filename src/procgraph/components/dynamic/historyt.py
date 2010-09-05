@@ -1,5 +1,4 @@
-from procgraph  import Block, block_alias, block_config, block_output
-
+from procgraph  import Block 
     
 class HistoryT(Block):
     ''' 
@@ -7,11 +6,11 @@ class HistoryT(Block):
     and outputs *one* signal containing a tuple  ``(t,x)``. 
     See also :ref:`block:last_n_samples` and :ref:`block:history`.
     ''' 
-    block_alias('historyt')
+    Block.alias('historyt')
     
-    block_config('interval', 'Length of interval (seconds).')
+    Block.config('interval', 'Length of interval (seconds).')
     
-    block_output('history', 'Tuple ``(t,x)`` containing two arrays.')
+    Block.output('history', 'Tuple ``(t,x)`` containing two arrays.')
     
     def init(self):
         self.set_config_default('interval', 10)

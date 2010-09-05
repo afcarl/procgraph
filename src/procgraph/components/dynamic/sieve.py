@@ -1,5 +1,4 @@
-from procgraph import Block, block_alias, block_config, block_output, block_input
- 
+from procgraph import Block 
 
 class Sieve(Block):
     ''' 
@@ -7,12 +6,12 @@ class Sieve(Block):
     only one in ``n`` updates.
     '''
     
-    block_alias('sieve')
+    Block.alias('sieve')
     
-    block_config('n', 'Decimation level; ``n = 3`` means transmit one in three.')
+    Block.config('n', 'Decimation level; ``n = 3`` means transmit one in three.')
     
-    block_input('data', 'Arbitrary input signals.')
-    block_output('decimated', 'Decimated signals.')
+    Block.input('data', 'Arbitrary input signals.')
+    Block.output('decimated', 'Decimated signals.')
      
     def init(self):
         # say we are not ready if the inputs were not defined.
@@ -21,20 +20,15 @@ class Sieve(Block):
         
         # output signals get the same name as the inputs
         self.define_output_signals(self.get_input_signals_names())
-        
-        self.get_config('n')
-        self.set_state('count', 0) 
+                
+        self.state.count = 0
 
     def update(self):
-        count = self.get_state('count')
-        n = self.get_config('n')
-
         # make something happen after we have waited enough
-        if 0 == count % n: 
+        if 0 == self.state.count % self.config.n: 
             # Just copy the input to the output
             for i in range(self.num_input_signals()):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
 
-        count += 1
-        self.set_state('count', count)
-         
+        self.state.count += 1
+
