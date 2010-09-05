@@ -36,7 +36,7 @@ class PipelineTest(PGTestCase):
     def try_one(self, model_desc):
         print "Trying with '''%s'''" % model_desc
         gain = 3
-        model = model_from_string(model_desc, config={'g1.gain': gain})
+        model = model_from_string(model_desc, config={'g1.k': gain})
         
         model.summary()
         
