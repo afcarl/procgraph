@@ -105,6 +105,10 @@ class Text(Block):
                                 text.__repr__(), self, 'texts')
             text['string'] = Text.replace(text['string'], macros)
             p = text['position']
+            if p[0] == 'middle':
+                p[0] = rgb.shape[1] / 2
+            if p[1] == 'middle':
+                p[1] = rgb.shape[0] / 2
             if p[0] < 0: 
                 p[0] = rgb.shape[1] + p[0]
             if p[1] < 0: 
@@ -126,14 +130,15 @@ class Text(Block):
 
 def find_file(font_name):
     try:
-        pattern = '*%s*.ttf' % font_name
+        #pattern = '*%s*.ttf' % font_name
+        pattern = '%s.ttf' % font_name
         a = subprocess.Popen(['locate', pattern], stdout=subprocess.PIPE); 
         lines = a.stdout.read();
         if len(lines) == 0:
             error('Cannot find filename respecting pattern "%s" anywhere' % pattern)
             return None
         options = lines.split('\n')
-        guess = lines[0]
+        guess = options[0]
         info('Found %d matches for %s, using  "%s".' % (len(options), pattern, guess))
         return guess
     except Exception as e:
@@ -166,11 +171,13 @@ def process_text(draw, t):
     color = t.get('color', '#aaaaaa')
     bg = t.get('bg', None)
     size = t.get('size', 15)
-    fontname = t.get('font', 'Arial.ttf')
+    fontname = t.get('font', 'Arial')
     font = get_font(fontname, size)
     
     tw, th = font.getsize(string)
     x, y = position[0], position[1]
+     
+    
     halign = t.get('halign', 'left')
     valign = t.get('valign', 'top')
     
