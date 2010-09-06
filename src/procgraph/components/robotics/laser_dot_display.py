@@ -3,8 +3,8 @@ from numpy import array, linspace, sin, cos
 from matplotlib import pylab
 
 from procgraph  import Block
-from procgraph.components.robotics.laser_display import pylab2rgb
 from procgraph.core.exceptions import BadInput
+from procgraph.components.gui.plot import pylab2rgb
 
 class LaserDotDisplay(Block):
     ''' Produces a plot of a range-finder scan variation (derivative). 
@@ -21,7 +21,9 @@ class LaserDotDisplay(Block):
     Block.config('groups', 'How to group and draw the readings. (see example) ')
     Block.config('title', 'By default it displays the signal name.'
                         ' Set the empty string to disable.', default=None)
-    
+    Block.config('transparent', 'Gives transparent RGBA rather than RGB.',
+                  default=False)
+
     Block.input('readings_dot')
     
     Block.output('image')
@@ -87,8 +89,8 @@ class LaserDotDisplay(Block):
             t = self.get_input_signals_names()[0]
             pylab.title(t, fontsize=10)
 
-        
-        self.output.image = pylab2rgb()
+        self.output.image = pylab2rgb(transparent=self.config.transparent)
+
 
         pylab.close(f.number)
  

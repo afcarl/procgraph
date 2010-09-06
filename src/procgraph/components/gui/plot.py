@@ -41,6 +41,8 @@ class Plot(Block):
     Block.config('y_min', default=None)
     Block.config('y_max', default=None)
     Block.config('keep', default=False)
+    Block.config('transparent', 'If true, outputs a RGBA image instead of RGB.',
+                 default=False)
 
     Block.input_is_variable('Data to plot.')
     
@@ -245,15 +247,14 @@ class Plot(Block):
         start = time.clock()
         f = tempfile.NamedTemporaryFile(suffix='.png')
         temp_file = f.name
-        
-        pylab.savefig(temp_file)
+
+        options = {'transparent':True} if self.config.transparent else {}        
+        pylab.savefig(temp_file, **options)
         saving = time.clock() - start
         
         
         start = time.clock()    
-        im = Image.open(temp_file)
-        im = im.convert("RGB")
-        pixel_data = numpy.asarray(im)
+        pixel_data = pylab2rgb(transparent=self.config.transparent)        
         reading = time.clock() - start
        
         if False: 
@@ -267,3 +268,20 @@ class Plot(Block):
             self.figure = None
 
 
+
+def pylab2rgb(transparent=False):
+    ''' Saves and returns the pixels in the current pylab figure. 
+    
+        Returns a RGB uint8 array. Uses PIL to do the job.
+        
+        If transparent is true, returns a RGBA image instead of RGB. 
+    '''
+    
+    temp_file = tempfile.NamedTemporaryFile(suffix='.png')
+    temp_filename = temp_file.name
+    pylab.savefig(temp_filename)
+    im = Image.open(temp_filename)
+    if not transparent:
+        im = im.convert("RGB")
+    rgb = numpy.asarray(im)    
+    return rgb

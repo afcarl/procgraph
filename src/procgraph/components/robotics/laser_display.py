@@ -5,6 +5,7 @@ from PIL import Image
 import tempfile
 
 from procgraph  import Block
+from procgraph.components.gui.plot import pylab2rgb
 
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 
@@ -25,6 +26,8 @@ class LaserDisplay(Block):
     Block.config('title', 'By default it displays the signal name.'
                         ' Set the empty string to disable.', default=None)
     
+    Block.config('transparent', 'Gives transparent RGBA rather than RGB.',
+                  default=False)
     Block.input('readings')
     
     Block.output('image')
@@ -92,24 +95,9 @@ class LaserDisplay(Block):
             pylab.title(t, fontsize=10)
 
         
-        self.output.image = pylab2rgb()
+        self.output.image = pylab2rgb(transparent=self.config.transparent)
 
         pylab.close(f.number)
  
-
-def pylab2rgb():
-    ''' Saves and returns the pixels in the current pylab figure. 
-    
-        Returns a RGB uint8 array.
-        Uses PIL to do the job. 
-    '''
-    
-    temp_file = tempfile.NamedTemporaryFile(suffix='.png')
-    temp_filename = temp_file.name
-    pylab.savefig(temp_filename)
-    im = Image.open(temp_filename)
-    im = im.convert("RGB")
-    rgb = asarray(im)    
-    return rgb
         
     
