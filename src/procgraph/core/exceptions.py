@@ -18,6 +18,8 @@ class SemanticError(ModelWriterError):
        (and, as a platypus case, when wrong config is passed.'''
     def __init__(self, error, element=None):
         Exception.__init__(self, error)
+        if element is not None:
+            assert hasattr(element, 'where')
         self.element = element
 
 class PGSyntaxError(ModelWriterError):

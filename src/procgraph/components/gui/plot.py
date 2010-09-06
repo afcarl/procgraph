@@ -6,7 +6,7 @@ from matplotlib import pylab
 
 from procgraph import Block
 
-from procgraph.core.exceptions import BadInput  , BadConfig
+from procgraph.core.exceptions import BadInput, BadConfig
 
 class Plot(Block):
     ''' Plots the inputs using matplotlib. 

@@ -114,7 +114,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             normal_config[key] = value
     
     # We mix the normal config with the defaults
-    resolved = resolve_config(parsed_model.config, normal_config, model)
+    resolved = resolve_config(parsed_model.config, normal_config, None) 
+    # we give none so that it can be filled in by the caller
     
     # Remember config statement
     key2element = {}
@@ -286,8 +287,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 block_config = {}
                 block_config.update(element.config)
                 if element.name in properties:
-                    more_config_for_block = properties[element.name]
-                    # now, it might be that el
+                    more_config_for_block = properties[element.name] 
                     # For example:
                     #   wait = 10       ->  { wait: 10 }
                     #   wait.time  = 3  ->  { wait: {time: 3} }
@@ -307,11 +307,19 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 debug('instancing %s:%s config: %s' % \
                       (element.name, element.operation, block_config))
                 
-    
-                block = library.instance(block_type=block_type,
+                try:
+                    block = library.instance(block_type=block_type,
                                          name=element.name, config=block_config,
                                          where=element.where)
-                
+                except SemanticError as e:
+                    if e.element is None:
+                        e.element = element
+                        raise e
+                    else:
+                        raise
+                    
+                        
+                        
                 block = model.add_block(name=element.name, block=block)
                 
                 # print "Defined block %s = %s " % (element.name , block)

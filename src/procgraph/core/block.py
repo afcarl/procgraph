@@ -26,7 +26,7 @@ class Block(BlockMetaSugar):
         self.name = name
         
         list_of_config = self.__class__.config
-        self.__config = resolve_config(list_of_config, config, self)
+        self.__config = resolve_config(list_of_config, config, None)
         
         # this is an array containing the names/ids
         # example: ["y", 1, 2]
