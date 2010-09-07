@@ -25,6 +25,9 @@ register_simple_block(numpy.abs, 'abs',
 register_simple_block(numpy.sign, 'sign',
       doc='Wrapper around :py:func:`numpy.core.umath.sign`.')
 
+register_simple_block(numpy.arctan, 'arctan',
+      doc='Wrapper around :py:func:`numpy.arctan`.')
+
 register_simple_block(lambda x, y: numpy.dstack((x, y)), 'dstack', num_inputs=2,
       doc='Wrapper around :py:func:`numpy.dstack`.')
 

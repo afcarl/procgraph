@@ -9,7 +9,7 @@ from procgraph.components.gui.plot import pylab2rgb
 class LaserDotDisplay(Block):
     ''' Produces a plot of a range-finder scan variation (derivative). 
     
-    It uses the same configuration as :ref:`block:laser_display`.
+    It is a variation of :ref:`block:laser_display`.
      
     '''
     
@@ -23,31 +23,32 @@ class LaserDotDisplay(Block):
                         ' Set the empty string to disable.', default=None)
     Block.config('transparent', 'Gives transparent RGBA rather than RGB.',
                   default=False)
+    Block.config('R0', default=1)
+    Block.config('amp', default=0.5)
 
     Block.input('readings_dot')
     
     Block.output('image')
-     
-    # Exampl
+      
     def init(self):
         self.define_input_signals(['readings_dot'])
         self.define_output_signals(['image'])
         
         
-    def update(self):
-        
+    def update(self): 
         y = array(self.input.readings_dot)
          
         if max(abs(y)) > 1:
-            raise BadInput('I expect an input normalized in the [-1,1] range.',
+            raise BadInput('I expect an input normalized in the [-1,1] range;'
+                           'min,max: %s,%s ' % (min(y), max(y)),
                            self, 'readings_dot')
 
         f = pylab.figure(frameon=False,
                         figsize=(self.config.width / 100.0,
                                  self.config.height / 100.0))
              
-        R0 = 3
-        amp = 1
+        R0 = self.config.R0
+        amp = self.config.amp
         
         theta = linspace(0, 2 * math.pi, 300)
         pylab.plot(R0 * cos(theta), R0 * sin(theta), 'k--')
