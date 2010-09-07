@@ -200,11 +200,12 @@ def parse_model(string, filename=None):
     output = S('output') + good_name('name') + O(quoted('docstring'))
     output.setParseAction(wrap(output_from_tokens))
     
+    doc_comment = S(quoted)
     
     dataio = loading ^ saving
     
     action = connection ^ assignment ^ comment ^ import_statement ^ dataio ^ \
-         config ^ input ^ output
+         config ^ input ^ output ^ doc_comment
     
     newline = S(lineEnd)
     
