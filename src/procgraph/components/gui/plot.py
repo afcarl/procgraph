@@ -284,4 +284,16 @@ def pylab2rgb(transparent=False):
     if not transparent:
         im = im.convert("RGB")
     rgb = numpy.asarray(im)    
+    
+    if transparent:
+        rgba = rgb.copy()
+        white = numpy.logical_and(rgb[:, :, 0] == 255,
+                                  rgb[:, :, 1] == 255,
+                                  rgb[:, :, 2] == 255)
+        alpha = rgba[:, :, 3] 
+        alpha[white] = 0
+        #alpha[numpy.logical_not(white)] = 110 
+        rgba[:, :, 3] = alpha
+        return rgba
+    
     return rgb

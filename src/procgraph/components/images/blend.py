@@ -12,11 +12,6 @@ def to_rgba(rgb):
     ''' Adds a opaque alpha if not present. '''
     if rgb.shape[2] == 4:
         rgba = rgb.copy()
-        white = numpy.logical_and(rgb[:, :, 0] == 255, rgb[:, :, 1] == 255, rgb[:, :, 2] == 255)
-        alpha = rgba[:, :, 3] 
-        alpha[white] = 0
-        #alpha[numpy.logical_not(white)] = 110 
-        rgba[:, :, 3] = alpha
         return rgba
     
     rgba = numpy.ndarray((rgb.shape[0], rgb.shape[1], 4), dtype='uint8')
