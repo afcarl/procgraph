@@ -1,5 +1,6 @@
 from procgraph import Block
 import numpy
+from procgraph.components.checks import check_rgb
 
 class Border(Block):
     ''' Adds a block around the input image. '''
@@ -18,6 +19,8 @@ class Border(Block):
         self.define_output_signals(['rgb'])
         
     def update(self):
+        check_rgb(self, 'rgb')
+        
         # TODO: check
         rgb = self.input.rgb 
         

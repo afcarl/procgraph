@@ -401,7 +401,7 @@ element=block)
                         if s.block_name is not None:
                             if not s.block_name in model.name2block:
                                 raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
-                                                (s, s.block_name, ", ".join(model.name2block.keys())),
+                                                (s, s.block_name, aslist(model.name2block.keys())),
                                                 element=previous_link)
                             input_block = model.name2block[s.block_name]
                             if not input_block.is_valid_output_name(s.name):
@@ -412,7 +412,7 @@ element=block)
                         else:
                             if not s.name in model.name2block_connection:
                                 raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
-                                                (s, s.name, ", ".join(model.name2block_connection.keys())),
+                                                (s, s.name, aslist(model.name2block_connection.keys())),
                                                 element=previous_link)
                             defined_signal = model.name2block_connection[s.name]
                             input_block = defined_signal.block1

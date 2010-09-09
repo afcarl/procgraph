@@ -6,6 +6,7 @@ import tempfile
 
 from procgraph  import Block
 from procgraph.components.gui.plot import pylab2rgb
+from procgraph.core.exceptions import BadInput
 
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 
@@ -41,7 +42,10 @@ class LaserDisplay(Block):
     def update(self):
         
         readings = array(self.input.readings)
-            
+        
+        if len(readings.shape) > 1:
+            raise BadInput('Expected flat array, got shape %s' % str(readings.shape),
+                           self, 0)
 
         f = pylab.figure(frameon=False,
                         figsize=(self.config.width / 100.0,
@@ -61,9 +65,13 @@ class LaserDisplay(Block):
             max_readings = group.get('max_readings', self.config.max_readings)
             group_readings = minimum(readings[indices], max_readings)
         
-        
+            
             N = len(indices)
+            
+            
             theta = linspace(theta_spec[0], theta_spec[-1], N)
+            
+            assert len(theta) == len(group_readings)
             
             x = cos(theta + origin[2]) * group_readings + origin[0] 
             y = sin(theta + origin[2]) * group_readings + origin[1]

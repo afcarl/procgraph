@@ -37,7 +37,7 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         s += (space + '^\n')
         s += (space + '|\n')
-        s += (space + 'here\n')
+        s += (space + 'here or nearby\n')
         return s
         
     def print_where(self, s=sys.stdout):
@@ -56,7 +56,7 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         write(space + '^\n')
         write(space + '|\n')
-        write(space + 'here\n')
+        write(space + 'here or nearby\n')
          
 
 class ParsedElement:

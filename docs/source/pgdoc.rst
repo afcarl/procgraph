@@ -66,6 +66,7 @@ Blocks using Matplotlib to display data.
 Blocks for basic operations on images. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+:ref:`blend <block:blend>`                                                                                                                                                                               This block blends two or more images.                                                                                                                                                                   
 :ref:`border <block:border>`                                                                                                                                                                             Adds a block around the input image.                                                                                                                                                                    
 :ref:`compose <block:compose>`                                                                                                                                                                           Compose several images in the same canvas.                                                                                                                                                              
 :ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.                                                                                                                                 
@@ -98,6 +99,7 @@ Various operations wrapping numpy functions.
 :ref:`- <block:->`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`/ <block:/>`                                                                                                                                                                                       None                                                                                                                                                                                                    
 :ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
+:ref:`arctan <block:arctan>`                                                                                                                                                                             Wrapper around :py:func:`numpy.arctan`.                                                                                                                                                                 
 :ref:`astype <block:astype>`                                                                                                                                                                             None                                                                                                                                                                                                    
 :ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
 :ref:`fliplr <block:fliplr>`                                                                                                                                                                             Wrapper for :py:func:`numpy.fliplr`.                                                                                                                                                                    
@@ -105,13 +107,16 @@ Various operations wrapping numpy functions.
 :ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     None                                                                                                                                                                                                    
 :ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
 :ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
+:ref:`max <block:max>`                                                                                                                                                                                   Maximum over all elements.                                                                                                                                                                              
 :ref:`maximum <block:maximum>`                                                                                                                                                                           None                                                                                                                                                                                                    
 :ref:`minimum <block:minimum>`                                                                                                                                                                           None                                                                                                                                                                                                    
 :ref:`normalize_Linf <block:normalize_Linf>`                                                                                                                                                             Normalize a vector such that ``|x|_inf = max(abs(x))= 1``                                                                                                                                               
 :ref:`outer <block:outer>`                                                                                                                                                                               Wrapper around :py:func:`numpy.multiply.outer`.                                                                                                                                                         
 :ref:`select <block:select>`                                                                                                                                                                             None                                                                                                                                                                                                    
 :ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
+:ref:`smooth1d <block:smooth1d>`                                                                                                                                                                         smooth the data using a window with requested size.                                                                                                                                                     
 :ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
+:ref:`sum <block:sum>`                                                                                                                                                                                   Sum over all elements.                                                                                                                                                                                  
 :ref:`take <block:take>`                                                                                                                                                                                 None                                                                                                                                                                                                    
 :ref:`vstack <block:vstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.vstack`.                                                                                                                                                                 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
@@ -309,6 +314,22 @@ Components used for debugging and unit tests.
 ``clock``
 ------------------------------------------------------------
 
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``interval`` (default: 1): None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``clock``: None
+
+
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph/components/debug_components/__init__.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/__init__.py>`_. 
@@ -356,9 +377,33 @@ Implemented in `/src/procgraph/components/debug_components/constant.py <https://
 FIXME: to be replaced by simpler function.
 
 
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``k``: Multiplicative gain
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``in``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``out``: None
+
+
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/debug_components/__init__.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/__init__.py>`_. 
+Implemented in `/src/procgraph/components/debug_components/gain.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/debug_components/gain.py>`_. 
 
 
 .. _`block:identity`:
@@ -638,7 +683,7 @@ This block collects the history of a quantity, and outputs two signals ``x`` and
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``interval``: Length of the interval to record.
+- ``interval`` (default: 10): Length of the interval to record.
 
 
 .. rst-class:: procgraph:output
@@ -663,7 +708,9 @@ Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com
 
 ``historyt``
 ------------------------------------------------------------
-This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`.
+This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`. 
+
+If ``natural`` is true, it uses the time from the beginning of the log.
 
 
 .. rst-class:: procgraph:config
@@ -671,7 +718,17 @@ This block collects the signals samples of a signals, and outputs *one* signal c
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``interval``: Length of interval (seconds).
+- ``interval`` (default: 10): Length of interval (seconds).
+
+- ``natural`` (default: True): If true, set 0 as the log beginning.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Any signal.
 
 
 .. rst-class:: procgraph:output
@@ -717,7 +774,7 @@ Output
 
 .. rst-class:: procgraph:source
 
-Implemented in `/src/procgraph/components/dynamic/history.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/history.py>`_. 
+Implemented in `/src/procgraph/components/dynamic/last_n_samples.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/dynamic/last_n_samples.py>`_. 
 
 
 .. _`block:low_pass`:
@@ -1031,6 +1088,8 @@ Configuration
 
 - ``keep`` (default: False): None
 
+- ``transparent`` (default: False): If true, outputs a RGBA image instead of RGB.
+
 
 .. rst-class:: procgraph:input
 
@@ -1085,6 +1144,41 @@ Convert a RGB image to grayscale, and back to a RGB image:::
 
 
     |input| -> |rgb2gray| -> |gray2rgb| -> |output|
+
+.. _`block:blend`:
+
+
+.. rst-class:: procgraph:block
+
+``blend``
+------------------------------------------------------------
+This block blends two or more images. 
+
+RGB images are interpreted as having full alpha (opaque)
+
+All images must have the same width.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+images to blend (variable: None <= n <= None)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``rgb``: The output is a RGB image (no alpha)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/images/blend.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/images/blend.py>`_. 
+
 
 .. _`block:border`:
 
@@ -1256,7 +1350,7 @@ A block that creates a larger image by arranging them in a grid.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``cols``: Columns in the grid.
+- ``cols`` (default: None): Columns in the grid.
 
 
 .. rst-class:: procgraph:input
@@ -1471,7 +1565,7 @@ Dumps the input as a :py:mod:`pickle` file.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``file``: File to write.
+- ``file``: File to write to.
 
 
 .. rst-class:: procgraph:input
@@ -1664,6 +1758,37 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 ``abs``
 ------------------------------------------------------------
 Wrapper around :py:func:`numpy.core.umath.absolute`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:arctan`:
+
+
+.. rst-class:: procgraph:block
+
+``arctan``
+------------------------------------------------------------
+Wrapper around :py:func:`numpy.arctan`.
 
 
 .. rst-class:: procgraph:input
@@ -1912,6 +2037,37 @@ Output
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
 
+.. _`block:max`:
+
+
+.. rst-class:: procgraph:block
+
+``max``
+------------------------------------------------------------
+Maximum over all elements.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
 .. _`block:maximum`:
 
 
@@ -2118,6 +2274,74 @@ Output
 Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
 
 
+.. _`block:smooth1d`:
+
+
+.. rst-class:: procgraph:block
+
+``smooth1d``
+------------------------------------------------------------
+smooth the data using a window with requested size. 
+
+This method is based on the convolution of a scaled window with the signal.
+The signal is prepared by introducing reflected copies of the signal
+(with the window size) in both ends so that transient parts are minimized
+in the begining and end part of the output signal.
+
+input:
+    x: the input signal
+    window_len: the dimension of the smoothing window; should be an odd integer
+    window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
+        flat window will produce a moving average smoothing.
+
+output:
+    the smoothed signal
+
+example:
+
+t=linspace(-2,2,0.1)
+x=sin(t)+randn(len(t))*0.1
+y=smooth(x)
+
+see also:
+
+numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
+scipy.signal.lfilter
+
+TODO: the window parameter could be the window itself if an array instead of a string
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``window_len`` (default: 11): None
+
+- ``window`` (default: hanning): None
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/smooth1d.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/smooth1d.py>`_. 
+
+
 .. _`block:square`:
 
 
@@ -2126,6 +2350,37 @@ Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.c
 ``square``
 ------------------------------------------------------------
 Wrapper around :py:func:`numpy.core.umath.square`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: None
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph/components/numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph/components/numpy_ops/filters.py>`_. 
+
+
+.. _`block:sum`:
+
+
+.. rst-class:: procgraph:block
+
+``sum``
+------------------------------------------------------------
+Sum over all elements.
 
 
 .. rst-class:: procgraph:input
@@ -2433,6 +2688,8 @@ Configuration
 
 - ``title`` (default: None): By default it displays the signal name. Set the empty string to disable.
 
+- ``transparent`` (default: False): Gives transparent RGBA rather than RGB.
+
 
 .. rst-class:: procgraph:input
 
@@ -2464,7 +2721,7 @@ Implemented in `/src/procgraph/components/robotics/laser_display.py <https://git
 ------------------------------------------------------------
 Produces a plot of a range-finder scan variation (derivative). 
 
-It uses the same configuration as :ref:`block:laser_display`.
+It is a variation of :ref:`block:laser_display`.
 
 
 .. rst-class:: procgraph:config
@@ -2476,11 +2733,15 @@ Configuration
 
 - ``height`` (default: 320): None
 
-- ``skim`` (default: 5): None
-
 - ``groups``: How to group and draw the readings. (see example)
 
 - ``title`` (default: None): By default it displays the signal name. Set the empty string to disable.
+
+- ``transparent`` (default: False): Gives transparent RGBA rather than RGB.
+
+- ``R0`` (default: 1): None
+
+- ``amp`` (default: 0.5): None
 
 
 .. rst-class:: procgraph:input
@@ -3093,9 +3354,11 @@ Configuration
 
 - ``vcodec`` (default: mpeg4): Codec to use.
 
-- ``vbitrate`` (default: 1000000): Bitrate -- default is reasonable.
+- ``vbitrate`` (default: 2000000): Bitrate -- default is reasonable.
 
 - ``quiet`` (default: True): If True, suppress mencoder's messages
+
+- ``timestamps`` (default: True): If True, also writes <file>.timestamps that includes a line with the timestamp for each frame
 
 
 .. rst-class:: procgraph:input

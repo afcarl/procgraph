@@ -58,4 +58,22 @@ def check_rgb_or_grayscale(block, input):
         pass
     else:
         raise BadInput('Bad shape for image: %s' % str(shape), block, input)
-        
+
+def check_rgb(block, input):
+    ''' Checks that the selected input is either  a RGB image.
+        That is, a numpy array of uint8 of shape H x W x 3. 
+        Raises BadInput if it is not. 
+    ''' 
+    image = block.get_input(input)
+    if not isinstance(image, numpy.ndarray):
+        raise BadInput('Expected RGB, this is not even a ' \
+            'numpy array: %s' % image.__class__.__name__, block, input)
+    if image.dtype != 'uint8':
+        raise BadInput('Expected an image, got an array %s %s.' % \
+                            (str(image.shape), image.dtype), block, input)
+    shape = image.shape
+    if len(shape) == 3:
+        if shape[2] != 3:
+            raise BadInput('Bad shape for image: %s' % str(shape), block, input)
+    else:
+        raise BadInput('Bad shape for image: %s' % str(shape), block, input)
