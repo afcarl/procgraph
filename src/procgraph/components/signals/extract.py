@@ -11,12 +11,7 @@ class Extract(Block):
     Block.alias('extract')
     Block.input('vector')
     Block.output('part')
-    Block.config('index')
-    
-    def init(self):
-        self.define_input_signals(['vector'])
-        self.define_output_signals(['part'])
-            
+    Block.config('index') 
 
     def update(self):
         index = self.config.index

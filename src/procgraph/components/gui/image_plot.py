@@ -11,9 +11,7 @@ if False:
         
         Block.input('to_plot', 'Image to plot.')
         
-        def init(self): 
-            self.define_input_signals(['to_plot'])
-            self.define_output_signals([])
+        def init(self):  
             self.image = None
             
         def update(self):

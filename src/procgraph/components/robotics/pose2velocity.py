@@ -13,10 +13,6 @@ class Pose2velocity(Block):
     Block.input('t12', 'Last two timestamps.')
     
     Block.output('commands', 'Estimated commands ``[vx,vy,omega]``.')
-    
-    def init(self):
-        self.define_input_signals(['q12', 't12'])
-        self.define_output_signals(['commands'])
         
     def update(self):
         q = self.get_input('q12')

@@ -8,13 +8,11 @@ if False:
      
     class SimpleCompression(Block): 
          
+        Block.config('compress', default=True)
+        Block.config('file')
+        Block.input('image')
+        
         def init(self):
-            self.config.compress = True
-            self.config.file
-            
-            self.define_input_signals(["image"])
-            self.define_output_signals([])
-    
             self.state.dtype = None
             
             self.file = open(self.config.file, 'w')

@@ -13,18 +13,14 @@ if False:
         The other (N-1) are slaves.
          
         '''
-        def init(self):
-            # say we are not ready if the inputs were not defined.
-            if not self.are_input_signals_defined():
-                return Block.INIT_NOT_FINISHED
-            
-            
+        Block.alias('sync')
+    
+        Block.input_is_variable('Signals to synchronize. The first is the master.', min=2)
+        Block.output_is_variable('Synchronized signals.')
+    
+        def init(self):    
             # output signals get the same name as the inputs
             names = self.get_input_signals_names()
-            if len(names) == 1:
-                raise Exception('I need at least two ')
-            
-            self.define_output_signals(names)
             
     #        self.state.ready = {}
     #        for signal in names:

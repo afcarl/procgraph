@@ -25,10 +25,7 @@ class MEncoder(Block):
         " includes a line with the timestamp for each frame", default=True)
     
     def init(self): 
-        self.process = None
-        self.define_input_signals(["image"])
-        self.define_output_signals([])
-        
+        self.process = None 
         
     def update(self):
         check_rgb_or_grayscale(self, 0)

@@ -16,9 +16,7 @@ class MPlayer(Generator):
     
     Block.output('video', 'RGB stream as numpy array.')
          
-    def init(self):
-        self.define_input_signals([])
-        self.define_output_signals(["video"])
+    def init(self): 
         self.file = self.get_config('file')
         
         # first we identify the video resolution

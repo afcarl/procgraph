@@ -14,12 +14,8 @@ class Sieve(Block):
     Block.output('decimated', 'Decimated signals.')
      
     def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
         # output signals get the same name as the inputs
-        self.define_output_signals(self.get_input_signals_names())
+        #self.define_output_signals(self.get_input_signals_names())
                 
         self.state.count = 0
 

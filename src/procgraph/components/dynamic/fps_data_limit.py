@@ -9,16 +9,7 @@ class FPSDataLimit(Block):
     Block.input_is_variable('Signals to decimate.', min=1)
     Block.output_is_variable('Decimated signals.') 
     
-    def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        # output signals get the same name as the inputs
-        self.define_output_signals(self.get_input_signals_names())
-      
-        fps = self.config.fps  #@UnusedVariable
-        
+    def init(self): 
         self.state.last_timestamp = None
         
     def update(self):

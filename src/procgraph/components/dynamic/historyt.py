@@ -18,9 +18,6 @@ class HistoryT(Block):
     Block.output('history', 'Tuple ``(t,x)`` containing two arrays.')
     
     def init(self):
-
-        self.define_output_signals(['history'])
-        self.define_input_signals(['input'])
         
         self.state.x = []
         self.state.t = []

@@ -20,11 +20,7 @@ class ForwardDifference12(Block):
     Block.input('x12', 'An array with the last 2 values of x.')
     Block.input('t12', 'An array with the last 2 values of the timestamp.')
     
-    Block.output('x_dot', 'Derivative of x')
-    
-    def init(self):
-        self.define_input_signals(['x12', 't12'])
-        self.define_output_signals(['x_dot'])
+    Block.output('x_dot', 'Derivative of x') 
         
     def update(self):
         x = self.input.x12

@@ -9,6 +9,7 @@ class TextLog(Generator):
         from a file line-by-line. 
         
         Subclasses should overload the parse_format() static method.
+        Also they should put the adequate output() methods.
     '''
     
     Block.config('file', 'Filename. If it ends with ``bz2`` it is treated as compressed.')
@@ -29,10 +30,7 @@ class TextLog(Generator):
         
         if self.timestamp is None:
             raise Exception('Empty file %s' % filename)
-        
-        names = map(lambda x:x[0], self.values)
-        self.define_output_signals(names)
-        self.define_input_signals([])
+         
 
     def read_next_line(self):
         line = self.state.line

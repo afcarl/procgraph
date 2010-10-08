@@ -50,8 +50,6 @@ class Plot(Block):
    
 
     def init(self): 
-        # don't define input signals
-        self.define_output_signals(['rgb'])
         self.line = None
  
         # figure gets initialized in update() on the first execution

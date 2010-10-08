@@ -20,11 +20,7 @@ class OrganicScale(Block):
     Block.config('hist', default=100)
     Block.config('tau', default=0.1)
 
-    def init(self):
-        ###
-        self.define_input_signals(['value'])
-        self.define_output_signals(['value_scaled'])
-
+    def init(self): 
         self.state.max = []
         self.state.M = None
         
