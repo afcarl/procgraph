@@ -36,12 +36,14 @@ def check_link_compatibility_input(previous_block, previous_link):
 
 def check_link_compatibility_output(block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
-
+    print "Connecting %s with %s" % (block, previous_link)
     
     # we check that we have good matches for the next    
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
         
+        print "Connecting with %s" % s
+         
         if s.local_output is  None:
             s.local_output = i
                     
@@ -415,10 +417,13 @@ def define_input_signals(input, block, previous_link, previous_block, model):
             # Define input signals given the names
             names = []
             for i in range(num_given):
+                # --> [local_input] name [local_output] -->    
                 if previous_link.signals[i].local_output is not None:
                     name = previous_link.signals[i].local_output
                 elif previous_link.signals[i].name is not None:
                     name = previous_link.signals[i].name
+                elif previous_link.signals[i].local_input is not None:
+                    name = previous_link.signals[i].local_input
                 else:
                     print previous_link.signals[i]
                     assert False
@@ -505,10 +510,12 @@ def define_input_signals(input, block, previous_link, previous_block, model):
 
 
 def fill_anonymous_link(previous_block):
+    # --> [local_input] name [local_output] -->
     names = previous_block.get_output_signals_names()
     signals = []
     for name in names:
-        signal = ParsedSignal(name=None, block_name=None, local_input=None,
-                              local_output=name)
+        signal = ParsedSignal(name=None, block_name=None,
+                              local_input=name,
+                              local_output=None)
         signals.append(signal)
     return ParsedSignalList(signals)

@@ -41,7 +41,7 @@ class ModelSpec(object):
                     raise SemanticError('Recursion error for model "%s".' % self.forbid,
                                         parent.parsed_model)
                 else:
-                    print "Instancing %s (forbid %s)" % (block_type, self.forbid)
+                    #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name,
                                             config, parent_library)
                     
