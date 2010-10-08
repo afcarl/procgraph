@@ -94,6 +94,10 @@ class Block(BlockMetaSugar):
         return self.__output_signals is not None
     
     def define_input_signals(self, signals):
+    #    print "Obsolete"
+        pass
+    
+    def define_input_signals_new(self, signals):
         if not isinstance(signals, list):
             raise BlockWriterError(
                 'I expect the parameter to define_input_signals()' + 
@@ -113,8 +117,11 @@ class Block(BlockMetaSugar):
             self.__input_signal_name2id[str(s)] = i
             self.__input_signals.append(Value()) 
              
-          
     def define_output_signals(self, signals):
+        #print "Obsolete"
+        pass
+        
+    def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
             raise BlockWriterError(
                     'I expect the parameter to define_output_signals()' + 
@@ -225,6 +232,8 @@ class Block(BlockMetaSugar):
     def is_valid_input_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
             for one of the signals. ''' 
+        assert self.are_input_signals_defined()
+
         if isinstance(num_or_id, str):
             return num_or_id in self.__input_signal_name2id
         if isinstance(num_or_id, type(0)):
@@ -244,6 +253,8 @@ class Block(BlockMetaSugar):
     def is_valid_output_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
             for one of the signals. ''' 
+        assert self.are_output_signals_defined()
+
         if isinstance(num_or_id, str):
             return num_or_id in self.__output_signal_name2id
         if isinstance(num_or_id, type(0)):

@@ -1,12 +1,14 @@
 import time
 
-from procgraph.core.exceptions import  SemanticError, BlockWriterError, \
+from procgraph.core.exceptions import  SemanticError, \
     ModelExecutionError, ModelWriterError
 from procgraph.core.block import Block, Generator
 from procgraph.core.model_io import ModelInput, ModelOutput
 from procgraph.core.model_stats import ExecutionStats
 from procgraph.core.model_loadsave import ModelLoadAndSave
-from procgraph.core.visualization import debug as debug_main, info
+from procgraph.core.visualization import debug as debug_main, info, warning
+
+STRICT_CHECK_OF_DEFINED_IO = False
 
 class BlockConnection:
     def __init__(self, block1, block1_signal, block2, block2_signal, public_name=None):
@@ -61,11 +63,6 @@ class Model(Generator, ModelLoadAndSave):
         # mixing for load and save operations
         ModelLoadAndSave.__init__(self)
         
-        # we start with no input/output signals
-        self.define_input_signals([])
-        self.define_output_signals([])
-            
-    
         self.name2block = {}
         self.name2block_connection = {}
         # block -> block unresolved 
@@ -87,31 +84,44 @@ class Model(Generator, ModelLoadAndSave):
         '''  init(), and add a block to the model.
             Returns the block instance. '''
         
-        res = block.init()
-        # add it to the list if initialization is not complete
-        if res != Block.INIT_NOT_FINISHED:
-            if not self.are_input_signals_defined() or \
-                not self.are_output_signals_defined():
-                raise BlockWriterError(('Block %s did not define input/output signals' + 
-                                ' and did not return INIT_NOT_FINISHED') % 
-                                block) 
-         
-        
+        block.init()
         
         self.name2block[name] = block
+        
         if isinstance(block, Generator):
             self.generators.append(block)
             
         if isinstance(block, ModelInput):
+            if not self.is_valid_input_name(block.signal_name):
+                msg = 'An input "%s" was not defined formally.' % block.signal_name
+                e = SemanticError(msg, block)
+                if STRICT_CHECK_OF_DEFINED_IO:
+                    raise e
+                else:
+                    warning("Warning: %s" % e)
+                    
+                all_inputs = [] if not self.are_input_signals_defined() else \
+                            self.get_input_signals_names()
+                            
+                self.define_input_signals_new(all_inputs + [block.signal_name])
+                
+                
             self.model_input_ports[block.signal_name] = block
-            self.define_input_signals(self.get_input_signals_names() + 
-                                      [block.signal_name])
         
         if isinstance(block, ModelOutput):
-            # XXX bug: output_signals -> output_signals
-            self.define_output_signals(self.get_output_signals_names() + 
-                                       [block.signal_name])
-        
+            if not self.is_valid_output_name(block.signal_name):
+                msg = 'An output "%s" was not defined formally.' % block.signal_name
+                e = SemanticError(msg, block)
+                if STRICT_CHECK_OF_DEFINED_IO:
+                    raise e
+                else:
+                    warning("Warning: %s" % e)
+            
+                all_outputs = [] if not self.are_output_signals_defined() else \
+                            self.get_output_signals_names()
+                # XXX bug: output_signals -> output_signals
+                self.define_output_signals_new(all_outputs + [block.signal_name])
+            
         return block
     
     def from_outside_set_input(self, num_or_id, value, timestamp):
@@ -122,11 +132,12 @@ class Model(Generator, ModelLoadAndSave):
         input_block.set_output(signal_name, value, timestamp)
         self.blocks_to_update.append(input_block)
     
-    def connect(self, block1, block1_signal, block2, block2_signal, public_name):
+    def connect(self, block1, block1_signal, block2, block2_signal, public_name=None):
         BC = BlockConnection(block1, block1_signal, block2, block2_signal, public_name=None)
-        if public_name in self.name2block_connection:
-            raise SemanticError('Signal "%s" already defined. ' % public_name, block2)
-        self.name2block_connection[public_name] = BC
+        if public_name:
+            if public_name in self.name2block_connection:
+                raise SemanticError('Signal "%s" already defined. ' % public_name, block2)
+            self.name2block_connection[public_name] = BC
 
     def next_data_status(self):
         ''' XXX OK, I'm writing this late and probably it's more complicated than this. '''  
@@ -349,15 +360,6 @@ class Model(Generator, ModelLoadAndSave):
             info("- %s: %s" % (name, block))
             
         for name, conn in self.name2block_connection.items():
-            info("- %s: %s" % (name, conn))
-#     
-#    def procgraph_serialization(self):
-#        blocks = dict([ (name, block.procgraph_serialization()) \
-#                       for name, block in self.name2block])
-#        signals = 
-#        inputs = 
-#        outputs = 
-#        
-#        return {'model'}
+            info("- %s: %s" % (name, conn)) 
 
 

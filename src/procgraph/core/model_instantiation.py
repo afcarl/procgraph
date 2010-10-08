@@ -13,17 +13,13 @@ from procgraph.core.visualization import semantic_warning
 
 from procgraph.core.visualization import debug as debug_main
 from procgraph.core.block_config import resolve_config
-
+from procgraph.core.block_meta import VARIABLE
+from procgraph.core.model_io import ModelInput
 
 
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
-    # If the previous block did not define output signals
-    if not previous_block.are_output_signals_defined():
-        # We define a bunch of anonymous signals
-        n = len(previous_link.signals)
-        previous_block.define_output_signals(map(str, range(n)))
-
+    
     # We check that we have good matches for the previous                    
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
@@ -40,24 +36,7 @@ def check_link_compatibility_input(previous_block, previous_link):
 
 def check_link_compatibility_output(block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
-    # if the block did not define input signals
-    if not block.are_input_signals_defined():
-        # We define a bunch of anonymous signals
-        n = len(previous_link.signals)
-        names = []
-        for i in range(n):
-            if previous_link.signals[i].local_output is not None:
-                name = previous_link.signals[i].local_output
-            elif previous_link.signals[i].name is not None:
-                name = previous_link.signals[i].name
-            else:
-                # XXX I'm not sure we should be here, at least name should be 
-                # defined
-                assert(False)
-                #name = str(i)
-            names.append(name)
-        
-        block.define_input_signals(names)
+
     
     # we check that we have good matches for the next    
     for i, s in enumerate(previous_link.signals):
@@ -103,6 +82,9 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                         parsed_model.__class__.__name__)
         
     model = Model(name=name, model_name=parsed_model.name)
+    model.define_input_signals_new(map(lambda x: x.name, parsed_model.input))
+    model.define_output_signals_new(map(lambda x: x.name, parsed_model.output))
+    
     
     # first we divide the config in normal, and recursive config
     normal_config = {}
@@ -268,6 +250,17 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 
             if isinstance(element, ParsedBlock):
                 
+                # before processing this block, let's create a phantom
+                # signal list
+                if previous_block is not None and previous_link is None:
+                    previous_link = fill_anonymous_link(previous_block)
+
+                # also we can check right now a common error
+                if previous_block is not None and previous_block.num_output_signals() == 0:
+                    msg = 'This block does not define outputs yet it is not ' \
+                          'the last in the sequence.'
+                    raise SemanticError(msg, previous_block)
+                
                 block_type = expand_value(element.operation, element=element)
 
                 # give a name if anonymous
@@ -309,146 +302,23 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 
                 try:
                     block = library.instance(block_type=block_type,
-                                         name=element.name, config=block_config,
-                                         where=element.where)
+                                         name=element.name, config=block_config)
+                    block.where = element.where
                 except SemanticError as e:
                     if e.element is None:
                         e.element = element
                         raise e
                     else:
                         raise
-                    
-                        
                         
                 block = model.add_block(name=element.name, block=block)
                 
-                # print "Defined block %s = %s " % (element.name , block)
+                # now define input and output
+                generator = library.get_generator_for_block_type(block_type)
                 
-                if (previous_block is not None) and (previous_link is not None):
-                    # normal connection between two blocks with named signals
-                    
-                    # Here we have to make sure that, if the blocks defined
-                    #  signals input/outputs, then the signals given by the user
-                    #  are coherent.
-                    # If, instead, the blocks did not define signals, then
-                    #  we define it later.
-                    
-                    check_link_compatibility_input(previous_block, previous_link)
-                    check_link_compatibility_output(block, previous_link)
-            
-                    # Finally we create the connection
-                    for s in (previous_link.signals):
-                        model.connect(previous_block, s.local_input,
-                                             block, s.local_output, s.name)
-                        
-                elif previous_block is not None and previous_link is None:
-                    # anonymous connection between two blocks
-                    # if the previous block has already defined the output
-                    # AND we didn't define the input, then we copy that
-                    if previous_block.are_output_signals_defined() \
-                        and not block.are_input_signals_defined():
-                        names = previous_block.get_output_signals_names()
-                        
-                        block.define_input_signals(names)
-                        # just create default connections
-                        for i in range(len(names)):
-                            name = 'link_%s_to_%s_%d' % \
-                                (previous_block.name, block.name, i)
-                            model.connect(previous_block, i,
-                                             block, i, name)
-                    # If both have defined, we check they have the same
-                    # number of signals
-                    elif  previous_block.are_output_signals_defined() \
-                        and block.are_input_signals_defined():
-                        # check that they have the same number of signals
-                        num_out = previous_block.num_output_signals()
-                        num_in = block.num_input_signals()
-                        if num_out != num_in:
-                            raise SemanticError('Tried to connect two blocks (%s \
-and %s) with incompatible signals; you must do this expliciyl.' % (previous_block, block),
-element=block)
-                        if num_out == 0:
-                            raise SemanticError('Tried to connect two blocks (%s, %s) w/no signals.'\
-                                            % (previous_block, block),
-                                            element=block)
-                            
-                        # just create default connections
-                        for i in range(num_out):
-                            name = 'link_%s_to_%s_%d' % \
-                                (previous_block.name, block.name, i)
-                            model.connect(previous_block, i,
-                                             block, i, name)
-                        
-                
-                    else:
-                        # we cannot say anything before updat()ing the blocks
-                        # so we remember to do it later
-                        model.unresolved[previous_block] = block
-                
-                elif previous_block is None and previous_link is not None:
-                    # this is the first block with previous signals
-                    # For the output we can do as before
-                    check_link_compatibility_output(block, previous_link)
-                    
-                    # However, this time we need to be careful, because
-                    # links can refer to other parts
-                    for s in (previous_link.signals):
-                        # Cannot use local_input here
-                        if s.local_input is not None:
-                            raise SemanticError('Link %s cannot use local input without antecedent. ' % \
-                                            s, element=previous_link)
-                        # Check if it is using an explicit block name
-                        if s.block_name is not None:
-                            if not s.block_name in model.name2block:
-                                raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
-                                                (s, s.block_name, aslist(model.name2block.keys())),
-                                                element=previous_link)
-                            input_block = model.name2block[s.block_name]
-                            if not input_block.is_valid_output_name(s.name):
-                                raise SemanticError('Link %s refers to unknown output %s in block %s. ' % 
-                                                (s, s.name, input_block),
-                                                element=previous_link)
-                            s.local_input = input_block.canonicalize_output(s.name)
-                        else:
-                            if not s.name in model.name2block_connection:
-                                raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
-                                                (s, s.name, aslist(model.name2block_connection.keys())),
-                                                element=previous_link)
-                            defined_signal = model.name2block_connection[s.name]
-                            input_block = defined_signal.block1
-                            s.local_input = defined_signal.block1_signal
-                            
-                        # make up a name    
-                        name = "input_%s_for_%s" % (s.local_output, block)
-                        model.connect(input_block, s.local_input,
-                                             block, s.local_output, name)
-                        
-                
-                elif previous_block is None and previous_link is None:
-                    # make sure it's a generator?
-                    if not block.are_input_signals_defined():
-                        raise SemanticError('The block %s did not define signals and it has no input.' % 
-                                       block, element=block) 
-                    if block.num_input_signals() > 0:
-                        raise SemanticError('The generator block %s should have defined 0 inputs.' % 
-                                        block, element=block) 
-                
-                # at this point the input should be defined
-                assert block.are_input_signals_defined()
-                # if it did not define outputs (init delayed)
-                if not block.are_output_signals_defined():
-                    # then we call init() again
-                    res = block.init()
-                    # it cannot return NOT_FINISHED again.
-                    if res == Block.INIT_NOT_FINISHED:
-                        raise SemanticError('Block %s cannot return NOT_FINISHED ' + 
-                                        'after inputs have been defined. ' % block,
-                                        element=block)
-                    # now the outputs should be defined
-                    if not block.are_output_signals_defined():
-                        raise SemanticError(('Block %s still does not define outputs' + 
-                                        ' after init() called twice. ') % block,
-                                        element=block)
+                define_input_signals(generator.input, block,
+                                     previous_link, previous_block, model)
+                define_output_signals(generator.output, block)
                 
                 # at this point input/output should be defined
                 assert block.are_input_signals_defined()
@@ -480,3 +350,165 @@ element=block)
     model.init()
     
     return model
+
+def define_output_signals(output, block):
+    # this is a special case, in which the signal name
+    # is not known before parsing the configuration
+    if isinstance(block, ModelInput):
+        block.define_output_signals_new([block.signal_name])
+        return
+
+    
+    output_is_arbitrary = len(output) == 1 and output[0].type == VARIABLE
+        
+    if output_is_arbitrary:
+        # define output signals with the same name as the input signals
+        names = block.get_input_signals_names()
+        # TODO: maybe add a suffix someday
+        names = map(lambda x: x, names)
+        
+        block.define_output_signals_new(names)
+        
+    else:
+        # simply define the output signals
+        names = map(lambda x:x.name, output)                        
+        block.define_output_signals_new(names)
+
+
+def define_input_signals(input, block, previous_link, previous_block, model):
+    # there are two cases: either we define named signals,
+    # or we have a generic number of signals
+    input_is_arbitrary = len(input) == 1 and input[0].type == VARIABLE 
+         
+    if input_is_arbitrary:
+        # in this case, we have a minimum and maximum 
+        # number of signals that we can accept
+        min_expected = input[0].min
+        max_expected = input[0].max
+        
+        if not min_expected:
+            min_expected = 0
+        if not max_expected:
+            max_expected = 10000
+        
+        # if we don't have a previous block, then
+        # we just define no input signals
+        # (if we expect something, then we throw an error)
+        if previous_link is None:
+            if min_expected > 0:
+                msg = 'I expected at least %d input signals' \
+                      ' but the block is not connected to anything.'
+                raise SemanticError(msg, block)
+            else:
+                # no inputs for this block
+                block.define_input_signals_new([])
+        else:
+            # We have a previous link, we check that the number
+            # of signals is compatible.
+            num_given = len(previous_link.signals)
+            ok = (min_expected <= num_given <= max_expected)
+            if not ok:
+                msg = 'I expected between %d and %d input signals, '\
+                      'and I got %d.' % (min_expected, max_expected,
+                                         num_given)
+                raise SemanticError(msg, block)
+            # Define input signals given the names
+            names = []
+            for i in range(num_given):
+                if previous_link.signals[i].local_output is not None:
+                    name = previous_link.signals[i].local_output
+                elif previous_link.signals[i].name is not None:
+                    name = previous_link.signals[i].name
+                else:
+                    print previous_link.signals[i]
+                    assert False
+                names.append(name)
+            block.define_input_signals_new(names)
+    else: # the input is not arbitrary
+        # define right away the names, it does not depend 
+        # on anything else
+        names = map(lambda x:x.name, input)                        
+        block.define_input_signals_new(names)
+
+        # now check we were given the right input
+        num_expected = len(names)
+        
+        # if we expect something and it is not given,
+        # raise an exception
+        if previous_link is None:
+            if (num_expected > 0):
+                msg = 'The block expected at least %d input signals'\
+                  ' but none were given.' % num_expected
+                raise SemanticError(msg, block)
+        else: 
+            # we have a previous block, the number of signals
+            # should match
+            num_given = len(previous_link.signals)
+            
+            if num_expected != num_given:
+                msg = 'The block expected %d input signals, got %d.' % \
+                      (num_expected, num_given)
+                raise SemanticError(msg, block)
+    
+
+    # print "Defined block %s = %s " % (element.name , block)
+    if previous_link is not None:
+        check_link_compatibility_output(block, previous_link)
+
+        if previous_block is not None: 
+            # normal connection between two blocks with named signals
+            
+            # Here we have to make sure that, if the blocks defined
+            #  signals input/outputs, then the signals given by the user
+            #  are coherent.
+            
+            check_link_compatibility_input(previous_block, previous_link)
+    
+            # Finally we create the connection
+            for s in (previous_link.signals):
+                model.connect(previous_block, s.local_input,
+                                     block, s.local_output, s.name)
+        else: 
+            # this is the first block with previous signals
+            # this time we need to be careful, because
+            # links can refer to other parts
+            for s in previous_link.signals:
+                # Cannot use local_input here
+                if s.local_input is not None:
+                    raise SemanticError('Link %s cannot use local input without antecedent. ' % \
+                                    s, element=previous_link)
+                # Check if it is using an explicit block name
+                if s.block_name is not None:
+                    if not s.block_name in model.name2block:
+                        raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
+                                        (s, s.block_name, aslist(model.name2block.keys())),
+                                        element=previous_link)
+                    input_block = model.name2block[s.block_name]
+                    if not input_block.is_valid_output_name(s.name):
+                        raise SemanticError('Link %s refers to unknown output %s in block %s. ' % 
+                                        (s, s.name, input_block),
+                                        element=previous_link)
+                    s.local_input = input_block.canonicalize_output(s.name)
+                else:
+                    if not s.name in model.name2block_connection:
+                        raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
+                                        (s, s.name, aslist(model.name2block_connection.keys())),
+                                        element=previous_link)
+                    defined_signal = model.name2block_connection[s.name]
+                    input_block = defined_signal.block1
+                    s.local_input = defined_signal.block1_signal
+                    
+                # make up a name    
+                name = "input_%s_for_%s" % (s.local_output, block)
+                model.connect(input_block, s.local_input,
+                                     block, s.local_output, name)
+
+
+def fill_anonymous_link(previous_block):
+    names = previous_block.get_output_signals_names()
+    signals = []
+    for name in names:
+        signal = ParsedSignal(name=None, block_name=None, local_input=None,
+                              local_output=name)
+        signals.append(signal)
+    return ParsedSignalList(signals)

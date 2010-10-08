@@ -6,7 +6,7 @@ class NamingTest(PGTestCase):
     
     def test_correct_naming(self):
         # in all these cases, the identity block should have
-        # the input signal named "x"
+        # the output signal named "x"
         examples = [
         " |input name=x| -> |identity| ",
         " |input name=y| -> x -> |identity| ",

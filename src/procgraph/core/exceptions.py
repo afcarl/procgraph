@@ -22,6 +22,15 @@ class SemanticError(ModelWriterError):
             assert hasattr(element, 'where')
         self.element = element
 
+    def __str__(self):
+        if self.element is not None:
+            if self.element.where is not None:
+                return Exception.__str__(self) + '\n' + self.element.where.__str__()
+            else:
+                return Exception.__str__(self) + ' (no position given) '
+        else:
+            return Exception.__str__(self) + ' (no element given) '
+
 class PGSyntaxError(ModelWriterError):
     ''' A syntactic error by who wrote the model spec.'''
     def __init__(self, error, where=None):

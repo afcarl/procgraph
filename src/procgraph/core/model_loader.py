@@ -15,6 +15,12 @@ class ModelSpec(object):
     ''' Class used to register as a block type '''
     def __init__(self, parsed_model, defined_in):
         self.parsed_model = parsed_model
+        
+        # each generator should expose this
+        self.config = self.parsed_model.config
+        self.input = self.parsed_model.input
+        self.output = self.parsed_model.output
+        
         # the module to which this model is associated
         self.defined_in = defined_in
         assert defined_in is not None
@@ -30,14 +36,23 @@ class ModelSpec(object):
                 Library.__init__(self, parent)
                 self.forbid = forbid
                 
-            def instance(self, block_type, name, config, parent_library=None, where=None):
+            def instance(self, block_type, name, config, parent_library=None):
                 if block_type == self.forbid:
                     raise SemanticError('Recursion error for model "%s".' % self.forbid,
                                         parent.parsed_model)
                 else:
-                    #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
+                    print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name,
-                                            config, parent_library, where)
+                                            config, parent_library)
+                    
+            def get_generator_for_block_type(self, block_type):
+                if block_type == self.forbid:
+                    raise SemanticError('Recursion error for model "%s".' % self.forbid,
+                                        parent.parsed_model)
+                else:
+                    return Library.get_generator_for_block_type(self, block_type)
+
+    
         sandbox = ForbidRecursion(library, parsed_model.name)     
         model = create_from_parsing_results(parsed_model, name, config, library=sandbox)
 
