@@ -29,7 +29,7 @@ class ModelOutput(Block):
     
     def init(self):
         self.signal_name = self.config.name
-s
+
     def update(self):
         pass
     
