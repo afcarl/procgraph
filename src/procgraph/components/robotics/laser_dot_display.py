@@ -29,11 +29,7 @@ class LaserDotDisplay(Block):
     Block.input('readings_dot')
     
     Block.output('image')
-      
-    def init(self):
-        self.define_input_signals(['readings_dot'])
-        self.define_output_signals(['image'])
-        
+       
         
     def update(self): 
         y = array(self.input.readings_dot)

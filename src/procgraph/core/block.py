@@ -53,9 +53,9 @@ class Block(BlockMetaSugar):
         self.state = StateProxy(self)
         self.config = ConfigProxy(self) 
     
-    INIT_NOT_FINISHED = 'init-not-finished'
+    
     def init(self):
-        ''' Initializes the block. Return  '''
+        ''' Initializes the block.  '''
         pass
      
     UPDATE_NOT_FINISHED = 'update-not-finished'
@@ -94,8 +94,7 @@ class Block(BlockMetaSugar):
         return self.__output_signals is not None
     
     def define_input_signals(self, signals):
-    #    print "Obsolete"
-        pass
+        raise Exception("Using obsolete interface")
     
     def define_input_signals_new(self, signals):
         if not isinstance(signals, list):
@@ -118,8 +117,7 @@ class Block(BlockMetaSugar):
             self.__input_signals.append(Value()) 
              
     def define_output_signals(self, signals):
-        #print "Obsolete"
-        pass
+        raise Exception("Using obsolete interface")
         
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
@@ -142,8 +140,6 @@ class Block(BlockMetaSugar):
         
     def set_config_default(self, key, value):
         raise Exception('Warning, trying to set default %s  %s' % (self, key))
-        #if not key in self.__config:
-        #    self.__config[key] = value
             
     def get_config(self, conf):
         if not conf in self.__config:

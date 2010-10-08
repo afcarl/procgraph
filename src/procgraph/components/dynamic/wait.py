@@ -13,14 +13,7 @@ class Wait(Block):
     Block.input_is_variable('Arbitrary signals.')
     Block.output_is_variable('Arbitrary signals, minus the first ``n`` updates.')
     
-    def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        # output signals get the same name as the inputs
-        self.define_output_signals(self.get_input_signals_names())
-        
+    def init(self): 
         self.state.count = 0
 
     def update(self):

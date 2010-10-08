@@ -41,18 +41,9 @@ class Sync(Generator):
     block_input_is_variable('Signals to synchronize. The first is the master.', min=2)
     block_output_is_variable('Synchronized signals.')
     
-    def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        
+    def init(self): 
         # output signals get the same name as the inputs
-        names = self.get_input_signals_names()
-        if len(names) == 1:
-            raise Exception('I need at least two ')
-        
-        self.define_output_signals(names)
+        names = self.get_input_signals_names() 
         
         # create a state for each signal: it is an array
         # of tuples (timestamp, tuple)

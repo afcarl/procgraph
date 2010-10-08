@@ -11,14 +11,7 @@ class Info(Block):
     Block.alias('info')
     Block.input_is_variable('Signals to describe.')
     
-    def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED 
-        
-        # output signals get the same name as the inputs
-        self.define_output_signals([])
-        
+
     def update(self):
         # Just copy the input to the output 
         for i in range(self.num_input_signals()):

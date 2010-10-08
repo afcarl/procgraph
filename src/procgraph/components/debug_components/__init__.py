@@ -11,10 +11,7 @@ class Clock(Generator):
     Block.config('interval', default=1)
     Block.output('clock')
     
-    def init(self):
-        self.define_input_signals([])
-        self.define_output_signals(['clock'])
-    
+    def init(self): 
         self.state.clock = 0
         
     def update(self):

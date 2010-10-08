@@ -10,11 +10,6 @@ class Gain(Block):
     Block.input('in')
     Block.output('out')
     
-    def init(self):
-        #self.set_config_default('gain', 1)
-        self.define_input_signals(['input'])
-        self.define_output_signals(['out'])
-    
     def update(self):
         self.output[0] = self.input[0] * self.config.k
 

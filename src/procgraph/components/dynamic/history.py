@@ -13,10 +13,7 @@ class History(Block):
     Block.output('x', 'Sequence of values.')
     Block.output('t', 'Sequence of timestamps.')
     
-    def init(self):
-        self.define_output_signals(['x', 't'])
-        self.define_input_signals(['input'])
-        
+    def init(self): 
         self.state.x = []
         self.state.t = []
     

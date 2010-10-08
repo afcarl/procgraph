@@ -18,11 +18,7 @@ def define_generic(nin, nout):
             Block.input(str(i))
         for i in range(nout):
             Block.output(str(i))
-        
-        def init(self):
-            self.define_input_signals(map(str, range(nin)))
-            self.define_output_signals(map(str, range(nout)))
-            pass
+         
 
 for nin in range(0, 6):
     for nout in range(0, 6):
@@ -110,5 +106,4 @@ class VerifyBlock(Block):
         if self.config.x != self.config.y:
             raise SemanticError('Oops: "%s" != "%s".' % \
                                 (self.config.x, self.config.y), self)
-        self.define_input_signals([])
-        self.define_output_signals([]) 
+        
