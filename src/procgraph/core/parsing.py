@@ -205,7 +205,7 @@ def parse_model(string, filename=None):
     dataio = loading ^ saving
     
     action = connection ^ assignment ^ comment ^ import_statement ^ dataio ^ \
-         config ^ input ^ output ^ doc_comment
+         config ^ input ^ output ^ (doc_comment + connection)
     
     newline = S(lineEnd)
     
