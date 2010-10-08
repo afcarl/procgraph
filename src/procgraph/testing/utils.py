@@ -70,6 +70,7 @@ class PGTestCase(unittest.TestCase):
             failed = True
         
         if not failed:
+            raise Exception('This was assumed to fail: \n"""%s"""' % model_spec)
             self.assertTrue(False)
 
     def check_semantic_error(self, model_spec, config={}):

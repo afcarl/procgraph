@@ -1,15 +1,83 @@
 .. _`creating_new_blocks`:
 
-Creating new blocks
-===================
+Blocks
+============
+
+
+
+
+Creating blocks
+=================
+
+There are three ways to create new Procgraph blocks:
+
+1. For using simple Python functions as stateless blocks,
+   just register them 
+   using the function :py:func:`register_simple_block`.
+
+   This is explained in :ref:`simple_blocks`.
+
+2. To create a stateful block in Python, subclass the class ``Block``.
+
+   This is explained in :ref:`normal_blocks`.
+
+   A normal block updates its output only when it has new input.
+   A block that produces output even without a new input is called a "Generator"
+   and it is treated differently by Procgraph.
+
+   This is explained in :ref:`creating_generators`.
+
+
+3. Every model created using Procgraph's language can be used as a block.
+
+   The syntax is explained in :ref:`creating_models`
+ 
+
+
+.. _simple_blocks:
 
 Turning simple instantaneous functions into blocks 
 --------------------------------------------------
 
 **To write.***
 
+
+.. _normal_blocks:
+
+
 More complicated blocks
 ------------------------
+
+To create a stateful block, subclass the class ``Block`` and use the class methods
+to define input, output and configuration.
+
+The following is a minimal example of a block. It has one input and one output. 
+The output is the 
+
+    class Expectation(Block):
+        ''' Computes the sample expectation of a signal. '''
+        Block.alias('expectation')
+        
+        Block.input('x', 'Any numpy array.')
+        Block.output('Ex', 'Expectation of input.')
+        
+        def init(self): 
+            self.state.num_samples = 0
+        
+        def update(self):
+            N = self.state.num_samples
+            
+            if N == 0:
+                self.state.Ex = self.input.x.copy()
+            else:
+                self.state.Ex = (self.state.Ex * N + self.input.x) / float(N + 1);
+        
+            self.state.num_samples += 1
+            self.output.Ex = self.state.Ex 
+
+
+
+
 
 
 The init() method

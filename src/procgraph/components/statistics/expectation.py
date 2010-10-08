@@ -1,6 +1,5 @@
 from procgraph import Block
 
-
 class Expectation(Block):
     ''' Computes the sample expectation of a signal. '''
     Block.alias('expectation')
@@ -11,20 +10,15 @@ class Expectation(Block):
     def init(self):
         self.define_input_signals(['x'])
         self.define_output_signals(['Ex'])
-        self.state.Ex = None
         self.state.num_samples = 0
         
     def update(self):
-        x = self.input.x
-        Ex = self.state.Ex
-        num_samples = self.state.num_samples
+        N = self.state.num_samples
         
-        if num_samples == 0:
-            Ex = x.copy()
+        if N == 0:
+            self.state.Ex = self.input.x.copy()
         else:
-            Ex = (Ex * num_samples + x) / float(num_samples + 1);
+            self.state.Ex = (self.state.Ex * N + self.input.x) / float(N + 1);
         
-        self.state.Ex = Ex
-        self.state.num_samples = num_samples + 1
-        
-        self.output.Ex = Ex 
+        self.state.num_samples += 1
+        self.output.Ex = self.state.Ex 

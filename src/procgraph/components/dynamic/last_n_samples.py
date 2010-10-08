@@ -10,6 +10,8 @@ class HistoryN(Block):
     
     Block.config('n', 'Number of samples to retain.')
     
+    Block.input('x', 'Any data')
+    
     Block.output('x', 'Sequence of values.')
     Block.output('t', 'Sequence of timestamps.')
         
