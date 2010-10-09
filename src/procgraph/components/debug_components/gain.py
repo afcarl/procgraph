@@ -1,14 +1,14 @@
 from procgraph import Block
 
 class Gain(Block):
-    ''' FIXME: to be replaced by simpler function. '''
+    ''' A simple example of a gain block. '''
 
     Block.alias('gain')
     
     Block.config('k', 'Multiplicative gain')
     
-    Block.input('in')
-    Block.output('out')
+    Block.input('in', 'Input value')
+    Block.output('out', 'Output multiplied by k.')
     
     def update(self):
         self.output[0] = self.input[0] * self.config.k

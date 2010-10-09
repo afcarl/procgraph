@@ -1,39 +1,49 @@
-.. procgraph documentation master file, created by
-   sphinx-quickstart on Tue Jul 27 15:21:25 2010.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. raw:: html
+   :file: fork.html
 
-Welcome to procgraph's documentation!
-=====================================
+.. .. container:: twitterbadge
+
+   **Latest news**
+
+   .. raw:: html
+      :file: twitter_badge.html
+
+.. include:: definitions.txt
+
+Procgraph
+=========
+
+|procgraph| ("processing graph") is a Python library for rapid prototyping of processing pipelines for logged and realtime data.  New blocks can be added in Python, or using a textual model specification language.
+
+
 
 .. container:: col1
 
-	**Getting started**
+    **Getting started***
 
-	* :ref:`install`
-	* :ref:`why`
-	* :ref:`limitations`
-	
+    * :ref:`install`
+    * :ref:`why`
+    * :ref:`tutorial0`
+    * :ref:`creating_new_blocks`    
+    * :ref:`faq`
 
-	**Tutorial**
-	
-	* :ref:`tutorial0`
 
 .. container:: col2
 
-	**Advanced usage**
+    **Block libraries***
 
-	* :ref:`creating_new_blocks` 
-	
+    * :ref:`Included blocks <pgdoc:procgraph.components>`
+
+    * Additional libraries (separate packages):
+      
+      * :ref:`procgraph_rawseeds <procgraphrawseeds>`
 
 
-Indices and tables
-==================
+.. raw:: html
+ 
+   <div style='clear:both'></div>
 
-.. toctree::
-   :maxdepth: 2
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+
+.. _procgraphrawseeds: http://andreacensi.github.com/procgraph_rawseeds/
 
