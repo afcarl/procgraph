@@ -12,9 +12,7 @@ class MakeTuple(Block):
     Block.input_is_variable('Signals to unite in a tuple.')
     
     Block.output('tuple', 'Tuple containing signals.')
-    
-    def init(self):
-        self.define_output_signals(['tuple'])
+     
         
     def update(self):
         values = self.get_input_signals_values()

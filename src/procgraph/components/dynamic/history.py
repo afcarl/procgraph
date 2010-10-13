@@ -10,6 +10,8 @@ class History(Block):
     
     Block.config('interval', 'Length of the interval to record.', default=10)
     
+    Block.input('values', 'Any signal.')
+    
     Block.output('x', 'Sequence of values.')
     Block.output('t', 'Sequence of timestamps.')
     

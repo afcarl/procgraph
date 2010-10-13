@@ -267,7 +267,7 @@ class Plot(Block):
 
 
 
-def pylab2rgb(transparent=False):
+def pylab2rgb(transparent=False, tight=False):
     ''' Saves and returns the pixels in the current pylab figure. 
     
         Returns a RGB uint8 array. Uses PIL to do the job.
@@ -277,7 +277,10 @@ def pylab2rgb(transparent=False):
     
     temp_file = tempfile.NamedTemporaryFile(suffix='.png')
     temp_filename = temp_file.name
-    pylab.savefig(temp_filename)
+    if tight:
+        pylab.savefig(temp_filename, bbox_inches='tight', pad_inches=0)
+    else:
+        pylab.savefig(temp_filename)
     im = Image.open(temp_filename)
     if not transparent:
         im = im.convert("RGB")

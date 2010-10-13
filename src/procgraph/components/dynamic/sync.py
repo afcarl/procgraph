@@ -1,5 +1,4 @@
-from procgraph  import Block, Generator, block_input_is_variable, \
-    block_output_is_variable, block_alias 
+from procgraph  import Block, Generator 
 from collections import namedtuple
 
 
