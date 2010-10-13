@@ -81,10 +81,8 @@ class Model(Generator, ModelLoadAndSave):
     
  
     def add_block(self, name, block):
-        '''  init(), and add a block to the model.
+        '''  Add a block to the model.
             Returns the block instance. '''
-        
-        block.init()
         
         self.name2block[name] = block
         
@@ -295,7 +293,8 @@ class Model(Generator, ModelLoadAndSave):
                 this_timestamp = block.get_output_timestamp(this_signal)
                 value = block.get_output(this_signal)
                 
-                if value is not None and this_timestamp == 0:
+                # FIXME: make another condition
+                if value is not None and this_timestamp is None:
                     raise ModelExecutionError(
                             'Strange, value is not None but the timestamp is 0' + 
                             ' for output signal "%s" of block %s.' % (

@@ -20,11 +20,20 @@ from procgraph.core.model_io import ModelInput
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
     
+    num_required = len(previous_link.signals)
+    num_found = previous_block.num_output_signals()
+    
+    if num_required > num_found:
+        raise SemanticError('Required %s, found only %s.' % 
+                            (num_required, num_found), previous_link)
+    # XXX, still something not quite right
+    
     # We check that we have good matches for the previous                    
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
         if s.block_name is not None:
-            raise SemanticError('Could not give a block name between two blocks.')
+            raise SemanticError('Could not give a block name between two blocks.',
+                                previous_link)
         if s.local_input is None:
             s.local_input = i
                     
@@ -36,14 +45,11 @@ def check_link_compatibility_input(previous_block, previous_link):
 
 def check_link_compatibility_output(block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
-    print "Connecting %s with %s" % (block, previous_link)
     
     # we check that we have good matches for the next    
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
         
-        print "Connecting with %s" % s
-         
         if s.local_output is  None:
             s.local_output = i
                     
@@ -313,7 +319,6 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     else:
                         raise
                         
-                block = model.add_block(name=element.name, block=block)
                 
                 # now define input and output
                 generator = library.get_generator_for_block_type(block_type)
@@ -326,6 +331,13 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 assert block.are_input_signals_defined()
                 assert block.are_output_signals_defined()
 
+                block.init()
+                
+                
+                # first init(), then add because of ModelInput/Output
+                block = model.add_block(name=element.name, block=block)
+                
+                
                 previous_link = None                    
                 previous_block = block
             # end if 
@@ -357,7 +369,7 @@ def define_output_signals(output, block):
     # this is a special case, in which the signal name
     # is not known before parsing the configuration
     if isinstance(block, ModelInput):
-        block.define_output_signals_new([block.signal_name])
+        block.define_output_signals_new([block.config.name])
         return
 
     
