@@ -7,7 +7,7 @@ import gui
 import video
 import dynamic
 import images
-import robotics
+#import robotics
 import signals
 import numpy_ops
 import misc
