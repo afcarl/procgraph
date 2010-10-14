@@ -34,7 +34,7 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     
     check_2d_array(value, 'input to posneg')
         
-    value = value.squeeze()
+    value = value.squeeze().copy()
     
     if len(value.shape) != 2:
         raise Exception('I expected a H x W image, got shape %s.' % str(value.shape))
@@ -137,6 +137,8 @@ def scale(value, min_value=None, max_value=None,
         result[:, :, :] = 255
         return result
 
+    print min_value, max_value
+    
     value01 = (value - min_value) / (max_value - min_value)
     
     # Cut at the thresholds
