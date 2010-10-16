@@ -137,7 +137,7 @@ def scale(value, min_value=None, max_value=None,
         result[:, :, :] = 255
         return result
 
-    print min_value, max_value
+    #print min_value, max_value
     
     value01 = (value - min_value) / (max_value - min_value)
     
