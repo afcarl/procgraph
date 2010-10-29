@@ -2,8 +2,10 @@ import time
 import tempfile
 import  numpy
 from PIL import Image
+import matplotlib
+from StringIO import StringIO
+matplotlib.use('Agg')
 from matplotlib import pylab
-
 from procgraph import Block
 
 from procgraph.core.exceptions import BadInput, BadConfig
@@ -230,8 +232,6 @@ class Plot(Block):
                 
             self.axes.axis(self.limits)
             
-        
-        
         if self.legend_handle is None:
             legend = self.config.legend
             if legend:
@@ -242,22 +242,14 @@ class Plot(Block):
        
         plotting = time.clock() - start
     
-        start = time.clock()
-        f = tempfile.NamedTemporaryFile(suffix='.png')
-        temp_file = f.name
-
-        options = {'transparent':True} if self.config.transparent else {}        
-        pylab.savefig(temp_file, **options)
-        saving = time.clock() - start
-        
-        
         start = time.clock()    
         pixel_data = pylab2rgb(transparent=self.config.transparent)        
         reading = time.clock() - start
        
         if False: 
-            print "plotting: %dms  saving: %dms  reading: %dms" % (
-                plotting * 1000, saving * 1000, reading * 1000)
+            # 30 49 30 before
+            print "plotting: %dms    reading: %dms" % (
+                plotting * 1000,   reading * 1000)
         
         self.output.rgb = pixel_data
         
@@ -275,13 +267,15 @@ def pylab2rgb(transparent=False, tight=False):
         If transparent is true, returns a RGBA image instead of RGB. 
     '''
     
-    temp_file = tempfile.NamedTemporaryFile(suffix='.png')
-    temp_filename = temp_file.name
+    imgdata = StringIO()
+    
     if tight:
-        pylab.savefig(temp_filename, bbox_inches='tight', pad_inches=0)
+        pylab.savefig(imgdata, format='png', bbox_inches='tight', pad_inches=0)
     else:
-        pylab.savefig(temp_filename)
-    im = Image.open(temp_filename)
+        pylab.savefig(imgdata, format='png')
+    
+    imgdata.seek(0)
+    im = Image.open(imgdata)
     if not transparent:
         im = im.convert("RGB")
     rgb = numpy.asarray(im)    
