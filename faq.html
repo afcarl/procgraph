@@ -7,7 +7,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Procgraph &mdash; procgraph v0.1 documentation</title>
+    <title>What is the difference with Simulink/Labview? &mdash; procgraph v0.1 documentation</title>
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
@@ -61,50 +61,52 @@
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
           <span>procgraph v0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>Procgraph</span></h2>
+        <h2 class="heading"><span>What is the difference with Simulink/Labview?</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="#">Contents</a>
+        <a class="uplink" href="main.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <a href="http://github.com/AndreaCensi/procgraph"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-<div class="section" id="procgraph">
-<h1>Procgraph<a class="headerlink" href="#procgraph" title="Permalink to this headline">¶</a></h1>
-<p><span class="procgraph-brand">procgraph</span> (&#8220;processing graph&#8221;) is a Python library for rapid prototyping of processing pipelines for logged and realtime data.  New blocks can be added in Python, or using a textual model specification language.</p>
-<div class="col1 container">
-<p><strong>Getting started*</strong></p>
+  <div class="section" id="what-is-the-difference-with-simulink-labview">
+<h1>What is the difference with Simulink/Labview?<a class="headerlink" href="#what-is-the-difference-with-simulink-labview" title="Permalink to this headline">¶</a></h1>
+<p>These are the main design differences with respect</p>
 <ul class="simple">
-<li><a class="reference internal" href="install.html#install"><em>Installation</em></a></li>
-<li><a class="reference internal" href="why.html#why"><em>Why (and why not) using procgraph</em></a></li>
-<li><a class="reference internal" href="tutorial.html#tutorial0"><em>Tutorial</em></a></li>
-<li><a class="reference internal" href="writing_a_block.html#creating-new-blocks"><em>Blocks</em></a></li>
-<li><em class="xref std std-ref">faq</em></li>
+<li><a href="#id1"><span class="problematic" id="id2">|procgraph|</span></a> is Python based and free.</li>
+<li><a href="#id3"><span class="problematic" id="id4">|procgraph|</span></a> has a text-based rather than graphical-based representation of models. Trust me, it&#8217;s better.</li>
+<li><a href="#id5"><span class="problematic" id="id6">|procgraph|</span></a> is designed for discrete, timestamped data from various realtime/recorded sources, rather than for continuous-time data.</li>
+<li><a href="#id7"><span class="problematic" id="id8">|procgraph|</span></a> does not support feedback loops  (see: <a class="reference internal" href="#whynotfeedback"><em>Why no feedback loops?</em></a>).</li>
 </ul>
 </div>
-<div class="col2 container">
-<p><strong>Block libraries*</strong></p>
-<ul class="simple">
-<li><a class="reference internal" href="pgdoc.html#pgdoc-procgraph-components"><em>Included blocks</em></a></li>
-<li>Additional libraries (separate packages):<ul>
-<li><em class="xref std std-ref">procgraph_rawseeds</em></li>
-</ul>
-</li>
-</ul>
+<div class="section" id="why-no-feedback-loops">
+<span id="whynotfeedback"></span><h1>Why no feedback loops?<a class="headerlink" href="#why-no-feedback-loops" title="Permalink to this headline">¶</a></h1>
+<p>The main reason is that, for arbitrary blocks, it is hard to reason
+about a consistent semantics.</p>
+<p>For example, consider the simple arrangement with one block with a closed loop:</p>
+<div class="highlight-python"><pre>         ________
+u ----&gt; |        |
+        | block  | -----&gt; y
+ -----&gt; |________|  |
+|___________________,</pre>
 </div>
-<div style='clear:both'></div></div>
+<p>At time 0, the signal <tt class="docutils literal"><span class="pre">u</span></tt> is defined, but <tt class="docutils literal"><span class="pre">y</span></tt> is not. That means that the code in
+<tt class="docutils literal"><span class="pre">block</span></tt> must have a special case for this situation. It&#8217;s unclear at the moment
+how to design an API that takes into account this special case.</p>
+<p>I felt that any choice would add a great deal of complexity, and would make <a href="#id9"><span class="problematic" id="id10">|procgraph|</span></a> into a full-fledged framework rather than a quick and non-obtrusive tool for rapid prototyping.</p>
+<p>Suggestions are welcome...</p>
+</div>
 
 
       </div>
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="#">Contents</a>
+        <a class="uplink" href="main.html">Contents</a>
         </p>
 
       </div>
