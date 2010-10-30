@@ -32,12 +32,7 @@ class LaserDisplay(Block):
     Block.input('readings')
     
     Block.output('image')
-     
-    # Exampl
-    def init(self):
-        self.define_input_signals(['readings'])
-        self.define_output_signals(['image'])
-        
+      
         
     def update(self):
         
@@ -104,6 +99,7 @@ class LaserDisplay(Block):
 
         
         self.output.image = pylab2rgb(transparent=self.config.transparent)
+                                      #tight=True)
 
         pylab.close(f.number)
  

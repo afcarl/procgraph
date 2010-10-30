@@ -16,9 +16,7 @@ class LowPass(Block):
     Block.input('value')
     Block.output('lowpass')
     
-    def init(self):
-        self.define_input_signals(['value'])
-        self.define_output_signals(['lowpass'])
+    def init(self): 
         self.state.y = None 
         
     def update(self):

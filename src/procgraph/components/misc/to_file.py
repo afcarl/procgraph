@@ -10,10 +10,6 @@ class ToFile(Block):
     Block.input('values', 'Anything you wish to print to file.')
     
     def init(self):
-        # We take any number of output
-        self.define_output_signals(['values'])
-        self.define_output_signals([])
-        
         self.file = open(self.config.file, 'w')
         
     def update(self):

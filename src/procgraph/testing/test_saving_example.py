@@ -17,10 +17,7 @@ class HasState(Block):
     
     def init(self):
         
-        self.state.x = self.config.x
-        
-        self.define_input_signals([])
-        self.define_output_signals(['x'])
+        self.state.x = self.config.x 
 
     def update(self):
         self.set_output(0, self.state.x + 1, timestamp=1)

@@ -7,9 +7,7 @@ class Expectation(Block):
     Block.input('x', 'Any numpy array.')
     Block.output('Ex', 'Expectation of input.')
     
-    def init(self):
-        self.define_input_signals(['x'])
-        self.define_output_signals(['Ex'])
+    def init(self): 
         self.state.num_samples = 0
         
     def update(self):

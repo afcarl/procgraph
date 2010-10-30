@@ -13,13 +13,7 @@ class Join(Block):
     Block.input_is_variable('Signals to be joined together.')
     Block.output('joined', 'Joined signals.')
     
-    def init(self): 
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        self.define_output_signals(['joined'])
-        
+    def init(self):
         sizes = {}
         names = self.get_input_signals_names()
         for signal in names:

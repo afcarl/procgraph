@@ -38,11 +38,7 @@ def make_generic(name, num_inputs, num_outputs,
             Block.input(str(i))
         for i in range(num_outputs):
             Block.output(str(i))
-                      
-        def init(self):
-            self.define_input_signals(map(str, range(num_inputs)))
-            self.define_output_signals(map(str, range(num_outputs)))
-   
+       
         def update(self):
             args = []
             for i in range(num_inputs):

@@ -81,12 +81,12 @@ def pg(filename, config, debug=False, nocache=False, stats=False):
         import procgraph.components #@UnusedImport
 
         if library.exists(block_type=filename):
-            w = Where('command line', filename, 0)
+#            w = Where('command line', filename, 0)
             model = library.instance(filename, name=None,
-                                             config=config, where=w)
+                                             config=config)
         else:
             if not os.path.exists(filename):
-                raise Exception('Uknown model or file "%s".' % filename)
+                raise Exception('Unknown model or file "%s".' % filename)
 
             model_spec = open(filename).read()
             model = model_from_string(model_spec, config=config,

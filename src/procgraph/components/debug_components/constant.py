@@ -18,10 +18,7 @@ class Constant(Block):
     Block.alias('constant')
     
     Block.config('value', 'Constant value to output.') 
-        
-    def init(self): 
-        self.define_output_signals(['constant'])
-        self.define_input_signals([])
+    Block.output('constant')
         
     def update(self):
         self.set_output(0, self.config.value, timestamp=ETERNITY)

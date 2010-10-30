@@ -2,6 +2,7 @@ import sys
 from pyparsing import lineno, col
 from procgraph.core.block_meta import split_docstring, BlockInput, FIXED, \
     BlockOutput, BlockConfig
+from procgraph.core.exceptions import SemanticError, x_not_found
 
 class Where:
     ''' An object of this class represents a place in a file. 
@@ -132,6 +133,10 @@ class SaveStatement(ParsedElement):
         return SaveStatement(what, where_to, format)
 
 class ParsedSignal(ParsedElement):
+    ''' Note that the convention is tricky: :: 
+    
+             --> [local_input] name [local_output] -->
+    '''
     def __init__(self, name, block_name, local_input, local_output):
         ParsedElement.__init__(self)
         self.name = name
@@ -192,27 +197,7 @@ class ParsedAssignment(ParsedElement):
     def from_tokens(tokens):
         return ParsedAssignment(tokens['key'], tokens['value'])
           
-#
-#class ConfigStatement(ParsedElement):
-#    def __init__(self, variable, has_default, default, docstring):
-#        ParsedElement.__init__(self)
-#        assert isinstance(variable, str)
-#        assert docstring is None or isinstance(docstring, str)
-#        self.variable = variable
-#        self.default = default
-#        self.has_default = has_default
-#        self.docstring = docstring 
-#        
-#    def __repr__(self):
-#        return 'Config(%s(=%s))' % (self.variable, self.default)
-#
-#    @staticmethod
-#    def from_tokens(tokens):
-#        variable = tokens.get('variable')
-#        has_default = 'default' in tokens
-#        default = tokens.get('default', None)
-#        docstring = tokens.get('docstring', None)
-#        return ConfigStatement(variable, has_default, default, docstring)
+
 
 def config_from_tokens(tokens):
     variable = tokens.get('variable')
@@ -221,16 +206,8 @@ def config_from_tokens(tokens):
     docstring = tokens.get('docstring', None)
     #return ConfigStatement(variable, has_default, default, docstring)
     desc, desc_rest = split_docstring(docstring)
-    return BlockConfig(variable, has_default, default, desc, desc_rest, None)
+    return BlockConfig(variable, has_default, default, desc, desc_rest, None) 
 
-#class InputStatement: #(ParsedElement):
-#    def __init__(self, name, docstring):
-#        ParsedElement.__init__(self)
-#        assert isinstance(name, str)
-#        assert docstring is None or isinstance(docstring, str)
-#        
-#        self.block_input = BlockInput(FIXED, name, None, None, desc, desc_rest)
- 
 def output_from_tokens(tokens):
     name = tokens.get('name')
     docstring = tokens.get('docstring', None)
@@ -248,21 +225,6 @@ def input_from_tokens(tokens):
     return BlockInput(FIXED, name, None, None, desc, desc_rest, None)
         
 
-#
-#class OutputStatement(ParsedElement):
-#    def __init__(self, name, docstring):
-#        ParsedElement.__init__(self)
-#        assert isinstance(name, str)
-#        assert docstring is None or isinstance(docstring, str)
-#        desc, desc_rest = split_docstring(docstring)
-#        self.block_output = BlockOutput(FIXED, name, desc, desc_rest)
-#    
-#    @staticmethod
-#    def from_tokens(tokens):
-#        name = tokens.get('name')
-#        docstring = tokens.get('docstring', None)
-#        return OutputStatement(name, docstring)
-#   
       
 class Connection(ParsedElement):
     def __init__(self, elements):
@@ -308,6 +270,101 @@ class ParsedModel(ParsedElement):
         self.assignments = select(ParsedAssignment)
     
         self.elements = elements
+        
+        
+        # look for other input/output models
+        def look_for_blocks(condition):
+            for connection in self.connections:
+                for element in connection.elements:
+                    if condition(element):
+                        yield element
+        
+        input_blocks = list(look_for_blocks(lambda x: isinstance(x, ParsedBlock) \
+                                      and x.operation == 'input'))                
+        output_blocks = list(look_for_blocks(lambda x: isinstance(x, ParsedBlock) \
+                                      and x.operation == 'output'))                
+        
+        for block in input_blocks:
+            inputs_defined = map(lambda x: x.name, self.input)
+            input_name = block.config.get('name', None)
+            if input_name is not None:
+                # if a name is specified, check if some input
+                # were specified formally
+                # if some inputs were specified, it should be there
+                # (we don't mix the two cases)
+                if inputs_defined:
+                    if not input_name in inputs_defined:
+                        raise SemanticError(
+                            x_not_found('input', input_name, inputs_defined), block)
+                    else:
+                        # good! this was already specified
+                        pass
+                else:
+                    # we have a name, and no input was specified,
+                    # so we add it (with warning)
+                    bi = BlockInput(type=FIXED, name=input_name, min=None, max=None,
+                                    desc=None, desc_rest=None, where=block.where)
+                    self.input.append(bi)
+            else:
+                # we don't have a name
+                
+                # if no input was defined then add it
+                if not inputs_defined:
+                    block.config['name'] = "in%d" % len(self.input)
+                    bi = BlockInput(type=FIXED, name=block.config['name'],
+                                    min=None, max=None,
+                                    desc=None, desc_rest=None, where=block.where)
+                    # TODO add warning
+                    self.input.append(bi)
+                else:
+                    # if exactly 1 input is specified, use that
+                    if len(inputs_defined) == 1:
+                        block.config['name'] = self.input[0].name
+                    else:
+                        # otherwise fail
+                        msg = 'This input block did not specify a name, and '\
+                            'I do not know which input it refers to.'
+                        raise SemanticError(msg, block)
+                    
+        for block in output_blocks:
+            outputs_defined = map(lambda x: x.name, self.output)
+            output_name = block.config.get('name', None)
+            if output_name is not None:
+                # if a name is specified, check if some output
+                # were specified formally
+                # if some outputs were specified, it should be there
+                if outputs_defined:
+                    if not output_name in outputs_defined:
+                        raise SemanticError(
+                            x_not_found('output', output_name, outputs_defined), block)
+                    else:
+                        # good! this was already specified
+                        pass
+                else:
+                    # we have a name, and no output was specified,
+                    # so we add it (with warning)
+                    bo = BlockOutput(type=FIXED, name=output_name,
+                                    desc=None, desc_rest=None, where=block.where)
+                    # TODO add warning
+                    self.output.append(bo)
+            else:
+                # we don't have a name
+                
+                # if no output was defined then add it
+                if not outputs_defined:
+                    block.config['name'] = "out%d" % len(self.output)
+                    bo = BlockOutput(type=FIXED, name=block.config['name'],
+                                    desc=None, desc_rest=None, where=block.where)
+                    self.output.append(bo)
+                else:
+                    # if exactly 1 output is specified, use that
+                    if len(outputs_defined) == 1:
+                        block.config['name'] = self.output[0].name
+                    else:
+                        # otherwise fail
+                        msg = 'This output block did not specify a name, and '\
+                            'I do not know which output it refers to.'
+                        raise SemanticError(msg, block)
         
     def __repr__(self):
         return 'Model:%s(%s)' % (self.name, self.elements)

@@ -15,9 +15,6 @@ class ImageGrid(Block):
     
     Block.input_is_variable('Images to arrange in a grid.')
     Block.output('grid', 'Images arranged in a grid.')
-    
-    def init(self):        
-        self.define_output_signals(['grid'])
         
     def update(self):
         n = self.num_input_signals()

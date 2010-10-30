@@ -24,10 +24,6 @@ class ForwardDifference(Block):
     Block.input('t123', 'An array with the last 3 values of the timestamp.')
     
     Block.output('x_dot', 'Derivative of x')
-    
-    def init(self):
-        self.define_input_signals(['x123', 't123'])
-        self.define_output_signals(['x_dot'])
         
     def update(self):
         x = self.input.x123

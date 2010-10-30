@@ -16,10 +16,6 @@ class HistoryN(Block):
     Block.output('t', 'Sequence of timestamps.')
         
     def init(self):
-        
-        self.define_output_signals(['x', 't'])
-        self.define_input_signals(['input'])
-        
         self.state.x = []
         self.state.t = [] 
 

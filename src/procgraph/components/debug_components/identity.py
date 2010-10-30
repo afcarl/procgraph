@@ -9,14 +9,6 @@ class Identity(Block):
     Block.alias('identity')
     Block.input_is_variable('Input signals.')
     Block.output_is_variable('Output signals, equal to input.')
-    
-    def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        # output signals get the same name as the inputs
-        self.define_output_signals(self.get_input_signals_names())
         
     def update(self):
         # Just copy the input to the output

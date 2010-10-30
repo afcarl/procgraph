@@ -17,15 +17,7 @@ class FPSLimit(Block):
     Block.output_is_variable('Arbitrary signals with limited framerate.')
     
     def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        # output signals get the same name as the inputs
-        self.define_output_signals(self.get_input_signals_names())
-       
-        
-        self.state.last_timestamp = None
+         self.state.last_timestamp = None
         
     def update(self):
         should_update = False

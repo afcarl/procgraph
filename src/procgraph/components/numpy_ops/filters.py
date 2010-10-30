@@ -46,7 +46,8 @@ register_simple_block(lambda x: numpy.sum(array(x).flat), 'sum',
 register_simple_block(numpy.flipud, 'flipud', doc='Wrapper for :py:func:`numpy.flipud`.')
 register_simple_block(numpy.fliplr, 'fliplr', doc='Wrapper for :py:func:`numpy.fliplr`.')
  
- 
+register_simple_block(numpy.radians, 'deg2rad', doc='Converts degrees to radians.')
+register_simple_block(numpy.degrees, 'rad2deg', doc='Converts radians to degrees.')
  
  
 def my_take(a, axis, indices):

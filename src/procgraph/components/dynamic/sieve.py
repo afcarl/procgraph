@@ -14,19 +14,13 @@ class Sieve(Block):
     Block.output('decimated', 'Decimated signals.')
      
     def init(self):
-        # say we are not ready if the inputs were not defined.
-        if not self.are_input_signals_defined():
-            return Block.INIT_NOT_FINISHED
-        
-        # output signals get the same name as the inputs
-        self.define_output_signals(self.get_input_signals_names())
-                
         self.state.count = 0
 
     def update(self):
         # make something happen after we have waited enough
         if 0 == self.state.count % self.config.n: 
             # Just copy the input to the output
+            # XXX: using only one signal?
             for i in range(self.num_input_signals()):
                 self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
 

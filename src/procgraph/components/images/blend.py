@@ -66,9 +66,6 @@ class Blend(Block):
     Block.input_is_variable('images to blend')
     
     Block.output('rgb', 'The output is a RGB image (no alpha)')
-    
-    def init(self):
-        self.define_output_signals(['rgb'])
         
     def update(self):
         result = None

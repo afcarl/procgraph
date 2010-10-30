@@ -15,7 +15,7 @@ def place_at(canvas, image, xpix, ypix):
 class Compose(Block):
     '''
     Compose several images in the same canvas.
-    
+    You should probably use :ref:`block:grid` in many situations.
     
     Example configuration: ::
     
@@ -32,9 +32,6 @@ class Compose(Block):
     Block.input_is_variable('Images to compose.')
     
     Block.output('canvas', 'RGB image')
-    
-    def init(self):
-        self.define_output_signals(['canvas'])
         
         
     def update(self):

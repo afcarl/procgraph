@@ -13,11 +13,7 @@ class Border(Block):
     Block.config('right', 'pixel length for right border', default=0)
     Block.config('top', 'pixel length for top border', default=0)
     Block.config('bottom', 'pixel length for bottom border', default=0)
-
-    def init(self):
-        self.define_input_signals(['rgb'])
-        self.define_output_signals(['rgb'])
-        
+ 
     def update(self):
         check_rgb(self, 'rgb')
         

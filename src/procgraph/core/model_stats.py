@@ -23,9 +23,13 @@ class ExecutionStats:
         self.samples = {}
         
     def add(self, block, cpu, wall, timestamp):
-        assert cpu >= 0
+        #assert cpu >= 0
         assert wall >= 0
-         
+        
+        if cpu < 0:
+            # bug? sometimes I see negative cpu
+            cpu = wall
+            
         if cpu == 0:
             cpu = 0.0001
         if wall == 0:

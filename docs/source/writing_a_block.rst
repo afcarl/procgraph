@@ -1,13 +1,30 @@
+
+.. include:: definitions.txt
+
+.. py:module:: procgraph
+
 .. _`creating_new_blocks`:
 
 Blocks
-============
+=======
+
+The abstractions that |procgraph| uses are common to many other environments, such 
+as Simulink
+
+|procgraph| models are created by interconnecting **blocks**. 
+Each block has:
+
+* zero or more **configuration parameters**, 
+  each with or without a default value, that must be specified when the model
+  is instantiated and are constant in time.
+* zero or more **input signals**
+* zero or more **output signals**
 
 
+|procgraph| allows you to attach a documentation string to configuration parameters, inputs and outputs, that is reproduced neatly in the documentation.
 
-
-Creating blocks
-=================
+Types of blocks
+^^^^^^^^^^^^^^^
 
 There are three ways to create new Procgraph blocks:
 
@@ -27,10 +44,10 @@ There are three ways to create new Procgraph blocks:
 
    This is explained in :ref:`creating_generators`.
 
+3. Finally, every model created using Procgraph's language can be used as a block
+   inside another model.
 
-3. Every model created using Procgraph's language can be used as a block.
-
-   The syntax is explained in :ref:`creating_models`
+   The syntax is explained in :ref:`creating_models`.
  
 
 
@@ -51,8 +68,99 @@ More complicated blocks
 To create a stateful block, subclass the class ``Block`` and use the class methods
 to define input, output and configuration.
 
-The following is a minimal example of a block. It has one input and one output. 
-The output is the 
+
+
+Quick summary of Block API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Here is a summary of how to create a new block type, and how to interact with
+the API:
+
+1. Subclass :py:class:`Block`.
+2. Use the method :py:func:`Block.alias` to define the block type name.
+3. Use the method :py:func:`Block.config` to define the block configuration (if any).
+4. Use the method :py:func:`Block.input` and :py:func:`Block.output` to define input and output signals (if any).
+5. **do not use** the ``__init__()`` method; rather, do any initialization in the ``init()`` method, which is called once, before any input is available.
+6. Put the block logic in the ``update()`` function, which is called every time a new input is available.
+
+In the ``init()`` function:
+
+* You can access configuration parameters using the syntax: ::
+
+      self.config.<parameter name>
+
+* You can access state variables using: ::
+
+      self.state.my_state = ...
+
+* You cannot access input/output yet.
+
+
+In the ``update()`` function:
+
+* You can access configuration parameters and state variables.
+
+* You can access input and output using the syntax: ::
+
+      received = self.input['signal_name'] # by name
+      received = self.input.signal_name    # by name (syntax sugar)
+      received = self.input[0]             # by number
+
+  and output as well:
+
+      self.output.processed = ...
+      self.output['processed'] = ...
+      self.output[0] = ...
+
+
+
+Example of a stateless block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following is the minimal example of a stateless block. It defines
+a gain block that could be invoked with this syntax: ::
+
+
+     source --> |gain k=2| --> source_times_2
+
+
+Note the use of :py:func:`Block.alias` to give an alias for the block type (if not given, the class name will be used); the use of :py:func:`Block.config` to specify a configuration parameter,
+and :py:func:`Block.input`, :py:func:`Block.output` to specify (and document) input and output. ::
+
+
+    from procgraph import Block
+    
+    class Gain(Block):
+        ''' A simple example of a gain block. '''
+    
+        Block.alias('gain')
+    
+        Block.config('k', 'Multiplicative gain')
+    
+        Block.input('in', 'Input value')
+        Block.output('out', 'Output multiplied by k.')
+    
+        def update(self):
+            self.output[0] = self.input[0] * self.config.k
+            # equivalent to:
+            # self.output['out'] = self.input['in'] * self.config.k
+
+
+The "meat" of the block goes in the ``update()`` function. It is called whenever 
+one of the inputs change. In the ``update()`` function, you compute the
+output from the input. To access the input, there are several 
+
+
+
+Example of a stateful block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following is a minimal example of a stateful block. It has one input and one output. 
+The output is the sample average of the input. There are two state variables: the number
+of samples processed and the current sample average.
+
+Note how the block uses the ``init()`` function to initialize its structures,
+and the ``self.state`` structure to hold them.
 
     class Expectation(Block):
         ''' Computes the sample expectation of a signal. '''
@@ -76,6 +184,8 @@ The output is the
             self.output.Ex = self.state.Ex 
 
 
+
+(See :ref:`execution_model` for advanced topics dealing with timestamp)
 
 
 

@@ -8,11 +8,13 @@ from procgraph.core.model_loader import model_from_string
 examples_42 = [
 ('''
 --- model master
+output meaning
 
 |slave my_param=42| ---> |output name=meaning| 
 
 --- model slave
 config my_param
+output c
 
 |c1:constant| --> |output name=c|
 
@@ -22,6 +24,7 @@ c1.value = $my_param
 
 ('''
 --- model master
+output meaning
 
 |slave my_param=$my_param2| ---> |output name=meaning| 
 
@@ -29,6 +32,7 @@ my_param2 = 42
 
 --- model slave
 config my_param
+output c
 
 |c1:constant| --> |output name=c|
 
@@ -37,6 +41,7 @@ c1.value = $my_param
 ''', {}),
 ('''
 --- model master 
+output meaning
 
 |s1:slave| ---> |output name=meaning| 
 
@@ -44,6 +49,7 @@ s1.my_param = 42
 
 --- model slave
 config my_param
+output c
 
 |c1:constant| --> |output name=c|
 
@@ -53,6 +59,7 @@ c1.value = $my_param
 ('''
 --- model master
 my_param2 = 42
+output meaning
 
 |s1:slave| ---> |output name=meaning| 
 
@@ -60,6 +67,7 @@ s1.my_param = $my_param2
 
 --- model slave
 config my_param
+output c
 
 |c1:constant| --> |output name=c|
 
@@ -69,6 +77,7 @@ c1.value = $my_param
 ('''
 --- model master 
 config my_param2
+output meaning
 
 |s1:slave| ---> |output name=meaning| 
 
@@ -76,7 +85,7 @@ s1.my_param = $my_param2
 
 --- model slave
 config my_param
-
+output c
 |c1:constant| --> |output name=c|
 
 c1.value = $my_param
@@ -84,11 +93,13 @@ c1.value = $my_param
 ''', {'my_param2': 42}),
 (''' # Default naming
 --- model master 
+output meaning
 
 |slave| ---> |output name=meaning| 
 
 --- model slave
 config my_param
+output c
 
 |constant| --> |output name=c|
 
@@ -97,10 +108,12 @@ constant.value = $my_param
 ''', {'slave.my_param': 42}),
 (''' # Default naming -- recursive.
 --- model master 
+output meaning
 
 |slave| ---> |output name=meaning| 
 
 --- model slave
+output c
 
 |constant| --> |output name=c| 
 
@@ -117,8 +130,12 @@ class ParamsTest(PGTestCase):
             library = Library(default_library)
             model = model_from_string(model_spec, config=config, library=library)
             
+            print "Trying with '''%s'''" % model_spec
             model.reset_execution()
+            print "before"
             while model.has_more():
+                print "before iteration", model.get_output(0)
                 model.update()
+            print "end", model.get_output(0)
 
             self.assertEqual(model.get_output(0), 42)

@@ -10,7 +10,7 @@ class Library:
         if block_type in self.name2block:
             return True
         else:
-            if self.parent:
+            if self.parent is not None:
                 return self.parent.exists(block_type)
             else:
                 return False
@@ -21,30 +21,47 @@ class Library:
     
         self.name2block[block_type] = generator
     
-    def instance(self, block_type, name, config, parent_library=None, where=None):
-
-        # we give the children a reference to the library object
-        # that was called first, not its parent
-        if parent_library is None:
-            parent_library = self
-
+    def instance(self, block_type, name, config, library=None):
+        if library is None:
+            library = self
+        #try:
+        generator = self.get_generator_for_block_type(block_type)
+        #except Exception as e:
+        #    raise ValueError('Asked to instance "%s" which does not exist' % 
+        #                     block_type)
+       # try:
+        block = generator(name=name, config=config, library=library)
+        return block
+        #except TypeError as e:
+        #    raise Exception('Could not instance a block of type "%s": %s' % 
+        #                             (block_type, e))
+            
+                
+    
+    def get_generator_for_block_type(self, block_type):
+        ''' Returns the generator object for the block type.
+        
+            A generator can instance using:
+            
+                generator(name, config, library)
+                
+            and it can provide (before instancing) the properties:
+            
+                generator.config
+                generator.input
+                generator.output
+        '''
+                
         if not self.exists(block_type):
-            raise ValueError('Asked to instance "%s" which does not exist' % 
+            raise ValueError('Asked for generator for "%s" which does not exist.' % 
                              block_type)
+            
         if block_type in self.name2block:
             generator = self.name2block[block_type]
-            try:
-                block = generator(name=name, config=config, library=parent_library)
-            except TypeError as e:
-                raise Exception('Could not instance a block of type "%s": %s' % 
-                                          (block_type, e))
+            return generator
         else: 
             assert self.parent
-            block = self.parent.instance(block_type, name, config,
-                                        parent_library=parent_library)
-        block.where = where
-        return block
-    
+            return self.parent.get_generator_for_block_type(block_type)
     
     def get_known_blocks(self):
         blocks = self.name2block.keys()

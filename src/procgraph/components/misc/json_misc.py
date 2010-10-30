@@ -13,11 +13,7 @@ class AsJSON(Block):
     Block.input_is_variable('Inputs to transcribe as JSON.')
     
     Block.output('json', 'JSON string.')
-        
-    def init(self):
-        # We take any number of output
-        self.define_output_signals(['json'])
-        
+         
     def update(self):
         data = {}
         data['timestamp'] = max(self.get_input_signals_timestamps())

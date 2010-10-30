@@ -71,9 +71,7 @@ class Text(Block):
     Block.input('rgb', 'Input image.')
     Block.output('rgb', 'Output image with overlaid text.')
     
-    def init(self):
-        self.define_input_signals(['rgb'])
-        self.define_output_signals(['rgb'])
+    def init(self): 
         self.state.first_timestamp = None 
     
     def update(self):

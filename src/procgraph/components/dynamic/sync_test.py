@@ -1,7 +1,8 @@
-from procgraph import Generator, Block, block_alias
+from procgraph import Generator, Block
 from procgraph.testing.utils import PGTestCase
 from procgraph.core.exceptions import ModelExecutionError  
 from procgraph.components.basic import register_model_spec
+from procgraph.core.registrar import default_library
  
 
 examples = [
@@ -69,12 +70,11 @@ master, slave1, slave2 -> |sync2| -> |check_sync| --> |output name=value|
 
 
 class LogSim(Generator):
-    block_alias('log_sim')
+    Block.alias('log_sim')
+    
+    Block.output('stream')
     
     def init(self):
-        self.define_input_signals([])
-        self.define_output_signals(['stream'])
-        
         line = self.config.line
         
         self.queue = []
@@ -104,12 +104,10 @@ class LogSim(Generator):
  
 
 class CheckSync(Block):
-    block_alias('check_sync')
+    Block.alias('check_sync')
+    Block.output('value')
     
-    
-    def init(self):
-        self.define_output_signals(['value'])
-    
+
     def update(self):
         
         values = self.get_input_signals_values()

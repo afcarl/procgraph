@@ -38,7 +38,7 @@ class PipelineTest(PGTestCase):
         gain = 3
         model = model_from_string(model_desc, config={'g1.k': gain})
         
-        model.summary()
+        # model.summary()
         
         for i in range(5):
             value = i
