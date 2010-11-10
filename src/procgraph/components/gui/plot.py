@@ -3,9 +3,10 @@ import tempfile
 import  numpy
 from PIL import Image
 import matplotlib
-from StringIO import StringIO
 matplotlib.use('Agg')
 from matplotlib import pylab
+
+from StringIO import StringIO
 from procgraph import Block
 
 from procgraph.core.exceptions import BadInput, BadConfig
