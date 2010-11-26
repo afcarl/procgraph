@@ -3,15 +3,22 @@ from collections import namedtuple
 
 # Check that the dependendencies are there before installing modules
 Option = namedtuple('Option', 'module desc requires')
+
 optional_packages = [
-	Option( 'procgraph_pil', 
-			'Functions to interact with the PIL image library.', 
-		  	['PIL']),
+                     
     Option( 'procgraph_pil', 
-		    'Functions to interact with matplotlib.', 
-		    ['PIL', 'matplotlib'])
-	 
+            'Functions to interact with the PIL image library.', 
+              ['PIL']),
+              
+    Option( 'procgraph_mpl', 
+            'Functions to interact with matplotlib.', 
+            ['PIL', 'matplotlib']),
+            
+    Option( 'procgraph_robotics', # uses procgraph_mpl
+            'Misc. functions for robotics data sources.',
+            ['PIL', 'matplotlib', 'snp_geometry'])
 ]
+
 
 def is_package_available(p):
 	''' Checks that a package is available. '''
@@ -30,7 +37,8 @@ for op in optional_packages:
 			raw_input('Press any to continue')  
 			break 
 	else:
-		ok_to_install += op.module
+		print "Adding optional module %20s" % op.module
+		ok_to_install.append( op.module )
 
 setup(name='procgraph',
 	  version="0.2",

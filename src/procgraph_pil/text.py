@@ -5,7 +5,7 @@ import numpy
 from PIL import ImageDraw, ImageFont
 
 from procgraph import Block
-from procgraph.components.pil.pil_conversions import Image_from_array
+from procgraph_pil.pil_conversions import Image_from_array
 
 
 from procgraph.core.visualization import info, error

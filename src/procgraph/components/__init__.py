@@ -18,6 +18,7 @@ import misc
 # Check that the dependendencies are there before importing modules
 from collections import namedtuple #@UnresolvedImport
 Option = namedtuple('Option', 'module desc requires') #@UndefinedVariable
+
 optional_packages = [
                      
     Option( 'procgraph_pil', 
