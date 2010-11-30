@@ -81,7 +81,9 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
             paths.extend(os.environ[PATH_ENV_VAR].split(':'))
         
     if not paths:
-        warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
+        if False:
+            # TODO: add verbose switch
+            warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
         
     # enumerate each sub directory
     all_files = set()

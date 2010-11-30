@@ -4,7 +4,6 @@ from pyparsing import ParseResults
 
 from procgraph.core.exceptions import SemanticError, \
     x_not_found, aslist
-from procgraph.core.block import Block
 from procgraph.core.parsing_elements import ParsedSignalList, VariableReference, \
      ParsedBlock, ParsedModel, ParsedSignal
 from procgraph.core.registrar import default_library
@@ -13,7 +12,7 @@ from procgraph.core.visualization import semantic_warning
 
 from procgraph.core.visualization import debug as debug_main
 from procgraph.core.block_config import resolve_config
-from procgraph.core.block_meta import VARIABLE
+from procgraph.core.block_meta import VARIABLE, DEFINED_AT_RUNTIME
 from procgraph.core.model_io import ModelInput
 
 
@@ -372,10 +371,17 @@ def define_output_signals(output, block):
         block.define_output_signals_new([block.config.name])
         return
 
+    output_is_defined_at_runtime = len(output) == 1 and \
+                                   output[0].type ==  DEFINED_AT_RUNTIME
     
-    output_is_arbitrary = len(output) == 1 and output[0].type == VARIABLE
+    if output_is_defined_at_runtime:
+        names = block.get_output_signals()
+        block.define_output_signals_new(names)
+        return         
+                        
+    output_is_variable = len(output) == 1 and output[0].type == VARIABLE
         
-    if output_is_arbitrary:
+    if output_is_variable:
         # define output signals with the same name as the input signals
         names = block.get_input_signals_names()
         # TODO: maybe add a suffix someday

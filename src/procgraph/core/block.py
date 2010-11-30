@@ -2,7 +2,6 @@ from procgraph.core.exceptions import BlockWriterError, ModelWriterError, \
     ModelExecutionError
 from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy, \
     ConfigProxy
-from collections import namedtuple
 from procgraph.core.block_meta import BlockMeta, BlockMetaSugar
 from procgraph.core.block_config import resolve_config
 
@@ -332,9 +331,9 @@ class Generator(Block):
           
         In those cases, we return 
         
-            (yes, timestamp)
-            (no, None)
-            (yes, None)
+            (True, timestamp)
+            (False, None)
+            (True, None)
           
         '''
         raise ValueError('Did not implement this')
