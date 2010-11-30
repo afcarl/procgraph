@@ -118,8 +118,8 @@ class HDFwrite(Block):
         if len(table) % 100 == 0:
             print('Signal: %20s  rows %6d' % (signal, len(table)) )
         
-        if len(table) == 3000:
-            raise Exception()
+        # if len(table) == 3000:
+        #    raise Exception()
         
     
     def finish(self):
