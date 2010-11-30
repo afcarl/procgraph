@@ -147,8 +147,10 @@ class BlockMetaSugar(object):
         block_output_is_variable(*arg, **dict)
         
     @staticmethod
-    def input_is_variable(*arg, **dict):
-        block_input_is_variable(*arg, **dict)
+    def input_is_variable(description=None, min=None, max=None):
+        ''' Declares that this block can accept a variable number
+            of inputs. You can specify minimum and maximum number. '''
+        block_input_is_variable(description, min, max)
 
 
 

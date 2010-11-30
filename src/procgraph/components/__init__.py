@@ -31,7 +31,11 @@ optional_packages = [
             
     Option( 'procgraph_robotics', # uses procgraph_mpl
             'Misc. functions for robotics data sources.',
-            ['PIL', 'matplotlib', 'snp_geometry'])
+            ['PIL', 'matplotlib', 'snp_geometry']),
+            
+    Option( 'procgraph_hdf', # uses procgraph_mpl
+            'Reading and writing HDF logs..',
+            ['tables'])
 ]
 
 def is_package_available(p):

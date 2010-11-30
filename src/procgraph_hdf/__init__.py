@@ -3,4 +3,6 @@
 You need the ``pytables`` package to be installed.
 
 '''
-   
+
+import hdfwrite
+import hdfread
