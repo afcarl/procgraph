@@ -7,7 +7,8 @@ import os
 
 def make_sure_dir_exists(file):
     dir = os.path.dirname(file)
-    if not os.path.exists(dir):
+    # dir == '' for current dir
+    if dir != '' and not os.path.exists(dir):
         os.makedirs(dir) 
 
 

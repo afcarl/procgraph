@@ -1,7 +1,8 @@
 import numpy
 
 from procgraph.components.basic import  register_simple_block
-from procgraph.components.pil.pil_conversions import Image_from_array
+from procgraph_pil.pil_conversions import Image_from_array
+#from procgraph.components.pil.pil_conversions import Image_from_array
 
 
 def pil_resize(value, width=None, height=None):

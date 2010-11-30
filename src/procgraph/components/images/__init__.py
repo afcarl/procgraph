@@ -5,8 +5,8 @@ on images. The library is autoloaded and has no software dependency.
 
 For more complex operations see also:
 
-* :ref:`module:procgraph.components.cv`
-* :ref:`module:procgraph.components.pil`
+* :ref:`module:procgraph_cv`
+* :ref:`module:procgraph_pil`
 
 
 **Example**

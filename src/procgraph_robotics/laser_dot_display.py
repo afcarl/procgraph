@@ -4,7 +4,7 @@ from matplotlib import pylab
 
 from procgraph  import Block
 from procgraph.core.exceptions import BadInput
-from procgraph.components.gui.plot import pylab2rgb
+from procgraph_mpl import pylab2rgb
 
 class LaserDotDisplay(Block):
     ''' Produces a plot of a range-finder scan variation (derivative). 

@@ -5,7 +5,7 @@ from PIL import Image
 import tempfile
 
 from procgraph  import Block
-from procgraph.components.gui.plot import pylab2rgb
+from procgraph_mpl import pylab2rgb
 from procgraph.core.exceptions import BadInput
 
 class LaserDisplay(Block):

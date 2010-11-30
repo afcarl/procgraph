@@ -17,7 +17,7 @@ class FPSLimit(Block):
     Block.output_is_variable('Arbitrary signals with limited framerate.')
     
     def init(self):
-         self.state.last_timestamp = None
+        self.state.last_timestamp = None
         
     def update(self):
         should_update = False
