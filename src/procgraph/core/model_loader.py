@@ -59,6 +59,25 @@ class ModelSpec(object):
         return model
 
 
+
+def pg_add_this_package_models(file, assign_to, subdir='models'):
+    ''' Add the models for this package.
+        Shortcut to put into the module ``__init__.py``.
+        Call with file = __file__, assign_to= __package__.
+        
+        Example: ::
+        
+            pg_add_this_package_models(file=__file__, assign_to=__package__)
+    
+    '''
+    
+    dir = os.path.join(os.path.dirname(file), subdir)
+    pg_look_for_models(default_library, 
+                       additional_paths=[dir], 
+                       ignore_env=True,
+                       assign_to_module=assign_to)
+
+
 def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_cache=False,
                        assign_to_module=None):
     ''' Call this function at the beginning of the executions.
