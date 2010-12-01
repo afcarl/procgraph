@@ -48,7 +48,11 @@ setup(name='procgraph',
 	  version="0.2",
       package_dir={'':'src'},
       packages=['procgraph'] + ok_to_install,
-      install_requires=['pyparsing','simplejson','numpy','setproctitle'],
+      install_requires=['pyparsing',
+                        'simplejson',
+                        'numpy',
+                        'setproctitle',
+                        'termcolor'],
       entry_points={
          'console_scripts': [
            'pg = procgraph.scripts.pg:main',
