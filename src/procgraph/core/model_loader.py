@@ -1,13 +1,14 @@
 import os, fnmatch
 import cPickle as pickle
-
-from procgraph.core.model_instantiation import create_from_parsing_results
-from procgraph.core.visualization import warning, debug, info
 import inspect
+
+
+from .model_instantiation import create_from_parsing_results
+from .visualization import warning, debug, info
 create_from_parsing_results
-from procgraph.core.parsing import parse_model, ParsedModel
-from procgraph.core.exceptions import SemanticError
-from procgraph.core.registrar import default_library, Library
+from .parsing import parse_model, ParsedModel
+from .exceptions import SemanticError
+from .registrar import default_library, Library
 
 PATH_ENV_VAR = 'PROCGRAPH_PATH'
 

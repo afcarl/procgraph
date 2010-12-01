@@ -1,12 +1,11 @@
 import time
 
-from procgraph.core.exceptions import  SemanticError, \
-    ModelExecutionError, ModelWriterError
-from procgraph.core.block import Block, Generator
-from procgraph.core.model_io import ModelInput, ModelOutput
-from procgraph.core.model_stats import ExecutionStats
-from procgraph.core.model_loadsave import ModelLoadAndSave
-from procgraph.core.visualization import debug as debug_main, info, warning
+from .exceptions import  SemanticError, ModelExecutionError, ModelWriterError
+from .block import Block, Generator
+from .model_io import ModelInput, ModelOutput
+from .model_stats import ExecutionStats
+from .model_loadsave import ModelLoadAndSave
+from .visualization import debug as debug_main, info, warning
 
 STRICT_CHECK_OF_DEFINED_IO = False
 

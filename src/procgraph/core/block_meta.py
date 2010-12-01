@@ -1,6 +1,6 @@
 import sys
 
-from procgraph.core.exceptions import BlockWriterError, ModelWriterError
+from .exceptions import BlockWriterError, ModelWriterError
 
 FIXED = 'fixed-signal'
 VARIABLE = 'variable-signal'
@@ -121,13 +121,13 @@ class BlockMeta(type):
         if len(BlockMeta.aliases) > 1:
                 raise ModelWriterError("We don't support multiple aliases yet.")
 
-        from procgraph.core.registrar import default_library
-
+        
         if BlockMeta.aliases:
             name = BlockMeta.aliases[0]
         else:
             name = cls.__name__
             
+        from .registrar import default_library
         default_library.register(name, cls)
            
         BlockMeta.aliases = []

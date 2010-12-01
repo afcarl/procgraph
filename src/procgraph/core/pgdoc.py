@@ -2,10 +2,10 @@ import sys, os
 from collections import namedtuple
 from optparse import OptionParser
 
-from procgraph.core.model_loader import  ModelSpec
-from procgraph.core.registrar import default_library 
-from procgraph.core.block import Block
-from procgraph.core.block_meta import split_docstring, FIXED
+from .model_loader import  ModelSpec
+from .registrar import default_library 
+from .block import Block
+from .block_meta import split_docstring, FIXED
 
  
 type_block = 'block'

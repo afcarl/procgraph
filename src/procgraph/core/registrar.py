@@ -29,7 +29,7 @@ class Library:
         #except Exception as e:
         #    raise ValueError('Asked to instance "%s" which does not exist' % 
         #                     block_type)
-       # try:
+        # try:
         block = generator(name=name, config=config, library=library)
         return block
         #except TypeError as e:

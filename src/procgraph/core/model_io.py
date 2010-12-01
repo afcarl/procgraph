@@ -1,6 +1,4 @@
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
-
+from .block import Block
 
 class ModelInput(Block):
     ''' This represents one input to the model. '''

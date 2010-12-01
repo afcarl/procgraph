@@ -2,18 +2,17 @@ import os, re, sys
 from copy import deepcopy
 from pyparsing import ParseResults
 
-from procgraph.core.exceptions import SemanticError, \
-    x_not_found, aslist
-from procgraph.core.parsing_elements import ParsedSignalList, VariableReference, \
+from .exceptions import SemanticError, x_not_found, aslist
+from .registrar import default_library
+from .model import Model
+from .visualization import semantic_warning
+from .parsing_elements import ParsedSignalList, VariableReference, \
      ParsedBlock, ParsedModel, ParsedSignal
-from procgraph.core.registrar import default_library
-from procgraph.core.model import Model
-from procgraph.core.visualization import semantic_warning
 
-from procgraph.core.visualization import debug as debug_main
-from procgraph.core.block_config import resolve_config
-from procgraph.core.block_meta import VARIABLE, DEFINED_AT_RUNTIME
-from procgraph.core.model_io import ModelInput
+from .visualization import debug as debug_main
+from .block_config import resolve_config
+from .block_meta import VARIABLE, DEFINED_AT_RUNTIME
+from .model_io import ModelInput
 
 
 def check_link_compatibility_input(previous_block, previous_link):

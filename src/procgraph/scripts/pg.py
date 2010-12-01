@@ -1,4 +1,4 @@
-import sys, os, traceback 
+import sys, os 
 from optparse import OptionParser
 
 from procgraph.core.model_loader import model_from_string, pg_look_for_models

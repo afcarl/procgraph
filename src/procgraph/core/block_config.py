@@ -1,6 +1,6 @@
-from procgraph.core.block_meta import BlockConfig
-from procgraph.core.exceptions import aslist, SemanticError
-from procgraph.core.visualization import semantic_warning
+from .block_meta import BlockConfig
+from .exceptions import aslist, SemanticError
+from .visualization import semantic_warning
 
 def resolve_config(list_of_config, given_config, block, STRICT=True):
     '''

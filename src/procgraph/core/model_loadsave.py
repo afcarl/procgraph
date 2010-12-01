@@ -1,8 +1,6 @@
-import pickle
+import pickle, os
 
-from procgraph.core.exceptions import SemanticError, ModelExecutionError, \
-    x_not_found
-import os
+from .exceptions import SemanticError, ModelExecutionError, x_not_found
 
 
 def make_sure_dir_exists(file):

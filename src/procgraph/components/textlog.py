@@ -1,5 +1,5 @@
 from procgraph.components.file_utils import expand_environment
-from procgraph.core.exceptions import ModelExecutionError
+from procgraph.core.exceptions import ModelExecutionError, BadConfig
 import traceback, os
 from procgraph import Generator, Block
 

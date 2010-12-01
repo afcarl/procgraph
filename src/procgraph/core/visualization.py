@@ -30,12 +30,12 @@ except:
     
 screen_columns = None
 def get_screen_columns():
-    import procgraph.core.visualization #@UnresolvedImport
-    if procgraph.core.visualization.screen_columns is None:
+    module = sys.modules[__name__]
+    if  module.screen_columns is None:
         max_x, max_y = getTerminalSize() #@UnusedVariable
-        procgraph.core.visualization.screen_columns = max_x
+        module.screen_columns = max_x
         
-    return procgraph.core.visualization.screen_columns
+    return module.screen_columns
 
 def getTerminalSize():
     '''
