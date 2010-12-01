@@ -1,8 +1,8 @@
 import sys
 from pyparsing import lineno, col
-from procgraph.core.block_meta import split_docstring, BlockInput, FIXED, \
+from .block_meta import split_docstring, BlockInput, FIXED, \
     BlockOutput, BlockConfig
-from procgraph.core.exceptions import SemanticError, x_not_found
+from .exceptions import SemanticError, x_not_found
 
 class Where:
     ''' An object of this class represents a place in a file. 

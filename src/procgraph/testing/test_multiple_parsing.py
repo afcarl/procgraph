@@ -51,7 +51,17 @@ y = 2
 ''' This is the documentation
     for this model.            '''
 y = 2
+""",
+
 """
+--- model ciao
+config ciao "test"
+
+''' this is a documentation for the block '''
+|block|
+
+"""
+
 
 
 ]
