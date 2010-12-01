@@ -29,7 +29,14 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     
     check_2d_array(value, 'input to posneg')
         
-    value = value.squeeze().copy()
+    # TODO: put this in reprep
+    value = value.copy()
+    if value.ndim > 2:
+        value = value.squeeze()
+    
+    if value.dtype==numpy.dtype('uint8'):
+        value = value.astype('float32')
+
     
     if len(value.shape) != 2:
         raise Exception('I expected a H x W image, got shape %s.' % str(value.shape))
@@ -106,7 +113,12 @@ def scale(value, min_value=None, max_value=None,
     check_2d_array(value, 'input to scale()')
     
     #assert_finite(value)
-    value = value.squeeze().copy()
+    value = value.copy()
+    if value.ndim > 2:
+        value = value.squeeze()
+    
+    if value.dtype==numpy.dtype('uint8'):
+        value = value.astype('float32')
     #require_shape((gt(0), gt(0)), value)
     
     min_color = numpy.array(min_color)
