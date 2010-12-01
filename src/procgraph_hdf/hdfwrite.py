@@ -4,7 +4,7 @@ from procgraph.core.exceptions import BadInput
 import numpy
 import tables
 
-PROCGRAPH_LOG_GROUP = 'procgraph_log'
+PROCGRAPH_LOG_GROUP = 'procgraph'
 
 class HDFwrite(Block):
     ''' This block writes the incoming signals to a file in HDF_ format.
@@ -32,6 +32,8 @@ class HDFwrite(Block):
     Block.input_is_variable('Signals to be written', min=1)
     Block.config('file', 'HDF file to write')
     Block.config('compress', 'Whether to compress the hdf table.',1)
+    Block.config('complib', 'Compression library (zlib, bzip2, blosc, lzo).', 'zlib')
+    Block.config('complevel', 'Compression level (0-9)', 9)
     
     def init(self):
         self.hf = tc_open_for_writing(self.config.file)
@@ -86,8 +88,10 @@ class HDFwrite(Block):
             # a bit of compression. zlib is standard for hdf5
             # fletcher32 writes by entry rather than by rows
             if self.config.compress:
-                filters = tables.Filters(complevel=9, complib='bzip2',
-                                     fletcher32=True)
+                filters = tables.Filters(
+                            complevel=self.config.complevel, 
+                            complib=self.config.complib,
+                            fletcher32=True)
             else:
                 filters = tables.Filters(fletcher32=True)
                 
