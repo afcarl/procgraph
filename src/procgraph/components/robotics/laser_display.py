@@ -99,7 +99,7 @@ class LaserDisplay(Block):
 
         
         self.output.image = pylab2rgb(transparent=self.config.transparent)
-                                      #tight=True)
+        #tight=True)
 
         pylab.close(f.number)
  
