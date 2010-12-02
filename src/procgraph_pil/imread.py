@@ -1,6 +1,6 @@
-from PIL import Image
 import numpy
-from procgraph.components.basic import register_simple_block
+from procgraph import register_simple_block
+from .import_dependencies import Image
 
 def imread(filename):
     try:

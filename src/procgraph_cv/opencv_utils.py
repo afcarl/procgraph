@@ -1,18 +1,9 @@
 import numpy
 
 from procgraph.components  import  check_2d_array 
-from procgraph.components.basic import  register_simple_block
-import sys
+from procgraph import  register_simple_block
 
-try:
-    import cv #@UnresolvedImport @UnusedImport
-except:
-    #print "Could not import module 'cv'; trying with 'opencv'"
-    try:
-        import opencv as cv #@UnresolvedImport @Reimport
-    except:
-        sys.stderr.write("procgraph_cv: Could not import module 'cv' or 'opencv'.\n")
-
+from .import_dependencies import cv
 
 def numpy_to_cv(numpy_array):
     ''' Converts a HxW or HxWx3 numpy array to OpenCV 'image' '''

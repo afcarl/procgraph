@@ -1,7 +1,13 @@
 from procgraph import Block, BadInput, register_model_spec
 
-
-from snp_geometry.pose import Pose #@UnresolvedImport
+try:
+    from snp_geometry.pose import Pose #@UnresolvedImport
+except ImportError as e:
+    import sys
+    sys.stderr.write('You need to install snp_geometry from '
+                     ' http://github.com/AndreaCensi/snp_geometry \n')
+    sys.stderr.write("I'll let you continue, but probably you will get" 
+                     " other errors later on.\n")
 
 class Pose2velocity(Block):
     ''' Block used by :ref:`block:pose2commands`. '''

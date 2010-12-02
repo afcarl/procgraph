@@ -1,15 +1,13 @@
-import subprocess
-import os
-import numpy
+import subprocess, os, numpy
 
-from PIL import ImageDraw, ImageFont
+from .import_dependencies import ImageDraw, ImageFont
+    
+    
+from procgraph import Block, BadConfig
+from .pil_conversions import Image_from_array
 
-from procgraph import Block
-from procgraph_pil.pil_conversions import Image_from_array
 
-
-from procgraph.core.visualization import info, error
-from procgraph.core.exceptions import  BadConfig
+from procgraph.core.visualization import info, error # XXX: replace
 
 
 class Text(Block):
@@ -75,6 +73,7 @@ class Text(Block):
         self.state.first_timestamp = None 
     
     def update(self):
+        
         # TODO: add check
         if self.state.first_timestamp is None:
             self.state.first_timestamp = self.get_input_timestamp(0)

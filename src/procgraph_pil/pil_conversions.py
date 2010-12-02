@@ -1,6 +1,5 @@
 import numpy
-from PIL import Image
-
+from .import_dependencies import Image
 
 def Image_from_array(a):
     ''' Converts an image in a numpy array to an Image instance.
