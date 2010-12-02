@@ -321,8 +321,11 @@ class Generator(Block):
     def next_data_status(self):
         ''' 
         This is complicated but necessary. Do you have another value?
+        
         - Yes, and it will be of this timestamp. (I can see it from the log)
+        
         - No, this generator has finished.
+        
         - Yes, but this is realtime and it does not depend on me.
           For example, I'm waiting for the next sensor data. 
           Ask me later. 
@@ -330,7 +333,9 @@ class Generator(Block):
         In those cases, we return 
         
             (True, timestamp)
+            
             (False, None)
+            
             (True, None)
           
         '''
