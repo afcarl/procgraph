@@ -1,7 +1,4 @@
-from procgraph.core.block import Block
-from procgraph.core.registrar import default_library
 from procgraph.testing.utils import PGTestCase
-from procgraph.core.exceptions import SemanticError
  
 good_examples = [
 """

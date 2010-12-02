@@ -7,7 +7,7 @@ from procgraph.core.exceptions import SemanticError, PGSyntaxError
 from procgraph.core.registrar import default_library, Library
 
 # load standard components
-import procgraph.components
+import procgraph.components #@UnusedImport
 from procgraph.core.block import Block 
  
 

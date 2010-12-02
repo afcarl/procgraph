@@ -1,4 +1,5 @@
 from pkg_resources import StringIO
+import numpy
 
 def pylab2rgb(transparent=False, tight=False):
     ''' Saves and returns the pixels in the current pylab figure. 
@@ -9,6 +10,7 @@ def pylab2rgb(transparent=False, tight=False):
     '''
 
     from matplotlib import pylab
+    from PIL import Image
 
     imgdata = StringIO()
     

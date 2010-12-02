@@ -1,13 +1,11 @@
 import time
-import tempfile
 import  numpy
-from PIL import Image
-import matplotlib
 
+# TODO: put this in only one place
+import matplotlib
 matplotlib.use('Agg')
 from matplotlib import pylab
 
-from StringIO import StringIO
 from procgraph import Block
 
 from procgraph.core.exceptions import BadInput, BadConfig
@@ -72,10 +70,11 @@ class Plot(Block):
         ''' Creates figure object and axes '''
         self.figure = pylab.figure(frameon=False,
                                    figsize=(width / 100.0, height / 100.0))
+        # TODO: is there a better way?
         # left, bottom, right, top
-        borders = [0.15, 0.15, 0.03, 0.05]
-        w = 1 - borders[0] - borders[2]
-        h = 1 - borders[1] - borders[3]
+        #borders = [0.15, 0.15, 0.03, 0.05]
+        #w = 1 - borders[0] - borders[2]
+        # h = 1 - borders[1] - borders[3]
         #self.axes = pylab.axes([borders[0], borders[1], w, h])
         self.axes = pylab.axes()
         self.figure.add_axes(self.axes)

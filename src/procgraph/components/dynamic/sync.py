@@ -130,7 +130,7 @@ class Sync(Generator):
                 
                 if not slave_queue: # or (master_timestamp > slave_queue[-1].timestamp): 
                     all_ready = False
-                    its_ts = map(lambda x:x.timestamp, slave_queue)
+                    #its_ts = map(lambda x:x.timestamp, slave_queue)
                     #print "Slave %s not ready: %s" %(slave, its_ts)
                     break 
             

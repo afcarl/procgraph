@@ -33,7 +33,7 @@ def blend(a, b):
     a = to_rgba(a)
     b = to_rgba(b)
     
-    alpha_a = a[:, :, 3].astype('float32')
+    #alpha_a = a[:, :, 3].astype('float32')
     alpha_b = b[:, :, 3].astype('float32')
 
     

@@ -1,4 +1,4 @@
-from math import ceil, sqrt
+from math import ceil
 
 class Statistics:
     def __init__(self, block):
@@ -95,8 +95,8 @@ class ExecutionStats:
                 continue
             perc_times = ceil(s.perc_times * 100)
             
-            jitter_cpu = ceil(100 * (sqrt(s.var_cpu) * 2 / s.mean_cpu))
-            jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))
+            # jitter_cpu = ceil(100 * (sqrt(s.var_cpu) * 2 / s.mean_cpu))
+            # jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))
             
             if s.mean_cpu < 0.7 * s.mean_wall:
                 comment = ' I/O '

@@ -50,7 +50,7 @@ class SemanticsTest(PGTestCase):
     
     def testExamples(self):
         for example, config in good_examples:
-            model = self.check_semantic_ok(example, config=config)
+            self.check_semantic_ok(example, config=config)
             
     
     def testBadExamples(self):

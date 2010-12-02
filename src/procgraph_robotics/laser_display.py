@@ -1,8 +1,6 @@
-from numpy import array, linspace, asarray, sin, cos, minimum, \
+from numpy import array, linspace, sin, cos, minimum, \
     nonzero, logical_not, maximum
 from matplotlib import pylab
-from PIL import Image
-import tempfile
 
 from procgraph  import Block
 from procgraph_mpl import pylab2rgb

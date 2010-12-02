@@ -1,9 +1,7 @@
-from procgraph import Block
-from procgraph.core.exceptions import BadInput
+from procgraph import Block, BadInput, register_model_spec
 
-from procgraph.components.basic import  register_model_spec
 
-from snp_geometry.pose import Pose
+from snp_geometry.pose import Pose #@UnresolvedImport
 
 class Pose2velocity(Block):
     ''' Block used by :ref:`block:pose2commands`. '''

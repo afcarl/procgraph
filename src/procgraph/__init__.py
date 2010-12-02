@@ -6,3 +6,6 @@ from procgraph.core.block import Block, Generator
 
 from procgraph.core.model_loader import pg_add_this_package_models
 
+from procgraph.core.exceptions import *
+
+from procgraph.components.basic import register_model_spec, register_simple_block
