@@ -1,5 +1,5 @@
 import os
-import tables
+from .import_dependencies import tables
 
 class OpenFile(object):
     def __init__(self, pytables_handle):

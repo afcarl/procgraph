@@ -1,9 +1,7 @@
-from procgraph  import Block,Generator
-from procgraph.core.exceptions import BadConfig
-from procgraph_hdf.tables_cache import tc_open_for_reading
 import operator
 
-from .tables_cache import tc_close
+from procgraph  import Block,Generator, BadConfig
+from .tables_cache import tc_open_for_reading, tc_close
 from .hdfwrite import PROCGRAPH_LOG_GROUP
 
 

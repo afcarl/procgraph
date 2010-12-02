@@ -1,8 +1,10 @@
-from procgraph  import Block
-from .tables_cache import tc_open_for_writing, tc_close
-from procgraph.core.exceptions import BadInput
 import numpy
-import tables
+
+from procgraph  import Block, BadInput
+
+from .import_dependencies import tables
+from .tables_cache import tc_open_for_writing, tc_close
+
 
 PROCGRAPH_LOG_GROUP = 'procgraph'
 
