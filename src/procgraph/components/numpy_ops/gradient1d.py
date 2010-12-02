@@ -1,5 +1,6 @@
 import numpy
-from procgraph.components.basic import register_simple_block
+
+from procgraph import register_simple_block
 
 def gradient1d(a):
     a = numpy.array(a)

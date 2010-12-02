@@ -1,6 +1,6 @@
 from numpy import multiply, sqrt
 
-from procgraph.components.basic import  register_simple_block
+from procgraph import  register_simple_block
 
 def cov2corr(covariance, zero_diagonal=True):
     ''' Compute the correlation matrix from the covariance matrix.

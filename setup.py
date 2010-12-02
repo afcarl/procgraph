@@ -5,7 +5,11 @@ from collections import namedtuple
 Option = namedtuple('Option', 'module desc requires')
 
 optional_packages = [
-                     
+    
+    Option( 'procgraph_cv', 
+            'Functions to interact with the OpenCV.', 
+              ['cv']),
+              
     Option( 'procgraph_pil', 
             'Functions to interact with the PIL image library.', 
               ['PIL']),

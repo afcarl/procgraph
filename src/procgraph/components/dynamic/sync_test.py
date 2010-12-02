@@ -1,7 +1,5 @@
-from procgraph import Generator, Block
+from procgraph import Generator, Block, ModelExecutionError, register_model_spec
 from procgraph.testing.utils import PGTestCase
-from procgraph.core.exceptions import ModelExecutionError  
-from procgraph.components.basic import register_model_spec
 from procgraph.core.registrar import default_library
  
 

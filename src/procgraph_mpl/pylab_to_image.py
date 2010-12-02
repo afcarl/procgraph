@@ -1,5 +1,9 @@
-from pkg_resources import StringIO
 import numpy
+from StringIO import StringIO
+
+from procgraph_pil import Image
+from .import_dependencies import pylab
+
 
 def pylab2rgb(transparent=False, tight=False):
     ''' Saves and returns the pixels in the current pylab figure. 
@@ -8,10 +12,6 @@ def pylab2rgb(transparent=False, tight=False):
         
         If transparent is true, returns a RGBA image instead of RGB. 
     '''
-
-    from matplotlib import pylab
-    from PIL import Image
-
     imgdata = StringIO()
     
     if tight:

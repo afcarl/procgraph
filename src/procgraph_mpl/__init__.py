@@ -3,8 +3,6 @@
 '''
 
 import plot
-#import vector_plot
-#import image_plot
-import fps_limit
 
 from pylab_to_image import pylab2rgb
+from import_dependencies import pylab

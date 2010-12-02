@@ -1,9 +1,9 @@
-from procgraph import Block 
+import traceback, inspect
+
+from procgraph import Block, ModelExecutionError
 from procgraph.core.registrar import default_library
-from procgraph.core.exceptions import ModelExecutionError
 from procgraph.core.model_loader import add_models_to_library
-import traceback
-import inspect 
+
 
 COMPULSORY = 'compulsory-param'
 TIMESTAMP = 'timestamp-param'

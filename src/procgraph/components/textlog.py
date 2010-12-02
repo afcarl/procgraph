@@ -1,8 +1,8 @@
-from procgraph.components.file_utils import expand_environment
-from procgraph.core.exceptions import ModelExecutionError, BadConfig
 import traceback, os
-from procgraph import Generator, Block
 
+from procgraph import Generator, Block, ModelExecutionError, BadConfig
+
+from .file_utils import expand_environment
 
 class TextLog(Generator):
     ''' This represents a generic log reader that reads

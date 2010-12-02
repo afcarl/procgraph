@@ -1,16 +1,9 @@
-import time
-import  numpy
+import time, numpy
 
-# TODO: put this in only one place
-import matplotlib
-matplotlib.use('Agg')
-from matplotlib import pylab
+from procgraph import Block, BadInput, BadConfig
 
-from procgraph import Block
-
-from procgraph.core.exceptions import BadInput, BadConfig
-
-from procgraph_mpl.pylab_to_image import pylab2rgb
+from .import_dependencies import pylab
+from .pylab_to_image import pylab2rgb
 
 
 class Plot(Block):

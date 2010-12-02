@@ -1,4 +1,6 @@
-from procgraph.components.basic import register_model_spec
+from procgraph import register_model_spec
+
+# FIXME: make models/ directory
 
 register_model_spec("""
 --- model variance 

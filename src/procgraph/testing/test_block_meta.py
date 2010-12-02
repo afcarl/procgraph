@@ -1,7 +1,6 @@
 from procgraph.testing.utils import PGTestCase
 
-from procgraph import Block
-from procgraph.core.exceptions import BlockWriterError
+from procgraph import Block, BlockWriterError
 
 
 def same_name_mistake_config():

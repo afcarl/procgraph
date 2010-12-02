@@ -1,10 +1,9 @@
 import math
 from numpy import array, linspace, sin, cos
-from matplotlib import pylab
 
-from procgraph  import Block
-from procgraph.core.exceptions import BadInput
-from procgraph_mpl import pylab2rgb
+from procgraph  import Block, BadInput
+from procgraph_mpl import pylab2rgb, pylab
+
 
 class LaserDotDisplay(Block):
     ''' Produces a plot of a range-finder scan variation (derivative). 
@@ -76,7 +75,6 @@ class LaserDotDisplay(Block):
         # turn off ticks labels, they don't have meaning
         pylab.setp(f.axes[0].get_xticklabels(), visible=False)
         pylab.setp(f.axes[0].get_yticklabels(), visible=False)
-        
         
         if self.config.title is not None:
             if self.config.title != "":

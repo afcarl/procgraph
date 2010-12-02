@@ -1,9 +1,7 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess, os, numpy
  
-from procgraph.core.block import Generator, Block
-from procgraph.core.exceptions import ModelExecutionError
-
+from procgraph  import Generator, Block, ModelExecutionError
 
  
 class MPlayer(Generator):

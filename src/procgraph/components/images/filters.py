@@ -1,6 +1,6 @@
 import numpy
  
-from procgraph.components.basic import register_simple_block
+from procgraph import register_simple_block
 from procgraph.components import assert_rgb_image, assert_gray_image
 
 

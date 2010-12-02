@@ -19,8 +19,14 @@ import misc
 from collections import namedtuple #@UnresolvedImport
 Option = namedtuple('Option', 'module desc requires') #@UndefinedVariable
 
+# FIXME: there is a redundancy here and in setup.py
+ 
 optional_packages = [
                      
+    Option( 'procgraph_cv', 
+            'Functions to interact with the OpenCV.', 
+              ['cv']),
+
     Option( 'procgraph_pil', 
             'Functions to interact with the PIL image library.', 
               ['PIL']),

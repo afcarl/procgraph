@@ -24,18 +24,10 @@ class Library:
     def instance(self, block_type, name, config, library=None):
         if library is None:
             library = self
-        #try:
         generator = self.get_generator_for_block_type(block_type)
-        #except Exception as e:
-        #    raise ValueError('Asked to instance "%s" which does not exist' % 
-        #                     block_type)
-        # try:
         block = generator(name=name, config=config, library=library)
         return block
-        #except TypeError as e:
-        #    raise Exception('Could not instance a block of type "%s": %s' % 
-        #                             (block_type, e))
-            
+             
                 
     
     def get_generator_for_block_type(self, block_type):

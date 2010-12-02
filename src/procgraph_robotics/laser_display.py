@@ -1,10 +1,8 @@
 from numpy import array, linspace, sin, cos, minimum, \
     nonzero, logical_not, maximum
-from matplotlib import pylab
 
-from procgraph  import Block
-from procgraph_mpl import pylab2rgb
-from procgraph.core.exceptions import BadInput
+from procgraph  import Block, BadInput
+from procgraph_mpl import pylab2rgb, pylab
 
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 

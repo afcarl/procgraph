@@ -6,3 +6,4 @@ import text
 import imread
     
 
+from import_dependencies import Image
