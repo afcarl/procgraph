@@ -2,11 +2,11 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, \
     ParserElement, Combine, nums, Literal, CaselessLiteral, \
     restOfLine, QuotedString, ParseException, Forward 
-from procgraph.core.parsing_elements import VariableReference, ParsedBlock, \
+from .parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
     ParsedSignalList , Connection, Where, LoadStatement, SaveStatement, \
  output_from_tokens, input_from_tokens, config_from_tokens
-from procgraph.core.exceptions import PGSyntaxError
+from .exceptions import PGSyntaxError
 
 
 def eval_dictionary(s, loc, tokens):
@@ -47,12 +47,15 @@ comment = Suppress(Literal('#') + restOfLine)
 good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
 
 # All kinds of python strings
-quoted = \
-    QuotedString('"', '\\', unquoteResults=True) ^ \
-    QuotedString("'", '\\', unquoteResults=True) ^ \
-    QuotedString(quoteChar='"""', escChar='\\', multiline=True, unquoteResults=True) ^ \
-    QuotedString(quoteChar="'''", escChar='\\', multiline=True, unquoteResults=True)
-    
+
+single_quoted =  QuotedString('"', '\\', unquoteResults=True) ^ \
+                 QuotedString("'", '\\', unquoteResults=True) 
+multi_quoted  =  QuotedString(quoteChar='"""', escChar='\\', 
+                              multiline=True, unquoteResults=True) ^ \
+                 QuotedString(quoteChar="'''", escChar='\\', 
+                              multiline=True, unquoteResults=True)
+quoted = single_quoted ^ multi_quoted
+
 reference = Combine(Suppress('$') + good_name('variable'))
 
 # FIXME: add wrap also here?
@@ -200,14 +203,23 @@ def parse_model(string, filename=None):
     output = S('output') + good_name('name') + O(quoted('docstring'))
     output.setParseAction(wrap(output_from_tokens))
     
-    doc_comment = S(quoted)
+    #doc_comment = S(quoted)
+    newline = S(lineEnd)
     
+    # TODO: remove this
     dataio = loading ^ saving
     
-    action = connection ^ assignment ^ comment ^ import_statement ^ dataio ^ \
-         config ^ input ^ output ^ (doc_comment + connection)
+    docs = S(ZeroOrMore(multi_quoted + OneOrMore(newline)))
     
-    newline = S(lineEnd)
+    action =  (docs + connection) ^ \
+              (docs + assignment) ^ \
+              comment ^ \
+              (docs + import_statement) ^ \
+              dataio ^ \
+              config ^ \
+              input ^ \
+              output 
+    
     
     model_content = ZeroOrMore(newline) + action + \
         ZeroOrMore(OneOrMore(newline) + action) + \

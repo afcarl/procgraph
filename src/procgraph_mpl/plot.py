@@ -3,6 +3,7 @@ import tempfile
 import  numpy
 from PIL import Image
 import matplotlib
+
 matplotlib.use('Agg')
 from matplotlib import pylab
 
@@ -10,6 +11,9 @@ from StringIO import StringIO
 from procgraph import Block
 
 from procgraph.core.exceptions import BadInput, BadConfig
+
+from procgraph_mpl.pylab_to_image import pylab2rgb
+
 
 class Plot(Block):
     ''' Plots the inputs using matplotlib. 
@@ -258,38 +262,3 @@ class Plot(Block):
             pylab.close(self.figure.number)
             self.figure = None
 
-
-
-def pylab2rgb(transparent=False, tight=False):
-    ''' Saves and returns the pixels in the current pylab figure. 
-    
-        Returns a RGB uint8 array. Uses PIL to do the job.
-        
-        If transparent is true, returns a RGBA image instead of RGB. 
-    '''
-    
-    imgdata = StringIO()
-    
-    if tight:
-        pylab.savefig(imgdata, format='png', bbox_inches='tight', pad_inches=0)
-    else:
-        pylab.savefig(imgdata, format='png')
-    
-    imgdata.seek(0)
-    im = Image.open(imgdata)
-    if not transparent:
-        im = im.convert("RGB")
-    rgb = numpy.asarray(im)    
-    
-    if transparent:
-        rgba = rgb.copy()
-        white = numpy.logical_and(rgb[:, :, 0] == 255,
-                                  rgb[:, :, 1] == 255,
-                                  rgb[:, :, 2] == 255)
-        alpha = rgba[:, :, 3] 
-        alpha[white] = 0
-        #alpha[numpy.logical_not(white)] = 110 
-        rgba[:, :, 3] = alpha
-        return rgba
-    
-    return rgb

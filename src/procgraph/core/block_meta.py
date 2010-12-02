@@ -1,9 +1,10 @@
 import sys
 
-from procgraph.core.exceptions import BlockWriterError, ModelWriterError
+from .exceptions import BlockWriterError, ModelWriterError
 
 FIXED = 'fixed-signal'
 VARIABLE = 'variable-signal'
+DEFINED_AT_RUNTIME = 'defined-at-runtime'
  
 class BlockConfig:
     def __init__(self, variable, has_default, default, desc, desc_rest, where):
@@ -82,6 +83,14 @@ def block_output_is_variable(description=None, suffix=None):
         raise BlockWriterError('Cannot mix variable and fixed output'
                                ' or variable with variable.')
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix, desc, desc_rest, None))
+
+def block_output_is_defined_at_runtime(description=None):
+    assert description is None or isinstance(description, str) 
+    desc, desc_rest = split_docstring(description)
+    if BlockMeta.tmp_output:
+        raise BlockWriterError('Cannot mix variable and fixed output'
+                               ' or variable with variable.')
+    BlockMeta.tmp_output.append(BlockOutput(DEFINED_AT_RUNTIME, None, desc, desc_rest, None))
     
 class BlockMeta(type):
     aliases = []
@@ -112,13 +121,13 @@ class BlockMeta(type):
         if len(BlockMeta.aliases) > 1:
                 raise ModelWriterError("We don't support multiple aliases yet.")
 
-        from procgraph.core.registrar import default_library
-
+        
         if BlockMeta.aliases:
             name = BlockMeta.aliases[0]
         else:
             name = cls.__name__
             
+        from .registrar import default_library
         default_library.register(name, cls)
            
         BlockMeta.aliases = []
@@ -145,10 +154,16 @@ class BlockMetaSugar(object):
     @staticmethod
     def output_is_variable(*arg, **dict):
         block_output_is_variable(*arg, **dict)
+    
+    @staticmethod
+    def output_is_defined_at_runtime(description=None):
+        block_output_is_defined_at_runtime(description)
         
     @staticmethod
-    def input_is_variable(*arg, **dict):
-        block_input_is_variable(*arg, **dict)
+    def input_is_variable(description=None, min=None, max=None):
+        ''' Declares that this block can accept a variable number
+            of inputs. You can specify minimum and maximum number. '''
+        block_input_is_variable(description, min, max)
 
 
 

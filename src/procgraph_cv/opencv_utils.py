@@ -2,13 +2,16 @@ import numpy
 
 from procgraph.components  import  check_2d_array 
 from procgraph.components.basic import  register_simple_block
+import sys
 
 try:
-    import cv #@UnresolvedImport
+    import cv #@UnresolvedImport @UnusedImport
 except:
-    print "Could not import module 'cv'; trying with 'opencv'"
-    import opencv as cv #@UnresolvedImport
-
+    #print "Could not import module 'cv'; trying with 'opencv'"
+    try:
+        import opencv as cv #@UnresolvedImport @Reimport
+    except:
+        sys.stderr.write("procgraph_cv: Could not import module 'cv' or 'opencv'.\n")
 
 
 def numpy_to_cv(numpy_array):
@@ -47,7 +50,7 @@ def cv_to_numpy(im):
         cv.IPL_DEPTH_64F: 'float64',
     }
 
-    arrdtype = im.depth
+    #arrdtype = im.depth
     a = numpy.fromstring(
          im.tostring(),
          dtype=depth2dtype[im.depth],

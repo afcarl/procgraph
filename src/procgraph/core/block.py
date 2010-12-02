@@ -1,10 +1,7 @@
-from procgraph.core.exceptions import BlockWriterError, ModelWriterError, \
-    ModelExecutionError
-from procgraph.core.block_sugar import InputProxy, OutputProxy, StateProxy, \
-    ConfigProxy
-from collections import namedtuple
-from procgraph.core.block_meta import BlockMeta, BlockMetaSugar
-from procgraph.core.block_config import resolve_config
+from .exceptions import BlockWriterError, ModelWriterError, ModelExecutionError
+from .block_sugar import InputProxy, OutputProxy, StateProxy, ConfigProxy
+from .block_meta import BlockMeta, BlockMetaSugar
+from .block_config import resolve_config
 
 # Timestamp to use for constant times
 ETERNITY = 'constant-time'
@@ -309,12 +306,12 @@ class Block(BlockMetaSugar):
     
     def info(self, s):
         ''' Writes an info message. '''
-        from procgraph.core.visualization import info as pg_info
+        from .visualization import info as pg_info
         pg_info(self.name + ': ' + s)
         
     def debug(self, s):
         ''' Writes a debug message. '''
-        from procgraph.core.visualization import debug as pg_debug
+        from .visualization import debug as pg_debug
         pg_debug(self.name + ': ' + s)
     
 
@@ -332,9 +329,9 @@ class Generator(Block):
           
         In those cases, we return 
         
-            (yes, timestamp)
-            (no, None)
-            (yes, None)
+            (True, timestamp)
+            (False, None)
+            (True, None)
           
         '''
         raise ValueError('Did not implement this')

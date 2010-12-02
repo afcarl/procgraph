@@ -1,13 +1,14 @@
 import os, fnmatch
 import cPickle as pickle
-
-from procgraph.core.model_instantiation import create_from_parsing_results
-from procgraph.core.visualization import warning, debug, info
 import inspect
+
+
+from .model_instantiation import create_from_parsing_results
+from .visualization import warning, debug, info
 create_from_parsing_results
-from procgraph.core.parsing import parse_model, ParsedModel
-from procgraph.core.exceptions import SemanticError
-from procgraph.core.registrar import default_library, Library
+from .parsing import parse_model, ParsedModel
+from .exceptions import SemanticError
+from .registrar import default_library, Library
 
 PATH_ENV_VAR = 'PROCGRAPH_PATH'
 
@@ -59,6 +60,25 @@ class ModelSpec(object):
         return model
 
 
+
+def pg_add_this_package_models(file, assign_to, subdir='models'):
+    ''' Add the models for this package.
+        Shortcut to put into the module ``__init__.py``.
+        Call with file = __file__, assign_to= __package__.
+        
+        Example: ::
+        
+            pg_add_this_package_models(file=__file__, assign_to=__package__)
+    
+    '''
+    
+    dir = os.path.join(os.path.dirname(file), subdir)
+    pg_look_for_models(default_library, 
+                       additional_paths=[dir], 
+                       ignore_env=True,
+                       assign_to_module=assign_to)
+
+
 def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_cache=False,
                        assign_to_module=None):
     ''' Call this function at the beginning of the executions.
@@ -81,7 +101,9 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
             paths.extend(os.environ[PATH_ENV_VAR].split(':'))
         
     if not paths:
-        warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
+        if False:
+            # TODO: add verbose switch
+            warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
         
     # enumerate each sub directory
     all_files = set()
