@@ -1,4 +1,3 @@
-from basic import *
 from checks import *
 
 import debug_components
@@ -6,9 +5,6 @@ import statistics
 import video
 import dynamic
 import images
-
-# TODO: move this with snp_geometry
-# import robotics
 
 import signals
 import numpy_ops
@@ -23,23 +19,23 @@ Option = namedtuple('Option', 'module desc requires') #@UndefinedVariable
  
 optional_packages = [
                      
-    Option( 'procgraph_cv', 
-            'Functions to interact with the OpenCV.', 
+    Option('procgraph_cv',
+            'Functions to interact with the OpenCV.',
               ['cv']),
 
-    Option( 'procgraph_pil', 
-            'Functions to interact with the PIL image library.', 
+    Option('procgraph_pil',
+            'Functions to interact with the PIL image library.',
               ['PIL']),
               
-    Option( 'procgraph_mpl', 
-            'Functions to interact with matplotlib.', 
+    Option('procgraph_mpl',
+            'Functions to interact with matplotlib.',
             ['PIL', 'matplotlib']),
             
-    Option( 'procgraph_robotics', # uses procgraph_mpl
+    Option('procgraph_robotics', # uses procgraph_mpl
             'Misc. functions for robotics data sources.',
             ['PIL', 'matplotlib', 'snp_geometry']),
             
-    Option( 'procgraph_hdf', # uses procgraph_mpl
+    Option('procgraph_hdf', # uses procgraph_mpl
             'Reading and writing HDF logs..',
             ['tables'])
 ]
