@@ -10,5 +10,5 @@ from procgraph.core.model_loader import pg_add_this_package_models
 from procgraph.core.registrar_other import \
     register_model_spec, register_simple_block, COMPULSORY
 
-from procgraph.scripts import pg
+from procgraph.scripts.pg import pg
 
