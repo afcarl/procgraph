@@ -49,13 +49,13 @@ good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
 
 # All kinds of python strings
 
-single_quoted = QuotedString('"', '\\', unquoteResults=True) ^ \
+single_quoted = QuotedString('"', '\\', unquoteResults=True) | \
                  QuotedString("'", '\\', unquoteResults=True) 
 multi_quoted = QuotedString(quoteChar='"""', escChar='\\',
-                              multiline=True, unquoteResults=True) ^ \
+                              multiline=True, unquoteResults=True) | \
                  QuotedString(quoteChar="'''", escChar='\\',
                               multiline=True, unquoteResults=True)
-quoted = single_quoted ^ multi_quoted
+quoted = multi_quoted | single_quoted 
 
 reference = Combine(Suppress('$') + good_name('variable'))
 
