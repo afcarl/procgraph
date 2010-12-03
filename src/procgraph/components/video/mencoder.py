@@ -1,4 +1,3 @@
-# OS X: install from http://ffmpegx.com/download.html
 import subprocess 
 
 from procgraph import Block
@@ -6,7 +5,7 @@ from procgraph import Block
 from procgraph.components  import check_rgb_or_grayscale
 from procgraph.core.model_loadsave import make_sure_dir_exists
  
- 
+# TODO: detect an error in Mencoder (perhaps size too large)
 class MEncoder(Block):
     ''' Encodes a video stream using ``mencoder``.
     
