@@ -65,8 +65,15 @@ reference.setParseAction(VariableReference.from_tokens)
 dictionary = Forward()
 array = Forward()
 value = Forward()
-value << (array ^ dictionary ^ reference ^ integer \
-          ^ floatnumber ^ good_name ^ quoted)('val')
+value << (
+          quoted | 
+          array | 
+          dictionary | 
+          reference | 
+          good_name | 
+          integer | 
+          floatnumber
+         )('val')
 
 # dictionaries
     
@@ -134,7 +141,7 @@ def parse_model(string, filename=None):
     qualified_name = Combine(good_name + '.' + (integer | good_name))
     
     block_name = good_name 
-    block_type = good_name ^ Word('_+-/*') ^ quoted ^ reference
+    block_type = good_name | Word('_+-/*') | quoted | reference
      
     signal = O(S('[') + (integer | good_name)('local_input') + S(']')) \
             + O(block_name('block_name') + S(".")) + (integer | good_name)('name') + \
@@ -218,11 +225,10 @@ def parse_model(string, filename=None):
         config | \
         input | \
         output | \
-        (\
-              (docs + connection) | \
-              (docs + assignment) | \
-              (docs + import_statement)
-        )
+        (docs + connection) | \
+        (docs + assignment) | \
+        (docs + import_statement)
+        
     #dataio ^ \
               
     
