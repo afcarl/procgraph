@@ -1,7 +1,7 @@
-from procgraph.core.model_loader import model_from_string
-from procgraph.core.exceptions import SemanticError
-from procgraph.testing.utils import PGTestCase
+from procgraph import SemanticError
+from procgraph.core.model_loader import model_from_string # XXX:
 
+from .utils import PGTestCase
 
 good_examples2 = [
 """ |constant value=2| -> [0] res """,

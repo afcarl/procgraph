@@ -1,6 +1,8 @@
-from procgraph import Block
 import numpy
 
+from procgraph import Block
+
+# TODO: move somewhere else?
 def to_rgb(rgb):
     ''' Remove the alpha layer if present. '''
     if rgb.shape[2] == 3:
@@ -8,6 +10,7 @@ def to_rgb(rgb):
     
     return rgb[:, :, 0:3]
 
+# TODO: move somewhere else?
 def to_rgba(rgb):
     ''' Adds a opaque alpha if not present. '''
     if rgb.shape[2] == 4:
@@ -19,8 +22,6 @@ def to_rgba(rgb):
     rgba[:, :, 1] = rgb[:, :, 1]
     rgba[:, :, 2] = rgb[:, :, 2]
     rgba[:, :, 3] = 255
-    
-    
     
     return rgba
 

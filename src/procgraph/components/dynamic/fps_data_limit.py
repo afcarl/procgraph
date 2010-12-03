@@ -1,4 +1,4 @@
-from procgraph  import Block 
+from procgraph import Block 
 
 class FPSDataLimit(Block):
     ''' This block limits the output update to a certain framerate. ''' 

@@ -3,8 +3,6 @@
 
 '''
 
-
-
 import expectation
 import variance
 import covariance

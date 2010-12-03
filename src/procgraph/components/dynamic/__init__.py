@@ -1,11 +1,8 @@
 ''' Blocks performing operations with a dynamic nature. 
 
-
 This library contains blocks that perform operations with time.
 This library is autoloaded. 
 '''
-
-
 
 import derivative
 import derivative2

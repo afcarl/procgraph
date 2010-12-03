@@ -1,5 +1,6 @@
-from procgraph import Block
 import numpy
+
+from procgraph import Block
 from procgraph.components.checks import check_rgb
 
 class Border(Block):

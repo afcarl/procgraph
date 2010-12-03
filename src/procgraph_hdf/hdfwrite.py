@@ -33,7 +33,7 @@ class HDFwrite(Block):
     Block.alias('hdfwrite')
     Block.input_is_variable('Signals to be written', min=1)
     Block.config('file', 'HDF file to write')
-    Block.config('compress', 'Whether to compress the hdf table.',1)
+    Block.config('compress', 'Whether to compress the hdf table.', 1)
     Block.config('complib', 'Compression library (zlib, bzip2, blosc, lzo).', 'zlib')
     Block.config('complevel', 'Compression level (0-9)', 9)
     
@@ -68,8 +68,8 @@ class HDFwrite(Block):
                 value = numpy.array(value)
             except:
                 raise BadInput(
-                error='I can only log numpy arrays, not %r' % value.__class__, 
-                block=self, 
+                error='I can only log numpy arrays, not %r' % value.__class__,
+                block=self,
                 input_signal=signal)
         
         # also check that we didn't already log this instant
@@ -82,7 +82,7 @@ class HDFwrite(Block):
         table_dtype = [ ('time', 'float64'),
                         ('value', value.dtype, value.shape) ]
          
-        table_dtype = numpy.dtype( table_dtype )
+        table_dtype = numpy.dtype(table_dtype)
         
         # TODO: check that the dtype is consistnet
         
@@ -91,7 +91,7 @@ class HDFwrite(Block):
             # fletcher32 writes by entry rather than by rows
             if self.config.compress:
                 filters = tables.Filters(
-                            complevel=self.config.complevel, 
+                            complevel=self.config.complevel,
                             complib=self.config.complib,
                             fletcher32=True)
             else:
@@ -99,8 +99,8 @@ class HDFwrite(Block):
                 
             try:
                 table = self.hf.createTable(
-                        where=self.group, 
-                        name=signal, 
+                        where=self.group,
+                        name=signal,
                         description=table_dtype,
                         #expectedrows=10000, # large guess
                         byteorder='little',
@@ -122,7 +122,7 @@ class HDFwrite(Block):
         table.append(row)
         
         if len(table) % 100 == 0:
-            print('Signal: %20s  rows %6d' % (signal, len(table)) )
+            print('Signal: %20s  rows %6d' % (signal, len(table)))
         
         # if len(table) == 3000:
         #    raise Exception()

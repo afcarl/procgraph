@@ -4,12 +4,12 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
     restOfLine, QuotedString, ParseException, Forward 
 from .parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
-    ParsedSignalList , Connection, Where, LoadStatement, SaveStatement, \
+    ParsedSignalList, Connection, Where, LoadStatement, SaveStatement, \
  output_from_tokens, input_from_tokens, config_from_tokens
 from .exceptions import PGSyntaxError
 
 
-def eval_dictionary(s, loc, tokens):
+def eval_dictionary(s, loc, tokens): #@UnusedVariable
     #print "Dict Tokens: %s" % tokens
     if not 'content' in tokens:
         return {}
@@ -21,7 +21,7 @@ def eval_dictionary(s, loc, tokens):
     
     return d 
 
-def python_interpretation(s, loc, tokens):
+def python_interpretation(s, loc, tokens): #@UnusedVariable
     val = eval(tokens[0]) # XXX why 0?
     return val
 
@@ -48,11 +48,11 @@ good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
 
 # All kinds of python strings
 
-single_quoted =  QuotedString('"', '\\', unquoteResults=True) ^ \
+single_quoted = QuotedString('"', '\\', unquoteResults=True) ^ \
                  QuotedString("'", '\\', unquoteResults=True) 
-multi_quoted  =  QuotedString(quoteChar='"""', escChar='\\', 
+multi_quoted = QuotedString(quoteChar='"""', escChar='\\',
                               multiline=True, unquoteResults=True) ^ \
-                 QuotedString(quoteChar="'''", escChar='\\', 
+                 QuotedString(quoteChar="'''", escChar='\\',
                               multiline=True, unquoteResults=True)
 quoted = single_quoted ^ multi_quoted
 
@@ -151,7 +151,8 @@ def parse_model(string, filename=None):
     
     key_value_pair = Group(key("key") + S('=') + value("value"))
     parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
-    parameter_list.setParseAction(lambda s, l, t: dict([(a[0], a[1]) for a in t ]))
+    parameter_list.setParseAction(
+        lambda s, l, t: dict([(a[0], a[1]) for a in t ])) #@UnusedVariable
     
     block = S("|") + O(block_name("name") + S(":")) + block_type("blocktype") + \
          O(parameter_list("config")) + S("|")
@@ -211,7 +212,7 @@ def parse_model(string, filename=None):
     
     docs = S(ZeroOrMore(multi_quoted + OneOrMore(newline)))
     
-    action =  (docs + connection) ^ \
+    action = (docs + connection) ^ \
               (docs + assignment) ^ \
               comment ^ \
               (docs + import_statement) ^ \

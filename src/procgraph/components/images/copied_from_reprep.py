@@ -1,11 +1,8 @@
 import numpy
 from numpy import maximum, minimum, zeros
 
-
 from procgraph import register_simple_block
 from procgraph.components import check_2d_array
-
-
 
 def skim_top(a, top_percent):
     ''' Cuts off the top percentile of the array. '''
@@ -34,7 +31,7 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     if value.ndim > 2:
         value = value.squeeze()
     
-    if value.dtype==numpy.dtype('uint8'):
+    if value.dtype == numpy.dtype('uint8'):
         value = value.astype('float32')
 
     
@@ -117,7 +114,7 @@ def scale(value, min_value=None, max_value=None,
     if value.ndim > 2:
         value = value.squeeze()
     
-    if value.dtype==numpy.dtype('uint8'):
+    if value.dtype == numpy.dtype('uint8'):
         value = value.astype('float32')
     #require_shape((gt(0), gt(0)), value)
     

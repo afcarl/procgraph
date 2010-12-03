@@ -1,4 +1,4 @@
-from procgraph  import Block
+from procgraph import Block
      
 class FPSPrint(Block):
     ''' Prints the fps count for the input signals. '''

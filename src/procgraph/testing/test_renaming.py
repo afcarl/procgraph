@@ -1,5 +1,4 @@
-from procgraph.testing.utils import PGTestCase
-
+from .utils import PGTestCase
 
 class TestRenaming(PGTestCase):
     def test_renaming(self):

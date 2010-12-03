@@ -1,6 +1,6 @@
 import numpy
 
-from procgraph  import Block, BadInput, register_model_spec
+from procgraph import Block, BadInput, register_model_spec
 
 def isiterable(x):
     try:

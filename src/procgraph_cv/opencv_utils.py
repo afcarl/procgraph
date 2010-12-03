@@ -24,8 +24,13 @@ def numpy_to_cv(numpy_array):
         (height, width, nchannels) = numpy_array.shape
     else:
         raise ValueError('Invalid format shape %s' % str(numpy_array.shape))
-    im_cv = cv.CreateImage((width, height), dtype2depth[str(numpy_array.dtype)], nchannels)
-    cv.SetData(im_cv, numpy_array.tostring(), numpy_array.dtype.itemsize * width * nchannels)
+    
+    im_cv = cv.CreateImage((width, height),
+                           dtype2depth[str(numpy_array.dtype)],
+                           nchannels)
+    cv.SetData(im_cv,
+               numpy_array.tostring(),
+               numpy_array.dtype.itemsize * width * nchannels)
     return im_cv
 
 

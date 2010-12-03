@@ -1,6 +1,7 @@
-from procgraph.testing.utils import PGTestCase
 from procgraph.core.registrar import default_library, Library
 from procgraph.core.model_loader import model_from_string
+
+from .utils import PGTestCase
 
 # All of these models, when interpreted,
 # have an output that equals 42

@@ -2,7 +2,6 @@ import traceback, os
 
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
 
-from .file_utils import expand_environment
 
 class TextLog(Generator):
     ''' This represents a generic log reader that reads
@@ -16,7 +15,9 @@ class TextLog(Generator):
     
     def init(self):
         filename = self.config.file
-        filename = expand_environment(filename)
+        filename = os.path.expandvars(filename)
+        filename = os.path.expanduser(filename)
+
         
         if not os.path.exists(filename):
             raise BadConfig('File %r does not exist.' % filename, self, 'file')
@@ -92,3 +93,4 @@ class TextLog(Generator):
             Otherwise, return a tuple (timestamp, array of (name, value) ).
         """
         raise ValueError("Implement this.")
+

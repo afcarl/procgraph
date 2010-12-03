@@ -1,10 +1,10 @@
 import sys, os 
 from optparse import OptionParser
 
-from procgraph.core.model_loader import model_from_string, pg_look_for_models
-from procgraph.core.registrar import default_library, Library
-from procgraph.core.exceptions import SemanticError, PGSyntaxError 
-from procgraph.core.visualization import error, info
+from ..core.model_loader import model_from_string, pg_look_for_models
+from ..core.registrar import default_library, Library
+from ..core.exceptions import SemanticError, PGSyntaxError 
+from ..core.visualization import error, info
 
 
 usage_short = \
@@ -46,20 +46,20 @@ Examples:
 def main(): 
     parser = OptionParser(usage=usage_long)
 
-    def load_module(option, opt_str, value, parser):
+    def load_module(option, opt_str, value, parser): #@UnusedVariable
         info('Importing module %s' % value)
         __import__(value)
     
     additional_directories = []
-    def add_directory(option,  opt_str, value, parser):
+    def add_directory(option, opt_str, value, parser): #@UnusedVariable
         additional_directories.append(value)
     
     parser.add_option("-m", dest="module",
                   action="callback", callback=load_module,
                   type="string", help='Loads the specified module')
 
-    parser.add_option("-d",  dest='directory', type="string",
-                      action="callback", callback=add_directory, 
+    parser.add_option("-d", dest='directory', type="string",
+                      action="callback", callback=add_directory,
                       help='Additional directory to search for models.')
 
     parser.add_option("--debug", action="store_true",
@@ -111,7 +111,7 @@ def main():
        additional_directories=additional_directories)
             
 
-def pg(filename, config, 
+def pg(filename, config,
        debug=False, nocache=False, stats=False,
        additional_directories=[]):
     ''' Instantiate and run a model. 

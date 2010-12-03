@@ -2,7 +2,6 @@ import numpy
 
 from procgraph import Block 
 
-
 class Join(Block):
     ''' 
     This block joins multiple signals into one.

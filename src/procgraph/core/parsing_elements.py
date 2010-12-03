@@ -1,5 +1,6 @@
 import sys
 from pyparsing import lineno, col
+
 from .block_meta import split_docstring, BlockInput, FIXED, \
     BlockOutput, BlockConfig
 from .exceptions import SemanticError, x_not_found

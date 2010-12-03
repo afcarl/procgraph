@@ -1,7 +1,7 @@
 import unittest
+from numpy.testing import assert_array_almost_equal
 
 from procgraph.components.numpy_ops.gradient1d import gradient1d
-from numpy.testing import assert_array_almost_equal
 
 class TestGradient(unittest.TestCase):
     

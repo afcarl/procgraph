@@ -10,7 +10,6 @@ class Info(Block):
     '''
     Block.alias('info')
     Block.input_is_variable('Signals to describe.')
-    
 
     def update(self):
         # Just copy the input to the output 

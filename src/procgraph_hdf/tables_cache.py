@@ -1,4 +1,5 @@
 import os
+
 from .import_dependencies import tables
 
 class OpenFile(object):

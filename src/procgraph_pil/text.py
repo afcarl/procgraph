@@ -1,13 +1,11 @@
 import subprocess, os, numpy
 
-from .import_dependencies import ImageDraw, ImageFont
-    
-    
 from procgraph import Block, BadConfig
+# XXX: replace, something fishy going on
+from procgraph.core.visualization import info, error 
+
+from .import_dependencies import ImageDraw, ImageFont
 from .pil_conversions import Image_from_array
-
-
-from procgraph.core.visualization import info, error # XXX: replace
 
 
 class Text(Block):

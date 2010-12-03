@@ -1,8 +1,8 @@
 import pickle
 from tempfile import NamedTemporaryFile
 
-from procgraph.testing.utils import PGTestCase
-from procgraph.core.block import Block
+from .utils import PGTestCase
+from procgraph import Block
 from procgraph.core.model_loader import model_from_string
 
 class HasState(Block):

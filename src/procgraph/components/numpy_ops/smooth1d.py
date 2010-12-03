@@ -61,6 +61,5 @@ def smooth1d(x, window_len=11, window='hanning'):
     return y[window_len - 1:-window_len + 1]
 
 
-
 register_simple_block(smooth1d, 'smooth1d', params={'window_len':11, 'window':'hanning'})
 

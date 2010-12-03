@@ -1,5 +1,7 @@
 import numpy
+
 from procgraph import register_simple_block
+
 from .import_dependencies import Image
 
 def imread(filename):

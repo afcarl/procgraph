@@ -246,7 +246,7 @@ class Plot(Block):
         if False: 
             # 30 49 30 before
             print "plotting: %dms    reading: %dms" % (
-                plotting * 1000,   reading * 1000)
+                plotting * 1000, reading * 1000)
         
         self.output.rgb = pixel_data
         

@@ -98,7 +98,7 @@ class BlockMeta(type):
     tmp_input = []
     tmp_output = [] 
     
-    def __init__(cls, clsname, bases, clsdict):
+    def __init__(cls, clsname, bases, clsdict): #@UnusedVariable
         # Do not do this for the superclasses 
         if clsname in ['Generator', 'Block']:
             return

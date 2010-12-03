@@ -12,7 +12,7 @@ except ImportError as e:
         raise Exception('The PIL module was not found.')
     
     class warn_and_throw:
-        def __getattr__(self, method_name):
+        def __getattr__(self, method_name): #@UnusedVariable
             warn()            
 
     Image = warn_and_throw() 

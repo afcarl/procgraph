@@ -1,4 +1,5 @@
 import numpy
+
 from .import_dependencies import Image
 
 def Image_from_array(a):

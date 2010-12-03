@@ -1,4 +1,4 @@
-from procgraph  import Block, COMPULSORY, register_simple_block
+from procgraph import Block, COMPULSORY, register_simple_block
 
 
 # Make it generic?

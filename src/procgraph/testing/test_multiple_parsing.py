@@ -1,4 +1,4 @@
-from procgraph.testing.utils import PGTestCase
+from .utils import PGTestCase
 
 good_examples = \
 [

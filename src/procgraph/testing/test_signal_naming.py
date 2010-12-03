@@ -1,5 +1,6 @@
 from procgraph.core.model_loader import model_from_string
-from procgraph.testing.utils import PGTestCase
+
+from .utils import PGTestCase
 
 
 class NamingTest(PGTestCase):

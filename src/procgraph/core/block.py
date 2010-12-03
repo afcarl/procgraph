@@ -17,7 +17,7 @@ class Value:
 class Block(BlockMetaSugar):
     __metaclass__ = BlockMeta
 
-    def __init__(self, name, config, library):
+    def __init__(self, name, config, library): #@UnusedVariable
         assert isinstance(name, str)
 
         self.name = name

@@ -1,15 +1,14 @@
-import unittest
-import traceback
+import unittest, traceback
 
-from procgraph.core.model_loader import model_from_string
-from procgraph.core.parsing import parse_model
-from procgraph.core.exceptions import SemanticError, PGSyntaxError
-from procgraph.core.registrar import default_library, Library
+from ..core.exceptions import SemanticError, PGSyntaxError
+from ..core.block import Block
+from ..core.model_loader import model_from_string
+from ..core.parsing import parse_model
+from ..core.registrar import default_library, Library
 
 # load standard components
 import procgraph.components #@UnusedImport
-from procgraph.core.block import Block 
- 
+
 
 def define_generic(nin, nout):
     class Generic(Block):
