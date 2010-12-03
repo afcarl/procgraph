@@ -43,7 +43,10 @@ b1.f [input_name] -> |test| -> [t] y [U], z [t] -> |test| -> res
 # this is a comment
 u = 1
 """,
-" |generic in=0,out=2|  ",
+# I don't think we use it anymore
+# in case, readd:
+#   # parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair)
+# " |generic in=0,out=2|  ",
 " |generic in=0 out=2|  ",
 # assignment with object
 """ 

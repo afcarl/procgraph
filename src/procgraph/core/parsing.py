@@ -151,10 +151,13 @@ def parse_model(string, filename=None):
     signals = delimitedList(signal)
     signals.setParseAction(wrap(ParsedSignalList.from_tokens))
     
-    key = good_name ^ qualified_name
+    # Note that here the order matters (as qualified = good + something)
+    key = qualified_name | good_name 
     
     key_value_pair = Group(key("key") + S('=') + value("value"))
-    parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
+    # old syntax
+    # parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair) 
+    parameter_list = OneOrMore(key_value_pair)
     parameter_list.setParseAction(
         lambda s, l, t: dict([(a[0], a[1]) for a in t ])) #@UnusedVariable
     
@@ -190,19 +193,7 @@ def parse_model(string, filename=None):
     package_name = good_name + ZeroOrMore('.' + good_name)
     import_statement = S('import') + package_name('package')
     import_statement.setParseAction(wrap(ImportStatement.from_tokens))
-    
-    # Loading statements: a bad idea
-    
-#    loading = O(S('on')) + S('init') + S(':') + \
-#        S('load') + key('what') + O(S('from')) + value('where') + \
-#         O(S('as') + good_name('format'))
-#    loading.setParseAction(wrap(LoadStatement.from_tokens))
-#    
-#    saving = O(S('on')) + S('finish') + S(':') + \
-#        S('save') + key('what') + O(S('to')) + value('where') + \
-#         O(S('as') + good_name('format'))
-#    saving.setParseAction(wrap(SaveStatement.from_tokens))
-    
+     
     config = S('config') + good_name('variable') + O(S('=') + value('default')) + \
         O(quoted('docstring'))
     config.setParseAction(wrap(config_from_tokens))
@@ -214,10 +205,7 @@ def parse_model(string, filename=None):
     output.setParseAction(wrap(output_from_tokens))
     
     newline = S(lineEnd)
-    
-    # TODO: remove this
-    # dataio = loading ^ saving
-    
+     
     docs = S(ZeroOrMore(multi_quoted + OneOrMore(newline)))
     
     action = \
@@ -228,8 +216,6 @@ def parse_model(string, filename=None):
         (docs + connection) | \
         (docs + assignment) | \
         (docs + import_statement)
-        
-    #dataio ^ \
               
     
     model_content = ZeroOrMore(newline) + action + \
