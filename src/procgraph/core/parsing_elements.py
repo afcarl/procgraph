@@ -93,45 +93,45 @@ class ImportStatement(ParsedElement):
         return ImportStatement(package)
     
 
-class LoadStatement(ParsedElement):
-    def __init__(self, what, where_from, format):
-        ParsedElement.__init__(self)
-        self.what = what
-        self.where_from = where_from
-        self.format = format 
-    
-    def __repr__(self):
-        return 'load(%s from %s as %s)' % (self.what, self.where_from, self.format)
-    
-    @staticmethod
-    def from_tokens(tokens):
-        what = tokens['what']
-        where_from = tokens['where']
-        if 'format' in tokens:
-            format = tokens['format']
-        else:
-            format = None
-        return LoadStatement(what, where_from, format)
-
-class SaveStatement(ParsedElement):
-    def __init__(self, what, where_to, format):
-        ParsedElement.__init__(self)
-        self.what = what
-        self.where_to = where_to
-        self.format = format 
-    
-    def __repr__(self):
-        return 'save(%s to %s as %s)' % (self.what, self.where_to, self.format)
-    
-    @staticmethod
-    def from_tokens(tokens):
-        what = tokens['what']
-        where_to = tokens['where']
-        if 'format' in tokens:
-            format = tokens['format']
-        else:
-            format = None
-        return SaveStatement(what, where_to, format)
+#class LoadStatement(ParsedElement):
+#    def __init__(self, what, where_from, format):
+#        ParsedElement.__init__(self)
+#        self.what = what
+#        self.where_from = where_from
+#        self.format = format 
+#    
+#    def __repr__(self):
+#        return 'load(%s from %s as %s)' % (self.what, self.where_from, self.format)
+#    
+#    @staticmethod
+#    def from_tokens(tokens):
+#        what = tokens['what']
+#        where_from = tokens['where']
+#        if 'format' in tokens:
+#            format = tokens['format']
+#        else:
+#            format = None
+#        return LoadStatement(what, where_from, format)
+#
+#class SaveStatement(ParsedElement):
+#    def __init__(self, what, where_to, format):
+#        ParsedElement.__init__(self)
+#        self.what = what
+#        self.where_to = where_to
+#        self.format = format 
+#    
+#    def __repr__(self):
+#        return 'save(%s to %s as %s)' % (self.what, self.where_to, self.format)
+#    
+#    @staticmethod
+#    def from_tokens(tokens):
+#        what = tokens['what']
+#        where_to = tokens['where']
+#        if 'format' in tokens:
+#            format = tokens['format']
+#        else:
+#            format = None
+#        return SaveStatement(what, where_to, format)
 
 class ParsedSignal(ParsedElement):
     ''' Note that the convention is tricky: :: 
@@ -265,8 +265,8 @@ class ParsedModel(ParsedElement):
         self.config = select(BlockConfig)
         self.output = select(BlockOutput)
         self.input = select(BlockInput)
-        self.load_statements = select(LoadStatement)
-        self.save_statements = select(SaveStatement)
+#        self.load_statements = select(LoadStatement)
+#        self.save_statements = select(SaveStatement)
         self.imports = select(ImportStatement)
         self.assignments = select(ParsedAssignment)
     
@@ -337,7 +337,8 @@ class ParsedModel(ParsedElement):
                 if outputs_defined:
                     if not output_name in outputs_defined:
                         raise SemanticError(
-                            x_not_found('output', output_name, outputs_defined), block)
+                            x_not_found('output', output_name, outputs_defined),
+                            block)
                     else:
                         # good! this was already specified
                         pass

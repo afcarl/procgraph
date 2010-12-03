@@ -2,7 +2,7 @@ from numpy import ceil, sqrt, zeros
 
 from procgraph import Block
 
-from procgraph.components import check_rgb_or_grayscale
+from procgraph.block_utils import check_rgb_or_grayscale
 from procgraph.components.images.compose import place_at   # XXX:
 
 

@@ -2,8 +2,8 @@ if False:
     import numpy
     import sys
     
-    from procgraph.core.block import Block 
-    from procgraph.components.checks import check_rgb_or_grayscale 
+    from procgraph import Block 
+    from procgraph.block_utils import check_rgb_or_grayscale 
      
      
     class SimpleCompression(Block): 

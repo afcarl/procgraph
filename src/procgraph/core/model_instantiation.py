@@ -209,15 +209,15 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                                         (package, e), element=x)
     
     # Extract load and save statements
-    for x in parsed_model.load_statements:
-        where_from = expand_value(x.where_from, element=element)
-        model.add_load_action(what=x.what, where=where_from,
-                              format=x.format, element=element)
-        
-    for x in parsed_model.save_statements:
-        where_to = expand_value(x.where_to, element=element)
-        model.add_save_action(what=x.what, where=where_to,
-                              format=x.format, element=element)
+#    for x in parsed_model.load_statements:
+#        where_from = expand_value(x.where_from, element=element)
+#        model.add_load_action(what=x.what, where=where_from,
+#                              format=x.format, element=element)
+#        
+#    for x in parsed_model.save_statements:
+#        where_to = expand_value(x.where_to, element=element)
+#        model.add_save_action(what=x.what, where=where_to,
+#                              format=x.format, element=element)
     
     # Then we instantiate all the blocks
    
@@ -371,7 +371,7 @@ def define_output_signals(output, block):
         return
 
     output_is_defined_at_runtime = len(output) == 1 and \
-                                   output[0].type ==  DEFINED_AT_RUNTIME
+                                   output[0].type == DEFINED_AT_RUNTIME
     
     if output_is_defined_at_runtime:
         names = block.get_output_signals()

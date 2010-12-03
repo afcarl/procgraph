@@ -1,7 +1,7 @@
 import numpy
 
 from procgraph import Block
-from procgraph.components.checks import check_rgb
+from procgraph.block_utils import check_rgb
 
 class Border(Block):
     ''' Adds a block around the input image. '''

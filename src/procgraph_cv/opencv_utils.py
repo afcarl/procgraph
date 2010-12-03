@@ -1,7 +1,7 @@
 import numpy
 
-from procgraph.components  import  check_2d_array 
 from procgraph import  register_simple_block
+from procgraph.block_utils  import  check_2d_array 
 
 from .import_dependencies import cv
 

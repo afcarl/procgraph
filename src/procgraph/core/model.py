@@ -4,7 +4,7 @@ from .exceptions import  SemanticError, ModelExecutionError, ModelWriterError
 from .block import Block, Generator
 from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats
-from .model_loadsave import ModelLoadAndSave
+#from .model_loadsave import ModelLoadAndSave
 from .visualization import debug as debug_main, info, warning
 
 STRICT_CHECK_OF_DEFINED_IO = False
@@ -38,7 +38,9 @@ class BlockConnection:
         return s
     
     
-class Model(Generator, ModelLoadAndSave):
+#class Model(Generator, ModelLoadAndSave):
+
+class Model(Generator):
     ''' A Model is a block and a generator. '''
     
     def __init__(self, name, model_name):
@@ -61,7 +63,7 @@ class Model(Generator, ModelLoadAndSave):
         # As a block
         Block.__init__(self, name=name, config={}, library=None)
         # mixing for load and save operations
-        ModelLoadAndSave.__init__(self)
+        #ModelLoadAndSave.__init__(self)
         
         self.name2block = {}
         self.name2block_connection = {}
@@ -193,13 +195,14 @@ class Model(Generator, ModelLoadAndSave):
                 block.reset_execution()
     
     def init(self):
-        self.process_load_actions()
+        pass
+        #self.process_load_actions()
             
     def finish(self):
         for block in self.name2block.values():
             block.finish()
 
-        self.process_save_actions()
+        #self.process_save_actions()
         
 
     def update(self):

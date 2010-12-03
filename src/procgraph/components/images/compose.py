@@ -1,7 +1,7 @@
 import numpy
 
 from procgraph import Block
-from procgraph.components  import assert_rgb_image 
+from procgraph.block_utils  import assert_rgb_image 
         
 def place_at(canvas, image, xpix, ypix):
     #print canvas.shape, image.shape

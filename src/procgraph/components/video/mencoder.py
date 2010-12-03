@@ -1,9 +1,7 @@
 import subprocess 
 
 from procgraph import Block
-
-from procgraph.components  import check_rgb_or_grayscale
-from procgraph.core.model_loadsave import make_sure_dir_exists
+from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
  
 # TODO: detect an error in Mencoder (perhaps size too large)
 class MEncoder(Block):

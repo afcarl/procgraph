@@ -1,5 +1,3 @@
-from checks import *
-
 import debug_components
 import statistics 
 import video

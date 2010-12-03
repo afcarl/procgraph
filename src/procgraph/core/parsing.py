@@ -2,9 +2,10 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd, \
     ParserElement, Combine, nums, Literal, CaselessLiteral, \
     restOfLine, QuotedString, ParseException, Forward 
+
 from .parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
-    ParsedSignalList, Connection, Where, LoadStatement, SaveStatement, \
+    ParsedSignalList, Connection, Where, \
  output_from_tokens, input_from_tokens, config_from_tokens
 from .exceptions import PGSyntaxError
 
@@ -82,12 +83,8 @@ dictionary << (Suppress("{") + \
     
     
 dictionary.setParseAction(eval_dictionary)
-    
-#array << Suppress("[") + (delimitedList(value))('content') +Suppress("]")  
-#array.setParseAction(eval_list)
-
+     
 array << Group(Suppress("[") + Optional(delimitedList(value)) + Suppress("]"))
-#array.setParseAction(eval_list)
 
 
 def parse_value(string):
@@ -163,9 +160,9 @@ def parse_model(string, filename=None):
     
     # Different patterns
     arrow_arrow = signals + arrow + O(block + ZeroOrMore(between + block)) \
-     + arrow + signals
+                 + arrow + signals
     source = block + ZeroOrMore(between + block)  \
-     + arrow + signals
+             + arrow + signals
     sink = signals + arrow + block + ZeroOrMore(between + block)  
     
     source_sink = block + ZeroOrMore(between + block)
@@ -182,17 +179,17 @@ def parse_model(string, filename=None):
     import_statement = S('import') + package_name('package')
     import_statement.setParseAction(wrap(ImportStatement.from_tokens))
     
-    # Loading statements:
+    # Loading statements: a bad idea
     
-    loading = O(S('on')) + S('init') + S(':') + \
-        S('load') + key('what') + O(S('from')) + value('where') + \
-         O(S('as') + good_name('format'))
-    loading.setParseAction(wrap(LoadStatement.from_tokens))
-    
-    saving = O(S('on')) + S('finish') + S(':') + \
-        S('save') + key('what') + O(S('to')) + value('where') + \
-         O(S('as') + good_name('format'))
-    saving.setParseAction(wrap(SaveStatement.from_tokens))
+#    loading = O(S('on')) + S('init') + S(':') + \
+#        S('load') + key('what') + O(S('from')) + value('where') + \
+#         O(S('as') + good_name('format'))
+#    loading.setParseAction(wrap(LoadStatement.from_tokens))
+#    
+#    saving = O(S('on')) + S('finish') + S(':') + \
+#        S('save') + key('what') + O(S('to')) + value('where') + \
+#         O(S('as') + good_name('format'))
+#    saving.setParseAction(wrap(SaveStatement.from_tokens))
     
     config = S('config') + good_name('variable') + O(S('=') + value('default')) + \
         O(quoted('docstring'))
@@ -208,7 +205,7 @@ def parse_model(string, filename=None):
     newline = S(lineEnd)
     
     # TODO: remove this
-    dataio = loading ^ saving
+    # dataio = loading ^ saving
     
     docs = S(ZeroOrMore(multi_quoted + OneOrMore(newline)))
     
@@ -216,11 +213,11 @@ def parse_model(string, filename=None):
               (docs + assignment) ^ \
               comment ^ \
               (docs + import_statement) ^ \
-              dataio ^ \
               config ^ \
               input ^ \
               output 
-    
+    #dataio ^ \
+              
     
     model_content = ZeroOrMore(newline) + action + \
         ZeroOrMore(OneOrMore(newline) + action) + \

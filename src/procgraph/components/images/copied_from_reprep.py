@@ -2,7 +2,7 @@ import numpy
 from numpy import maximum, minimum, zeros
 
 from procgraph import register_simple_block
-from procgraph.components import check_2d_array
+from procgraph.block_utils import check_2d_array
 
 def skim_top(a, top_percent):
     ''' Cuts off the top percentile of the array. '''

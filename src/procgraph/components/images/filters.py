@@ -1,7 +1,7 @@
 import numpy
  
 from procgraph import register_simple_block
-from procgraph.components import assert_rgb_image, assert_gray_image
+from procgraph.block_utils import assert_rgb_image, assert_gray_image
 
 
 def rgb2gray(rgb):  
