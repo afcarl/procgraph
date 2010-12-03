@@ -168,9 +168,14 @@ def parse_model(string, filename=None):
     source_sink = block + ZeroOrMore(between + block)
     
     # all of those are colled a connection
-    connection = arrow_arrow ^ source_sink ^ source ^ sink
+    connection = arrow_arrow | (source_sink ^ source ^ sink)
       
     connection.setParseAction(wrap(Connection.from_tokens))
+    
+    # allow breaking lines with backslash
+    continuation = '\\' + lineEnd
+    # connection.ignore(continuation)
+    
     
     assignment = (key("key") + S('=') + value("value"))
     assignment.setParseAction(wrap(ParsedAssignment.from_tokens)) 
@@ -201,7 +206,6 @@ def parse_model(string, filename=None):
     output = S('output') + good_name('name') + O(quoted('docstring'))
     output.setParseAction(wrap(output_from_tokens))
     
-    #doc_comment = S(quoted)
     newline = S(lineEnd)
     
     # TODO: remove this
@@ -209,22 +213,25 @@ def parse_model(string, filename=None):
     
     docs = S(ZeroOrMore(multi_quoted + OneOrMore(newline)))
     
-    action = (docs + connection) ^ \
+    action = \
+        comment | \
+        config | \
+        input | \
+        output | \
+        (\
+              (docs + connection) ^ \
               (docs + assignment) ^ \
-              comment ^ \
-              (docs + import_statement) ^ \
-              config ^ \
-              input ^ \
-              output 
+              (docs + import_statement)
+        )
     #dataio ^ \
               
     
     model_content = ZeroOrMore(newline) + action + \
-        ZeroOrMore(OneOrMore(newline) + action) + \
-    ZeroOrMore(newline) 
+                    ZeroOrMore(OneOrMore(newline) + action) + \
+                    ZeroOrMore(newline) 
     
     named_model = \
-    Suppress(Combine('---' + Optional(Word('-')))) + Suppress('model') + \
+        Suppress(Combine('---' + Optional(Word('-')))) + Suppress('model') + \
         good_name('model_name') + OneOrMore(newline) + \
         O(quoted('docstring')) + \
         model_content('content')
@@ -234,8 +241,8 @@ def parse_model(string, filename=None):
     anonymous_model = model_content.copy()
     anonymous_model.setParseAction(wrap(ParsedModel.from_anonymous_model))
     
-    comments = ZeroOrMore((comment + newline) ^ newline)
-    pg_file = comments + (OneOrMore(named_model) ^ anonymous_model) + \
+    comments = ZeroOrMore((comment + newline) | newline)
+    pg_file = comments + (OneOrMore(named_model) | anonymous_model) + \
         stringEnd 
     
     try:
