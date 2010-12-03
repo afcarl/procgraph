@@ -131,14 +131,14 @@ def parse_model(string, filename=None):
     
     # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
     # XXX: don't put '.' at the beginning
-    qualified_name = Combine(good_name + '.' + (integer ^ good_name))
+    qualified_name = Combine(good_name + '.' + (integer | good_name))
     
     block_name = good_name 
     block_type = good_name ^ Word('_+-/*') ^ quoted ^ reference
      
-    signal = O(S('[') + (integer ^ good_name)('local_input') + S(']')) \
-            + O(block_name('block_name') + S(".")) + (integer ^ good_name)('name') + \
-            O(S('[') + (integer ^ good_name)('local_output') + S(']'))
+    signal = O(S('[') + (integer | good_name)('local_input') + S(']')) \
+            + O(block_name('block_name') + S(".")) + (integer | good_name)('name') + \
+            O(S('[') + (integer | good_name)('local_output') + S(']'))
     signal.setParseAction(wrap(ParsedSignal.from_tokens))
     
     signals = delimitedList(signal)
@@ -219,8 +219,8 @@ def parse_model(string, filename=None):
         input | \
         output | \
         (\
-              (docs + connection) ^ \
-              (docs + assignment) ^ \
+              (docs + connection) | \
+              (docs + assignment) | \
               (docs + import_statement)
         )
     #dataio ^ \
