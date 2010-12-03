@@ -169,16 +169,16 @@ def parse_model(string, filename=None):
     between = arrow + O(signals + arrow)
     
     # Different patterns
-    arrow_arrow = signals + arrow + O(block + ZeroOrMore(between + block)) \
-                 + arrow + signals
-    source = block + ZeroOrMore(between + block)  \
-             + arrow + signals
+    arrow_arrow = signals + arrow + \
+                  O(block + ZeroOrMore(between + block)) \
+                  + arrow + signals
+    source = block + ZeroOrMore(between + block) + arrow + signals
     sink = signals + arrow + block + ZeroOrMore(between + block)  
-    
     source_sink = block + ZeroOrMore(between + block)
     
     # all of those are colled a connection
-    connection = arrow_arrow | (source_sink ^ source ^ sink)
+    # connection = arrow_arrow | sink | (source_sink ^ source)
+    connection = arrow_arrow | sink | source | source_sink
       
     connection.setParseAction(wrap(Connection.from_tokens))
     
