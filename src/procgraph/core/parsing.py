@@ -70,7 +70,7 @@ value << (array ^ dictionary ^ reference ^ integer \
 
 # dictionaries
     
-dict_key = good_name ^ quoted
+dict_key = good_name | quoted
 dictionary << (Suppress("{") + \
     Optional(\
              delimitedList(\
