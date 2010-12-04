@@ -5,6 +5,7 @@ from ..core.model_loader import model_from_string, pg_look_for_models
 from ..core.registrar import default_library, Library
 from ..core.exceptions import SemanticError, PGSyntaxError 
 from ..core.visualization import error, info
+from procgraph.core.exceptions import PGException
 
 
 usage_short = \
@@ -46,9 +47,11 @@ Examples:
 def main(): 
     parser = OptionParser(usage=usage_long)
 
+    additional_modules = []
     def load_module(option, opt_str, value, parser): #@UnusedVariable
-        info('Importing module %s' % value)
-        __import__(value)
+        #info('Importing module %s' % value)
+        additional_modules.append(value)
+        #__import__(value)
     
     additional_directories = []
     def add_directory(option, opt_str, value, parser): #@UnusedVariable
@@ -65,6 +68,10 @@ def main():
     parser.add_option("--debug", action="store_true",
                       default=False, dest="debug",
                       help="Displays debug information on the model.")
+
+    parser.add_option("--trace", action="store_true",
+                      default=False, dest="trace",
+                      help="If true, try to display raw stack trace in case of error.")
     
     parser.add_option("--stats", action="store_true",
                       default=False, dest="stats",
@@ -106,19 +113,36 @@ def main():
     if options.debug:
         print "Configuration: %s" % config
 
-    pg(filename, config,
-       nocache=options.nocache, debug=options.debug, stats=options.stats,
-       additional_directories=additional_directories)
-            
+    if options.trace:
+        look_for = RuntimeError
+    else:
+        look_for = PGException
+
+    try:
+        pg(filename, config,
+           nocache=options.nocache, debug=options.debug, stats=options.stats,
+           additional_directories=additional_directories,
+           additional_modules=additional_modules)
+        sys.exit(0)
+    except look_for as e:
+        error(e)
+        sys.exit(-2)
+
 
 def pg(filename, config,
        debug=False, nocache=False, stats=False,
-       additional_directories=[]):
+       additional_directories=[], additional_modules=[]):
     ''' Instantiate and run a model. 
     
     Instantiate a model (filename can be either a file or a known model. '''
     
-    try:
+    #try:
+    if True:
+        
+        for module in additional_modules:
+            info('Importing package %r...' % module)
+            __import__(module)
+        
         library = Library(default_library)
         pg_look_for_models(library, ignore_cache=nocache,
                            additional_paths=additional_directories)
@@ -158,21 +182,11 @@ def pg(filename, config,
     #except ModelExecutionError as e:
     #    print e
     #    traceback.print_exc()    
-        
-    except SemanticError as e:    
-        error(e)
-        if e.element is not None:
-            where = e.element.where
-            if where is None:
-                raise Exception("%s does not have where?" % e.element)
-            
-            s = str(where)
-            error(s)
-            
-        raise Exception('Semantic error')
-    except PGSyntaxError as e:    
-        error(e)
-        error(str(e.where))
-        raise Exception('Syntax error')
-            
+    # except SemanticError as e:    
+    #       error(e)
+    #       raise Exception('Semantic error')
+    #   except PGSyntaxError as e:    
+    #       error(e) 
+    #       raise Exception('Found a Syntax error')
+    #           
     #return model
