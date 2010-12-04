@@ -6,13 +6,13 @@ from .hdfwrite import PROCGRAPH_LOG_GROUP
 
 
 class HDFread(Generator):
-    ''' This block reads one signal from a log written with HDFwrite.
+    ''' This block reads a log written with HDFwrite.
     
     '''
     
     Block.alias('hdfread')
     Block.output_is_defined_at_runtime()
-    Block.config('file', 'HDF file to write')
+    Block.config('file', 'HDF file to read')
     Block.config('signals', 'Which signals to output (and in what order). '
                  'Should be a comma-separated list. '
                  'If you do not specify it will be all signal in the original order',
