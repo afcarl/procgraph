@@ -95,12 +95,11 @@ def write_message(string, formatting):
     if len(lines) == 1:
         sys.stderr.write(formatting(lines[0]) + '\n')
     else:
-        for i, l in enumerate(lines):
-            if i == 1: 
-                l = '- ' + l
-            else:
-                l = '  ' + l
-            
+        for i, l in enumerate(lines): #@UnusedVariable
+            #if i == 1: 
+            #    l = '- ' + l
+            #else:
+            #    l = '  ' + l
             sys.stderr.write(formatting(l) + '\n')    
     
     sys.stderr.flush() 
