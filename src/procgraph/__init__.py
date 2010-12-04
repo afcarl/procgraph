@@ -12,3 +12,4 @@ from procgraph.core.registrar_other import \
 
 from procgraph.scripts.pg import pg
 
+from procgraph.core.import_magic import import_magic, import_succesful

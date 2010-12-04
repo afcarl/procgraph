@@ -1,11 +1,12 @@
+# TODO: move this to scripts/
 import sys, os
 from collections import namedtuple
 from optparse import OptionParser
 
-from .model_loader import  ModelSpec
-from .registrar import default_library 
-from .block import Block
-from .block_meta import split_docstring, FIXED
+from ..core.model_loader import  ModelSpec
+from ..core.registrar import default_library 
+from ..core.block import Block
+from ..core.block_meta import split_docstring, FIXED
 
  
 type_block = 'block'
@@ -15,7 +16,8 @@ type_simple_block = 'simple_block'
 ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input '
                       'output config desc desc_rest')
 
-ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest')
+# module : reference to actual module instance
+ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest module')
 
 
 def get_module_name_with_doc(original_module_name):
@@ -94,7 +96,6 @@ def collect_info(block_type, block_generator):
                     desc=desc, desc_rest=desc_rest,
                     input=input, output=output, config=config)
 
-     
 
 def get_all_info(library):
     
@@ -117,11 +118,12 @@ def get_all_info(library):
         
         desc, desc_rest = split_docstring(actual.__doc__)
         
-
+        if name == 'procgraph_foo':
+            print name, actual.__dict__.keys()
+            
         modules[name] = ModuleDoc(name=name, blocks=module_blocks,
-                                  desc=desc, desc_rest=desc_rest)
-        
-        
+                                  desc=desc, desc_rest=desc_rest,
+                                  module=actual)
 
     return modules
 
@@ -143,13 +145,22 @@ def main():
     if not args:
         print "Give at least one module"
         sys.exit(-1)
-        
-    for module in args:
-        __import__(module) 
+    
+    given_modules = args
+    
+    for module in given_modules:
+        __import__(module, fromlist=['ceremony']) 
     
     library = default_library 
     
     all_modules = get_all_info(library)
+    
+    # check they were not empty
+    for module in given_modules:
+        if not module in all_modules:
+            print('Warning: I found no blocks defined *directly* in %r. ' 
+                  'No documentation will be generated.' % module)
+    
     # only retain the ones that we have to document 
     modules = {}
     for module in all_modules:
@@ -188,7 +199,8 @@ def main():
             block = module.blocks[block_name]
 
             if block.desc is None:
-                print 'Warning: %s does not have a description.' % block_name
+                print('Warning: in module %r, block %r does not have a description.' 
+                      % (module_name, block_name))
             
             desc = str(block.desc) 
             name = block_reference(block.name)
@@ -203,7 +215,7 @@ def main():
         
         f.write(module_anchor(module.name))
         f.write(rst_class('procgraph:module'))
-        f.write('Module ``%s``\n' % module.name)
+        f.write('Package ``%s``\n' % module.name)
         f.write('=' * 60 + '\n\n\n')
 
 
@@ -293,4 +305,4 @@ def block_reference(name):
 def module_reference(name):
     return ":ref:`module:%s`" % name
  
-         
+

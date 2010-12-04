@@ -2,7 +2,7 @@ import numpy
 
 from procgraph  import Block, BadInput
 
-from .import_dependencies import tables
+from . import tables
 from .tables_cache import tc_open_for_writing, tc_close
 
 

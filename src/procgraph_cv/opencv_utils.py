@@ -3,7 +3,7 @@ import numpy
 from procgraph import  register_simple_block
 from procgraph.block_utils  import  check_2d_array 
 
-from .import_dependencies import cv
+from . import cv
 
 def numpy_to_cv(numpy_array):
     ''' Converts a HxW or HxWx3 numpy array to OpenCV 'image' '''

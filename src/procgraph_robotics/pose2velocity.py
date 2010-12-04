@@ -1,6 +1,6 @@
 from procgraph import Block, BadInput, register_model_spec
 
-from .import_dependencies import Pose
+from . import Pose
 
 class Pose2velocity(Block):
     ''' Block used by :ref:`block:pose2commands`. '''

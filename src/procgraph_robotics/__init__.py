@@ -1,16 +1,22 @@
-''' Some functions specific to robotics applications. '''
+''' Some functions specific to robotics applications. 
+
+
+    Requires: http://github.com/AndreaCensi/snp_geometry
+'''
+
+
+procgraph_info = {
+    # List of python packages 
+    'requires':  ['snp_geometry']
+} 
+
+# Smart dependency resolution
+from procgraph import import_magic
+Pose = import_magic(__name__, 'snp_geometry', 'Pose')
+
 
 import pose2velocity
 import laser_display
 import laser_dot_display
-
 import organic_scale
-
-
-from procgraph import register_simple_block
-from procgraph.components.images.copied_from_reprep import skim_top_and_bottom
-
-register_simple_block(
-  skim_top_and_bottom, 'skim', 
-  params={'percent': 5},
-  doc='Skims the top and bottom percentile from the data.')
+import misc

@@ -1,6 +1,6 @@
 import numpy
 
-from .import_dependencies import Image
+from . import Image
 
 def Image_from_array(a):
     ''' Converts an image in a numpy array to an Image instance.

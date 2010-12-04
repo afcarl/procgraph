@@ -60,7 +60,7 @@ setup(name='procgraph',
       entry_points={
          'console_scripts': [
            'pg = procgraph.scripts.pg:main',
-           'pgdoc = procgraph.core.pgdoc:main'
+           'pgdoc = procgraph.scripts.pgdoc:main'
         ]
       },
 )

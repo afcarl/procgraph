@@ -1,7 +1,8 @@
 import subprocess, os, numpy
 
 from procgraph import Block, BadConfig
-# XXX: replace, something fishy going on
+
+
 from procgraph.core.visualization import info  as info_main, error as error_main 
 
 def info(s):
@@ -10,7 +11,7 @@ def error(s):
     error_main('procgraph_pil/text: %s' % s)
     
 
-from .import_dependencies import ImageDraw, ImageFont
+from . import ImageDraw, ImageFont
 from .pil_conversions import Image_from_array
 
 

@@ -2,7 +2,19 @@
 
 '''
 
+procgraph_info = { 
+    'requires':  ['matplotlib', 'matplotlib.pylab']
+} 
+
+# Smart dependencies initialization
+from procgraph import import_magic, import_succesful
+matplotlib = import_magic(__name__, 'matplotlib')
+if import_succesful(matplotlib):
+    matplotlib.use('Agg')
+    
+pylab = import_magic(__name__, 'matplotlib.pylab')
+
+
 import plot
 
-from pylab_to_image import pylab2rgb
-from import_dependencies import pylab
+from pylab_to_image import pylab2rgb 

@@ -2,7 +2,7 @@ import numpy
 from StringIO import StringIO
 
 from procgraph_pil import Image
-from .import_dependencies import pylab
+from . import pylab
 
 
 def pylab2rgb(transparent=False, tight=False):

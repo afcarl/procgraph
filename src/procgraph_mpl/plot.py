@@ -2,7 +2,7 @@ import time, numpy
 
 from procgraph import Block, BadInput, BadConfig
 
-from .import_dependencies import pylab
+from . import pylab
 from .pylab_to_image import pylab2rgb
 
 
