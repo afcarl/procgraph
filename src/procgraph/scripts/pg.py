@@ -6,6 +6,7 @@ from ..core.registrar import default_library, Library
 from ..core.exceptions import SemanticError, PGSyntaxError 
 from ..core.visualization import error, info
 from procgraph.core.exceptions import PGException
+from procgraph.core.parsing import parse_value
 
 
 usage_short = \
@@ -94,21 +95,6 @@ def main():
     
     
     filename = args.pop(0)
-        
-    config = {}
-    for arg in args:
-        if '=' in arg:
-            key, value = arg.split('=')
-            try:
-                value = float(value)
-            except:
-                try: 
-                    value = int(value)
-                except:
-                    pass
-            config[key] = value            
-        else:
-            raise Exception('What should I do with "%s"?' % arg)
     
     if options.debug:
         print "Configuration: %s" % config
@@ -119,6 +105,8 @@ def main():
         look_for = PGException
 
     try:
+        config = parse_cmdline_args(args)
+        
         pg(filename, config,
            nocache=options.nocache, debug=options.debug, stats=options.stats,
            additional_directories=additional_directories,
@@ -128,6 +116,26 @@ def main():
         error(e)
         sys.exit(-2)
 
+def parse_cmdline_args(args):
+    ''' Parses the command-line arguments.
+        args is returned by optionparser. '''
+    config = {}
+    for arg in args:
+        if '=' in arg:
+            key, value_string = arg.split('=')
+            try:
+                value = int(value_string)
+            except:
+                try:
+                    value = float(value_string)
+                except:
+                    value = value_string
+                
+            #value = parse_value(value_string)
+            config[key] = value            
+        else:
+            raise Exception('What should I do with "%s"?' % arg)
+    return config
 
 def pg(filename, config,
        debug=False, nocache=False, stats=False,

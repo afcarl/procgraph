@@ -135,7 +135,7 @@ array << Group(Suppress("[") + O(delimitedList(value)('elements')) + Suppress("]
 
 array.setParseAction(eval_array)
 
-def parse_value(string):
+def parse_value(string, filename=None):
     ''' This is useful for debugging '''
     # XXX this is a mess that needs cleaning
     # perhaps now it works without ceremonies
@@ -146,6 +146,7 @@ def parse_value(string):
         if isinstance(ret_value['val'], dict) or\
            isinstance(ret_value['val'], int) or\
            isinstance(ret_value['val'], list) or\
+           isinstance(ret_value['val'], str) or\
            isinstance(ret_value['val'], float):
             ret = ret_value['val']
         else:
@@ -156,9 +157,9 @@ def parse_value(string):
 #                                                     ret)
 #        return ret
 
-
     except ParseException as e:
-        raise SyntaxError('Error in parsing string: %s' % e)
+        where = Where(filename, string, line=e.lineno, column=e.col)
+        raise PGSyntaxError('Error in parsing string: %s' % e, where=where)
         
 
 def create_model_grammar():
