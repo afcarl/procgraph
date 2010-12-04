@@ -92,47 +92,6 @@ class ImportStatement(ParsedElement):
         package = "".join(tokens.asList())
         return ImportStatement(package)
     
-
-#class LoadStatement(ParsedElement):
-#    def __init__(self, what, where_from, format):
-#        ParsedElement.__init__(self)
-#        self.what = what
-#        self.where_from = where_from
-#        self.format = format 
-#    
-#    def __repr__(self):
-#        return 'load(%s from %s as %s)' % (self.what, self.where_from, self.format)
-#    
-#    @staticmethod
-#    def from_tokens(tokens):
-#        what = tokens['what']
-#        where_from = tokens['where']
-#        if 'format' in tokens:
-#            format = tokens['format']
-#        else:
-#            format = None
-#        return LoadStatement(what, where_from, format)
-#
-#class SaveStatement(ParsedElement):
-#    def __init__(self, what, where_to, format):
-#        ParsedElement.__init__(self)
-#        self.what = what
-#        self.where_to = where_to
-#        self.format = format 
-#    
-#    def __repr__(self):
-#        return 'save(%s to %s as %s)' % (self.what, self.where_to, self.format)
-#    
-#    @staticmethod
-#    def from_tokens(tokens):
-#        what = tokens['what']
-#        where_to = tokens['where']
-#        if 'format' in tokens:
-#            format = tokens['format']
-#        else:
-#            format = None
-#        return SaveStatement(what, where_to, format)
-
 class ParsedSignal(ParsedElement):
     ''' Note that the convention is tricky: :: 
     
@@ -252,6 +211,8 @@ class VariableReference(ParsedElement):
         return VariableReference(tokens['variable'])
 
 class ParsedModel(ParsedElement):
+    static_filename = 'not set'
+    
     def __init__(self, name, docstring, elements):
         ParsedElement.__init__(self)
         assert name is None or isinstance(name, str)
@@ -264,9 +225,7 @@ class ParsedModel(ParsedElement):
         self.connections = select(Connection)
         self.config = select(BlockConfig)
         self.output = select(BlockOutput)
-        self.input = select(BlockInput)
-#        self.load_statements = select(LoadStatement)
-#        self.save_statements = select(SaveStatement)
+        self.input = select(BlockInput) 
         self.imports = select(ImportStatement)
         self.assignments = select(ParsedAssignment)
     

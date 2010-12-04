@@ -19,12 +19,44 @@ def eval_dictionary(s, loc, tokens): #@UnusedVariable
         #print "A: %s" % a
         if 'value' in a:
             d[a['key']] = a['value']
+            print 'Dict got %s = %s (%r)' % (a['key'],
+                                             a['value'].__class__.__name__, a['value'])
     
     return d 
+
+def eval_value(s, loc, tokens): #@UnusedVariable
+    print 'value got tokens %s = %r' % (tokens.__class__.__name__, tokens)
+
+    #res = tokens.asList()
+    
+    res = tokens
+    
+    print ' -> value returns %s = %r ' % (res.__class__.__name__, res)
+    return res
+
+def eval_array(s, loc, tokens): #@UnusedVariable
+    print 'array got tokens %s = %r' % (tokens.__class__.__name__, tokens)
+    print tokens.keys()
+
+    elements = tokens.asList()
+    print 'array got elements %s = %r' % (elements.__class__.__name__, elements)
+    res = []
+    for i in range(len(elements)):
+        t = elements[i]
+        print '  #%d is %s = %r' % (i, t.__class__.__name__, t)
+        res.append(t)
+        
+    print '-> Array is returning %s = %r' % (res.__class__.__name__, res)
+    return res
 
 def python_interpretation(s, loc, tokens): #@UnusedVariable
     val = eval(tokens[0]) # XXX why 0?
     return val
+
+# Shortcuts
+S = Suppress
+O = Optional
+
 
 # Important: should be at the beginning
 # make end of lines count
@@ -65,17 +97,27 @@ reference.setParseAction(VariableReference.from_tokens)
 dictionary = Forward()
 array = Forward()
 value = Forward()
-value << (
-          quoted | 
-          array | 
-          dictionary | 
-          reference | 
-          good_name | 
-          integer | 
+value << (quoted ^ 
+          array ^ 
+          dictionary ^ 
+          reference ^ 
+          good_name ^ 
+          integer ^ 
           floatnumber
          )('val')
+#value << (
+#          quoted | 
+#          array | 
+#          dictionary | 
+#          reference | 
+#          good_name | 
+#          integer | 
+#          floatnumber
+#         )('val')
+#value.setParseAction(eval_value)
 
 # dictionaries
+    
     
 dict_key = good_name | quoted
 dictionary << (Suppress("{") + \
@@ -91,48 +133,46 @@ dictionary << (Suppress("{") + \
     
 dictionary.setParseAction(eval_dictionary)
      
-array << Group(Suppress("[") + Optional(delimitedList(value)) + Suppress("]"))
+array << Group(Suppress("[") + O(delimitedList(value)('elements')) + Suppress("]"))
 
+array.setParseAction(eval_array)
 
 def parse_value(string):
     ''' This is useful for debugging '''
     # XXX this is a mess that needs cleaning
     # perhaps now it works without ceremonies
     try:
-        tokens = value.parseString(string)
-        print 'tokens: %s' % tokens
-        if isinstance(tokens['val'], dict) or\
-           isinstance(tokens['val'], int) or\
-           isinstance(tokens['val'], float):
-            return tokens['val']
-        ret = tokens['val'].asList()
-        print "Parsed '%s' into %s (%d), ret: %s" % (string, tokens, len(tokens),
-                                                     ret)
+        print '-- parse_value string: %r ' % string
+        ret_value = value.parseString(string)
+        print '-- parse_value ret_value: %s = %r ' % (ret_value.__class__, ret_value)
+        if isinstance(ret_value['val'], dict) or\
+           isinstance(ret_value['val'], int) or\
+           isinstance(ret_value['val'], list) or\
+           isinstance(ret_value['val'], float):
+            ret = ret_value['val']
+        else:
+            ret = ret_value['val'].asList()
+        
         return ret
+#        print "Parsed '%s' into %s (%d), ret: %s" % (string, tokens, len(tokens),
+#                                                     ret)
+#        return ret
 
 
     except ParseException as e:
         raise SyntaxError('Error in parsing string: %s' % e)
         
 
-def parse_model(string, filename=None):
-    ''' Returns a list of ParsedModel ''' 
-
+def create_model_grammar():
+    # TODO: right now we have to recreate the grammar every time
     # We pass a "where" object to the constructors
     def wrap(constructor):
         def from_tokens(string, location, tokens):
             element = constructor(tokens)
-            element.where = Where(filename, string, location)
+            element.where = Where(ParsedModel.static_filename, string, location)
             return element 
         return from_tokens
-    
-    # make this check a special case, otherwise it's hard to debug
-    if not string.strip():
-        raise PGSyntaxError('Passed empty string.', Where(filename, string, 0))
-    
-    # Shortcuts
-    S = Suppress
-    O = Optional
+        
       
     arrow = S(Regex(r'-+>'))
     
@@ -184,8 +224,8 @@ def parse_model(string, filename=None):
     
     # allow breaking lines with backslash
     continuation = '\\' + lineEnd
-    # connection.ignore(continuation)
-    
+    # continuation = Regex('\\\w*\n')
+    connection.ignore(continuation)
     
     assignment = (key("key") + S('=') + value("value"))
     assignment.setParseAction(wrap(ParsedAssignment.from_tokens)) 
@@ -236,9 +276,26 @@ def parse_model(string, filename=None):
     comments = ZeroOrMore((comment + newline) | newline)
     pg_file = comments + (OneOrMore(named_model) | anonymous_model) + \
         stringEnd 
+
+    return pg_file
+
+pg_file = create_model_grammar()
+    
+def parse_model(string, filename=None):
+    ''' Returns a list of ParsedModel ''' 
+    # make this check a special case, otherwise it's hard to debug
+    if not string.strip():
+        raise PGSyntaxError('Passed empty string.', Where(filename, string, 0))
+    
+    # FIXME: XXX: this is not threadsafe (but we don't have threads, so it's all good) 
+    ParsedModel.static_filename = filename
     
     try:
+# t = time.time()
         parsed = pg_file.parseString(string)
+#        durb = time.time() - t
+#        print "time: %f / %f" % (dur, durb)
+#    
         return list(parsed)
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)
