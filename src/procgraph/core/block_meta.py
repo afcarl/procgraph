@@ -119,7 +119,8 @@ class BlockMeta(type):
             raise ModelWriterError('Cannot have variable output without variable input.')
         
         if len(BlockMeta.aliases) > 1:
-                raise ModelWriterError("We don't support multiple aliases yet.")
+            raise ModelWriterError("We don't support multiple aliases yet. "
+                                   "Tried to set  %r." % BlockMeta.aliases)
 
         
         if BlockMeta.aliases:
