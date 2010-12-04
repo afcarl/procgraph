@@ -7,6 +7,7 @@ from ..core.model_loader import  ModelSpec
 from ..core.registrar import default_library 
 from ..core.block import Block
 from ..core.block_meta import split_docstring, FIXED
+from procgraph.core.import_magic import get_module_info
 
  
 type_block = 'block'
@@ -17,7 +18,7 @@ ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input 
                       'output config desc desc_rest')
 
 # module : reference to actual module instance
-ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest module')
+ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest module procgraph_info')
 
 
 def get_module_name_with_doc(original_module_name):
@@ -118,12 +119,17 @@ def get_all_info(library):
         
         desc, desc_rest = split_docstring(actual.__doc__)
         
-        if name == 'procgraph_foo':
-            print name, actual.__dict__.keys()
-            
+#        if name == 'procgraph_foo':
+#            print name, actual.__dict__.keys()
+        try:
+            procgraph_info = get_module_info(name)
+        except Exception as e:
+            print "Could not load info for %r: %s" % (name, e)
+            procgraph_info = {}
+        
         modules[name] = ModuleDoc(name=name, blocks=module_blocks,
                                   desc=desc, desc_rest=desc_rest,
-                                  module=actual)
+                                  module=actual, procgraph_info=procgraph_info)
 
     return modules
 

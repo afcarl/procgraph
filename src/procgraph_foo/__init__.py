@@ -17,9 +17,10 @@ procgraph_info = {
     'scm': 'git@',
     
     # List of python packages 
-    'requires':  ['tables',
+    'requires':  [
+                  # try to add this
+                  # 'unexistent',
                   ('pickle', ('cPickle', 'pickle')),
-                  ('cv', ('opencv', 'cv')) 
                   ],
      
     # List of external software needed
@@ -34,9 +35,12 @@ procgraph_info = {
 
 from procgraph import import_magic
 
-# If cv is installed, it will be a reference to it, otherwise a 
+# If pickle is installed, it will be a reference to it, otherwise a 
 # shadow object which will throw when you actually try to use it.
-cv = import_magic(__name__, 'cv')
+pickle = import_magic(__name__, 'pickle')
+
+# procgraph will let you import unexistent modules
+# unexistent = import_magic(__name__, 'unexistent')
  
 
 # now, import the modules that defines the blocks

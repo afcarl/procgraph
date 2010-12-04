@@ -199,6 +199,8 @@ def trim(docstring):
     #print 'result: """%s"""' % result
     return result
 
+# TODO: remove space on the right
+
 def split_docstring(s):
     ''' Splits a docstring in a tuple (first, rest). '''
     if s is None:

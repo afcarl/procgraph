@@ -1,5 +1,5 @@
 import sys
-from .visualization import info
+from .visualization import debug
 from types import ModuleType
 
 # TODO: move somewhere else
@@ -34,11 +34,11 @@ def import_magic(module_name, required, member=None):
         except Exception as e:
             # could not load it!
             # TODO: show error
-            print e
+            # print e
             pass
         
     # We could not load anything.
-    info('Could not load dependency %r for %r. '
+    debug('Could not load dependency %r for %r. '
           'I will let you continue, but an error might be thrown when the package '
           'actually tries to use it.' % 
           (required, module_name))
@@ -60,8 +60,8 @@ def get_module_info(module_name):
     module = sys.modules[module_name]
     
     if not sname in module.__dict__:
-        raise Exception('Please define the structure %r for module %r '
-                        'before you call import_magic().' % (sname, module_name)) 
+        raise Exception('Please define the structure %r for module %r. '
+                        % (sname, module_name)) 
 
     info = module.__dict__[sname] 
     
