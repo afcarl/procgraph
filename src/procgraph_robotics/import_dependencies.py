@@ -14,7 +14,7 @@ except ImportError as e:
         raise Exception('The  "snp_geometry" module was not found.')
     
     class warn_and_throw:
-        def __getattr__(self, method_name):
+        def __getattr__(self, method_name): #@UnusedVariable
             warn()            
 
     Pose = warn_and_throw() 

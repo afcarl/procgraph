@@ -18,7 +18,7 @@ except ImportError as e:
         raise Exception('The "matplotlib" module was not found.')
     
     class warn_and_throw:
-        def __getattr__(self, method_name):
+        def __getattr__(self, method_name): #@UnusedVariable
             warn()            
 
     pylab = warn_and_throw()

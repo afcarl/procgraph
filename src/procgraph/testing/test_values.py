@@ -1,7 +1,6 @@
 from .utils import PGTestCase
 
-from procgraph.core.parsing import parse_value
-import unittest
+from ..core.parsing import parse_value
 
 examples = { \
             '[]': [],
