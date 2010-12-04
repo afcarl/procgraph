@@ -13,6 +13,7 @@ from .visualization import debug as debug_main
 from .block_config import resolve_config
 from .block_meta import VARIABLE, DEFINED_AT_RUNTIME
 from .model_io import ModelInput
+from procgraph.core.visualization import info
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -201,7 +202,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     for x in parsed_model.imports:
         package = x.package
         if not package in sys.modules:
-            debug_main("Importing package %s" % package)
+            info("Importing package %r..." % package)
             try:
                 __import__(package)
             except Exception as e:
@@ -248,7 +249,11 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                         # We cannot have a local output
                         if s.local_output is not None:
                             raise SemanticError(('Terminator connection %s ' + 
-                                'cannot have a local output') % s, element=previous_link)  
+                                'cannot have a local output') % s, element=s)  
+             
+                        if s.name in model.public_signal_names():           
+                            msg = 'Public signal name %r already taken.' % s.name
+                            raise SemanticError(msg, element=s)
                         
                         model.connect(block1=previous_block, block1_signal=s.local_input,
                                              block2=None, block2_signal=None, public_name=s.name)
@@ -311,11 +316,12 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                                          name=element.name, config=block_config)
                     block.where = element.where
                 except SemanticError as e:
-                    if e.element is None:
-                        e.element = element
-                        raise e
-                    else:
-                        raise
+                    raise
+#                    if e.element is None:
+#                        e.element = element
+#                        raise e
+#                    else:
+#                        raise
                         
                 
                 # now define input and output
@@ -501,24 +507,27 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                 # Cannot use local_input here
                 if s.local_input is not None:
                     raise SemanticError('Link %s cannot use local input without antecedent. ' % \
-                                    s, element=previous_link)
+                                    s, element=s)
                 # Check if it is using an explicit block name
                 if s.block_name is not None:
                     if not s.block_name in model.name2block:
                         raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
                                         (s, s.block_name, aslist(model.name2block.keys())),
-                                        element=previous_link)
+                                        element=s)
                     input_block = model.name2block[s.block_name]
                     if not input_block.is_valid_output_name(s.name):
-                        raise SemanticError('Link %s refers to unknown output %s in block %s. ' % 
-                                        (s, s.name, input_block),
-                                        element=previous_link)
+                        # TODO: make other friendly messages like this
+                        msg = "A link refers to an unknown output %r.\n" % s.name
+                        msg += "The known outputs are: %s.\n" % input_block.get_output_signals_names() 
+                        msg += "  link: %s \n" % s
+                        msg += " block: %s \n" % input_block  
+                        raise SemanticError(msg, element=s)
                     s.local_input = input_block.canonicalize_output(s.name)
                 else:
                     if not s.name in model.name2block_connection:
                         raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
                                         (s, s.name, aslist(model.name2block_connection.keys())),
-                                        element=previous_link)
+                                        element=s)
                     defined_signal = model.name2block_connection[s.name]
                     input_block = defined_signal.block1
                     s.local_input = defined_signal.block1_signal
