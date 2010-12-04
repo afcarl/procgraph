@@ -1,7 +1,6 @@
 
 from procgraph import Block
-from procgraph.components.images.copied_from_reprep import skim_top_and_bottom, \
-    skim_top
+from procgraph_images.copied_from_reprep import skim_top_and_bottom, skim_top
 
 from numpy import maximum, minimum
 import numpy

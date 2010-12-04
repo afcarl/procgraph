@@ -14,11 +14,13 @@ import wait
 import historyt
 import fps_data_limit
 import fps_print
-
-import sync2
-
+# import sync2
 import low_pass
-
 import last_n_samples
-
 import fps_limit
+
+# static TODO: move?
+import join
+import extract
+import make_tuple
+

@@ -7,8 +7,8 @@ class TestRenaming(PGTestCase):
         model_spec = """
 --- model loaders
 
-|input name=y|  --> |derivative| --> y_dot
-y_dot  --> |derivative| --> y_ddot
+|input name=y|  --> |identity| --> y_dot
+y_dot  --> |identity| --> y_ddot
  
          """
         self.check_semantic_ok(model_spec)

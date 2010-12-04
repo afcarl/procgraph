@@ -1,6 +1,6 @@
 
 from procgraph import register_simple_block
-from procgraph.components.images.copied_from_reprep import skim_top_and_bottom
+from procgraph_images.copied_from_reprep import skim_top_and_bottom
 
 register_simple_block(
   skim_top_and_bottom, 'skim',
