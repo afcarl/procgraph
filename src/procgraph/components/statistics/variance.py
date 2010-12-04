@@ -1,6 +1,6 @@
 from procgraph import register_model_spec
 
-# FIXME: make models/ directory
+# XXX: make models/ directory
 
 register_model_spec("""
 --- model variance 

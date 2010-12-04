@@ -90,7 +90,6 @@ quoted = multi_quoted | single_quoted
 
 reference = Combine(Suppress('$') + good_name('variable'))
 
-# FIXME: add wrap also here?
 reference.setParseAction(VariableReference.from_tokens)
 
 dictionary = Forward()
@@ -175,8 +174,9 @@ def create_model_grammar():
       
     arrow = S(Regex(r'-+>'))
     
+    # (don't put '.' at the beginning)
     # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
-    # XXX: don't put '.' at the beginning
+    
     qualified_name = Combine(good_name + '.' + (integer | good_name))
     
     block_name = good_name 
@@ -286,15 +286,12 @@ def parse_model(string, filename=None):
     if not string.strip():
         raise PGSyntaxError('Passed empty string.', Where(filename, string, 0))
     
-    # FIXME: XXX: this is not threadsafe (but we don't have threads, so it's all good) 
+    #  this is not threadsafe (but we don't have threads, so it's all good) 
     ParsedModel.static_filename = filename
     
     try:
-# t = time.time()
         parsed = pg_file.parseString(string)
-#        durb = time.time() - t
-#        print "time: %f / %f" % (dur, durb)
-#    
+
         return list(parsed)
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)
