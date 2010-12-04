@@ -1,4 +1,4 @@
-import cPickle as pickle, os
+import cPickle as pickle
 
 from procgraph import Block 
 from procgraph.block_utils import make_sure_dir_exists

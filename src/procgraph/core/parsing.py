@@ -24,15 +24,15 @@ def eval_dictionary(s, loc, tokens): #@UnusedVariable
     
     return d 
 
-def eval_value(s, loc, tokens): #@UnusedVariable
-    # print 'value got tokens %s = %r' % (tokens.__class__.__name__, tokens)
-
-    #res = tokens.asList()
-    
-    res = tokens
-    
-    # print ' -> value returns %s = %r ' % (res.__class__.__name__, res)
-    return res
+#def eval_value(s, loc, tokens): #@UnusedVariable
+#    # print 'value got tokens %s = %r' % (tokens.__class__.__name__, tokens)
+#
+#    #res = tokens.asList()
+#    
+#    res = tokens
+#    
+#    # print ' -> value returns %s = %r ' % (res.__class__.__name__, res)
+#    return res
 
 def eval_array(s, loc, tokens): #@UnusedVariable
     #print 'array got tokens %s = %r' % (tokens.__class__.__name__, tokens)
@@ -95,27 +95,19 @@ reference.setParseAction(VariableReference.from_tokens)
 dictionary = Forward()
 array = Forward()
 value = Forward()
-value << (quoted ^ 
-          array ^ 
-          dictionary ^ 
-          reference ^ 
-          good_name ^ 
-          integer ^ 
-          floatnumber
+
+value << (
+          quoted | 
+          array | 
+          dictionary | 
+          reference | 
+          good_name | # order is important...
+          floatnumber | # order is important... 
+          integer 
          )('val')
-#value << (
-#          quoted | 
-#          array | 
-#          dictionary | 
-#          reference | 
-#          good_name | 
-#          integer | 
-#          floatnumber
-#         )('val')
-#value.setParseAction(eval_value)
+
 
 # dictionaries
-    
     
 dict_key = good_name | quoted
 dictionary << (Suppress("{") + \
@@ -155,7 +147,6 @@ def parse_value(string, filename=None):
         return ret
 #        print "Parsed '%s' into %s (%d), ret: %s" % (string, tokens, len(tokens),
 #                                                     ret)
-#        return ret
 
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)
@@ -171,13 +162,10 @@ def create_model_grammar():
             element.where = Where(ParsedModel.static_filename, string, location)
             return element 
         return from_tokens
-        
       
     arrow = S(Regex(r'-+>'))
     
     # (don't put '.' at the beginning)
-    # good_name =  Combine(Word(alphas) + Word(alphanums +'_' ))
-    
     qualified_name = Combine(good_name + '.' + (integer | good_name))
     
     block_name = good_name 
@@ -292,7 +280,6 @@ def parse_model(string, filename=None):
     
     try:
         parsed = pg_file.parseString(string)
-
         return list(parsed)
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)

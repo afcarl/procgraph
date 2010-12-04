@@ -3,11 +3,8 @@ from optparse import OptionParser
 
 from ..core.model_loader import model_from_string, pg_look_for_models
 from ..core.registrar import default_library, Library
-from ..core.exceptions import SemanticError, PGSyntaxError 
+from ..core.exceptions import PGException 
 from ..core.visualization import error, info
-from procgraph.core.exceptions import PGException
-from procgraph.core.parsing import parse_value
-
 
 usage_short = \
 """Usage:    
@@ -96,8 +93,8 @@ def main():
     
     filename = args.pop(0)
     
-    if options.debug:
-        print "Configuration: %s" % config
+    #if options.debug:
+    #    print "Configuration: %s" % config
 
     if options.trace:
         look_for = RuntimeError
