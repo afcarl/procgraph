@@ -19,34 +19,33 @@ def eval_dictionary(s, loc, tokens): #@UnusedVariable
         #print "A: %s" % a
         if 'value' in a:
             d[a['key']] = a['value']
-            print 'Dict got %s = %s (%r)' % (a['key'],
-                                             a['value'].__class__.__name__, a['value'])
+            #print 'Dict got %s = %s (%r)' % (a['key'],
+            #                                 a['value'].__class__.__name__, a['value'])
     
     return d 
 
 def eval_value(s, loc, tokens): #@UnusedVariable
-    print 'value got tokens %s = %r' % (tokens.__class__.__name__, tokens)
+    # print 'value got tokens %s = %r' % (tokens.__class__.__name__, tokens)
 
     #res = tokens.asList()
     
     res = tokens
     
-    print ' -> value returns %s = %r ' % (res.__class__.__name__, res)
+    # print ' -> value returns %s = %r ' % (res.__class__.__name__, res)
     return res
 
 def eval_array(s, loc, tokens): #@UnusedVariable
-    print 'array got tokens %s = %r' % (tokens.__class__.__name__, tokens)
-    print tokens.keys()
+    #print 'array got tokens %s = %r' % (tokens.__class__.__name__, tokens)
 
     elements = tokens.asList()
-    print 'array got elements %s = %r' % (elements.__class__.__name__, elements)
+    # print 'array got elements %s = %r' % (elements.__class__.__name__, elements)
     res = []
     for i in range(len(elements)):
         t = elements[i]
-        print '  #%d is %s = %r' % (i, t.__class__.__name__, t)
+        #print '  #%d is %s = %r' % (i, t.__class__.__name__, t)
         res.append(t)
         
-    print '-> Array is returning %s = %r' % (res.__class__.__name__, res)
+    #print '-> Array is returning %s = %r' % (res.__class__.__name__, res)
     return res
 
 def python_interpretation(s, loc, tokens): #@UnusedVariable
@@ -142,9 +141,9 @@ def parse_value(string):
     # XXX this is a mess that needs cleaning
     # perhaps now it works without ceremonies
     try:
-        print '-- parse_value string: %r ' % string
+        #print '-- parse_value string: %r ' % string
         ret_value = value.parseString(string)
-        print '-- parse_value ret_value: %s = %r ' % (ret_value.__class__, ret_value)
+        #print '-- parse_value ret_value: %s = %r ' % (ret_value.__class__, ret_value)
         if isinstance(ret_value['val'], dict) or\
            isinstance(ret_value['val'], int) or\
            isinstance(ret_value['val'], list) or\
