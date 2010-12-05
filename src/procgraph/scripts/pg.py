@@ -145,58 +145,44 @@ def pg(filename, config,
     
     Instantiate a model (filename can be either a file or a known model. '''
     
-    #try:
-    if True:
-        
-        for module in additional_modules:
-            info('Importing package %r...' % module)
-            __import__(module)
-        
-        library = Library(default_library)
-        pg_look_for_models(library, ignore_cache=nocache,
-                           additional_paths=additional_directories)
-        
-        # load standard components
-        import procgraph.components #@UnusedImport
+    for module in additional_modules:
+        info('Importing package %r...' % module)
+        __import__(module)
+    
+    library = Library(default_library)
+    pg_look_for_models(library, ignore_cache=nocache,
+                       additional_paths=additional_directories)
+    
+    # load standard components
+    import procgraph.components #@UnusedImport
 
-        if library.exists(block_type=filename):
+    if library.exists(block_type=filename):
 #            w = Where('command line', filename, 0)
-            model = library.instance(filename, name=None,
-                                             config=config)
-        else:
-            if not os.path.exists(filename):
-                # TODO: add where for command line
-                raise SemanticError('Unknown model or file "%s".' % filename)
+        model = library.instance(filename, name=None,
+                                         config=config)
+    else:
+        if not os.path.exists(filename):
+            # TODO: add where for command line
+            raise SemanticError('Unknown model or file "%s".' % filename)
 
-            model_spec = open(filename).read()
-            model = model_from_string(model_spec, config=config,
-                                      filename=filename, library=library)
-        
-        if debug:
-            model.summary()
-            return
+        model_spec = open(filename).read()
+        model = model_from_string(model_spec, config=config,
+                                  filename=filename, library=library)
+    
+    if debug:
+        model.summary()
+        return
 
-        count = 0
-        model.reset_execution()
-        while model.has_more():       
-            model.update()
-            
-            if stats:
-                count += 1
-                if count % 500 == 0:
-                    model.stats.print_info()
+    count = 0
+    model.reset_execution()
+    while model.has_more():       
+        model.update()
         
-        # XXX: it should know by itself
-        model.finish()
+        if stats:
+            count += 1
+            if count % 500 == 0:
+                model.stats.print_info()
+    
+    # XXX: should it know by itself?
+    model.finish()
                 
-    #except ModelExecutionError as e:
-    #    print e
-    #    traceback.print_exc()    
-    # except SemanticError as e:    
-    #       error(e)
-    #       raise Exception('Semantic error')
-    #   except PGSyntaxError as e:    
-    #       error(e) 
-    #       raise Exception('Found a Syntax error')
-    #           
-    #return model

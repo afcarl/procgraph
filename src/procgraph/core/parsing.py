@@ -154,7 +154,6 @@ def parse_value(string, filename=None):
         
 
 def create_model_grammar():
-    # TODO: right now we have to recreate the grammar every time
     # We pass a "where" object to the constructors
     def wrap(constructor):
         def from_tokens(string, location, tokens):
