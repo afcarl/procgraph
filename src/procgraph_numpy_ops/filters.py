@@ -60,6 +60,8 @@ def my_take(a, axis, indices):
 register_simple_block(my_take, 'take', params={'axis':0, 'indices':COMPULSORY})
 
 
+register_simple_block(numpy.mean, 'mean', params={'axis':0})
+
 from numpy import multiply, array
 outer = multiply.outer
         
