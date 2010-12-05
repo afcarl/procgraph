@@ -73,8 +73,8 @@ def pg_add_this_package_models(file, assign_to, subdir='models'):
     '''
     
     dir = os.path.join(os.path.dirname(file), subdir)
-    pg_look_for_models(default_library, 
-                       additional_paths=[dir], 
+    pg_look_for_models(default_library,
+                       additional_paths=[dir],
                        ignore_env=True,
                        assign_to_module=assign_to)
 
@@ -148,8 +148,8 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
         for parsed_model in models:
             if library.exists(parsed_model.name):
                 prev = library.name2block[parsed_model.name].parsed_model.where
-                raise SemanticError('Found model "%s" in %s, already in  %s. ' % \
-                            (parsed_model.name, f, prev.filename))
+                raise SemanticError('Found model %r in %r, already in %r. ' % \
+                            (parsed_model.name, f, prev.filename), parsed_model)
                 
             if assign_to_module is None:
                 assign_to_module = path
@@ -162,8 +162,12 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
     assert parsed_model.name is not None
     if library.exists(parsed_model.name):
         prev = library.name2block[parsed_model.name].parsed_model.where
+        # FIXME: suppose that I have tutorials.pg
+        #  and I do:
+        #    pg -d . tutorials.pg
+        # This will fail because it will try to read tutorials.pg twice
         raise SemanticError('I already have registered "%s" from %s. ' % \
-                            (parsed_model.name, prev.filename))
+                            (parsed_model.name, prev.filename), parsed_model)
     # print "Registering model '%s' " % parsed_model.name
 
     model_spec = ModelSpec(parsed_model, defined_in)

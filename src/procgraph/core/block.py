@@ -314,6 +314,11 @@ class Block(BlockMetaSugar):
         from .visualization import debug as pg_debug
         pg_debug(self.name + ': ' + s)
     
+    def error(self, s):
+        ''' Writes a debug message. '''
+        from .visualization import error as pg_error
+        pg_error(self.name + ': ' + s)
+    
 
 class Generator(Block):
     # TODO: change interface

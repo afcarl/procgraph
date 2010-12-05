@@ -103,6 +103,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
             normal_config[key] = value
     
     # We mix the normal config with the defaults
+    # FIXME: None -> no where information
     resolved = resolve_config(parsed_model.config, normal_config, None) 
     # we give none so that it can be filled in by the caller
     
@@ -209,17 +210,7 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 raise SemanticError('Could not import package "%s": %s' % \
                                         (package, e), element=x)
     
-    # Extract load and save statements
-#    for x in parsed_model.load_statements:
-#        where_from = expand_value(x.where_from, element=element)
-#        model.add_load_action(what=x.what, where=where_from,
-#                              format=x.format, element=element)
-#        
-#    for x in parsed_model.save_statements:
-#        where_to = expand_value(x.where_to, element=element)
-#        model.add_save_action(what=x.what, where=where_to,
-#                              format=x.format, element=element)
-    
+     
     # Then we instantiate all the blocks
    
     # Iterate over connections 
@@ -316,12 +307,10 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                                          name=element.name, config=block_config)
                     block.where = element.where
                 except SemanticError as e:
+                    # For config (see FIXME)
+                    if e.element is None:
+                        e.element = element
                     raise
-#                    if e.element is None:
-#                        e.element = element
-#                        raise e
-#                    else:
-#                        raise
                         
                 
                 # now define input and output

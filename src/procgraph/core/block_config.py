@@ -30,7 +30,7 @@ def resolve_config(list_of_config, given_config, block, STRICT=True):
     
     if passed_not_defined:
         msg = ('We were passed config (%s) which was not defined formally ' + \
-        'as a config variable. The defined ones are %s.') % (\
+        'as a config variable.\nThe defined ones are: %s.') % (\
                 aslist(passed_not_defined), aslist(defined_variables))
         if STRICT:
             raise SemanticError(msg, block)

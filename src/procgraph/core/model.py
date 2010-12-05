@@ -92,7 +92,7 @@ class Model(Generator):
             
         if isinstance(block, ModelInput):
             if not self.is_valid_input_name(block.signal_name):
-                msg = 'An input "%s" was not defined formally.' % block.signal_name
+                msg = 'Input %r was not defined formally.' % block.signal_name
                 e = SemanticError(msg, block)
                 if STRICT_CHECK_OF_DEFINED_IO:
                     raise e
@@ -109,7 +109,7 @@ class Model(Generator):
         
         if isinstance(block, ModelOutput) and \
                not self.is_valid_output_name(block.signal_name):
-            msg = 'Output "%s" was not defined formally.' % block.signal_name
+            msg = 'Output %r was not defined formally.' % block.signal_name
             e = SemanticError(msg, block)
             if STRICT_CHECK_OF_DEFINED_IO:
                 raise e
@@ -177,7 +177,7 @@ class Model(Generator):
             
             if not isinstance(status, tuple) or len(status) != 2:
                 raise ModelWriterError('next_data_status should return a tuple ' + 
-                                       'of len 2, not "%s"' % status, generator)
+                                       'of len 2, not %r.' % status, generator)
             (has_next, timestamp) = status #@UnusedVariable
             if has_next:
                 return True
@@ -306,7 +306,7 @@ class Model(Generator):
                 if value is not None and this_timestamp is None:
                     raise ModelExecutionError(
                             'Strange, value is not None but the timestamp is 0' + 
-                            ' for output signal "%s" of block %s.' % (
+                            ' for output signal %r of block %s.' % (
                           block.canonicalize_output(this_signal), block), block)
                 
                 # Two cases:

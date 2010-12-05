@@ -5,6 +5,7 @@ from ..core.model_loader import model_from_string, pg_look_for_models
 from ..core.registrar import default_library, Library
 from ..core.exceptions import PGException 
 from ..core.visualization import error, info
+from procgraph.core.exceptions import SemanticError
 
 usage_short = \
 """Usage:    
@@ -111,6 +112,9 @@ def main():
         sys.exit(0)
     except look_for as e:
         error(e)
+        if not options.trace:
+            info('If you run "pg" with the "--trace" option, you can see the '
+                 'python details for this error.')
         sys.exit(-2)
 
 def parse_cmdline_args(args):
@@ -161,7 +165,8 @@ def pg(filename, config,
                                              config=config)
         else:
             if not os.path.exists(filename):
-                raise Exception('Unknown model or file "%s".' % filename)
+                # TODO: add where for command line
+                raise SemanticError('Unknown model or file "%s".' % filename)
 
             model_spec = open(filename).read()
             model = model_from_string(model_spec, config=config,

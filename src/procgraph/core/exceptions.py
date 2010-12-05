@@ -12,6 +12,14 @@ class ModelWriterError(PGException):
         Exception.__init__(self, error + ' (block %s)' % block)
         self.block = block
 
+    def __str__(self):
+        if self.block is not None:
+            if self.block.where is not None:
+                return Exception.__str__(self) + '\n' + self.block.where.__str__()
+            else:
+                return Exception.__str__(self) + ' (no position given) '
+        else:
+            return Exception.__str__(self) + ' (no element given) '
 
 class SemanticError(ModelWriterError):
     ''' A semantic error by who wrote the model spec.
