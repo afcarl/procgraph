@@ -15,7 +15,7 @@ class MPlayer(Generator):
     Block.output('video', 'RGB stream as numpy array.')
          
     def init(self): 
-        self.file = self.get_config('file')
+        self.file = self.config.file
         
         # first we identify the video resolution
         args = 'mplayer -identify -vo null -ao null -frames 0'.split() + [self.file]
@@ -31,7 +31,7 @@ class MPlayer(Generator):
                     pass
                 info[key] = value
             
-        self.info("Video configuration: %s" % info)
+        self.debug("Video configuration: %s" % info)
 
         keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS"]
         id_width, id_height, id_fps = keys
@@ -43,6 +43,9 @@ class MPlayer(Generator):
         self.width = info[id_width]
         self.height = info[id_height]
         self.fps = info[id_fps]
+        
+        self.debug('Detected %dx%d video stream at %.1fps in %r.' % 
+                   (self.width, self.height, self.fps, self.config.file))
 
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
@@ -72,22 +75,45 @@ class MPlayer(Generator):
             self.process = subprocess.Popen(args)
 
         self.delta = 1.0 / self.fps
-        self.set_state('timestamp', self.delta)
+        self.state.timestamp = self.delta
+        self.state.next_frame = None
+        self.state.finished = False
         
         self.stream = open(fifo_name, 'r')
         
-    def update(self):
-        dtype = numpy.dtype(('uint8', self.shape))
-        rgb = numpy.fromfile(self.stream, dtype=dtype, count=1)
-        rgb = rgb.squeeze()
+        self.read_next_frame()
         
-        self.set_output(0, value=rgb, timestamp=self.state.timestamp)
-
+    def update(self):
+        self.set_output(0,
+                        value=self.state.next_frame,
+                        timestamp=self.state.timestamp)
         self.state.timestamp += self.delta        
     
+        self.state.next_frame = None
+        self.read_next_frame()
+        
+    def read_next_frame(self):
+        if self.state.finished:
+            return
+        if self.state.next_frame is not None:
+            return
+        
+        dtype = numpy.dtype(('uint8', self.shape))
+        rgbs = numpy.fromfile(self.stream, dtype=dtype, count=1)
+        
+        if len(rgbs) == 0:
+            self.state.next_frame = None
+            self.state.finished = True
+        else:
+            self.state.next_frame = rgbs[0, :].squeeze() 
+        
+        
     def next_data_status(self):
-        # FIXME check EOF
-        return (True, self.state.timestamp)
+        if self.state.finished:
+            return (False, None)
+        else:
+            return (True, self.state.timestamp)
+        
  
 
 
