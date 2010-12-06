@@ -37,11 +37,15 @@ register_simple_block(lambda x: numpy.max(array(x).flat), 'max',
 register_simple_block(lambda x: numpy.sum(array(x).flat), 'sum',
       doc='Sum over all elements.')
 
-register_simple_block(numpy.flipud, 'flipud', doc='Wrapper for :py:func:`numpy.flipud`.')
-register_simple_block(numpy.fliplr, 'fliplr', doc='Wrapper for :py:func:`numpy.fliplr`.')
+register_simple_block(numpy.flipud, 'flipud',
+                      doc='Wrapper for :py:func:`numpy.flipud`.')
+register_simple_block(numpy.fliplr, 'fliplr',
+                      doc='Wrapper for :py:func:`numpy.fliplr`.')
  
-register_simple_block(numpy.radians, 'deg2rad', doc='Converts degrees to radians.')
-register_simple_block(numpy.degrees, 'rad2deg', doc='Converts radians to degrees.')
+register_simple_block(numpy.radians, 'deg2rad',
+                      doc='Converts degrees to radians.')
+register_simple_block(numpy.degrees, 'rad2deg',
+                      doc='Converts radians to degrees.')
  
  
 def my_take(a, axis, indices):
@@ -51,11 +55,9 @@ def my_take(a, axis, indices):
     try:
         return a.take(axis=axis, indices=indices).squeeze()
     except Exception as e:
-        raise Exception('take(axis=%s,indices=%s) failed on array with shape %s: %s' % \
-            (axis, indices, a.shape, e))
+        raise Exception('take(axis=%s,indices=%s) failed on array '
+                        'with shape %s: %s' % (axis, indices, a.shape, e))
 
-#default_library.register('take', make_generic(1,1, numpy.take, 
-#                                              axis=COMPULSORY, indices=COMPULSORY))
 
 register_simple_block(my_take, 'take', params={'axis':0, 'indices':COMPULSORY})
 
@@ -70,7 +72,6 @@ def my_outer(a, b):
     a = array(a)
     b = array(b)
     res = multiply.outer(a, b)
-    #print "outer %s x %s = %s " % (a.shape,b.shape,res.shape)
     return res
 
 
@@ -87,7 +88,7 @@ register_simple_block(select, params={'every': COMPULSORY})
 
 
 register_simple_block(lambda x: x / max(abs(x)), 'normalize_Linf',
-                      doc='Normalize a vector such that ``|x|_inf = max(abs(x))= 1``')
+            doc='Normalize a vector such that ``|x|_inf = max(abs(x))= 1``')
 
 
 def my_minimum(value, threshold):

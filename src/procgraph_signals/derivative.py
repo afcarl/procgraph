@@ -46,6 +46,7 @@ class ForwardDifference(Block):
         x_dot = diff / numpy.float32(delta)
         self.set_output('x_dot', x_dot, timestamp=time)   
 
+# TODO: move this to models/
 register_model_spec("""
 --- model derivative 
 ''' Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``).

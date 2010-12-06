@@ -6,22 +6,17 @@ from pyparsing import Regex, Word, delimitedList, alphas, Optional, OneOrMore, \
 from .parsing_elements import VariableReference, ParsedBlock, \
     ParsedAssignment, ImportStatement, ParsedModel, ParsedSignal, \
     ParsedSignalList, Connection, Where, \
- output_from_tokens, input_from_tokens, config_from_tokens
+    output_from_tokens, input_from_tokens, config_from_tokens
 from .exceptions import PGSyntaxError
 
 
 def eval_dictionary(s, loc, tokens): #@UnusedVariable
-    #print "Dict Tokens: %s" % tokens
     if not 'content' in tokens:
         return {}
     d = {}
     for a in tokens:
-        #print "A: %s" % a
         if 'value' in a:
             d[a['key']] = a['value']
-            #print 'Dict got %s = %s (%r)' % (a['key'],
-            #                                 a['value'].__class__.__name__, a['value'])
-    
     return d 
 
 #def eval_value(s, loc, tokens): #@UnusedVariable
@@ -35,17 +30,12 @@ def eval_dictionary(s, loc, tokens): #@UnusedVariable
 #    return res
 
 def eval_array(s, loc, tokens): #@UnusedVariable
-    #print 'array got tokens %s = %r' % (tokens.__class__.__name__, tokens)
-
     elements = tokens.asList()
-    # print 'array got elements %s = %r' % (elements.__class__.__name__, elements)
     res = []
     for i in range(len(elements)):
         t = elements[i]
-        #print '  #%d is %s = %r' % (i, t.__class__.__name__, t)
         res.append(t)
         
-    #print '-> Array is returning %s = %r' % (res.__class__.__name__, res)
     return res
 
 def python_interpretation(s, loc, tokens): #@UnusedVariable
@@ -113,28 +103,28 @@ dict_key = good_name | quoted
 dictionary << (Suppress("{") + \
     Optional(\
              delimitedList(\
-                           Group(\
-                                 dict_key('key') + Suppress(':') + value('value')\
-                                 ) \
-                           ) \
+                 Group(\
+                     dict_key('key') + Suppress(':') + value('value')\
+                     ) \
+                 ) \
              )('content') + \
     Suppress("}"))
     
     
 dictionary.setParseAction(eval_dictionary)
      
-array << Group(Suppress("[") + O(delimitedList(value)('elements')) + Suppress("]"))
+array << Group(Suppress("[") + 
+               O(delimitedList(value)('elements')) + 
+               Suppress("]"))
 
 array.setParseAction(eval_array)
 
 def parse_value(string, filename=None):
     ''' This is useful for debugging '''
     # XXX this is a mess that needs cleaning
-    # perhaps now it works without ceremonies
     try:
-        #print '-- parse_value string: %r ' % string
         ret_value = value.parseString(string)
-        #print '-- parse_value ret_value: %s = %r ' % (ret_value.__class__, ret_value)
+        
         if isinstance(ret_value['val'], dict) or\
            isinstance(ret_value['val'], int) or\
            isinstance(ret_value['val'], list) or\
@@ -145,8 +135,6 @@ def parse_value(string, filename=None):
             ret = ret_value['val'].asList()
         
         return ret
-#        print "Parsed '%s' into %s (%d), ret: %s" % (string, tokens, len(tokens),
-#                                                     ret)
 
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)
@@ -171,7 +159,7 @@ def create_model_grammar():
     block_type = good_name | Word('_+-/*') | quoted | reference
      
     signal = O(S('[') + (integer | good_name)('local_input') + S(']')) \
-            + O(block_name('block_name') + S(".")) + (integer | good_name)('name') + \
+     + O(block_name('block_name') + S(".")) + (integer | good_name)('name') + \
             O(S('[') + (integer | good_name)('local_output') + S(']'))
     signal.setParseAction(wrap(ParsedSignal.from_tokens))
     
@@ -188,8 +176,11 @@ def create_model_grammar():
     parameter_list.setParseAction(
         lambda s, l, t: dict([(a[0], a[1]) for a in t ])) #@UnusedVariable
     
-    block = S("|") + O(block_name("name") + S(":")) + block_type("blocktype") + \
-         O(parameter_list("config")) + S("|")
+    block = (S("|") + 
+             O(block_name("name") + 
+             S(":")) + 
+             block_type("blocktype") + \
+             O(parameter_list("config")) + S("|"))
     
     block.setParseAction(wrap(ParsedBlock.from_tokens)) 
     
@@ -221,8 +212,10 @@ def create_model_grammar():
     import_statement = S('import') + package_name('package')
     import_statement.setParseAction(wrap(ImportStatement.from_tokens))
      
-    config = S('config') + good_name('variable') + O(S('=') + value('default')) + \
-        O(quoted('docstring'))
+    config = (S('config') + 
+               good_name('variable') + 
+               O(S('=') + value('default')) + \
+               O(quoted('docstring')))
     config.setParseAction(wrap(config_from_tokens))
     
     input = S('input') + good_name('name') + O(quoted('docstring'))

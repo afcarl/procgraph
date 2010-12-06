@@ -9,8 +9,10 @@ class MPlayer(Generator):
 
     Block.alias('mplayer')
     
-    Block.config('file', 'Input video file. Any format that ``mplayer`` understands.')
-    Block.config('quiet', 'If true, suppress messages from mplayer.', default=True)
+    Block.config('file', 'Input video file. This can be in any format that '
+                         '``mplayer`` understands.')
+    Block.config('quiet', 'If true, suppress stderr messages from mplayer.',
+                          default=True)
     
     Block.output('video', 'RGB stream as numpy array.')
          
@@ -18,7 +20,8 @@ class MPlayer(Generator):
         self.file = self.config.file
         
         # first we identify the video resolution
-        args = 'mplayer -identify -vo null -ao null -frames 0'.split() + [self.file]
+        args = 'mplayer -identify -vo null -ao null -frames 0'.split() \
+               + [self.file]
         output = check_output(args)
         
         info = {}
@@ -37,9 +40,10 @@ class MPlayer(Generator):
         id_width, id_height, id_fps = keys
         for k in keys:
             if not k in info:
-                raise ModelExecutionError('Could not find key %s in properties %s' % 
-                                          (k, sorted(info.keys())), self)
-        
+                msg = 'Could not find key %s in properties %s.' % \
+                      (k, sorted(info.keys())) 
+                raise ModelExecutionError(msg, self)
+            
         self.width = info[id_width]
         self.height = info[id_height]
         self.fps = info[id_fps]
@@ -58,7 +62,8 @@ class MPlayer(Generator):
             os.unlink(fifo_name)
         os.mkfifo(fifo_name)
         args = ['mencoder', self.file, '-ovc', 'raw',
-                '-rawvideo', 'w=%d:h=%d:format=%s' % (self.width, self.height, format),
+                '-rawvideo', 'w=%d:h=%d:format=%s' % 
+                    (self.width, self.height, format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
                 '-nosound',

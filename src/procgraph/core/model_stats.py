@@ -62,7 +62,8 @@ class ExecutionStats:
                     N = s.delta_num
                     s.mean_delta = (s.mean_delta * N + delta) / (N + 1)
                     s.delta_num += 1
-                    # print "%s %d mean %d" % (s.block, delta * 1000, 1000 * s.mean_delta)
+                    # print "%s %d mean %d" % 
+                    # (s.block, delta * 1000, 1000 * s.mean_delta)
                 
         
         s.last_timestamp = timestamp
@@ -106,10 +107,12 @@ class ExecutionStats:
                 comment = ' I/O '
             else:
                 comment = '     '
-#            print ''.join([
-#'- cpu: %dms (+-%d%%) %02d%% of total; ' % (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
-#'wall: %dms (+-%d%%) %02d%% of total; ' % (1000 * s.mean_wall, jitter_wall, perc_wall),
-#'exec: %02d%% of total' % perc_times])
+            #print ''.join([
+            #'- cpu: %dms (+-%d%%) %02d%% of total; ' % 
+            # (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
+            #'wall: %dms (+-%d%%) %02d%% of total; ' % 
+            #(1000 * s.mean_wall, jitter_wall, perc_wall),
+            #'exec: %02d%% of total' % perc_times])
 
             if s.mean_delta > 0:
                 fps = 1 / s.mean_delta 

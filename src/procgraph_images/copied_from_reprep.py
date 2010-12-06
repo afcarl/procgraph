@@ -19,9 +19,9 @@ def skim_top_and_bottom(a, percent):
 
 def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     """ 
-    Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+        Converts a 2D float value to a RGB representation, where
+        red is positive, blue is negative, white is zero.
     
-     
     """
     
     check_2d_array(value, 'input to posneg')
@@ -36,7 +36,8 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
 
     
     if len(value.shape) != 2:
-        raise Exception('I expected a H x W image, got shape %s.' % str(value.shape))
+        raise Exception('I expected a H x W image, got shape %s.' % 
+                        str(value.shape))
     
     isfinite = numpy.isfinite(value)
     isnan = numpy.logical_not(isfinite)
@@ -87,7 +88,8 @@ register_simple_block(posneg, params={'max_value': None, 'skim': 0})
 
 
 def scale(value, min_value=None, max_value=None,
-                 min_color=[1, 1, 1], max_color=[0, 0, 0], nan_color=[0.5, 0.5, 0.5]):
+                min_color=[1, 1, 1], max_color=[0, 0, 0],
+                nan_color=[0.5, 0.5, 0.5]):
     """ Provides a RGB representation of the values by interpolating the range 
     [min(value),max(value)] into the colorspace [min_color, max_color].
     
@@ -134,14 +136,16 @@ def scale(value, min_value=None, max_value=None,
         value[isnan] = numpy.inf
         min_value = numpy.min(value)
 
-    if max_value == min_value or numpy.isnan(min_value) or numpy.isnan(max_value):
+    if (max_value == min_value 
+        or numpy.isnan(min_value) 
+        or numpy.isnan(max_value)):
+        # XXX: maybe allow set this case as an exception?
 #        raise ValueError('I end up with max_value = %s = %s = min_value.' % \
 #                         (max_value, min_value))
         result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
         result[:, :, :] = 255
         return result
 
-    #print min_value, max_value
     
     value01 = (value - min_value) / (max_value - min_value)
     

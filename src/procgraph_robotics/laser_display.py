@@ -35,8 +35,8 @@ class LaserDisplay(Block):
         readings = array(self.input.readings)
         
         if len(readings.shape) > 1:
-            raise BadInput('Expected flat array, got shape %s' % str(readings.shape),
-                           self, 0)
+            msg = 'Expected flat array, got shape %s' % str(readings.shape)
+            raise BadInput(msg, self, 0)
 
         f = pylab.figure(frameon=False,
                         figsize=(self.config.width / 100.0,

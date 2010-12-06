@@ -18,7 +18,7 @@ class FPSPrint(Block):
             difference = current - last
             fps = 1.0 / difference
             
-            print "FPS %s %.1f" % (self.canonicalize_input(0), fps)
+            self.info("FPS %s %.1f" % (self.canonicalize_input(0), fps))
 
         self.state.last_timestamp = current
         

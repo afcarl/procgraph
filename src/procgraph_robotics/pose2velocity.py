@@ -37,6 +37,7 @@ class Pose2velocity(Block):
         self.set_output('commands', commands, timestamp=t[0])
  
 
+# TODO: move this to models/ 
 register_model_spec("""
 --- model pose2commands
 ''' Computes the velocity commands from the odometry data. '''

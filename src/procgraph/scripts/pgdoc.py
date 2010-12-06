@@ -64,7 +64,6 @@ def collect_info(block_type, block_generator):
         type = type_block
         implementation = block_generator
         
-        #print block_type, "block_generator.__module__", block_generator.__module__
         if block_generator.defined_in:
             original_module_name = block_generator.defined_in
             assert isinstance(block_generator.defined_in, str)
@@ -139,8 +138,10 @@ def main():
     parser = OptionParser()
      
     parser.add_option("--output", default='pgdoc.rst', help="HTML output file.")
-    parser.add_option("--label", default=None, help="Adds a RST label to the generated docs.")
-    parser.add_option("--translate", action='append', default=[], help="directory=url")
+    parser.add_option("--label", default=None,
+                      help="Adds a RST label to the generated docs.")
+    parser.add_option("--translate", action='append', default=[],
+                      help="directory=url")
 
     (options, args) = parser.parse_args()
     

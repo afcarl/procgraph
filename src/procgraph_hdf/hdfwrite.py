@@ -5,6 +5,8 @@ from procgraph  import Block, BadInput
 from . import tables
 from .tables_cache import tc_open_for_writing, tc_close
 
+# TODO: write original order
+
 
 PROCGRAPH_LOG_GROUP = 'procgraph'
 
@@ -34,7 +36,8 @@ class HDFwrite(Block):
     Block.input_is_variable('Signals to be written', min=1)
     Block.config('file', 'HDF file to write')
     Block.config('compress', 'Whether to compress the hdf table.', 1)
-    Block.config('complib', 'Compression library (zlib, bzip2, blosc, lzo).', 'zlib')
+    Block.config('complib', 'Compression library (zlib, bzip2, blosc, lzo).',
+                 default='zlib')
     Block.config('complevel', 'Compression level (0-9)', 9)
     
     def init(self):
@@ -107,7 +110,8 @@ class HDFwrite(Block):
                         filters=filters
                     )
             except NotImplementedError as e:
-                msg = 'Could not create table with dtype %r: %s' % (table_dtype, e)
+                msg = 'Could not create table with dtype %r: %s' % \
+                      (table_dtype, e)
                 raise BadInput(msg, self, input_signal=signal)
                      
             print('Created table %r' % table)   

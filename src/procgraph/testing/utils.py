@@ -39,13 +39,15 @@ class PGTestCase(unittest.TestCase):
         
     def check_semantic_ok(self, model_spec, config={}):
         ''' Tests that the given string can parse OK and we can create a model.
-            Note that a syntax error is translated into a test Error, not failure.
-            '''
+             Note that a syntax error is translated into a test Error, 
+             not a failure.
+        '''
         # Don't pollute the main library with unit tests    
         library = Library(parent=default_library)
         
         try:
-            model = model_from_string(model_spec, config=config, library=library)
+            model = model_from_string(model_spec, config=config,
+                                      library=library)
             return model
         except SemanticError as e:
             print "Oops, seems like we had an error for '''%s'''" % model_spec
@@ -78,7 +80,8 @@ class PGTestCase(unittest.TestCase):
         try:
             # try again
             library = Library(parent=default_library)
-            model = model_from_string(model_spec, config=config, library=library)
+            model = model_from_string(model_spec, config=config,
+                                      library=library)
             print "OOPS, we could interpret '''%s'''" % model_spec
             print parsed 
             model.summary()

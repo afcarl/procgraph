@@ -18,7 +18,8 @@ def resolve_config(list_of_config, given_config, block, STRICT=True):
             
     # First we get the names of the required config variables.
     defined_variables = set([x.variable for x in list_of_config])
-    required_variables = set([x.variable for x in list_of_config if not x.has_default])
+    required_variables = set([x.variable for x in list_of_config 
+                              if not x.has_default])
     passed_variables = set(given_config.keys())
     required_not_passed = required_variables.difference(passed_variables)
     passed_not_defined = passed_variables.difference(defined_variables) 

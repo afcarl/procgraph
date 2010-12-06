@@ -128,16 +128,13 @@ class Block(BlockMetaSugar):
         self.__output_signal_name2id = {}
         for i, s in enumerate(signals):
             if not isinstance(s, str):
-                raise BlockWriterError(('Invalid list of names for output: %s ' + 
-                                        'they should be strings') % signals)
+                raise BlockWriterError('Invalid list of names for output: %s; ' 
+                                        ' I expect strings.' % signals)
             
             self.__output_signal_names.append(str(s))
             self.__output_signal_name2id[str(s)] = i
             self.__output_signals.append(Value())
         
-    def set_config_default(self, key, value):
-        raise Exception('Warning, trying to set default %s  %s' % (self, key))
-            
     def get_config(self, conf):
         if not conf in self.__config:
             raise ModelExecutionError(
@@ -201,7 +198,9 @@ class Block(BlockMetaSugar):
         return output_struct.value
     
     def __get_input_struct(self, num_or_id):
-        ''' Returns a reference to the Value structure of the given input signal. '''
+        ''' Returns a reference to the Value structure of the given 
+            input signal. 
+        '''
         if not self.is_valid_input_name(num_or_id):
             raise ModelWriterError(
                 'Unknown output name "%s".' % str(num_or_id), self)
@@ -212,7 +211,9 @@ class Block(BlockMetaSugar):
         return self.__input_signals[num_or_id]
         
     def __get_output_struct(self, num_or_id):
-        ''' Returns a reference to the Value structure of the given out signal. '''
+        ''' Returns a reference to the Value structure of the given 
+            output signal. 
+        '''
         if not self.is_valid_output_name(num_or_id):
             raise ModelWriterError(
                 'Unknown output name "%s".' % str(num_or_id), self)

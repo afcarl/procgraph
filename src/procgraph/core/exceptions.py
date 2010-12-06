@@ -15,7 +15,8 @@ class ModelWriterError(PGException):
     def __str__(self):
         if self.block is not None:
             if self.block.where is not None:
-                return Exception.__str__(self) + '\n' + self.block.where.__str__()
+                return Exception.__str__(self) + '\n' + \
+                       self.block.where.__str__()
             else:
                 return Exception.__str__(self) + ' (no position given) '
         else:
@@ -33,7 +34,8 @@ class SemanticError(ModelWriterError):
     def __str__(self):
         if self.element is not None:
             if self.element.where is not None:
-                return Exception.__str__(self) + '\n' + self.element.where.__str__()
+                return Exception.__str__(self) + '\n' + \
+                       self.element.where.__str__()
             else:
                 return Exception.__str__(self) + ' (no position given) '
         else:

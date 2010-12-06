@@ -70,11 +70,12 @@ def main():
 
     parser.add_option("--trace", action="store_true",
                       default=False, dest="trace",
-                      help="If true, try to display raw stack trace in case of error.")
+                      help="If true, try to display raw stack trace in case of "
+                           " error, instead of the usual friendly message.")
     
     parser.add_option("--stats", action="store_true",
                       default=False, dest="stats",
-                      help="Displays execution statistics, including CPU usage.")
+                    help="Displays execution statistics, including CPU usage.")
     
     parser.add_option("--nocache", action="store_true",
                       default=False, dest="nocache",

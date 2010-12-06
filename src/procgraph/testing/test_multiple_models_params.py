@@ -129,7 +129,8 @@ class ParamsTest(PGTestCase):
         for model_spec, config in examples_42:
             # don't pollute the main library with the block definitions
             library = Library(default_library)
-            model = model_from_string(model_spec, config=config, library=library)
+            model = model_from_string(model_spec,
+                                      config=config, library=library)
             
             print "Trying with '''%s'''" % model_spec
             model.reset_execution()
@@ -140,3 +141,4 @@ class ParamsTest(PGTestCase):
             print "end", model.get_output(0)
 
             self.assertEqual(model.get_output(0), 42)
+

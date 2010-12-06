@@ -2,7 +2,7 @@ from .utils import PGTestCase
 
 from ..core.parsing import parse_value
 
-examples = { \
+examples = { 
             '[]': [],
             '[1]': [1],
             '[1,2]': [1, 2],
@@ -24,10 +24,7 @@ examples = { \
             origin: [0,0,0],  max_readings: 5}""":
 { 'indices': [0, 170], 'theta': [-1, +1], 'color': 'r',
       'origin': [0, 0, 0], 'max_readings': 5},
-
-#}
-#
-#examples_known_failing = {
+ 
 """[{ indices: [0,170], theta: [-1,+1], color: 'r', \
       origin: [0,0,0],  max_readings: 5}, { indices: [171,341], \
         theta: [+1,+5], color: 'b', origin: [0,0,0], max_readings: 5}]""":
@@ -52,16 +49,5 @@ class SyntaxTest2(PGTestCase):
             if not ok:
                 raise Exception('From:\n%s\ngot:\n%s\ninstead of\n%s' % \
                                 (example, found, expected))
-
-#    if 1:
-#        #@unittest.expectedFailure
-#        def testExamplesKnownToFail(self):
-#            for example, expected in examples_known_failing.items():
-#                print "Trying '%s'" % example
-#                found = parse_value(example)
-#                
-#                ok = (found == expected) or (str(found) == str(expected))
-#                
-#                if not ok:
-#                    raise Exception('From:\n%s\ngot:\n%s\ninstead of\n%s' % \
-#                                    (example, found, expected))
+ 
+ 

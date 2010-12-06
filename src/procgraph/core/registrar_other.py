@@ -1,8 +1,9 @@
 import traceback, inspect
 
-from procgraph import Block, ModelExecutionError
-from procgraph.core.registrar import default_library
-from procgraph.core.model_loader import add_models_to_library
+from .block import Block
+from .exceptions import  ModelExecutionError
+from .registrar import default_library
+from .model_loader import add_models_to_library
 
 
 COMPULSORY = 'compulsory-param'
@@ -66,7 +67,8 @@ def make_generic(name, num_inputs, num_outputs,
         
     return GenericOperation
     
-def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, params={}, doc=None):
+def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
+                          params={}, doc=None):
     # Get a module to which we can associate this block
     frm = inspect.stack()[1]
     mod = inspect.getmodule(frm[0])
@@ -75,8 +77,8 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1, para
     if name is None:
         name = function.__name__
     
-    block = make_generic(name,
-                         num_inputs, num_outputs, function, params=params, docs=doc)
+    block = make_generic(name, num_inputs, num_outputs, function,
+                         params=params, docs=doc)
     
     block.defined_in = mod.__name__
     

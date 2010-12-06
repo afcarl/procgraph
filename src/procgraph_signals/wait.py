@@ -25,5 +25,6 @@ class Wait(Block):
         if count >= self.config.n: 
             # Just copy the input to the output
             for i in range(self.num_input_signals()):
-                self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
+                self.set_output(i, self.get_input(i),
+                                self.get_input_timestamp(i))
  

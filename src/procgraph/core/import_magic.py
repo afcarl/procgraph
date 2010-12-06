@@ -41,13 +41,15 @@ def import_magic(module_name, required, member=None):
             pass
         
     # We could not load anything.
-    debug('Could not load dependency %r for %r. '
-          'I will let you continue, but an error might be thrown when the package '
-          'actually tries to use it.' % 
-          (required, module_name))
+    warn = ('Could not load dependency %r for %r.\n I will try to continue,' 
+           ' but an error might be thrown when %s actually tries to use %s.' % 
+           (required, module_name, module_name, required))
     
-    msg = 'I tried to let you continue, but it seems that module %r really needs ' \
-          '%r to work. Sorry! ' % (module_name, required)
+    if False: # TODO: think of configuration switch
+        debug(warn)
+    
+    msg = 'I tried to let you continue, but it seems that module %r really ' \
+          ' needs %r to work. Sorry! ' % (module_name, required)
         
     class warn_and_throw:
         def __getattr__(self, method_name): #@UnusedVariable
@@ -58,7 +60,8 @@ def import_magic(module_name, required, member=None):
 def get_module_info(module_name):
     # TODO: better Exception?
     if not module_name in sys.modules:
-        raise Exception('Please pass the module __name__ (got: %r).' % module_name)
+        raise Exception('Please pass  __package__ as argument (got: %r).' 
+                        % module_name)
 
     module = sys.modules[module_name]
     

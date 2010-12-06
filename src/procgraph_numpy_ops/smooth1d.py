@@ -14,9 +14,10 @@ def smooth1d(x, window_len=11, window='hanning'):
     
     input:
         x: the input signal 
-        window_len: the dimension of the smoothing window; should be an odd integer
-        window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
-            flat window will produce a moving average smoothing.
+        window_len: the dimension of the smoothing window;  an odd integer
+        window: the type of window from 'flat', 'hanning', 'hamming', 
+              'bartlett', 'blackman'
+               flat window will produce a moving average smoothing.
 
     output:
         the smoothed signal
@@ -32,7 +33,8 @@ def smooth1d(x, window_len=11, window='hanning'):
     numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
     scipy.signal.lfilter
  
-    TODO: the window parameter could be the window itself if an array instead of a string   
+    TODO: the window parameter could be the window itself if an 
+          array instead of a string   
     """
 
     if x.ndim != 1:
@@ -47,10 +49,13 @@ def smooth1d(x, window_len=11, window='hanning'):
 
 
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'"
+        raise ValueError("Window %r is not one of 'flat', 'hanning', 'hamming',"
+                         "'bartlett', 'blackman'." % window)
 
 
-    s = numpy.r_[2 * x[0] - x[window_len:1:-1], x, 2 * x[-1] - x[-1:-window_len:-1]]
+    s = numpy.r_[2 * x[0] - x[window_len:1:-1],
+                 x,
+                 2 * x[-1] - x[-1:-window_len:-1]]
     #print(len(s))
     if window == 'flat': #moving average
         w = numpy.ones(window_len, 'd')
@@ -61,5 +66,6 @@ def smooth1d(x, window_len=11, window='hanning'):
     return y[window_len - 1:-window_len + 1]
 
 
-register_simple_block(smooth1d, 'smooth1d', params={'window_len':11, 'window':'hanning'})
+register_simple_block(smooth1d, 'smooth1d',
+                      params={'window_len':11, 'window':'hanning'})
 

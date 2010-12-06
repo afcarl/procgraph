@@ -12,7 +12,9 @@ class HistoryT(Block):
     Block.alias('historyt')
     
     Block.config('interval', 'Length of interval (seconds).', default=10)
-    Block.config('natural', 'If true, set 0 as the log beginning.', default=True)
+    Block.config('natural', 'If true, set 0 to be timestamp of the log '
+                 'beginning. This allows to have prettier graphs',
+                 default=True)
     
     Block.input('x', 'Any signal.')
     Block.output('history', 'Tuple ``(t,x)`` containing two arrays.')

@@ -2,7 +2,6 @@ import os, fnmatch
 import cPickle as pickle
 import inspect
 
-
 from .model_instantiation import create_from_parsing_results
 from .visualization import warning, debug, info
 create_from_parsing_results
@@ -39,8 +38,8 @@ class ModelSpec(object):
                 
             def instance(self, block_type, name, config, parent_library=None):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % self.forbid,
-                                        parent.parsed_model)
+                    raise SemanticError('Recursion error for model "%s".' % 
+                                        self.forbid, parent.parsed_model)
                 else:
                     #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name,
@@ -48,14 +47,16 @@ class ModelSpec(object):
                     
             def get_generator_for_block_type(self, block_type):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % self.forbid,
-                                        parent.parsed_model)
+                    raise SemanticError('Recursion error for model "%s".' % 
+                                        self.forbid, parent.parsed_model)
                 else:
-                    return Library.get_generator_for_block_type(self, block_type)
+                    return Library.get_generator_for_block_type(self,
+                                                                block_type)
 
     
         sandbox = ForbidRecursion(library, parsed_model.name)     
-        model = create_from_parsing_results(parsed_model, name, config, library=sandbox)
+        model = create_from_parsing_results(parsed_model, name, config,
+                                            library=sandbox)
 
         return model
 
@@ -79,8 +80,8 @@ def pg_add_this_package_models(file, assign_to, subdir='models'):
                        assign_to_module=assign_to)
 
 
-def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_cache=False,
-                       assign_to_module=None):
+def pg_look_for_models(library, additional_paths=None, ignore_env=False,
+                       ignore_cache=False, assign_to_module=None):
     ''' Call this function at the beginning of the executions.
     It scans the disk for model definitions, and register
     them as available block types. 
@@ -103,7 +104,8 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
     if not paths:
         if False:
             # TODO: add verbose switch
-            warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
+            warning("No paths given and environment var %s not defined." % 
+                     PATH_ENV_VAR) 
         
     # enumerate each sub directory
     all_files = set()
@@ -174,7 +176,8 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
     library.register(parsed_model.name, model_spec)
 
 
-def add_models_to_library(library, string, name=None, filename=None, defined_in=None):
+def add_models_to_library(library, string, name=None,
+                          filename=None, defined_in=None):
     '''
     defined_in: module NAME (to display in documentation)
         (Compulsory!)
@@ -192,7 +195,8 @@ def add_models_to_library(library, string, name=None, filename=None, defined_in=
                                        defined_in=defined_in)
         
                
-def model_from_string(model_spec, name=None, config=None, library=None, filename=None):
+def model_from_string(model_spec, name=None, config=None,
+                      library=None, filename=None):
     ''' Instances a model from a specification. Optional
         attributes can be passed. Returns a Model object. '''
     if config is None:

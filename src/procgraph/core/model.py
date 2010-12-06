@@ -131,7 +131,10 @@ class Model(Generator):
         input_block.set_output(signal_name, value, timestamp)
         self.blocks_to_update.append(input_block)
     
-    def connect(self, block1, block1_signal, block2, block2_signal, public_name):
+    def connect(self,
+                block1, block1_signal,
+                block2, block2_signal,
+                public_name):
         ''' Caller should check that the public name is not taken. '''
         assert public_name is not None
         assert not public_name in self.public_signal_names()
@@ -176,8 +179,8 @@ class Model(Generator):
             status = generator.next_data_status() #@UnusedVariable
             
             if not isinstance(status, tuple) or len(status) != 2:
-                raise ModelWriterError('next_data_status should return a tuple ' + 
-                                       'of len 2, not %r.' % status, generator)
+                raise ModelWriterError('next_data_status should return a tuple' 
+                                       ' of len 2, not %r.' % status, generator)
             (has_next, timestamp) = status #@UnusedVariable
             if has_next:
                 return True
@@ -255,7 +258,8 @@ class Model(Generator):
         
         if block is None:
             # We finished everything
-            raise ModelExecutionError("You asked me to update but nothing's left.")
+            raise ModelExecutionError("You asked me to update but "
+                                      "nothing's left.", self)
             
         # now we have a block (could be a generator)
         debug('Updating %s (input ts: %s)' % \
@@ -305,9 +309,9 @@ class Model(Generator):
                 # FIXME: make another condition
                 if value is not None and this_timestamp is None:
                     raise ModelExecutionError(
-                            'Strange, value is not None but the timestamp is 0' + 
-                            ' for output signal %r of block %s.' % (
-                          block.canonicalize_output(this_signal), block), block)
+                        'Strange, value is not None but the timestamp is 0' + 
+                        ' for output signal %r of block %s.' % (
+                        block.canonicalize_output(this_signal), block), block)
                 
                 # Two cases:
                 # - timestamp is updated
@@ -330,7 +334,8 @@ class Model(Generator):
                     # If this is an output port, update the model
                     if isinstance(other, ModelOutput):
                         #print "Updating output %s" %  other.signal_name
-                        self.set_output(other.signal_name, value, this_timestamp)
+                        self.set_output(other.signal_name,
+                                        value, this_timestamp)
                 else:
                     debug("  Not updated %s because not %s > %s" % \
                            (other, this_timestamp, old_timestamp))

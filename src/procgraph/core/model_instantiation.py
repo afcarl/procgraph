@@ -31,14 +31,15 @@ def check_link_compatibility_input(previous_block, previous_link):
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
         if s.block_name is not None:
-            raise SemanticError('Could not give a block name between two blocks.',
+            raise SemanticError('Could not give a block name when the '
+                                ' conection is between two blocks.',
                                 previous_link)
         if s.local_input is None:
             s.local_input = i
                     
         if not previous_block.is_valid_output_name(s.local_input):
             raise SemanticError('Could not find output name "%s"(%s) in %s' % \
-                            (s.local_input, type(s.local_input), previous_block))
+                        (s.local_input, type(s.local_input), previous_block))
             
         s.local_input = previous_block.canonicalize_output(s.local_input)
 
@@ -73,8 +74,8 @@ def expand_references_in_string(s, function):
 
 
 
-def create_from_parsing_results(parsed_model, name=None, config={}, library=None,
-                                STRICT=False):
+def create_from_parsing_results(parsed_model, name=None, config={},
+                                library=None, STRICT=False):
     
     def debug(s):
         if False:
@@ -142,15 +143,15 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
     used_properties = set() # of strings
  
         
-    def expand_value(value, context=None, element=None):
-        ''' Function that looks for VariableReference and does the substitution. '''
-        if context is None:
-            context = []
+    def expand_value(value, element=None):
+        ''' Function that looks for VariableReference and does the 
+            substitution. 
+        '''
+        #if context is None:
+        #    context = []
         # there's no recursion now...
         #    if value in context:
-        #        raise SemanticError('Recursion warning: context = %s, value = "%s".' %\
-        #                            context, value)
-        context.append(value)
+        #context.append(value)
         
         if isinstance(value, VariableReference):
             variable = value.variable
@@ -160,22 +161,22 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                 raise SemanticError(
                     x_not_found('variable', variable, properties), element)
             used_properties.add(variable) 
-            return expand_value(properties[variable], context, element=element)
+            return expand_value(properties[variable], element=element)
         
         elif isinstance(value, str):
             return expand_references_in_string(value,
                     lambda s: expand_value(VariableReference(s),
-                                           context=context, element=element))
+                                           element=element))
             
         elif isinstance(value, dict):
             h = {}
             for key in value:
-                h[key] = expand_value(value[key], context=context, element=element)
+                h[key] = expand_value(value[key], element=element)
             return h 
         
         # XXX: we shouldn't have here ParseResults
         elif isinstance(value, list) or isinstance(value, ParseResults):
-            return map(lambda s: expand_value(s, context, element), value)
+            return map(lambda s: expand_value(s, element), value)
         else:
             return value
 
@@ -232,9 +233,11 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     previous_link = element
                 else:
                     assert previous_block is not None
-                    # This is the last one, we should process it with the previous_block
+                    # This is the last one, we should process it with the 
+                    # previous_block
                     previous_link = element
-                    check_link_compatibility_input(previous_block, previous_link)
+                    check_link_compatibility_input(previous_block,
+                                                   previous_link)
 
                     for s in (previous_link.signals):
                         # We cannot have a local output
@@ -243,11 +246,14 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                                 'cannot have a local output') % s, element=s)  
              
                         if s.name in model.public_signal_names():           
-                            msg = 'Public signal name %r already taken.' % s.name
+                            msg = ('Public signal name %r already taken.' % 
+                                   s.name)
                             raise SemanticError(msg, element=s)
                         
-                        model.connect(block1=previous_block, block1_signal=s.local_input,
-                                             block2=None, block2_signal=None, public_name=s.name)
+                        model.connect(block1=previous_block,
+                                      block1_signal=s.local_input,
+                                      block2=None, block2_signal=None,
+                                      public_name=s.name)
              
                 
             if isinstance(element, ParsedBlock):
@@ -258,7 +264,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
                     previous_link = fill_anonymous_link(previous_block)
 
                 # also we can check right now a common error
-                if previous_block is not None and previous_block.num_output_signals() == 0:
+                if (previous_block is not None and 
+                    previous_block.num_output_signals() == 0):
                     msg = 'This block does not define outputs yet it is not ' \
                           'the last in the sequence.'
                     raise SemanticError(msg, previous_block)
@@ -297,7 +304,8 @@ def create_from_parsing_results(parsed_model, name=None, config={}, library=None
 
                 
                 if not library.exists(block_type):
-                    raise SemanticError(x_not_found('block type', block_type, library.get_known_blocks()),
+                    raise SemanticError(x_not_found('block type', block_type,
+                                                    library.get_known_blocks()),
                                         element=element)
                 debug('instancing %s:%s config: %s' % \
                       (element.name, element.operation, block_config))
@@ -495,28 +503,32 @@ def define_input_signals(input, block, previous_link, previous_block, model):
             for s in previous_link.signals:
                 # Cannot use local_input here
                 if s.local_input is not None:
-                    raise SemanticError('Link %s cannot use local input without antecedent. ' % \
-                                    s, element=s)
+                    raise SemanticError('Link %s cannot use local input ' 
+                                        ' without antecedent. ' % s, s)
                 # Check if it is using an explicit block name
                 if s.block_name is not None:
                     if not s.block_name in model.name2block:
-                        raise SemanticError('Link %s refers to unknown block "%s". We know %s.' % 
-                                        (s, s.block_name, aslist(model.name2block.keys())),
-                                        element=s)
+                        raise SemanticError(
+                        'Link %s refers to unknown block %r; we know %s.' % 
+                        (s, s.block_name, aslist(model.name2block.keys())), s)
+                        
                     input_block = model.name2block[s.block_name]
                     if not input_block.is_valid_output_name(s.name):
                         # TODO: make other friendly messages like this
-                        msg = "A link refers to an unknown output %r.\n" % s.name
-                        msg += "The known outputs are: %s.\n" % input_block.get_output_signals_names() 
+                        msg = ("A link refers to an unknown output %r.\n" % 
+                               s.name)
+                        msg += ("The known outputs are: %s.\n" % 
+                                input_block.get_output_signals_names()) 
                         msg += "  link: %s \n" % s
                         msg += " block: %s \n" % input_block  
                         raise SemanticError(msg, element=s)
                     s.local_input = input_block.canonicalize_output(s.name)
                 else:
                     if not s.name in model.name2block_connection:
-                        raise SemanticError('Link %s refers to unknown signal "%s". We know %s.' % \
-                                        (s, s.name, aslist(model.name2block_connection.keys())),
-                                        element=s)
+                        msg = 'Link %s refers to unknown signal %r. ' \
+                              ' We know %s.' % (s, s.name,
+                                    aslist(model.name2block_connection.keys()))
+                        raise SemanticError(msg, element=s)
                     defined_signal = model.name2block_connection[s.name]
                     input_block = defined_signal.block1
                     s.local_input = defined_signal.block1_signal

@@ -17,7 +17,9 @@ def rgb2gray(rgb):
     return gray
 
 def gray2rgb(gray):
-    ''' Converts a H x W grayscale into a H x W x 3 RGB by replicating channel. '''  
+    ''' Converts a H x W grayscale into a H x W x 3 RGB image 
+        by replicating the gray channel over R,G,B. 
+    '''  
     assert_gray_image(gray, 'input to rgb2grayscale')
       
     rgb = numpy.zeros((gray.shape[0], gray.shape[1], 3), dtype='uint8')

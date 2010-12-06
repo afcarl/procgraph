@@ -22,10 +22,12 @@ class Extract(Block):
          
          
 def slice(signal, start, end):
-    ''' Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).'''
+    ''' Slices a signal by extracting from index ``start`` to index ``end``
+        (INCLUSIVE).'''
     return signal[start:(end + 1)]
 
     
-register_simple_block(slice, 'slice', params={'start':COMPULSORY, 'end':COMPULSORY})
+register_simple_block(slice, 'slice',
+                      params={'start':COMPULSORY, 'end':COMPULSORY})
 
     

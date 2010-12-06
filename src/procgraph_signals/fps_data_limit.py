@@ -26,16 +26,15 @@ class FPSDataLimit(Block):
             delta = 1.0 / fps
             difference = current - last
             if difference > delta:
-                #print "%s difference: %s ~ %s" % (self, difference, delta)
-                #print "%s difference: %dms > %d" % (self, difference * 1000, delta * 1000)
                 should_update = True
                 self.state.last_timestamp = current
 
             
-        if should_update:
-            # Just copy the input to the output
-            for i in range(self.num_input_signals()):
-                self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
+        if not should_update:
+            return
+        # Just copy the input to the output
+        for i in range(self.num_input_signals()):
+            self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
 
          
 
