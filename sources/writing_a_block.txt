@@ -26,7 +26,7 @@ Each block has:
 Types of blocks
 ^^^^^^^^^^^^^^^
 
-There are three ways to create new Procgraph blocks:
+There are three ways to create new blocks:
 
 1. For using simple Python functions as stateless blocks,
    just register them 
@@ -40,7 +40,7 @@ There are three ways to create new Procgraph blocks:
 
    A normal block updates its output only when it has new input.
    A block that produces output even without a new input is called a "Generator"
-   and it is treated differently by Procgraph.
+   and it is treated differently by |procgraph|.
 
    This is explained in :ref:`creating_generators`.
 
@@ -56,7 +56,7 @@ There are three ways to create new Procgraph blocks:
 Turning simple instantaneous functions into blocks 
 --------------------------------------------------
 
-**To write.***
+|towrite|
 
 
 .. _normal_blocks:
@@ -210,7 +210,7 @@ next section.
 Advanced init() usage -- partial initialization
 
 Note that there some special cases for which initialization cannot be
-completed before until the block is in the model and sigals are connected.
+completed before until the block is in the model and signals are connected.
 One typical example is when we want to write a block that can operate
 on multiple signal, of which we do not know the number. Consider as an example
 the case in which we want to write a block performing a "min" operation.::
@@ -230,13 +230,13 @@ The update() method
 ^^^^^^^^^^^^^^^^^^^
 
 * If the computation is not finished, return Block.UPDATE_NOT_FINISHED.
-  This will tell procgraph to consider the computation still pending,
+  This will tell |procgraph| to consider the computation still pending,
   and update() will be called again in the future with the same input signals.
   
-  All other return values are just ignored by procgraph.
+  All other return values are just ignored by |procgraph|.
   
 
 Writing generators
 ------------------
 
-**To write.***
+|towrite|

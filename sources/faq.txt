@@ -1,7 +1,12 @@
+.. include:: definitions.txt
 
+.. _`faq`:
+
+FAQ
+===
 
 What is the difference with Simulink/Labview?
--------------------------------------
+-----------------------------------------------
 
 These are the main design differences with respect  
 
@@ -35,3 +40,4 @@ how to design an API that takes into account this special case.
 I felt that any choice would add a great deal of complexity, and would make |procgraph| into a full-fledged framework rather than a quick and non-obtrusive tool for rapid prototyping.
 
 Suggestions are welcome...
+

@@ -7,14 +7,14 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Blocks &mdash; procgraph v0.1 documentation</title>
+    <title>Blocks &mdash; procgraph v0.9.0 documentation</title>
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+    <link rel="top" title="procgraph v0.9.0 documentation" href="index.html" />
 	 
 
 
@@ -60,13 +60,13 @@
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>procgraph v0.1 documentation</span></a></h1>
+          <span>procgraph v0.9.0 documentation</span></a></h1>
         <h2 class="heading"><span>Blocks</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="main.html">Contents</a>
+        <a class="uplink" href="index.html">Contents</a>
         </p>
 
       </div>
@@ -75,9 +75,9 @@
         
   <span class="target" id="module-procgraph"></span><div class="section" id="blocks">
 <span id="creating-new-blocks"></span><h1>Blocks<a class="headerlink" href="#blocks" title="Permalink to this headline">¶</a></h1>
-<p>The abstractions that <span class="procgraph-brand">procgraph</span> uses are common to many other environments, such
+<p>The abstractions that <span class="procgraph-brand">ProcGraph</span> uses are common to many other environments, such
 as Simulink</p>
-<p><span class="procgraph-brand">procgraph</span> models are created by interconnecting <strong>blocks</strong>.
+<p><span class="procgraph-brand">ProcGraph</span> models are created by interconnecting <strong>blocks</strong>.
 Each block has:</p>
 <ul class="simple">
 <li>zero or more <strong>configuration parameters</strong>,
@@ -86,10 +86,10 @@ is instantiated and are constant in time.</li>
 <li>zero or more <strong>input signals</strong></li>
 <li>zero or more <strong>output signals</strong></li>
 </ul>
-<p><span class="procgraph-brand">procgraph</span> allows you to attach a documentation string to configuration parameters, inputs and outputs, that is reproduced neatly in the documentation.</p>
+<p><span class="procgraph-brand">ProcGraph</span> allows you to attach a documentation string to configuration parameters, inputs and outputs, that is reproduced neatly in the documentation.</p>
 <div class="section" id="types-of-blocks">
 <h2>Types of blocks<a class="headerlink" href="#types-of-blocks" title="Permalink to this headline">¶</a></h2>
-<p>There are three ways to create new Procgraph blocks:</p>
+<p>There are three ways to create new blocks:</p>
 <ol class="arabic">
 <li><p class="first">For using simple Python functions as stateless blocks,
 just register them
@@ -100,7 +100,7 @@ using the function <tt class="xref py py-func docutils literal"><span class="pre
 <p>This is explained in <a class="reference internal" href="#normal-blocks"><em>More complicated blocks</em></a>.</p>
 <p>A normal block updates its output only when it has new input.
 A block that produces output even without a new input is called a &#8220;Generator&#8221;
-and it is treated differently by Procgraph.</p>
+and it is treated differently by <span class="procgraph-brand">ProcGraph</span>.</p>
 <p>This is explained in <em class="xref std std-ref">creating_generators</em>.</p>
 </li>
 <li><p class="first">Finally, every model created using Procgraph&#8217;s language can be used as a block
@@ -110,7 +110,7 @@ inside another model.</p>
 </ol>
 <div class="section" id="turning-simple-instantaneous-functions-into-blocks">
 <span id="simple-blocks"></span><h3>Turning simple instantaneous functions into blocks<a class="headerlink" href="#turning-simple-instantaneous-functions-into-blocks" title="Permalink to this headline">¶</a></h3>
-<p><strong>To write.*</strong></p>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
 </div>
 <div class="section" id="more-complicated-blocks">
 <span id="normal-blocks"></span><h3>More complicated blocks<a class="headerlink" href="#more-complicated-blocks" title="Permalink to this headline">¶</a></h3>
@@ -232,7 +232,7 @@ self.output.Ex = self.state.Ex</p>
 <p>Do not use your class&#8217;s constructor to initialize the block. There are
 all sorts of issues with custom constructors that make writing things
 such as module serialization hard.</p>
-<p>Instead, <span class="procgraph-brand">procgraph</span> provides the facilities you need for configuration,
+<p>Instead, <span class="procgraph-brand">ProcGraph</span> provides the facilities you need for configuration,
 initialization, etc.</p>
 <dl class="docutils">
 <dt>The init() method is supposed to set up</dt>
@@ -242,7 +242,7 @@ initialization, etc.</p>
 next section.</p>
 <p>Advanced init() usage &#8211; partial initialization</p>
 <p>Note that there some special cases for which initialization cannot be
-completed before until the block is in the model and sigals are connected.
+completed before until the block is in the model and signals are connected.
 One typical example is when we want to write a block that can operate
 on multiple signal, of which we do not know the number. Consider as an example
 the case in which we want to write a block performing a &#8220;min&#8221; operation.:</p>
@@ -260,14 +260,14 @@ x,y,z -&gt; |min| -&gt; minimum</pre>
 <h2>The update() method<a class="headerlink" href="#the-update-method" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p class="first">If the computation is not finished, return Block.UPDATE_NOT_FINISHED.
-This will tell procgraph to consider the computation still pending,
+This will tell <span class="procgraph-brand">ProcGraph</span> to consider the computation still pending,
 and update() will be called again in the future with the same input signals.</p>
-<p>All other return values are just ignored by procgraph.</p>
+<p>All other return values are just ignored by <span class="procgraph-brand">ProcGraph</span>.</p>
 </li>
 </ul>
 <div class="section" id="writing-generators">
 <h3>Writing generators<a class="headerlink" href="#writing-generators" title="Permalink to this headline">¶</a></h3>
-<p><strong>To write.*</strong></p>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
 </div>
 </div>
 </div>
@@ -277,7 +277,7 @@ and update() will be called again in the future with the same input signals.</p>
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="main.html">Contents</a>
+        <a class="uplink" href="index.html">Contents</a>
         </p>
 
       </div>
@@ -285,7 +285,7 @@ and update() will be called again in the future with the same input signals.</p>
 	
     <div class="footer">
         &copy; Copyright 2010, Andrea Censi.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
     </div>
 	
 	<script type="text/javascript">

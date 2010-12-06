@@ -7,14 +7,14 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>What is the difference with Simulink/Labview? &mdash; procgraph v0.1 documentation</title>
+    <title>FAQ &mdash; procgraph v0.9.0 documentation</title>
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.1',
+        VERSION:     '0.9.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="procgraph v0.1 documentation" href="index.html" />
+    <link rel="top" title="procgraph v0.9.0 documentation" href="index.html" />
 	 
 
 
@@ -60,31 +60,33 @@
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>procgraph v0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>What is the difference with Simulink/Labview?</span></h2>
+          <span>procgraph v0.9.0 documentation</span></a></h1>
+        <h2 class="heading"><span>FAQ</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="main.html">Contents</a>
+        <a class="uplink" href="index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="what-is-the-difference-with-simulink-labview">
-<h1>What is the difference with Simulink/Labview?<a class="headerlink" href="#what-is-the-difference-with-simulink-labview" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="faq">
+<span id="id1"></span><h1>FAQ<a class="headerlink" href="#faq" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-the-difference-with-simulink-labview">
+<h2>What is the difference with Simulink/Labview?<a class="headerlink" href="#what-is-the-difference-with-simulink-labview" title="Permalink to this headline">¶</a></h2>
 <p>These are the main design differences with respect</p>
 <ul class="simple">
-<li><a href="#id1"><span class="problematic" id="id2">|procgraph|</span></a> is Python based and free.</li>
-<li><a href="#id3"><span class="problematic" id="id4">|procgraph|</span></a> has a text-based rather than graphical-based representation of models. Trust me, it&#8217;s better.</li>
-<li><a href="#id5"><span class="problematic" id="id6">|procgraph|</span></a> is designed for discrete, timestamped data from various realtime/recorded sources, rather than for continuous-time data.</li>
-<li><a href="#id7"><span class="problematic" id="id8">|procgraph|</span></a> does not support feedback loops  (see: <a class="reference internal" href="#whynotfeedback"><em>Why no feedback loops?</em></a>).</li>
+<li><span class="procgraph-brand">ProcGraph</span> is Python based and free.</li>
+<li><span class="procgraph-brand">ProcGraph</span> has a text-based rather than graphical-based representation of models. Trust me, it&#8217;s better.</li>
+<li><span class="procgraph-brand">ProcGraph</span> is designed for discrete, timestamped data from various realtime/recorded sources, rather than for continuous-time data.</li>
+<li><span class="procgraph-brand">ProcGraph</span> does not support feedback loops  (see: <a class="reference internal" href="#whynotfeedback"><em>Why no feedback loops?</em></a>).</li>
 </ul>
 </div>
 <div class="section" id="why-no-feedback-loops">
-<span id="whynotfeedback"></span><h1>Why no feedback loops?<a class="headerlink" href="#why-no-feedback-loops" title="Permalink to this headline">¶</a></h1>
+<span id="whynotfeedback"></span><h2>Why no feedback loops?<a class="headerlink" href="#why-no-feedback-loops" title="Permalink to this headline">¶</a></h2>
 <p>The main reason is that, for arbitrary blocks, it is hard to reason
 about a consistent semantics.</p>
 <p>For example, consider the simple arrangement with one block with a closed loop:</p>
@@ -97,8 +99,9 @@ u ----&gt; |        |
 <p>At time 0, the signal <tt class="docutils literal"><span class="pre">u</span></tt> is defined, but <tt class="docutils literal"><span class="pre">y</span></tt> is not. That means that the code in
 <tt class="docutils literal"><span class="pre">block</span></tt> must have a special case for this situation. It&#8217;s unclear at the moment
 how to design an API that takes into account this special case.</p>
-<p>I felt that any choice would add a great deal of complexity, and would make <a href="#id9"><span class="problematic" id="id10">|procgraph|</span></a> into a full-fledged framework rather than a quick and non-obtrusive tool for rapid prototyping.</p>
+<p>I felt that any choice would add a great deal of complexity, and would make <span class="procgraph-brand">ProcGraph</span> into a full-fledged framework rather than a quick and non-obtrusive tool for rapid prototyping.</p>
 <p>Suggestions are welcome...</p>
+</div>
 </div>
 
 
@@ -106,7 +109,7 @@ how to design an API that takes into account this special case.</p>
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="main.html">Contents</a>
+        <a class="uplink" href="index.html">Contents</a>
         </p>
 
       </div>
@@ -114,7 +117,7 @@ how to design an API that takes into account this special case.</p>
 	
     <div class="footer">
         &copy; Copyright 2010, Andrea Censi.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.1.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
     </div>
 	
 	<script type="text/javascript">

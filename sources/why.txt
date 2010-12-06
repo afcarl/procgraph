@@ -1,21 +1,19 @@
+.. include:: definitions.txt
+
 .. _`why`:
 
-Why (and why not) using procgraph
-=================================
+Why (and why not) using ProcGraph
+====================================
 
-
+|towrite|
 
 Related work
 ------------
 
+* dataflow programming
 
-dataflow programming
+* zflow 0.01: Flow-based Programming Library for Python
 
-zflow 0.01
+* http://en.wikipedia.org/wiki/Hartmann_pipeline
 
-Flow-based Programming Library for Python
-
-
-http://en.wikipedia.org/wiki/Hartmann_pipeline
-
-http://code.google.com/p/python-pipelines/
+* http://code.google.com/p/python-pipelines/
