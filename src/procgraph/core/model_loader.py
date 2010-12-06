@@ -138,7 +138,15 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             debug("Parsing %r." % os.path.relpath(f))
             model_spec = open(f).read()
             models = parse_model(model_spec, filename=f)
-            pickle.dump(models, open(cache, 'w'))
+            try:
+                file = open(cache, 'w')    
+            except:
+                # Cannot write on the cache for whatever reason
+                file = None
+                
+            if file:            
+                pickle.dump(models, file)
+                file.close() 
         
         if models[0].name is None:
             models[0].name = base
