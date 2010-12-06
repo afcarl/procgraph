@@ -69,6 +69,7 @@ class Blend(Block):
     Block.output('rgb', 'The output is a RGB image (no alpha)')
         
     def update(self):
+        # TODO: check images
         result = None
         for signal in self.get_input_signals_names():
             image = self.get_input(signal)

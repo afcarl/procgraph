@@ -87,7 +87,8 @@ def smooth(grayscale, gaussian_std=5.0):
         Output:
         
         * a 2D  numpy float32 array.
-    """    
+    """
+    # FIXME: this kind of documentation is not read correctly
     
     check_2d_array(grayscale, name="input to gradient() ")
     grayscale = grayscale.astype('float32')

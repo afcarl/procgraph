@@ -1,6 +1,8 @@
 import sys
-from .visualization import debug
 from types import ModuleType
+
+from .visualization import debug
+
 
 # TODO: move somewhere else
 sname = 'procgraph_info'  
@@ -8,7 +10,9 @@ fname = 'requires'
 REQUIRES_PARSED = 'requires_parsed'
     
 def import_magic(module_name, required, member=None):
-    ''' Equivalent to "from required import member" or "import required". '''
+    ''' Equivalent to "from required import member" or "import required".
+        Check that it was succesfull with import_succesful(). 
+    '''
     info_structure = get_module_info(module_name)
     # Check that it was mentioned in the structure
     required_base = required.split('.')[0]
@@ -31,8 +35,7 @@ def import_magic(module_name, required, member=None):
                     raise Exception('No member %r in %r' % (member, o))
                 return mod.__dict__[member]
             return mod
-        except Exception as e:
-            # could not load it!
+        except Exception as e: #@UnusedVariable
             # TODO: show error
             # print e
             pass
