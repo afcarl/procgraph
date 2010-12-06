@@ -3,6 +3,18 @@ import numpy
 from procgraph import COMPULSORY, register_simple_block
 
 def astype(a, dtype):
+    ''' 
+        Converts an array using the ``astype`` function. 
+    
+        :param a: Numpy array
+        :type a: array
+        
+        :param dtype: The new dtype.
+        :type dtype: string
+        
+        :return: typed: The Numpy array with the new type. 
+        :rtype: array
+    '''
     return a.astype(dtype)
 
 register_simple_block(astype, params={'dtype': COMPULSORY})

@@ -5,7 +5,7 @@ class Print(Block):
     
     Block.alias('print')
     
-    Block.input_is_variable('Signals to print.')
+    Block.input_is_variable('Signals to print.', min=1)
     
         
     def update(self): 

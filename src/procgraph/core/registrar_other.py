@@ -6,42 +6,84 @@ from .registrar import default_library
 from .model_loader import add_models_to_library
 
 from .constants import COMPULSORY, TIMESTAMP
+from .docstring_parsing import parse_docstring_annotations, DocStringInfo
 
-def make_generic(name, num_inputs, num_outputs,
+def make_generic(name, inputs, num_outputs,
                  operation, params={}, docs=None):
 
     # make a copy
     parameters = dict(params)
+    
+    if docs is None:
+        docstring = operation.__doc__
+    else:
+        docstring = docs
 
+    try:
+        if docstring is not None:
+            annotations = parse_docstring_annotations(docstring)
+            docstring = annotations.docstring
+        else:
+            annotations = DocStringInfo(docstring)
+    except Exception as e:
+        #print('Malformed annotation for %r: %s' % (operation, e))
+        #print docstring
+        raise
+    
+    def get_param_annotation(key):
+        if key in annotations.params:
+            arg = annotations.params[key]
+            description = arg.desc
+            if arg.type is not None:
+                description += ' (%s)' % arg.type
+            
+        else:
+            description = None
+        return description
+    
     class GenericOperation(Block):
         Block.alias(name)
         
         # filled out later
         defined_in = None
-        
-        if docs is None:
-            __doc__ = operation.__doc__
-        else:
-            __doc__ = docs
-            
+                
+        __doc__ = docstring
         my_operation = operation
 
-
         for key, value in parameters.items():
+            description = get_param_annotation(key)
+            
             if not value in [TIMESTAMP]:
                 if value == COMPULSORY:
-                    Block.config(key)
+                    Block.config(key, description=description)
                 else:
-                    Block.config(key, default=value)
-        for i in range(num_inputs):
-            Block.input(str(i))
+                    Block.config(key, description=description, default=value)
+                    
+        for input_signal in inputs:
+            description = get_param_annotation(input_signal)
+            Block.input(input_signal, description=description)
+            
         for i in range(num_outputs):
-            Block.output(str(i))
+            output_name = str(i)
+            if i < len(annotations.returns):
+                arg = annotations.returns[i]
+                description = arg.desc
+                if arg.type is not None:
+                    description += ' (%s)' % arg.type 
+                tokens = description.split(':')
+                if len(tokens) == 2:
+                    output_name = tokens[0]
+                    description = tokens[1]
+                    # TODO: check good name
+            else:
+                description = None
+            
+            Block.output(output_name, description=description)
        
         def update(self):
             args = []
-            for i in range(num_inputs):
-                args.append(self.get_input(i))
+            for input_signal in inputs:
+                args.append(self.get_input(input_signal))
                 
             params = {}
             for key, value in parameters.items():
@@ -71,12 +113,28 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
     frm = inspect.stack()[1]
     mod = inspect.getmodule(frm[0])
     
+    try:
+        args, varargs, varkw, defaults = inspect.getargspec(function) #@UnusedVariable
+        # TODO: use varwk for variable signals
+        num_defaults = len(defaults) if defaults else 0
+        num_no_argument = len(args) - num_defaults
+        args_no_argument = args[:num_no_argument]
+        args_with_default = args[num_no_argument:]
+        config = dict(map(lambda i: (args_with_default[i], defaults[i]),
+                     range(num_defaults)))
+        inputs = args_no_argument
+    except Exception as e: #@UnusedVariable
+        # TODO: add switch to show this
+        # print "Does not work with %s: %s " % (function, e)
+        config = params
+        inputs = map(str, range(num_inputs))
+        
     assert name is None or isinstance(name, str)
     if name is None:
         name = function.__name__
     
-    block = make_generic(name, num_inputs, num_outputs, function,
-                         params=params, docs=doc)
+    block = make_generic(name, inputs, num_outputs, function,
+                         params=config, docs=doc)
     
     block.defined_in = mod.__name__
     

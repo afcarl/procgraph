@@ -1,9 +1,11 @@
 import sys
 from pyparsing import lineno, col
 
-from .block_meta import split_docstring, BlockInput, FIXED, \
+from .block_meta import split_docstring, BlockInput, \
     BlockOutput, BlockConfig
 from .exceptions import SemanticError, x_not_found
+
+from .constants import FIXED
 
 class Where:
     ''' An object of this class represents a place in a file. 

@@ -8,26 +8,28 @@ from procgraph_mpl import pylab2rgb, pylab
 class LaserDotDisplay(Block):
     ''' Produces a plot of a range-finder scan variation (derivative). 
     
-    It is a variation of :ref:`block:laser_display`.
+    It is a variation of :ref:`block:laser_display`; look there for 
+    the documentation.
      
     '''
     
     Block.alias('laser_dot_display')
     
-    Block.config('width', default=320)
-    Block.config('height', default=320)
+    Block.config('width', 'Width of the resulting image.', default=320)
+    Block.config('height', 'Height of the resulting image.', default=320)
     
-    Block.config('groups', 'How to group and draw the readings. (see example) ')
+    Block.config('groups', 'How to group and draw the readings. '
+                            ' (see :ref:`block:laser_display`) ')
     Block.config('title', 'By default it displays the signal name.'
                         ' Set the empty string to disable.', default=None)
     Block.config('transparent', 'Gives transparent RGBA rather than RGB.',
                   default=False)
-    Block.config('R0', default=1)
-    Block.config('amp', default=0.5)
+    Block.config('R0', 'Radius of the readings circle.', default=1)
+    Block.config('amp', 'Amplitude of the readings crown.', default=0.5)
 
-    Block.input('readings_dot')
+    Block.input('readings_dot', 'Array of float representing array readings.')
     
-    Block.output('image')
+    Block.output('image', 'A fancy visualization of the laser derivative')
        
         
     def update(self): 

@@ -297,7 +297,7 @@ def main():
                     elif o.type == VARIABLE:
                         f.write('%s (variable number)\n\n' % d)
                     elif o.type == DEFINED_AT_RUNTIME:
-                        f.write('%s (number defined at runtime\n\n' % d)
+                        f.write('%s (signals are defined at runtime)\n\n' % d)
                     else:
                         raise Exception(o.type)
             

@@ -86,7 +86,10 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     variable (colon separated list of paths), unless ignore_env is True.
     
     assign_to_module is a string that gives the nominal module the model
-    is associated to -- this is only used for the documentation generation. 
+    is associated to -- this is only used for the documentation generation.
+    
+    TODO: add global cache in user directory.
+     
     '''
     
     paths = []

@@ -18,8 +18,11 @@ from .pil_conversions import Image_from_array
 class Text(Block):
     ''' This block provides text overlays over an image. 
     
+    This block is very powerful, but the configuration is a bit complicated.
+    
     You should provide a list of dictionary in the configuration variable 
-     ``texts``. Each dictionary in the list describes one piece of text.
+    ``texts``. Each dictionary in the list describes how and where to write
+    one piece of text.
      
     An example of valid configuration is the following: ::
     

@@ -1,6 +1,6 @@
 from numpy import ceil, sqrt, zeros
 
-from procgraph import Block
+from procgraph import Block, BadInput
 
 from procgraph.block_utils import check_rgb_or_grayscale
 from .compose import place_at   # XXX:
@@ -13,7 +13,7 @@ class ImageGrid(Block):
     
     Block.config('cols', 'Columns in the grid.', default=None)
     
-    Block.input_is_variable('Images to arrange in a grid.')
+    Block.input_is_variable('Images to arrange in a grid.', min=1)
     Block.output('grid', 'Images arranged in a grid.')
         
     def update(self):
@@ -30,7 +30,7 @@ class ImageGrid(Block):
             cols = int(ceil(sqrt(n)))
             
         if not isinstance(cols, int):
-            raise Exception('Expected an integer for cols, not %s.' % cols)
+            raise BadInput('Expected an integer.', self, 'cols')
             
         rows = int(ceil(n * 1.0 / cols))
         

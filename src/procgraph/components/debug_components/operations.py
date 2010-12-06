@@ -44,11 +44,40 @@ class Minus(Block):
         
         self.set_output(0, result)
   
-   
+
+def plus(x, y):
+    ''' 
+        Sum of two signals. 
+        
+        :param x: First signal.
+        :param y: Second signal.
+        :return: sum: Sum of the two signals.
+    '''
+    return x + y
+
+def product(x, y):
+    ''' 
+        Product of two signals. 
+        
+        :param x: First signal.
+        :param y: Second signal.
+        :return: product: Product of the two signals.
+        
+    '''
+    return x + y
+
+def ratio(x, y):
+    ''' 
+        Ratio of two signals. 
+        
+        :param x: First signal.
+        :param y: Second signal.
+        :return: ratio: First signal divided by the second.
+    '''
+    return x / y
     
 
-register_simple_block(lambda x, y: x + y, '+', num_inputs=2)
-register_simple_block(lambda x, y: x * y, '*', num_inputs=2)
-#register_simple_block(lambda x, y: x - y, '-', num_inputs=2)
-register_simple_block(lambda x, y: x / y, '/', num_inputs=2)
+register_simple_block(plus, name='+')
+register_simple_block(product, name='*')
+register_simple_block(ratio, name='/')
  

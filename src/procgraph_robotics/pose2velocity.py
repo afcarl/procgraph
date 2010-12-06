@@ -41,11 +41,13 @@ class Pose2velocity(Block):
 register_model_spec("""
 --- model pose2commands
 ''' Computes the velocity commands from the odometry data. '''
-input pose "Odometry ``[x,y,theta]``."
-output commands "Estimated commands ``[vx,vy,omega]``."
-output vx
-output vy
-output omega 
+
+input pose "Odometry as an array ``[x,y,theta]``."
+
+output commands "Estimated commands as an array ``[vx,vy,omega]``."
+output vx       "Linear velocity, forward (m/s)"
+output vy       "Linear velocity, side (m/s)"
+output omega    "Angular velocity (rad/s)"
  
 |input name=pose| --> |last_n_samples n=2| --> |pose2vel_| --> commands 
 

@@ -56,9 +56,21 @@ def cv_to_numpy(im):
 
 
 def gradient(grayscale, aperture_size=3):
-    """ Computes the gradient of an image
-    Input:  a 2D numpy array with float32 
-    Outpt:  gx, gy: a 2D numpy array with float32   """    
+    """ 
+        Computes the gradient of an image using a Sobel filter.
+    
+        :param grayscale:  A field to derive.
+        :type  grayscale:  HxW array float
+        
+        :param aperture_size: Aperture of the Sobel filter (odd).
+        :type  aperture_size: int,odd,>=1
+     
+        :return: gx: Gradient in the *x* direction.
+        :rtype: array(HxW,float)
+        
+        :return: gy: Gradient in the *y* direction.
+        :rtype: array(HxW,float)
+    """    
         
     check_2d_array(grayscale)
     
@@ -78,15 +90,18 @@ register_simple_block(gradient, num_inputs=1, num_outputs=2,
                       params={'aperture_size':3})
 
 def smooth(grayscale, gaussian_std=5.0):
-    """ Smooths an image.
-    
-        Input:
+    """ 
+        Smooths an image with a Gaussian filter.
         
-        * grayscale:  a 2D numpy float32 array. 
+        :param grayscale:  A field to derive.
+        :type  grayscale:  HxW array float
         
-        Output:
+        :param gaussian_std: Std-deviation of the Gaussian filter.
+        :type  gaussian_std: float,>0
+     
+        :return: smoothed: The smoothed image.
+        :rtype: array(HxW,float)
         
-        * a 2D  numpy float32 array.
     """
     # FIXME: this kind of documentation is not read correctly
     

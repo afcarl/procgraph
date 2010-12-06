@@ -3,6 +3,15 @@ import numpy
 from procgraph import register_simple_block
 
 def gradient1d(a):
+    ''' 
+        Computes the gradient of a 1D array.
+    
+        :param a: Numpy array
+        :type a: array(N),N>3
+        
+        :return: typed: The gradient of the array. 
+        :rtype: array
+    '''
     a = numpy.array(a)
     
     if len(a.shape) != 1 or len(a) < 3:

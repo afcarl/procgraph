@@ -4,7 +4,7 @@ class FPSPrint(Block):
     ''' Prints the fps count for the input signals. '''
     Block.alias('fps_print')
      
-    Block.input_is_variable(min=1)
+    Block.input_is_variable('Any signal.', min=1)
     
     def init(self): 
         self.state.last_timestamp = None

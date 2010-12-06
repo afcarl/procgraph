@@ -5,7 +5,25 @@ from procgraph import  register_simple_block
 from .pil_conversions import Image_from_array
 
 
-def pil_resize(value, width=None, height=None):
+def resize(value, width=None, height=None):
+    ''' 
+        Resizes an image.
+        
+        You should pass at least one of ``width`` or ``height``.
+        
+        :param value: The image to resize.
+        :type value: image
+        
+        :param width: Target image width.
+        :type width: int,>0
+        
+        :param height: Target image height.
+        :type height: int,>0
+
+        :return: image: The image as a numpy array.
+        :rtype: rgb
+    ''' 
+    
     image = Image_from_array(value)
     
     if width is None and height is None:
@@ -16,11 +34,9 @@ def pil_resize(value, width=None, height=None):
     elif height is None and width is not None:
         height = (width * image.size[1]) / image.size[0]
     
-    #    raise Exception('wrong assertion')
-        
+    # TODO: RGBA?
     image = image.resize((width, height))
     return numpy.asarray(image.convert("RGB"))    
     
     
-register_simple_block(pil_resize, name='resize',
-                    params={ 'width':None, 'height':None})
+register_simple_block(resize)

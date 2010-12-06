@@ -13,7 +13,7 @@ class HDFread(Generator):
     '''
     
     Block.alias('hdfread')
-    Block.output_is_defined_at_runtime()
+    Block.output_is_defined_at_runtime('The signals read from the log.')
     Block.config('file', 'HDF file to read')
     Block.config('signals', 'Which signals to output (and in what order). '
                  'Should be a comma-separated list. If you do not specify it '

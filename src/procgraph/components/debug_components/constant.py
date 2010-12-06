@@ -1,4 +1,3 @@
-
 from procgraph import Block, ETERNITY
 
 class Constant(Block):
@@ -6,21 +5,17 @@ class Constant(Block):
     
         Example: ::
     
-            |constant value=42 name=meaning| -> ...
+            |constant value=42| -> ...
             
-        Two parameters:
-        
-        * ``value``, necessary
-        * ``name``, optional signal name (default: const)
     ''' 
     
     Block.alias('constant')
     
     Block.config('value', 'Constant value to output.') 
-    Block.output('constant')
+    Block.output('constant', 'The constant value.')
         
     def update(self):
-        # FIXME: are you sure we need ETERNITY?
+        # XXX: are you sure we need ETERNITY?
         self.set_output(0, self.config.value, timestamp=ETERNITY)
         
     def __repr__(self):

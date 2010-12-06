@@ -6,8 +6,11 @@ from numpy import maximum, minimum
 import numpy
 
 class OrganicScale(Block):
-    ''' A (almost failed) attempt to scale a signal into [-1,1] 
-        according to the history. '''  
+    ''' A (almost failed!) attempt to scale a signal into [-1,1] 
+        according to the history. 
+        
+        This one is a mess.
+    '''  
     
     Block.alias('organic_scale')
     
@@ -16,7 +19,7 @@ class OrganicScale(Block):
         
     Block.config('skim', default=5)
     Block.config('skim_hist', default=5)
-    Block.config('hist', default=100)
+    Block.config('hist', 'How many steps of history to use.', default=100)
     Block.config('tau', default=0.1)
 
     def init(self): 
@@ -38,8 +41,6 @@ class OrganicScale(Block):
             self.state.M = M
         else:
             self.state.M += self.config.tau * (M - self.state.M)
-            
-#        print self.state.M
         
         y = minimum(y, self.state.M)
         y = maximum(y, -self.state.M)

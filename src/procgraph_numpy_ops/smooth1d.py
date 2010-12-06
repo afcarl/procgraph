@@ -12,15 +12,14 @@ def smooth1d(x, window_len=11, window='hanning'):
     (with the window size) in both ends so that transient parts are minimized
     in the begining and end part of the output signal.
     
-    input:
-        x: the input signal 
-        window_len: the dimension of the smoothing window;  an odd integer
-        window: the type of window from 'flat', 'hanning', 'hamming', 
-              'bartlett', 'blackman'
-               flat window will produce a moving average smoothing.
+    ``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
+    A flat window will produce a moving average smoothing.
 
-    output:
-        the smoothed signal
+    
+    :param x: the input signal 
+    :param window_len: the dimension of the smoothing window;  an odd integer
+    :param window: the type of window from 
+    :return: smoothed: the smoothed signal
         
     example:
 
@@ -66,6 +65,6 @@ def smooth1d(x, window_len=11, window='hanning'):
     return y[window_len - 1:-window_len + 1]
 
 
-register_simple_block(smooth1d, 'smooth1d',
-                      params={'window_len':11, 'window':'hanning'})
+register_simple_block(smooth1d)
+# params={'window_len':11, 'window':'hanning'})
 
