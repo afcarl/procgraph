@@ -1,6 +1,6 @@
 .. |procgraph| raw:: html
       
-      <span class="procgraph-brand">procgraph</span>
+      <span class="procgraph-brand">ProcGraph</span>
 
 
 .. |towrite| raw:: html

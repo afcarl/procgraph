@@ -36,7 +36,7 @@ Procgraph
 
     * Additional libraries (separate packages):
       
-      * :ref:`procgraph_rawseeds <procgraphrawseeds>`
+      * :ref:`procgraph_rawseeds`
 
 
 .. raw:: html
@@ -45,5 +45,5 @@ Procgraph
 
 
 
-.. _procgraphrawseeds: http://andreacensi.github.com/procgraph_rawseeds/
+.. _procgraph_rawseeds: http://andreacensi.github.com/procgraph_rawseeds/
 

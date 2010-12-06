@@ -1,7 +1,9 @@
+.. include:: definitions.txt
+
 .. _`why`:
 
-Why (and why not) using procgraph
-=================================
+Why (and why not) using ProcGraph
+====================================
 
 
 
