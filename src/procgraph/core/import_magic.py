@@ -2,13 +2,9 @@ import sys
 from types import ModuleType
 
 from .visualization import debug
+from .constants import PROCGRAPH_INFO_VARIABLE, REQUIRES, REQUIRES_PARSED 
 
 
-# TODO: move somewhere else
-sname = 'procgraph_info'  
-fname = 'requires'
-REQUIRES_PARSED = 'requires_parsed'
-    
 def import_magic(module_name, required, member=None):
     ''' Equivalent to "from required import member" or "import required".
         Check that it was succesfull with import_succesful(). 
@@ -19,7 +15,8 @@ def import_magic(module_name, required, member=None):
     if not required_base in info_structure[REQUIRES_PARSED]:
         raise Exception('Please specify that you need %r as a dependency '
                         'in the field %r of the %r structure in module %r.' % 
-                        (required_base, fname, sname, module_name))
+                        (required_base, REQUIRES, PROCGRAPH_INFO_VARIABLE,
+                         module_name))
     
     # FIXME: there's a bug in here, should find which base was selected
     if required == required_base:
@@ -65,20 +62,20 @@ def get_module_info(module_name):
 
     module = sys.modules[module_name]
     
-    if not sname in module.__dict__:
+    if not PROCGRAPH_INFO_VARIABLE in module.__dict__:
         raise Exception('Please define the structure %r for module %r. '
-                        % (sname, module_name)) 
+                        % (PROCGRAPH_INFO_VARIABLE, module_name)) 
 
-    info = module.__dict__[sname] 
+    info = module.__dict__[PROCGRAPH_INFO_VARIABLE] 
     
     ''' Returns dict   name -> list of possible modules '''
     parsed = {}
-    if not fname in info:
+    if not REQUIRES in info:
         #raise Exception('Please define a field %r in dict %s.%s.' % 
-        #                (fname, module_name, sname))
+        #                (REQUIRES, module_name, PROCGRAPH_INFO_VARIABLE))
         pass
     else:
-        requires = info[fname]
+        requires = info[REQUIRES]
         for r in requires:
             if isinstance(r, str):
                 # normal

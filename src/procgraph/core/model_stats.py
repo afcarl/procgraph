@@ -1,6 +1,7 @@
 from math import ceil
 
 class Statistics:
+    
     def __init__(self, block):
         self.block = block
         self.num = 0
@@ -18,20 +19,14 @@ class Statistics:
 
 class ExecutionStats:
     
-    
     def __init__(self):
         self.samples = {}
         
     def add(self, block, cpu, wall, timestamp):
-        #assert wall >= 0
-        # weird wall behavior when suspending the process
+        # weird wall/cpu behavior when suspending the process
         if wall < 0:
             wall = 1
-
-        
-        #assert cpu >= 0
         if cpu < 0:
-            # bug? sometimes I see negative cpu
             cpu = wall
             
         if cpu == 0:
@@ -45,6 +40,7 @@ class ExecutionStats:
             
         s = self.samples[block]
         
+        # TODO: set parameter
         WINDOW = 100
         N = min(s.num, WINDOW)
         

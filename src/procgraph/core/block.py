@@ -3,8 +3,6 @@ from .block_sugar import InputProxy, OutputProxy, StateProxy, ConfigProxy
 from .block_meta import BlockMeta, BlockMetaSugar
 from .block_config import resolve_config
 
-# Timestamp to use for constant times
-ETERNITY = 'constant-time'
 
 class Value:
     def __init__(self, value=None, timestamp=None):
@@ -90,9 +88,6 @@ class Block(BlockMetaSugar):
     def are_output_signals_defined(self):
         return self.__output_signals is not None
     
-    def define_input_signals(self, signals):
-        raise Exception("Using obsolete interface")
-    
     def define_input_signals_new(self, signals):
         if not isinstance(signals, list):
             raise BlockWriterError(
@@ -113,9 +108,6 @@ class Block(BlockMetaSugar):
             self.__input_signal_name2id[str(s)] = i
             self.__input_signals.append(Value()) 
              
-    def define_output_signals(self, signals):
-        raise Exception("Using obsolete interface")
-        
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
             raise BlockWriterError(

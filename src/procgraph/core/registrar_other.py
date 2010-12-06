@@ -5,9 +5,7 @@ from .exceptions import  ModelExecutionError
 from .registrar import default_library
 from .model_loader import add_models_to_library
 
-
-COMPULSORY = 'compulsory-param'
-TIMESTAMP = 'timestamp-param'
+from .constants import COMPULSORY, TIMESTAMP
 
 def make_generic(name, num_inputs, num_outputs,
                  operation, params={}, docs=None):

@@ -3,9 +3,9 @@ from optparse import OptionParser
 
 from ..core.model_loader import model_from_string, pg_look_for_models
 from ..core.registrar import default_library, Library
-from ..core.exceptions import PGException 
+from ..core.exceptions import PGException, SemanticError
 from ..core.visualization import error, info
-from procgraph.core.exceptions import SemanticError
+from ..core.constants import PATH_ENV_VAR
 
 usage_short = \
 """Usage:    
@@ -28,18 +28,17 @@ Examples:
 
 2) Execute a model, reading the a directory for additional models:
 
-    $ pg -d my_models/  my_model.pg
+    $ pg -d my_models/  my_model
 
    (Note that the current directory is not ready by default).    
    There is also an environment variable that has the same effect:
 
-    $ export PROCGRAPH_PATH=my_models
+    $ export {PATH_ENV_VAR}=my_models
 
 3) Execute a model, but first load a module that might contain additional block
    definitions.
 
-    $ pg -m my_blocks  my_model.pg 
-"""
+    $ pg -m my_blocks  my_model.pg      """.format(PATH_ENV_VAR=PATH_ENV_VAR)
     
     
 

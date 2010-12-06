@@ -2,9 +2,7 @@ import sys
 
 from .exceptions import BlockWriterError, ModelWriterError
 
-FIXED = 'fixed-signal'
-VARIABLE = 'variable-signal'
-DEFINED_AT_RUNTIME = 'defined-at-runtime'
+from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
  
 class BlockConfig:
     def __init__(self, variable, has_default, default, desc, desc_rest, where):

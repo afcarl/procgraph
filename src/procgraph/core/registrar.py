@@ -17,7 +17,7 @@ class Library:
         
     def register(self, block_type, generator):
         if  self.exists(block_type):
-            raise ValueError('Type %s already registered.' % block_type)
+            raise ValueError('Type %r already registered.' % block_type)
     
         self.name2block[block_type] = generator
     
@@ -26,9 +26,7 @@ class Library:
             library = self
         generator = self.get_generator_for_block_type(block_type)
         block = generator(name=name, config=config, library=library)
-        return block
-             
-                
+        return block       
     
     def get_generator_for_block_type(self, block_type):
         ''' Returns the generator object for the block type.
@@ -45,7 +43,7 @@ class Library:
         '''
                 
         if not self.exists(block_type):
-            raise ValueError('Asked for generator for "%s" which does not exist.' % 
+            raise ValueError('Asked for generator for %r which does not exist.' % 
                              block_type)
             
         if block_type in self.name2block:

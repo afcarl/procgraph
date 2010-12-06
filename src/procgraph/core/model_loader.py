@@ -1,15 +1,11 @@
-import os, fnmatch
-import cPickle as pickle
-import inspect
+import os, fnmatch, inspect, cPickle as pickle
 
 from .model_instantiation import create_from_parsing_results
 from .visualization import warning, debug, info
-create_from_parsing_results
 from .parsing import parse_model, ParsedModel
 from .exceptions import SemanticError
 from .registrar import default_library, Library
-
-PATH_ENV_VAR = 'PROCGRAPH_PATH'
+from .constants import PATH_ENV_VAR
 
 class ModelSpec(object):
     ''' Class used to register as a block type '''
@@ -131,15 +127,15 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             try:
                 models = pickle.load(open(cache))
             except Exception as e:
-                info('Cannot unpickle file %s: %s.' % (cache, e))
+                info('Cannot unpickle file %r: %s' % (cache, e))
                 # XXX repeated code 
-                debug("Parsing %s" % os.path.relpath(f))
+                debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
                 models = parse_model(model_spec, filename=f)
                 pickle.dump(models, open(cache, 'w'))   
             #print "Using cache %s" % cache
         else:
-            debug("Parsing %s" % os.path.relpath(f))
+            debug("Parsing %r." % os.path.relpath(f))
             model_spec = open(f).read()
             models = parse_model(model_spec, filename=f)
             pickle.dump(models, open(cache, 'w'))
@@ -168,7 +164,7 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
         #  and I do:
         #    pg -d . tutorials.pg
         # This will fail because it will try to read tutorials.pg twice
-        raise SemanticError('I already have registered "%s" from %s. ' % \
+        raise SemanticError('I already have registered %r from %r. ' % \
                             (parsed_model.name, prev.filename), parsed_model)
     # print "Registering model '%s' " % parsed_model.name
 
