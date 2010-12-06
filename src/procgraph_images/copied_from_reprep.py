@@ -1,10 +1,11 @@
 import numpy
 from numpy import maximum, minimum, zeros
 
-from procgraph import register_simple_block
+from procgraph import simple_block, COMPULSORY
 from procgraph.block_utils import check_2d_array
 
-def skim_top(a, top_percent):
+@simple_block 
+def skim_top(a, top_percent=COMPULSORY):
     ''' Cuts off the top percentile of the array.
     
         :param top_percent: How much to cut off (decimal).
@@ -13,8 +14,9 @@ def skim_top(a, top_percent):
     assert top_percent >= 0 and top_percent < 90
     threshold = numpy.percentile(a.flat, 100 - top_percent) 
     return numpy.minimum(a, threshold)
-    
-def skim_top_and_bottom(a, percent):
+
+@simple_block 
+def skim_top_and_bottom(a, percent=COMPULSORY):
     ''' Cuts off the top and bottom percentile of the array. 
     
         :param a: Any numpy array. 
@@ -32,6 +34,7 @@ def skim_top_and_bottom(a, percent):
     threshold_min = numpy.percentile(a.flat, percent)
     return numpy.maximum(threshold_min, numpy.minimum(a, threshold_max))
 
+@simple_block
 def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     """ 
         Converts a 2D float value to a RGB representation, where
@@ -112,12 +115,10 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     return result
 
 
-register_simple_block(posneg, params={'max_value': None, 'skim': 0})
-
-# @simple_block
+@simple_block
 def scale(value, min_value=None, max_value=None,
                 min_color=[1, 1, 1], max_color=[0, 0, 0],
-                nan_color=[0.5, 0.5, 0.5]):
+                nan_color=[1, 0, 0]):
     """ 
         Provides a RGB representation of the values by interpolating the range 
         [min(value),max(value)] into the colorspace [min_color, max_color].
@@ -196,9 +197,3 @@ def scale(value, min_value=None, max_value=None,
         result[:, :, u] = col
     
     return result
-
-register_simple_block(scale,
-    params={'min_color':[1, 1, 1], 'max_color':[0, 0, 0],
-            'nan_color':[1, 0, 0],
-            'min_value':None, 'max_value': None})
-

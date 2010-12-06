@@ -1,7 +1,8 @@
 from numpy import multiply, sqrt
 
-from procgraph import register_simple_block
+from procgraph import simple_block
 
+@simple_block
 def cov2corr(covariance, zero_diagonal=True):
     ''' 
     Compute the correlation matrix from the covariance matrix.
@@ -24,6 +25,4 @@ def cov2corr(covariance, zero_diagonal=True):
             correlation[i, i] = 0
     
     return correlation
-
-
-register_simple_block(cov2corr)
+ 

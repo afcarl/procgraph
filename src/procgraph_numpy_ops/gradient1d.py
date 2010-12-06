@@ -1,7 +1,8 @@
 import numpy
 
-from procgraph import register_simple_block
+from procgraph import simple_block
 
+@simple_block
 def gradient1d(a):
     ''' 
         Computes the gradient of a 1D array.
@@ -27,8 +28,3 @@ def gradient1d(a):
     b[-1] = b[-2]
     
     return b
-
-register_simple_block(gradient1d)
-
-
-

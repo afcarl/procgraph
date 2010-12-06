@@ -1,9 +1,10 @@
 import numpy
 
-from procgraph import register_simple_block
+from procgraph import simple_block
 
 from . import Image
 
+@simple_block
 def imread(filename):
     ''' 
         Reads an image from a file.
@@ -22,6 +23,4 @@ def imread(filename):
     
     data = numpy.array(im)
 
-    return data
-
-register_simple_block(imread)
+    return data 

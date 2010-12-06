@@ -1,10 +1,10 @@
 import numpy
 
-from procgraph import  register_simple_block
+from procgraph import simple_block
 
 from .pil_conversions import Image_from_array
 
-
+@simple_block
 def resize(value, width=None, height=None):
     ''' 
         Resizes an image.
@@ -39,4 +39,3 @@ def resize(value, width=None, height=None):
     return numpy.asarray(image.convert("RGB"))    
     
     
-register_simple_block(resize)

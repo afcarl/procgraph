@@ -1,4 +1,4 @@
-from procgraph import Block, COMPULSORY, register_simple_block
+from procgraph import Block, COMPULSORY, simple_block
 
 
 # Make it generic?
@@ -20,7 +20,7 @@ class Extract(Block):
         
         self.output.part = part
          
-         
+@simple_block
 def slice(signal, start=COMPULSORY, end=COMPULSORY):
     ''' Slices a signal by extracting from index ``start`` to index ``end``
         (INCLUSIVE).
@@ -31,9 +31,8 @@ def slice(signal, start=COMPULSORY, end=COMPULSORY):
         
         :return: sliced: The sliced signal.
     '''
+    assert start != COMPULSORY
+    assert end != COMPULSORY
     return signal[start:(end + 1)]
-
-    
-register_simple_block(slice)
-
+ 
     

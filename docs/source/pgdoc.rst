@@ -62,11 +62,12 @@ Blocks for basic operations on images.
 :ref:`border <block:border>`                                                                                                                                                                             Adds a block around the input image.                                                                                                                                                                    
 :ref:`compose <block:compose>`                                                                                                                                                                           Compose several images in the same canvas. You should probably use :ref:`block:grid` in many situations.                                                                                                
 :ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray channel over R,G,B.                                                                                                       
-:ref:`grayscale <block:grayscale>`                                                                                                                                                                       Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.                                                                                                                       
 :ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
 :ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.                                                                                              
 :ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.                                                                                                                       
 :ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].                                                              
+:ref:`skim_top <block:skim_top>`                                                                                                                                                                         Cuts off the top percentile of the array.                                                                                                                                                               
+:ref:`skim_top_and_bottom <block:skim_top_and_bottom>`                                                                                                                                                   Cuts off the top and bottom percentile of the array.                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -117,15 +118,15 @@ Various operations wrapping numpy functions.
 :ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
 :ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
 :ref:`max <block:max>`                                                                                                                                                                                   Maximum over all elements.                                                                                                                                                                              
-:ref:`maximum <block:maximum>`                                                                                                                                                                           |towrite|                                                                                                                                                                                               
 :ref:`mean <block:mean>`                                                                                                                                                                                 Compute the arithmetic mean along the specified axis.                                                                                                                                                   
-:ref:`minimum <block:minimum>`                                                                                                                                                                           |towrite|                                                                                                                                                                                               
-:ref:`normalize_Linf <block:normalize_Linf>`                                                                                                                                                             Normalize a vector such that ``|x|_inf = max(abs(x))= 1``                                                                                                                                               
-:ref:`outer <block:outer>`                                                                                                                                                                               Wrapper around :py:func:`numpy.multiply.outer`.                                                                                                                                                         
+:ref:`my_maximum <block:my_maximum>`                                                                                                                                                                     |towrite|                                                                                                                                                                                               
+:ref:`my_minimum <block:my_minimum>`                                                                                                                                                                     |towrite|                                                                                                                                                                                               
+:ref:`normalize_Linf <block:normalize_Linf>`                                                                                                                                                             Normalize a vector such that ``|x|_inf = max(abs(x))= 1``.                                                                                                                                              
+:ref:`outer <block:outer>`                                                                                                                                                                               Outer product of two vectors.                                                                                                                                                                           
 :ref:`rad2deg <block:rad2deg>`                                                                                                                                                                           Converts radians to degrees.                                                                                                                                                                            
-:ref:`select <block:select>`                                                                                                                                                                             |towrite|                                                                                                                                                                                               
+:ref:`select <block:select>`                                                                                                                                                                             Selects some of the elements of ``x``.                                                                                                                                                                  
 :ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
-:ref:`smooth1d <block:smooth1d>`                                                                                                                                                                         smooth the data using a window with requested size.                                                                                                                                                     
+:ref:`smooth1d <block:smooth1d>`                                                                                                                                                                         Smooth the data using a window with requested size.                                                                                                                                                     
 :ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
 :ref:`sum <block:sum>`                                                                                                                                                                                   Sum over all elements.                                                                                                                                                                                  
 :ref:`take <block:take>`                                                                                                                                                                                 |towrite|                                                                                                                                                                                               
@@ -995,37 +996,6 @@ Output
 Implemented in `/src/procgraph_images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/filters.py>`_. 
 
 
-.. _`block:grayscale`:
-
-
-.. rst-class:: procgraph:block
-
-``grayscale``
-------------------------------------------------------------
-Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``rgb``: RGB image (HxWx3 uint8)
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: A RGB image in shades of gray. (HxW uint8)
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/procgraph_images/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/filters.py>`_. 
-
-
 .. _`block:grid`:
 
 
@@ -1156,7 +1126,7 @@ Configuration
 
 - ``max_value`` (default: None): If specified, everything *above* is clipped. (float)
 
-- ``nan_color`` (default: [0.5, 0.5, 0.5]): Color to give for regions of NaN and Inf. (color)
+- ``nan_color`` (default: [1, 0, 0]): Color to give for regions of NaN and Inf. (color)
 
 - ``min_value`` (default: None): If specified, everything *below* is clipped. (float)
 
@@ -1179,6 +1149,84 @@ Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``scale``: A RGB image. (HxWx3 uint8)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/copied_from_reprep.py>`_. 
+
+
+.. _`block:skim_top`:
+
+
+.. rst-class:: procgraph:block
+
+``skim_top``
+------------------------------------------------------------
+Cuts off the top percentile of the array.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``top_percent``: How much to cut off (decimal). (float,>=0,<90)
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``a``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/copied_from_reprep.py>`_. 
+
+
+.. _`block:skim_top_and_bottom`:
+
+
+.. rst-class:: procgraph:block
+
+``skim_top_and_bottom``
+------------------------------------------------------------
+Cuts off the top and bottom percentile of the array.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``percent``: How much to cut off (decimal). (float,>=0,<90)
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``a``: Any numpy array. (array)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: Skimmed version of ``a``. (a)
 
 
 .. rst-class:: procgraph:source
@@ -1595,14 +1643,20 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 Converts an array using the ``astype`` function.
 
 
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``dtype``: The new dtype. (string)
+
+
 .. rst-class:: procgraph:input
 
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``a``: Numpy array (array)
-
-- ``dtype``: The new dtype. (string)
 
 
 .. rst-class:: procgraph:output
@@ -1870,39 +1924,6 @@ Output
 Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
 
 
-.. _`block:maximum`:
-
-
-.. rst-class:: procgraph:block
-
-``maximum``
-------------------------------------------------------------
-|towrite|
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``value``: |towrite|
-
-- ``threshold``: |towrite|
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: |towrite|
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
-
-
 .. _`block:mean`:
 
 
@@ -2012,14 +2033,22 @@ Output
 Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
 
 
-.. _`block:minimum`:
+.. _`block:my_maximum`:
 
 
 .. rst-class:: procgraph:block
 
-``minimum``
+``my_maximum``
 ------------------------------------------------------------
 |towrite|
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``threshold``: |towrite|
 
 
 .. rst-class:: procgraph:input
@@ -2029,7 +2058,44 @@ Input
 
 - ``value``: |towrite|
 
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
+
+
+.. _`block:my_minimum`:
+
+
+.. rst-class:: procgraph:block
+
+``my_minimum``
+------------------------------------------------------------
+|towrite|
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 - ``threshold``: |towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2052,7 +2118,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 ``normalize_Linf``
 ------------------------------------------------------------
-Normalize a vector such that ``|x|_inf = max(abs(x))= 1``
+Normalize a vector such that ``|x|_inf = max(abs(x))= 1``.
 
 
 .. rst-class:: procgraph:input
@@ -2060,7 +2126,7 @@ Normalize a vector such that ``|x|_inf = max(abs(x))= 1``
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``x``: |towrite|
+- ``x``: Any numpy array.
 
 
 .. rst-class:: procgraph:output
@@ -2068,7 +2134,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``normalized``: The same array normalized.
 
 
 .. rst-class:: procgraph:source
@@ -2083,7 +2149,9 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 ``outer``
 ------------------------------------------------------------
-Wrapper around :py:func:`numpy.multiply.outer`.
+Outer product of two vectors. 
+
+This is a wrapper around :py:func:`numpy.multiply.outer`.
 
 
 .. rst-class:: procgraph:input
@@ -2091,9 +2159,9 @@ Wrapper around :py:func:`numpy.multiply.outer`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``a``: |towrite|
+- ``a``: First vector.
 
-- ``b``: |towrite|
+- ``b``: Second vector.
 
 
 .. rst-class:: procgraph:output
@@ -2101,7 +2169,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``outer``: Outer product of the two vectors.
 
 
 .. rst-class:: procgraph:source
@@ -2147,7 +2215,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 ``select``
 ------------------------------------------------------------
-|towrite|
+Selects some of the elements of ``x``.
 
 
 .. rst-class:: procgraph:config
@@ -2155,7 +2223,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``every`` (default: None): |towrite|
+- ``every``: How many to jump (every=2 takes only the even elements).
 
 
 .. rst-class:: procgraph:input
@@ -2163,7 +2231,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``x``: |towrite|
+- ``x``: Numpy array that can be flatly addressed.
 
 
 .. rst-class:: procgraph:output
@@ -2171,7 +2239,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``decimated``: The decimated output.
 
 
 .. rst-class:: procgraph:source
@@ -2217,21 +2285,22 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 ``smooth1d``
 ------------------------------------------------------------
-smooth the data using a window with requested size. 
+Smooth the data using a window with requested size. 
 
 This method is based on the convolution of a scaled window with the signal.
 The signal is prepared by introducing reflected copies of the signal
 (with the window size) in both ends so that transient parts are minimized
 in the begining and end part of the output signal.
 
-``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
+``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett',
+'blackman'.
 A flat window will produce a moving average smoothing.
 
-example:
+example: ::
 
-t=linspace(-2,2,0.1)
-x=sin(t)+randn(len(t))*0.1
-y=smooth(x)
+    t=linspace(-2,2,0.1)
+    x=sin(t)+randn(len(t))*0.1
+    y=smooth(x)
 
 see also:
 
@@ -2345,16 +2414,22 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 |towrite|
 
 
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``indices``: |towrite|
+
+- ``axis`` (default: 0): |towrite|
+
+
 .. rst-class:: procgraph:input
 
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``a``: |towrite|
-
-- ``axis``: |towrite|
-
-- ``indices``: |towrite|
 
 
 .. rst-class:: procgraph:output

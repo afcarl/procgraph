@@ -1,6 +1,6 @@
 import numpy
 
-from procgraph import  register_simple_block
+from procgraph import  simple_block
 from procgraph.block_utils  import  check_2d_array 
 
 from . import cv
@@ -54,7 +54,7 @@ def cv_to_numpy(im):
     a.shape = (im.height, im.width, im.nChannels)
     return a
 
-
+@simple_block(num_outputs=2)
 def gradient(grayscale, aperture_size=3):
     """ 
         Computes the gradient of an image using a Sobel filter.
@@ -86,9 +86,8 @@ def gradient(grayscale, aperture_size=3):
 
     return gx.astype('float32'), gy.astype('float32')
 
-register_simple_block(gradient, num_inputs=1, num_outputs=2,
-                      params={'aperture_size':3})
 
+@simple_block
 def smooth(grayscale, gaussian_std=5.0):
     """ 
         Smooths an image with a Gaussian filter.
@@ -117,6 +116,4 @@ def smooth(grayscale, gaussian_std=5.0):
     result_a = cv_to_numpy(smoothed).squeeze() 
     return result_a
 
-
-register_simple_block(smooth, params={'gaussian_std':5.0})
-
+ 

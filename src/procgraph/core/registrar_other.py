@@ -7,6 +7,7 @@ from .model_loader import add_models_to_library
 
 from .constants import COMPULSORY, TIMESTAMP
 from .docstring_parsing import parse_docstring_annotations, DocStringInfo
+import types
 
 def make_generic(name, inputs, num_outputs,
                  operation, params={}, docs=None):
@@ -107,12 +108,45 @@ def make_generic(name, inputs, num_outputs,
         
     return GenericOperation
     
-def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
-                          params={}, doc=None):
-    # Get a module to which we can associate this block
-    frm = inspect.stack()[1]
-    mod = inspect.getmodule(frm[0])
+def simple_block(alias=None, num_outputs=1):
+    ''' Decorator for turning functions into simple blocks. '''
+        
+    def wrap(function):
+        frm = inspect.stack()[1]
+        mod = inspect.getmodule(frm[0])
+        defined_in = mod.__name__
     
+        #print("Registering %s: %s (with params %s %s)" % 
+        #      (defined_in, function, alias, num_outputs))
+        register_simple_block(function, name=alias, num_outputs=num_outputs,
+                              defined_in=defined_in)
+        return function
+    
+    # OK, this is black magic. You are not expected to understand this.
+    # Ask Guido!
+    if type(alias) is types.FunctionType:
+        frm = inspect.stack()[1]
+        mod = inspect.getmodule(frm[0])
+        defined_in = mod.__name__
+    
+        function = alias
+        alias = None
+        num_outputs = 1
+        # print "Registering %s: %s (no params) " % (defined_in, function)
+        register_simple_block(function, name=alias, num_outputs=num_outputs,
+                              defined_in=defined_in)
+        return function
+    else:
+        return wrap
+
+def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
+                          params={}, doc=None, defined_in=None):
+    # Get a module to which we can associate this block
+    if defined_in is None:
+        frm = inspect.stack()[1]
+        mod = inspect.getmodule(frm[0])
+        defined_in = mod.__name__
+        
     try:
         args, varargs, varkw, defaults = inspect.getargspec(function) #@UnusedVariable
         # TODO: use varwk for variable signals
@@ -136,7 +170,7 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
     block = make_generic(name, inputs, num_outputs, function,
                          params=config, docs=doc)
     
-    block.defined_in = mod.__name__
+    block.defined_in = defined_in
     
     assert isinstance(block.defined_in, str) 
 

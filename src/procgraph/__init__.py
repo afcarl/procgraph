@@ -10,10 +10,12 @@ from procgraph.core.block import Block, Generator
 from procgraph.core.model_loader import pg_add_this_package_models
 
 from procgraph.core.registrar_other import \
-    register_model_spec, register_simple_block
+    register_model_spec, register_simple_block, simple_block
 
 from procgraph.scripts.pg import pg
 
 from procgraph.core.import_magic import import_magic, import_succesful
 
 from procgraph.core.constants import *
+
+

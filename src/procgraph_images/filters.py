@@ -1,9 +1,9 @@
 import numpy
  
-from procgraph import register_simple_block
+from procgraph import simple_block
 from procgraph.block_utils import assert_rgb_image, assert_gray_image
 
-
+@simple_block
 def rgb2gray(rgb):  
     ''' Converts a HxWx3 RGB image into a HxW grayscale image 
         by computing the luminance. 
@@ -24,6 +24,7 @@ def rgb2gray(rgb):
     
     return gray
 
+@simple_block
 def gray2rgb(gray):
     ''' Converts a H x W grayscale into a H x W x 3 RGB image 
         by replicating the gray channel over R,G,B. 
@@ -40,15 +41,4 @@ def gray2rgb(gray):
     for i in range(3):
         rgb[:, :, i] = gray
     return rgb
-
-register_simple_block(rgb2gray)
-# alias
-register_simple_block(rgb2gray, 'grayscale')
-
-register_simple_block(gray2rgb)
-    
-
-
-
-
-
+ 

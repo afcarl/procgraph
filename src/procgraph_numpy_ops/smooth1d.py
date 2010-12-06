@@ -1,18 +1,21 @@
 import numpy
 
-from procgraph import register_simple_block
+from procgraph import simple_block
 
 # Taken from the numpy cookbook
 
+@simple_block
 def smooth1d(x, window_len=11, window='hanning'):
-    """smooth the data using a window with requested size.
+    """
+    Smooth the data using a window with requested size.
     
     This method is based on the convolution of a scaled window with the signal.
     The signal is prepared by introducing reflected copies of the signal 
     (with the window size) in both ends so that transient parts are minimized
     in the begining and end part of the output signal.
     
-    ``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
+    ``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett', 
+    'blackman'.
     A flat window will produce a moving average smoothing.
 
     
@@ -21,11 +24,11 @@ def smooth1d(x, window_len=11, window='hanning'):
     :param window: the type of window from 
     :return: smoothed: the smoothed signal
         
-    example:
+    example: ::
 
-    t=linspace(-2,2,0.1)
-    x=sin(t)+randn(len(t))*0.1
-    y=smooth(x)
+        t=linspace(-2,2,0.1)
+        x=sin(t)+randn(len(t))*0.1
+        y=smooth(x)
     
     see also: 
     
@@ -64,7 +67,4 @@ def smooth1d(x, window_len=11, window='hanning'):
     y = numpy.convolve(w / w.sum(), s, mode='same')
     return y[window_len - 1:-window_len + 1]
 
-
-register_simple_block(smooth1d)
-# params={'window_len':11, 'window':'hanning'})
 
