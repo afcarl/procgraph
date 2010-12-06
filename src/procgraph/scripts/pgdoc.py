@@ -236,8 +236,8 @@ def main():
             
             f.write(block_anchor(block.name))
             f.write(rst_class('procgraph:block'))
-            f.write('``%s``\n' % block.name)
-            f.write('-' * 60 + '\n')
+            f.write('Block ``%s``\n' % block.name)
+            f.write('-' * 66 + '\n')
             
             d = getstr(block.desc, '%s:%s' % (module_name, block_name))
             f.write(d + '\n\n')
@@ -280,7 +280,7 @@ def main():
                             condition = ": n <= %d" % (i.max)
                         else:
                             condition = ": %d <= n <= %d" % (i.min, i.max)
-                        f.write('%s (variable number%s)\n\n' % (d, condition))
+                        f.write('- %s (variable number%s)\n\n' % (d, condition))
                     else:
                         raise Exception(i.type)
 
@@ -295,9 +295,9 @@ def main():
                     if o.type == FIXED:
                         f.write('- ``%s``: %s\n\n' % (o.name, d))
                     elif o.type == VARIABLE:
-                        f.write('%s (variable number)\n\n' % d)
+                        f.write('- %s (variable number)\n\n' % d)
                     elif o.type == DEFINED_AT_RUNTIME:
-                        f.write('%s (signals are defined at runtime)\n\n' % d)
+                        f.write('- %s (signals are defined at runtime)\n\n' % d)
                     else:
                         raise Exception(o.type)
             
