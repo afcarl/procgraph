@@ -11,10 +11,10 @@ Summary
 Components used for debugging and unit tests.
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`* <block:*>`                                                                                                                                                                                       |towrite|                                                                                                                                                                                               
-:ref:`+ <block:+>`                                                                                                                                                                                       |towrite|                                                                                                                                                                                               
+:ref:`* <block:*>`                                                                                                                                                                                       Product of two signals.                                                                                                                                                                                 
+:ref:`+ <block:+>`                                                                                                                                                                                       Sum of two signals.                                                                                                                                                                                     
 :ref:`- <block:->`                                                                                                                                                                                       Implements the difference of two signals, taking care of overflows.                                                                                                                                     
-:ref:`/ <block:/>`                                                                                                                                                                                       |towrite|                                                                                                                                                                                               
+:ref:`/ <block:/>`                                                                                                                                                                                       Ratio of two signals.                                                                                                                                                                                   
 :ref:`constant <block:constant>`                                                                                                                                                                         Output a numerical constant that never changes.                                                                                                                                                         
 :ref:`gain <block:gain>`                                                                                                                                                                                 A simple example of a gain block.                                                                                                                                                                       
 :ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs, unchanged.                                                                                                                                                               
@@ -28,8 +28,8 @@ Components used for debugging and unit tests.
 Operations using the OpenCV library. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`gradient <block:gradient>`                                                                                                                                                                         Computes the gradient of an image Input:  a 2D numpy array with float32 Outpt:  gx, gy: a 2D numpy array with float32                                                                                   
-:ref:`smooth <block:smooth>`                                                                                                                                                                             Smooths an image.                                                                                                                                                                                       
+:ref:`gradient <block:gradient>`                                                                                                                                                                         Computes the gradient of an image using a Sobel filter.                                                                                                                                                 
+:ref:`smooth <block:smooth>`                                                                                                                                                                             Smooths an image with a Gaussian filter.                                                                                                                                                                
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -58,14 +58,14 @@ This is a set of blocks to read and write logs in HDF5 format.
 Blocks for basic operations on images. 
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`blend <block:blend>`                                                                                                                                                                               This block blends two or more images.                                                                                                                                                                   
+:ref:`blend <block:blend>`                                                                                                                                                                               Blend two or more images.                                                                                                                                                                               
 :ref:`border <block:border>`                                                                                                                                                                             Adds a block around the input image.                                                                                                                                                                    
 :ref:`compose <block:compose>`                                                                                                                                                                           Compose several images in the same canvas. You should probably use :ref:`block:grid` in many situations.                                                                                                
-:ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.                                                                                                                                 
-:ref:`grayscale <block:grayscale>`                                                                                                                                                                       |towrite|                                                                                                                                                                                               
+:ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray channel over R,G,B.                                                                                                       
+:ref:`grayscale <block:grayscale>`                                                                                                                                                                       Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.                                                                                                                       
 :ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
-:ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.                                                                                                                          
-:ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         |towrite|                                                                                                                                                                                               
+:ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.                                                                                              
+:ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.                                                                                                                       
 :ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].                                                              
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
@@ -108,12 +108,12 @@ Various operations wrapping numpy functions.
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
 :ref:`arctan <block:arctan>`                                                                                                                                                                             Wrapper around :py:func:`numpy.arctan`.                                                                                                                                                                 
-:ref:`astype <block:astype>`                                                                                                                                                                             |towrite|                                                                                                                                                                                               
+:ref:`astype <block:astype>`                                                                                                                                                                             Converts an array using the ``astype`` function.                                                                                                                                                        
 :ref:`deg2rad <block:deg2rad>`                                                                                                                                                                           Converts degrees to radians.                                                                                                                                                                            
 :ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
 :ref:`fliplr <block:fliplr>`                                                                                                                                                                             Wrapper for :py:func:`numpy.fliplr`.                                                                                                                                                                    
 :ref:`flipud <block:flipud>`                                                                                                                                                                             Wrapper for :py:func:`numpy.flipud`.                                                                                                                                                                    
-:ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     |towrite|                                                                                                                                                                                               
+:ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     Computes the gradient of a 1D array.                                                                                                                                                                    
 :ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
 :ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
 :ref:`max <block:max>`                                                                                                                                                                                   Maximum over all elements.                                                                                                                                                                              
@@ -138,8 +138,8 @@ Various operations wrapping numpy functions.
 Blocks for image operations based on the PIL library
 
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`imread <block:imread>`                                                                                                                                                                             |towrite|                                                                                                                                                                                               
-:ref:`resize <block:resize>`                                                                                                                                                                             |towrite|                                                                                                                                                                                               
+:ref:`imread <block:imread>`                                                                                                                                                                             Reads an image from a file.                                                                                                                                                                             
+:ref:`resize <block:resize>`                                                                                                                                                                             Resizes an image.                                                                                                                                                                                       
 :ref:`text <block:text>`                                                                                                                                                                                 This block provides text overlays over an image.                                                                                                                                                        
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
@@ -151,10 +151,10 @@ Some functions specific to robotics applications.
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 :ref:`laser_display <block:laser_display>`                                                                                                                                                               Produces a plot of a range-finder scan.                                                                                                                                                                 
 :ref:`laser_dot_display <block:laser_dot_display>`                                                                                                                                                       Produces a plot of a range-finder scan variation (derivative).                                                                                                                                          
-:ref:`organic_scale <block:organic_scale>`                                                                                                                                                               A (almost failed) attempt to scale a signal into [-1,1] according to the history.                                                                                                                       
+:ref:`organic_scale <block:organic_scale>`                                                                                                                                                               A (almost failed!) attempt to scale a signal into [-1,1] according to the history.                                                                                                                      
 :ref:`pose2commands <block:pose2commands>`                                                                                                                                                               Computes the velocity commands from the odometry data.                                                                                                                                                  
 :ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       Block used by :ref:`block:pose2commands`.                                                                                                                                                               
-:ref:`skim <block:skim>`                                                                                                                                                                                 Skims the top and bottom percentile from the data.                                                                                                                                                      
+:ref:`skim <block:skim>`                                                                                                                                                                                 Cuts off the top and bottom percentile of the array.                                                                                                                                                    
 ======================================================================================================================================================================================================== ========================================================================================================================================================================================================
 
 
@@ -219,7 +219,7 @@ Components used for debugging and unit tests.
 
 ``*``
 ------------------------------------------------------------
-|towrite|
+Product of two signals.
 
 
 .. rst-class:: procgraph:input
@@ -227,9 +227,9 @@ Components used for debugging and unit tests.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: First signal.
 
-- ``1``: |towrite|
+- ``y``: Second signal.
 
 
 .. rst-class:: procgraph:output
@@ -237,7 +237,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``product``: Product of the two signals.
 
 
 .. rst-class:: procgraph:source
@@ -252,7 +252,7 @@ Implemented in `/src/procgraph/components/debug_components/operations.py <https:
 
 ``+``
 ------------------------------------------------------------
-|towrite|
+Sum of two signals.
 
 
 .. rst-class:: procgraph:input
@@ -260,9 +260,9 @@ Implemented in `/src/procgraph/components/debug_components/operations.py <https:
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: First signal.
 
-- ``1``: |towrite|
+- ``y``: Second signal.
 
 
 .. rst-class:: procgraph:output
@@ -270,7 +270,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``sum``: Sum of the two signals.
 
 
 .. rst-class:: procgraph:source
@@ -330,7 +330,7 @@ Implemented in `/src/procgraph/components/debug_components/operations.py <https:
 
 ``/``
 ------------------------------------------------------------
-|towrite|
+Ratio of two signals.
 
 
 .. rst-class:: procgraph:input
@@ -338,9 +338,9 @@ Implemented in `/src/procgraph/components/debug_components/operations.py <https:
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: First signal.
 
-- ``1``: |towrite|
+- ``y``: Second signal.
 
 
 .. rst-class:: procgraph:output
@@ -348,7 +348,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``ratio``: First signal divided by the second.
 
 
 .. rst-class:: procgraph:source
@@ -367,12 +367,7 @@ Output a numerical constant that never changes.
 
 Example: ::
 
-    |constant value=42 name=meaning| -> ...
-
-Two parameters:
-
-* ``value``, necessary
-* ``name``, optional signal name (default: const)
+    |constant value=42| -> ...
 
 
 .. rst-class:: procgraph:config
@@ -388,7 +383,7 @@ Configuration
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``constant``: |towrite|
+- ``constant``: The constant value.
 
 
 .. rst-class:: procgraph:source
@@ -453,7 +448,7 @@ init() gets called twice.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Input signals. (variable number)
+Input signals. (variable number: n >= 1)
 
 
 .. rst-class:: procgraph:output
@@ -486,7 +481,7 @@ For numpy arrays it prints their shape and dtype instead of their values.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Signals to describe. (variable number)
+Signals to describe. (variable number: n >= 1)
 
 
 .. rst-class:: procgraph:source
@@ -509,7 +504,7 @@ Print a representation of the input values along with their timestamp.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Signals to print. (variable number)
+Signals to print. (variable number: n >= 1)
 
 
 .. rst-class:: procgraph:source
@@ -545,7 +540,7 @@ Operations using the OpenCV library.
 
 ``gradient``
 ------------------------------------------------------------
-Computes the gradient of an image Input:  a 2D numpy array with float32 Outpt:  gx, gy: a 2D numpy array with float32
+Computes the gradient of an image using a Sobel filter.
 
 
 .. rst-class:: procgraph:config
@@ -553,7 +548,7 @@ Computes the gradient of an image Input:  a 2D numpy array with float32 Outpt:  
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``aperture_size`` (default: 3): |towrite|
+- ``aperture_size`` (default: 3): Aperture of the Sobel filter (odd). (int,odd,>=1)
 
 
 .. rst-class:: procgraph:input
@@ -561,7 +556,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``grayscale``: A field to derive. (HxW array float)
 
 
 .. rst-class:: procgraph:output
@@ -569,9 +564,9 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``gx``: Gradient in the *x* direction. (array(HxW,float))
 
-- ``1``: |towrite|
+- ``gy``: Gradient in the *y* direction. (array(HxW,float))
 
 
 .. rst-class:: procgraph:source
@@ -586,15 +581,7 @@ Implemented in `/src/procgraph_cv/opencv_utils.py <https://github.com/AndreaCens
 
 ``smooth``
 ------------------------------------------------------------
-Smooths an image. 
-
-Input:
-
-* grayscale:  a 2D numpy float32 array.
-
-Output:
-
-* a 2D  numpy float32 array.
+Smooths an image with a Gaussian filter.
 
 
 .. rst-class:: procgraph:config
@@ -602,7 +589,7 @@ Output:
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``gaussian_std`` (default: 5.0): |towrite|
+- ``gaussian_std`` (default: 5.0): Std-deviation of the Gaussian filter. (float,>0)
 
 
 .. rst-class:: procgraph:input
@@ -610,7 +597,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``grayscale``: A field to derive. (HxW array float)
 
 
 .. rst-class:: procgraph:output
@@ -618,7 +605,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``smoothed``: The smoothed image. (array(HxW,float))
 
 
 .. rst-class:: procgraph:source
@@ -723,7 +710,7 @@ Configuration
 
 - ``file``: HDF file to read
 
-- ``signals`` (default: None): Which signals to output (and in what order). Should be a comma-separated list. If you do not specify it will be all signal in the original order
+- ``signals`` (default: None): Which signals to output (and in what order). Should be a comma-separated list. If you do not specify it  will be all signal in the original order
 
 
 .. rst-class:: procgraph:output
@@ -731,7 +718,7 @@ Configuration
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|towrite| (number defined at runtime
+The signals read from the log. (signals are defined at runtime)
 
 
 .. rst-class:: procgraph:source
@@ -856,11 +843,10 @@ Convert a RGB image to grayscale, and back to a RGB image:::
 
 ``blend``
 ------------------------------------------------------------
-This block blends two or more images. 
+Blend two or more images. 
 
-RGB images are interpreted as having full alpha (opaque)
-
-All images must have the same width.
+RGB images are interpreted as having full alpha (opaque).
+All images must have the same width and height.
 
 
 .. rst-class:: procgraph:input
@@ -868,7 +854,7 @@ All images must have the same width.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-images to blend (variable number)
+images to blend (variable number: n >= 2)
 
 
 .. rst-class:: procgraph:output
@@ -985,7 +971,7 @@ Implemented in `/src/procgraph_images/compose.py <https://github.com/AndreaCensi
 
 ``gray2rgb``
 ------------------------------------------------------------
-Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
+Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray channel over R,G,B.
 
 
 .. rst-class:: procgraph:input
@@ -993,7 +979,7 @@ Converts a H x W grayscale into a H x W x 3 RGB by replicating channel.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``gray``: grayscale (HxW uint8)
 
 
 .. rst-class:: procgraph:output
@@ -1001,7 +987,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``0``: A RGB image in shades of gray. (HxWx3 uint8)
 
 
 .. rst-class:: procgraph:source
@@ -1016,7 +1002,7 @@ Implemented in `/src/procgraph_images/filters.py <https://github.com/AndreaCensi
 
 ``grayscale``
 ------------------------------------------------------------
-|towrite|
+Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.
 
 
 .. rst-class:: procgraph:input
@@ -1024,7 +1010,7 @@ Implemented in `/src/procgraph_images/filters.py <https://github.com/AndreaCensi
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``rgb``: RGB image (HxWx3 uint8)
 
 
 .. rst-class:: procgraph:output
@@ -1032,7 +1018,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``0``: A RGB image in shades of gray. (HxW uint8)
 
 
 .. rst-class:: procgraph:source
@@ -1063,7 +1049,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Images to arrange in a grid. (variable number)
+Images to arrange in a grid. (variable number: n >= 1)
 
 
 .. rst-class:: procgraph:output
@@ -1086,7 +1072,7 @@ Implemented in `/src/procgraph_images/imggrid.py <https://github.com/AndreaCensi
 
 ``posneg``
 ------------------------------------------------------------
-Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.
 
 
 .. rst-class:: procgraph:config
@@ -1094,9 +1080,11 @@ Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``max_value`` (default: None): |towrite|
+- ``max_value`` (default: None): Maximum of absolute value (if None, detect). (float,>0)
 
-- ``skim`` (default: 0): |towrite|
+- ``nan_color`` (default: [0.5, 0.5, 0.5]): Color to give for regions of NaN and Inf. (color)
+
+- ``skim`` (default: 0): Fraction to skim (in percent). (float,>0,<100)
 
 
 .. rst-class:: procgraph:input
@@ -1104,7 +1092,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``value``: The field to represent. (HxW array)
 
 
 .. rst-class:: procgraph:output
@@ -1112,7 +1100,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``posneg``: A RGB image. (HxWx3 uint8)
 
 
 .. rst-class:: procgraph:source
@@ -1127,7 +1115,7 @@ Implemented in `/src/procgraph_images/copied_from_reprep.py <https://github.com/
 
 ``rgb2gray``
 ------------------------------------------------------------
-|towrite|
+Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.
 
 
 .. rst-class:: procgraph:input
@@ -1135,7 +1123,7 @@ Implemented in `/src/procgraph_images/copied_from_reprep.py <https://github.com/
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``rgb``: RGB image (HxWx3 uint8)
 
 
 .. rst-class:: procgraph:output
@@ -1143,7 +1131,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``0``: A RGB image in shades of gray. (HxW uint8)
 
 
 .. rst-class:: procgraph:source
@@ -1158,21 +1146,7 @@ Implemented in `/src/procgraph_images/filters.py <https://github.com/AndreaCensi
 
 ``scale``
 ------------------------------------------------------------
-Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color]. 
-
-Input: a numpy array with finite values squeeze()able to (W,H).
-
-Configuration:
-
--  ``min_value``:  If specified, this is taken to be the threshold. Everything
-                     below min_value is considered to be equal to min_value.
--  ``max_value``:  Optional upper threshold.
--  ``min_color``:  color associated to minimum value. Default: [1,1,1] = white.
--  ``max_color``:  color associated to maximum value. Default: [0,0,0] = black.
-
-Raises :py:class:`.ValueError` if min_value == max_value
-
-Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
+Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].
 
 
 .. rst-class:: procgraph:config
@@ -1180,15 +1154,15 @@ Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``max_value`` (default: None): |towrite|
+- ``max_value`` (default: None): If specified, everything *above* is clipped. (float)
 
-- ``nan_color`` (default: [1, 0, 0]): |towrite|
+- ``nan_color`` (default: [0.5, 0.5, 0.5]): Color to give for regions of NaN and Inf. (color)
 
-- ``min_value`` (default: None): |towrite|
+- ``min_value`` (default: None): If specified, everything *below* is clipped. (float)
 
-- ``min_color`` (default: [1, 1, 1]): |towrite|
+- ``min_color`` (default: [1, 1, 1]): Color to give to the minimum values. (color)
 
-- ``max_color`` (default: [0, 0, 0]): |towrite|
+- ``max_color`` (default: [0, 0, 0]): Color to give to the maximum values. (color)
 
 
 .. rst-class:: procgraph:input
@@ -1196,7 +1170,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``value``: The field to represent. (HxW array)
 
 
 .. rst-class:: procgraph:output
@@ -1204,7 +1178,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``scale``: A RGB image. (HxWx3 uint8)
 
 
 .. rst-class:: procgraph:source
@@ -1313,7 +1287,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|towrite| (variable number)
+Any number of pickable signals. (variable number)
 
 
 .. rst-class:: procgraph:source
@@ -1384,7 +1358,8 @@ Each signal can either be:
     and we plot ``x`` versus ``y`` (see also :ref:`block:make_tuple`).
 
 2.  A list of numbers, or a 1-dimensional numpy array of length N.
-    In this case, it is interpreted as the y values, and we set  ``x = 1:N``.
+    In this case, it is interpreted as the y values,
+    and we set  ``x = 1:N``.
 
 
 .. rst-class:: procgraph:config
@@ -1396,27 +1371,27 @@ Configuration
 
 - ``height`` (default: 240): Image dimension
 
-- ``xlabel`` (default: None): |towrite|
+- ``xlabel`` (default: None): X label for the plot.
 
-- ``ylabel`` (default: None): |towrite|
+- ``ylabel`` (default: None): Y label for the plot.
 
-- ``legend`` (default: None): |towrite|
+- ``legend`` (default: None): List of strings to use as legend handles.
 
-- ``title`` (default: None): |towrite|
+- ``title`` (default: None): If None, use the signal name. Set to ``""`` to disable.
 
-- ``format`` (default: -): |towrite|
+- ``format`` (default: -): Line format ("-",".","x-",etc.)
 
 - ``symmetric`` (default: False): An alternative to y_min, y_max. Makes sure the plot is symmetric for y.
 
-- ``x_min`` (default: None): |towrite|
+- ``x_min`` (default: None): If set, force the X axis to have this minimum.
 
-- ``x_max`` (default: None): |towrite|
+- ``x_max`` (default: None): If set, force the X axis to have this maximum.
 
-- ``y_min`` (default: None): |towrite|
+- ``y_min`` (default: None): If set, force the Y axis to have this minimum.
 
-- ``y_max`` (default: None): |towrite|
+- ``y_max`` (default: None): If set, force the Y axis to have this maximum.
 
-- ``keep`` (default: False): |towrite|
+- ``keep`` (default: False): If True, tries to reuse the figure, without closing. (buggy on some backends)
 
 - ``transparent`` (default: False): If true, outputs a RGBA image instead of RGB.
 
@@ -1493,7 +1468,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``image``: H x W x 3  uint8 numpy array representing an RGB image.
+- ``image``: Either a HxWx3 uint8 numpy array representing an RGB image, or a HxW representing grayscale.
 
 
 .. rst-class:: procgraph:source
@@ -1516,9 +1491,9 @@ Decodes a video stream.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``file``: Input video file. Any format that ``mplayer`` understands.
+- ``file``: Input video file. This can be in any format that ``mplayer`` understands.
 
-- ``quiet`` (default: True): If true, suppress messages from mplayer.
+- ``quiet`` (default: True): If true, suppress stderr messages from mplayer.
 
 
 .. rst-class:: procgraph:output
@@ -1617,15 +1592,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 ``astype``
 ------------------------------------------------------------
-|towrite|
-
-
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``dtype``: |towrite|
+Converts an array using the ``astype`` function.
 
 
 .. rst-class:: procgraph:input
@@ -1633,7 +1600,9 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``a``: Numpy array (array)
+
+- ``dtype``: The new dtype. (string)
 
 
 .. rst-class:: procgraph:output
@@ -1641,7 +1610,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``typed``: The Numpy array with the new type. (array)
 
 
 .. rst-class:: procgraph:source
@@ -1695,9 +1664,9 @@ Wrapper around :py:func:`numpy.dstack`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
-- ``1``: |towrite|
+- ``y``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -1728,7 +1697,7 @@ Wrapper for :py:func:`numpy.fliplr`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``m``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -1759,7 +1728,7 @@ Wrapper for :py:func:`numpy.flipud`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``m``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -1782,7 +1751,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 ``gradient1d``
 ------------------------------------------------------------
-|towrite|
+Computes the gradient of a 1D array.
 
 
 .. rst-class:: procgraph:input
@@ -1790,7 +1759,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``a``: Numpy array (array(N),N>3)
 
 
 .. rst-class:: procgraph:output
@@ -1798,7 +1767,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``typed``: The gradient of the array. (array)
 
 
 .. rst-class:: procgraph:source
@@ -1821,9 +1790,9 @@ Wrapper around :py:func:`numpy.hstack`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
-- ``1``: |towrite|
+- ``y``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -1885,7 +1854,7 @@ Maximum over all elements.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -1911,20 +1880,14 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 |towrite|
 
 
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``threshold``: |towrite|
-
-
 .. rst-class:: procgraph:input
 
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``value``: |towrite|
+
+- ``threshold``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2021,7 +1984,11 @@ Computing the mean in float64 is more accurate:
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``axis`` (default: 0): |towrite|
+- ``dtype`` (default: None): |towrite|
+
+- ``axis`` (default: None): |towrite|
+
+- ``out`` (default: None): |towrite|
 
 
 .. rst-class:: procgraph:input
@@ -2029,7 +1996,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``a``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2055,20 +2022,14 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 |towrite|
 
 
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``threshold``: |towrite|
-
-
 .. rst-class:: procgraph:input
 
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``value``: |towrite|
+
+- ``threshold``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2099,7 +2060,7 @@ Normalize a vector such that ``|x|_inf = max(abs(x))= 1``
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2130,9 +2091,9 @@ Wrapper around :py:func:`numpy.multiply.outer`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``a``: |towrite|
 
-- ``1``: |towrite|
+- ``b``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2194,7 +2155,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``every``: |towrite|
+- ``every`` (default: None): |towrite|
 
 
 .. rst-class:: procgraph:input
@@ -2202,7 +2163,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2263,14 +2224,8 @@ The signal is prepared by introducing reflected copies of the signal
 (with the window size) in both ends so that transient parts are minimized
 in the begining and end part of the output signal.
 
-input:
-    x: the input signal
-    window_len: the dimension of the smoothing window; should be an odd integer
-    window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
-        flat window will produce a moving average smoothing.
-
-output:
-    the smoothed signal
+``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett', 'blackman'.
+A flat window will produce a moving average smoothing.
 
 example:
 
@@ -2283,7 +2238,8 @@ see also:
 numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
 scipy.signal.lfilter
 
-TODO: the window parameter could be the window itself if an array instead of a string
+TODO: the window parameter could be the window itself if an
+      array instead of a string
 
 
 .. rst-class:: procgraph:config
@@ -2291,9 +2247,9 @@ TODO: the window parameter could be the window itself if an array instead of a s
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``window_len`` (default: 11): |towrite|
+- ``window_len`` (default: 11): the dimension of the smoothing window;  an odd integer
 
-- ``window`` (default: hanning): |towrite|
+- ``window`` (default: hanning): the type of window from
 
 
 .. rst-class:: procgraph:input
@@ -2301,7 +2257,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: the input signal
 
 
 .. rst-class:: procgraph:output
@@ -2309,7 +2265,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``smoothed``: the smoothed signal
 
 
 .. rst-class:: procgraph:source
@@ -2363,7 +2319,7 @@ Sum over all elements.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2389,22 +2345,16 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 |towrite|
 
 
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``indices``: |towrite|
-
-- ``axis`` (default: 0): |towrite|
-
-
 .. rst-class:: procgraph:input
 
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``a``: |towrite|
+
+- ``axis``: |towrite|
+
+- ``indices``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2435,9 +2385,9 @@ Wrapper around :py:func:`numpy.vstack`.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``x``: |towrite|
 
-- ``1``: |towrite|
+- ``y``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2474,7 +2424,7 @@ Blocks for image operations based on the PIL library
 
 ``imread``
 ------------------------------------------------------------
-|towrite|
+Reads an image from a file.
 
 
 .. rst-class:: procgraph:input
@@ -2482,7 +2432,7 @@ Blocks for image operations based on the PIL library
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``filename``: Image filename. (string)
 
 
 .. rst-class:: procgraph:output
@@ -2490,7 +2440,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``image``: The image as a numpy array. (image)
 
 
 .. rst-class:: procgraph:source
@@ -2505,7 +2455,9 @@ Implemented in `/src/procgraph_pil/imread.py <https://github.com/AndreaCensi/pro
 
 ``resize``
 ------------------------------------------------------------
-|towrite|
+Resizes an image. 
+
+You should pass at least one of ``width`` or ``height``.
 
 
 .. rst-class:: procgraph:config
@@ -2513,9 +2465,9 @@ Implemented in `/src/procgraph_pil/imread.py <https://github.com/AndreaCensi/pro
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``width`` (default: None): |towrite|
+- ``width`` (default: None): Target image width. (int,>0)
 
-- ``height`` (default: None): |towrite|
+- ``height`` (default: None): Target image height. (int,>0)
 
 
 .. rst-class:: procgraph:input
@@ -2523,7 +2475,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``value``: The image to resize. (image)
 
 
 .. rst-class:: procgraph:output
@@ -2531,7 +2483,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``image``: The image as a numpy array. (rgb)
 
 
 .. rst-class:: procgraph:source
@@ -2548,8 +2500,11 @@ Implemented in `/src/procgraph_pil/pil_operations.py <https://github.com/AndreaC
 ------------------------------------------------------------
 This block provides text overlays over an image. 
 
+This block is very powerful, but the configuration is a bit complicated.
+
 You should provide a list of dictionary in the configuration variable
- ``texts``. Each dictionary in the list describes one piece of text.
+``texts``. Each dictionary in the list describes how and where to write
+one piece of text.
 
 An example of valid configuration is the following: ::
 
@@ -2565,17 +2520,19 @@ The meaning of the fields is as follow:
   Array of two integers giving the position of the text in the image
 
 ``color``
-  Text color. It can be a keyword color or an hexadecimal string (``white`` or
-  ``#ffffff``).
+  Text color. It can be a keyword color or an hexadecimal string
+  (``white`` or ``#ffffff``).
 
 ``bg``
   background color
 
 ``halign``
-  Horizontal alignment. Choose between ``left`` (default), ``center``, ``right``.
+  Horizontal alignment.
+  Choose between ``left`` (default), ``center``, ``right``.
 
 ``valign``
-  Vertical alignment. Choose between ``top`` (default), ``middle``, ``center``.
+  Vertical alignment.
+  Choose between ``top`` (default), ``middle``, ``center``.
 
 ``size``
   Font size in pixels
@@ -2601,7 +2558,7 @@ The available keywords are:
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``texts``: Text specification
+- ``texts``: Text specification (see block description).
 
 
 .. rst-class:: procgraph:input
@@ -2665,11 +2622,11 @@ Example of configuration: ::
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``width`` (default: 320): |towrite|
+- ``width`` (default: 320): Width of the resulting image.
 
-- ``height`` (default: 320): |towrite|
+- ``height`` (default: 320): Height of the resulting image.
 
-- ``max_readings`` (default: 30): |towrite|
+- ``max_readings`` (default: 30): Readings are clipped at this threshold (m).
 
 - ``groups``: How to group and draw the readings. (see example)
 
@@ -2683,7 +2640,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``readings``: |towrite|
+- ``readings``: The laser readings (array of floats).
 
 
 .. rst-class:: procgraph:output
@@ -2691,7 +2648,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``image``: |towrite|
+- ``image``: The laser visualization (rgba).
 
 
 .. rst-class:: procgraph:source
@@ -2708,7 +2665,8 @@ Implemented in `/src/procgraph_robotics/laser_display.py <https://github.com/And
 ------------------------------------------------------------
 Produces a plot of a range-finder scan variation (derivative). 
 
-It is a variation of :ref:`block:laser_display`.
+It is a variation of :ref:`block:laser_display`; look there for
+the documentation.
 
 
 .. rst-class:: procgraph:config
@@ -2716,19 +2674,19 @@ It is a variation of :ref:`block:laser_display`.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``width`` (default: 320): |towrite|
+- ``width`` (default: 320): Width of the resulting image.
 
-- ``height`` (default: 320): |towrite|
+- ``height`` (default: 320): Height of the resulting image.
 
-- ``groups``: How to group and draw the readings. (see example)
+- ``groups``: How to group and draw the readings.  (see :ref:`block:laser_display`)
 
 - ``title`` (default: None): By default it displays the signal name. Set the empty string to disable.
 
 - ``transparent`` (default: False): Gives transparent RGBA rather than RGB.
 
-- ``R0`` (default: 1): |towrite|
+- ``R0`` (default: 1): Radius of the readings circle.
 
-- ``amp`` (default: 0.5): |towrite|
+- ``amp`` (default: 0.5): Amplitude of the readings crown.
 
 
 .. rst-class:: procgraph:input
@@ -2736,7 +2694,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``readings_dot``: |towrite|
+- ``readings_dot``: Array of float representing array readings.
 
 
 .. rst-class:: procgraph:output
@@ -2744,7 +2702,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``image``: |towrite|
+- ``image``: A fancy visualization of the laser derivative
 
 
 .. rst-class:: procgraph:source
@@ -2759,7 +2717,9 @@ Implemented in `/src/procgraph_robotics/laser_dot_display.py <https://github.com
 
 ``organic_scale``
 ------------------------------------------------------------
-A (almost failed) attempt to scale a signal into [-1,1] according to the history.
+A (almost failed!) attempt to scale a signal into [-1,1] according to the history. 
+
+This one is a mess.
 
 
 .. rst-class:: procgraph:config
@@ -2771,7 +2731,7 @@ Configuration
 
 - ``skim_hist`` (default: 5): |towrite|
 
-- ``hist`` (default: 100): |towrite|
+- ``hist`` (default: 100): How many steps of history to use.
 
 - ``tau`` (default: 0.1): |towrite|
 
@@ -2812,7 +2772,7 @@ Computes the velocity commands from the odometry data.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``pose``: Odometry ``[x,y,theta]``.
+- ``pose``: Odometry as an array ``[x,y,theta]``.
 
 
 .. rst-class:: procgraph:output
@@ -2820,13 +2780,13 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``commands``: Estimated commands ``[vx,vy,omega]``.
+- ``commands``: Estimated commands as an array ``[vx,vy,omega]``.
 
-- ``vx``: |towrite|
+- ``vx``: Linear velocity, forward (m/s)
 
-- ``vy``: |towrite|
+- ``vy``: Linear velocity, side (m/s)
 
-- ``omega``: |towrite|
+- ``omega``: Angular velocity (rad/s)
 
 
 .. rst-class:: procgraph:source
@@ -2874,7 +2834,7 @@ Implemented in `/src/procgraph_robotics/pose2velocity.py <https://github.com/And
 
 ``skim``
 ------------------------------------------------------------
-Skims the top and bottom percentile from the data.
+Cuts off the top and bottom percentile of the array.
 
 
 .. rst-class:: procgraph:config
@@ -2882,7 +2842,7 @@ Skims the top and bottom percentile from the data.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``percent`` (default: 5): |towrite|
+- ``percent`` (default: 5): How much to cut off (decimal). (float,>=0,<90)
 
 
 .. rst-class:: procgraph:input
@@ -2890,7 +2850,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``a``: Any numpy array. (array)
 
 
 .. rst-class:: procgraph:output
@@ -2898,7 +2858,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``0``: Skimmed version of ``a``. (a)
 
 
 .. rst-class:: procgraph:source
@@ -3003,7 +2963,7 @@ This block extracts some of the components of a vector.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``index``: |towrite|
+- ``index``: Index (or indices) to extract.
 
 
 .. rst-class:: procgraph:input
@@ -3011,7 +2971,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``vector``: |towrite|
+- ``vector``: Any numpy array
 
 
 .. rst-class:: procgraph:output
@@ -3019,7 +2979,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``part``: |towrite|
+- ``part``: The part extracted
 
 
 .. rst-class:: procgraph:source
@@ -3158,7 +3118,7 @@ Prints the fps count for the input signals.
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-|towrite| (variable number: n >= 1)
+Any signal. (variable number: n >= 1)
 
 
 .. rst-class:: procgraph:source
@@ -3226,7 +3186,7 @@ Configuration
 
 - ``interval`` (default: 10): Length of interval (seconds).
 
-- ``natural`` (default: True): If true, set 0 as the log beginning.
+- ``natural`` (default: True): If true, set 0 to be timestamp of the log beginning. This allows to have prettier graphs
 
 
 .. rst-class:: procgraph:input
@@ -3341,7 +3301,7 @@ Formula used: ::
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``alpha``: |towrite|
+- ``alpha``: Innovation rate
 
 
 .. rst-class:: procgraph:input
@@ -3349,7 +3309,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``value``: |towrite|
+- ``value``: Any numpy array.
 
 
 .. rst-class:: procgraph:output
@@ -3357,7 +3317,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``lowpass``: |towrite|
+- ``lowpass``: The lowpass version.
 
 
 .. rst-class:: procgraph:source
@@ -3452,9 +3412,9 @@ Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``start``: |towrite|
+- ``start``: Slice start.
 
-- ``end``: |towrite|
+- ``end``: Slice end (inclusive).
 
 
 .. rst-class:: procgraph:input
@@ -3462,7 +3422,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``signal``: Any 1d numpy array
 
 
 .. rst-class:: procgraph:output
@@ -3470,7 +3430,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``sliced``: The sliced signal.
 
 
 .. rst-class:: procgraph:source
@@ -3628,7 +3588,7 @@ Compute the correlation matrix from the covariance matrix. If zero_diagonal = Tr
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``zero_diagonal`` (default: True): |towrite|
+- ``zero_diagonal`` (default: True): Whether to set the (noninformative) diagonal to zero.
 
 
 .. rst-class:: procgraph:input
@@ -3636,7 +3596,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``covariance``: A 2D numpy array.
 
 
 .. rst-class:: procgraph:output
@@ -3644,7 +3604,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
+- ``correlation``: The exctracted correlation.
 
 
 .. rst-class:: procgraph:source
