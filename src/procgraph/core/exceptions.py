@@ -26,7 +26,7 @@ class SemanticError(ModelWriterError):
     ''' A semantic error by who wrote the model spec.
        (and, as a platypus case, when wrong config is passed.'''
     def __init__(self, error, element=None):
-        Exception.__init__(self, error)
+        self.error = error
         if element is not None:
             assert hasattr(element, 'where')
         self.element = element
@@ -34,12 +34,13 @@ class SemanticError(ModelWriterError):
     def __str__(self):
         if self.element is not None:
             if self.element.where is not None:
-                return Exception.__str__(self) + '\n' + \
-                       self.element.where.__str__()
+                s = "Semantic error: %s" % self.error
+                s += "\n\n" + add_prefix(self.element.where.__str__(), ' ')
+                return s
             else:
-                return Exception.__str__(self) + ' (no position given) '
+                return 'Semantic error: %s (no position given) ' % self.error
         else:
-            return Exception.__str__(self) + ' (no element given) '
+            return 'Semantic error: %s (no element given) ' % self.error
 
 class PGSyntaxError(ModelWriterError):
     ''' A syntactic error by who wrote the model spec.'''
@@ -62,16 +63,45 @@ class BadInput(ModelExecutionError):
     ''' Exception thrown to communicate a problem with one
         of the inputs to the block. '''
     def __init__(self, error, block, input_signal):
-        ModelExecutionError.__init__(self, error, block)
+        #ModelExecutionError.__init__(self, error, block)
+        self.block = block
+        self.error = error
         self.input_signal = input_signal
+    
+    def __str__(self):
+        if self.block is not None:
+            name = self.block.name
+        else:
+            name = '(unknown)'
+        
+        s = "Bad input %r for block %r: %s" % (self.input_signal, name, self.error)
+        
+        if self.block is not None:
+            s += "\n\n" + add_prefix(self.block.where.__str__(), ' ')
+
+        return s
 
 class BadConfig(ModelExecutionError):
     ''' Exception thrown to communicate a problem with one
         of the configuration values passed to the block. '''
+
     def __init__(self, error, block, config):
-        ModelExecutionError.__init__(self, error, block)
         self.config = config
-    
+        self.error = error
+        self.block = block
+
+    def __str__(self):
+        if self.block is not None:
+            name = self.block.name
+        else:
+            name = '(unknown)'
+        
+        s = "Bad config %r for block %r: %s" % (self.config, name, self.error)
+        
+        if self.block is not None:
+            s += "\n\n" + add_prefix(self.block.where.__str__(), ' ')
+
+        return s
     
 # A couple of functions for pretty errors
 def aslist(x):
@@ -86,5 +116,12 @@ def x_not_found(what, x, iterable):
     return 'Could not find %s "%s". I know %s.' % \
         (what, x, aslist(iterable))
 
-
+def add_prefix(s, prefix):
+    result = ""
+    for l in s.split('\n'):
+        result += prefix + l + '\n'
+    return result
+    
+    
+    
     
