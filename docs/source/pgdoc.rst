@@ -6,198 +6,313 @@ Summary
 ============================================================
 
 
-:ref:`module:procgraph.components.debug_components`
+Package ``procgraph.components.debug_components``
+------------------------------------------------------------
+
 
 Components used for debugging and unit tests.
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`* <block:*>`                                                                                                                                                                                       Product of two signals.                                                                                                                                                                                 
-:ref:`+ <block:+>`                                                                                                                                                                                       Sum of two signals.                                                                                                                                                                                     
-:ref:`- <block:->`                                                                                                                                                                                       Implements the difference of two signals, taking care of overflows.                                                                                                                                     
-:ref:`/ <block:/>`                                                                                                                                                                                       Ratio of two signals.                                                                                                                                                                                   
-:ref:`constant <block:constant>`                                                                                                                                                                         Output a numerical constant that never changes.                                                                                                                                                         
-:ref:`gain <block:gain>`                                                                                                                                                                                 A simple example of a gain block.                                                                                                                                                                       
-:ref:`identity <block:identity>`                                                                                                                                                                         This block outputs the inputs, unchanged.                                                                                                                                                               
-:ref:`info <block:info>`                                                                                                                                                                                 Prints more compact information about the inputs than :ref:`block:print`.                                                                                                                               
-:ref:`print <block:print>`                                                                                                                                                                               Print a representation of the input values along with their timestamp.                                                                                                                                  
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`* <block:*>`
+     - Product of two signals.
+   * - :ref:`+ <block:+>`
+     - Sum of two signals.
+   * - :ref:`- <block:->`
+     - Implements the difference of two signals, taking care of overflows. 
+   * - :ref:`/ <block:/>`
+     - Ratio of two signals.
+   * - :ref:`constant <block:constant>`
+     - Output a numerical constant that never changes. 
+   * - :ref:`gain <block:gain>`
+     - A simple example of a gain block.
+   * - :ref:`identity <block:identity>`
+     - This block outputs the inputs, unchanged. 
+   * - :ref:`info <block:info>`
+     - Prints more compact information about the inputs than :ref:`block:print`. 
+   * - :ref:`print <block:print>`
+     - Print a representation of the input values along with their timestamp.
 
-:ref:`module:procgraph_cv`
+Package ``procgraph_cv``
+------------------------------------------------------------
+
 
 Operations using the OpenCV library. 
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`gradient <block:gradient>`                                                                                                                                                                         Computes the gradient of an image using a Sobel filter.                                                                                                                                                 
-:ref:`smooth <block:smooth>`                                                                                                                                                                             Smooths an image with a Gaussian filter.                                                                                                                                                                
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`gradient <block:gradient>`
+     - Computes the gradient of an image using a Sobel filter.
+   * - :ref:`smooth <block:smooth>`
+     - Smooths an image with a Gaussian filter.
 
-:ref:`module:procgraph_foo`
+Package ``procgraph_foo``
+------------------------------------------------------------
+
 
 An example package for ProcGraph that shows how to organize your code. 
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`block_example <block:block_example>`                                                                                                                                                               This is a documented example of the simplest block possible.                                                                                                                                            
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
+
+   * - :ref:`block_example <block:block_example>`
+     - This is a documented example of the simplest block possible. 
+
+Package ``procgraph_hdf``
+------------------------------------------------------------
 
 
-:ref:`module:procgraph_hdf`
+This is a set of blocks to read and write logs in HDF_ format. 
 
-This is a set of blocks to read and write logs in HDF5 format. 
+.. list-table::
+   :widths: 30 70
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`hdfread <block:hdfread>`                                                                                                                                                                           This block reads a log written with HDFwrite.                                                                                                                                                           
-:ref:`hdfread_test <block:hdfread_test>`                                                                                                                                                                 This is a simple test that reading from HDF files is happening correctly.                                                                                                                               
-:ref:`hdfwrite <block:hdfwrite>`                                                                                                                                                                         This block writes the incoming signals to a file in HDF_ format.                                                                                                                                        
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+   * - :ref:`hdfread <block:hdfread>`
+     - This block reads a log written with HDFwrite.
+   * - :ref:`hdfread_test <block:hdfread_test>`
+     - This is a simple test that reading from HDF files is happening correctly.
+   * - :ref:`hdfwrite <block:hdfwrite>`
+     - This block writes the incoming signals to a file in HDF_ format. 
 
+Package ``procgraph_images``
+------------------------------------------------------------
 
-:ref:`module:procgraph_images`
 
 Blocks for basic operations on images. 
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`blend <block:blend>`                                                                                                                                                                               Blend two or more images.                                                                                                                                                                               
-:ref:`border <block:border>`                                                                                                                                                                             Adds a block around the input image.                                                                                                                                                                    
-:ref:`compose <block:compose>`                                                                                                                                                                           Compose several images in the same canvas. You should probably use :ref:`block:grid` in many situations.                                                                                                
-:ref:`gray2rgb <block:gray2rgb>`                                                                                                                                                                         Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray channel over R,G,B.                                                                                                       
-:ref:`grid <block:grid>`                                                                                                                                                                                 A block that creates a larger image by arranging them in a grid.                                                                                                                                        
-:ref:`posneg <block:posneg>`                                                                                                                                                                             Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.                                                                                              
-:ref:`rgb2gray <block:rgb2gray>`                                                                                                                                                                         Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.                                                                                                                       
-:ref:`scale <block:scale>`                                                                                                                                                                               Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].                                                              
-:ref:`skim_top <block:skim_top>`                                                                                                                                                                         Cuts off the top percentile of the array.                                                                                                                                                               
-:ref:`skim_top_and_bottom <block:skim_top_and_bottom>`                                                                                                                                                   Cuts off the top and bottom percentile of the array.                                                                                                                                                    
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`blend <block:blend>`
+     - Blend two or more images. 
+   * - :ref:`border <block:border>`
+     - Adds a block around the input image.
+   * - :ref:`compose <block:compose>`
+     - Compose several images in the same canvas. You should probably use :ref:`block:grid` in many situations. 
+   * - :ref:`gray2rgb <block:gray2rgb>`
+     - Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray channel over R,G,B.
+   * - :ref:`grid <block:grid>`
+     - A block that creates a larger image by arranging them in a grid.
+   * - :ref:`posneg <block:posneg>`
+     - Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.
+   * - :ref:`rgb2gray <block:rgb2gray>`
+     - Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.
+   * - :ref:`scale <block:scale>`
+     - Provides a RGB representation of the values by interpolating the range [min(value),max(value)] into the colorspace [min_color, max_color].
+   * - :ref:`skim_top <block:skim_top>`
+     - Cuts off the top percentile of the array.
+   * - :ref:`skim_top_and_bottom <block:skim_top_and_bottom>`
+     - Cuts off the top and bottom percentile of the array.
 
-:ref:`module:procgraph_io_misc`
+Package ``procgraph_io_misc``
+------------------------------------------------------------
+
 
 Miscellaneous functions to be better organized.
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`as_json <block:as_json>`                                                                                                                                                                           Converts the input into a JSON string.                                                                                                                                                                  
-:ref:`pickle <block:pickle>`                                                                                                                                                                             Dumps the input as a :py:mod:`pickle` file.                                                                                                                                                             
-:ref:`pickle_group <block:pickle_group>`                                                                                                                                                                 Dumps the input as a :py:mod:`pickle` file, in the form of a dictionary  signal name -> value.                                                                                                          
-:ref:`to_file <block:to_file>`                                                                                                                                                                           Prints the input line by line to a given file.                                                                                                                                                          
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`as_json <block:as_json>`
+     - Converts the input into a JSON string. 
+   * - :ref:`pickle <block:pickle>`
+     - Dumps the input as a :py:mod:`pickle` file.
+   * - :ref:`pickle_group <block:pickle_group>`
+     - Dumps the input as a :py:mod:`pickle` file, in the form of a dictionary  signal name -> value.
+   * - :ref:`to_file <block:to_file>`
+     - Prints the input line by line to a given file.
 
-:ref:`module:procgraph_mpl`
+Package ``procgraph_mpl``
+------------------------------------------------------------
+
 
 Blocks using Matplotlib to display data.
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`plot <block:plot>`                                                                                                                                                                                 Plots the inputs using matplotlib.                                                                                                                                                                      
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`plot <block:plot>`
+     - Plots the inputs using matplotlib. 
 
-:ref:`module:procgraph_mplayer`
+Package ``procgraph_mplayer``
+------------------------------------------------------------
+
 
 Blocks for encoding/decoding video based on MPlayer.
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`mencoder <block:mencoder>`                                                                                                                                                                         Encodes a video stream using ``mencoder``.                                                                                                                                                              
-:ref:`mplayer <block:mplayer>`                                                                                                                                                                           Decodes a video stream.                                                                                                                                                                                 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`mencoder <block:mencoder>`
+     - Encodes a video stream using ``mencoder``. 
+   * - :ref:`mplayer <block:mplayer>`
+     - Decodes a video stream.
 
-:ref:`module:procgraph_numpy_ops`
+Package ``procgraph_numpy_ops``
+------------------------------------------------------------
+
 
 Various operations wrapping numpy functions.
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`abs <block:abs>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.absolute`.                                                                                                                                                    
-:ref:`arctan <block:arctan>`                                                                                                                                                                             Wrapper around :py:func:`numpy.arctan`.                                                                                                                                                                 
-:ref:`astype <block:astype>`                                                                                                                                                                             Converts an array using the ``astype`` function.                                                                                                                                                        
-:ref:`deg2rad <block:deg2rad>`                                                                                                                                                                           Converts degrees to radians.                                                                                                                                                                            
-:ref:`dstack <block:dstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.dstack`.                                                                                                                                                                 
-:ref:`fliplr <block:fliplr>`                                                                                                                                                                             Wrapper for :py:func:`numpy.fliplr`.                                                                                                                                                                    
-:ref:`flipud <block:flipud>`                                                                                                                                                                             Wrapper for :py:func:`numpy.flipud`.                                                                                                                                                                    
-:ref:`gradient1d <block:gradient1d>`                                                                                                                                                                     Computes the gradient of a 1D array.                                                                                                                                                                    
-:ref:`hstack <block:hstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.hstack`.                                                                                                                                                                 
-:ref:`log <block:log>`                                                                                                                                                                                   Wrapper around :py:func:`numpy.core.umath.log`.                                                                                                                                                         
-:ref:`max <block:max>`                                                                                                                                                                                   Maximum over all elements.                                                                                                                                                                              
-:ref:`mean <block:mean>`                                                                                                                                                                                 Compute the arithmetic mean along the specified axis.                                                                                                                                                   
-:ref:`my_maximum <block:my_maximum>`                                                                                                                                                                     |towrite|                                                                                                                                                                                               
-:ref:`my_minimum <block:my_minimum>`                                                                                                                                                                     |towrite|                                                                                                                                                                                               
-:ref:`normalize_Linf <block:normalize_Linf>`                                                                                                                                                             Normalize a vector such that ``|x|_inf = max(abs(x))= 1``.                                                                                                                                              
-:ref:`outer <block:outer>`                                                                                                                                                                               Outer product of two vectors.                                                                                                                                                                           
-:ref:`rad2deg <block:rad2deg>`                                                                                                                                                                           Converts radians to degrees.                                                                                                                                                                            
-:ref:`select <block:select>`                                                                                                                                                                             Selects some of the elements of ``x``.                                                                                                                                                                  
-:ref:`sign <block:sign>`                                                                                                                                                                                 Wrapper around :py:func:`numpy.core.umath.sign`.                                                                                                                                                        
-:ref:`smooth1d <block:smooth1d>`                                                                                                                                                                         Smooth the data using a window with requested size.                                                                                                                                                     
-:ref:`square <block:square>`                                                                                                                                                                             Wrapper around :py:func:`numpy.core.umath.square`.                                                                                                                                                      
-:ref:`sum <block:sum>`                                                                                                                                                                                   Sum over all elements.                                                                                                                                                                                  
-:ref:`take <block:take>`                                                                                                                                                                                 |towrite|                                                                                                                                                                                               
-:ref:`vstack <block:vstack>`                                                                                                                                                                             Wrapper around :py:func:`numpy.vstack`.                                                                                                                                                                 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`abs <block:abs>`
+     - Wrapper around :np:data:`numpy.absolute`.
+   * - :ref:`arctan <block:arctan>`
+     - Wrapper around :np:data:`numpy.arctan`.
+   * - :ref:`astype <block:astype>`
+     - Converts an array using the ``astype`` function.
+   * - :ref:`deg2rad <block:deg2rad>`
+     - Converts degrees to radians (wrapper around :np:data:`numpy.radians`.)
+   * - :ref:`dstack <block:dstack>`
+     - Wrapper around :np:data:`numpy.ma.dstack`.
+   * - :ref:`fliplr <block:fliplr>`
+     - Flips the array left/right (wrapper for :py:func:`numpy.fliplr`.)
+   * - :ref:`flipud <block:flipud>`
+     - Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)
+   * - :ref:`gradient1d <block:gradient1d>`
+     - Computes the gradient of a 1D array.
+   * - :ref:`hstack <block:hstack>`
+     - Wrapper around :np:data:`numpy.ma.hstack`.
+   * - :ref:`log <block:log>`
+     - Wrapper around :np:data:`numpy.log`.
+   * - :ref:`max <block:max>`
+     - Maximum over **all** elements.
+   * - :ref:`maximum <block:maximum>`
+     - Limits the numpy array to the given threshold.
+   * - :ref:`mean <block:mean>`
+     - Wrapper around :np:data:`numpy.mean`.
+   * - :ref:`minimum <block:minimum>`
+     - Limits the numpy array to the given threshold.
+   * - :ref:`normalize_Linf <block:normalize_Linf>`
+     - Normalize a vector such that ``|x|_inf = max(abs(x))= 1``.
+   * - :ref:`outer <block:outer>`
+     - Outer product of two vectors. 
+   * - :ref:`rad2deg <block:rad2deg>`
+     - Converts radians to degrees (wrapper around :np:data:`numpy.degrees`.)
+   * - :ref:`select <block:select>`
+     - Selects some of the elements of ``x``.
+   * - :ref:`sign <block:sign>`
+     - Wrapper around :np:data:`numpy.sign`.
+   * - :ref:`smooth1d <block:smooth1d>`
+     - Smooth the data using a window with requested size. 
+   * - :ref:`square <block:square>`
+     - Wrapper around :np:data:`numpy.square`.
+   * - :ref:`sum <block:sum>`
+     - Sum over **all** elements.
+   * - :ref:`take <block:take>`
+     - |towrite|
+   * - :ref:`vstack <block:vstack>`
+     - Wrapper around :np:data:`numpy.ma.vstack`.
 
-:ref:`module:procgraph_pil`
+Package ``procgraph_pil``
+------------------------------------------------------------
+
 
 Blocks for image operations based on the PIL library
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`imread <block:imread>`                                                                                                                                                                             Reads an image from a file.                                                                                                                                                                             
-:ref:`resize <block:resize>`                                                                                                                                                                             Resizes an image.                                                                                                                                                                                       
-:ref:`text <block:text>`                                                                                                                                                                                 This block provides text overlays over an image.                                                                                                                                                        
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`imread <block:imread>`
+     - Reads an image from a file.
+   * - :ref:`resize <block:resize>`
+     - Resizes an image. 
+   * - :ref:`text <block:text>`
+     - This block provides text overlays over an image. 
 
-:ref:`module:procgraph_robotics`
+Package ``procgraph_robotics``
+------------------------------------------------------------
+
 
 Some functions specific to robotics applications. 
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`laser_display <block:laser_display>`                                                                                                                                                               Produces a plot of a range-finder scan.                                                                                                                                                                 
-:ref:`laser_dot_display <block:laser_dot_display>`                                                                                                                                                       Produces a plot of a range-finder scan variation (derivative).                                                                                                                                          
-:ref:`organic_scale <block:organic_scale>`                                                                                                                                                               A (almost failed!) attempt to scale a signal into [-1,1] according to the history.                                                                                                                      
-:ref:`pose2commands <block:pose2commands>`                                                                                                                                                               Computes the velocity commands from the odometry data.                                                                                                                                                  
-:ref:`pose2vel_ <block:pose2vel_>`                                                                                                                                                                       Block used by :ref:`block:pose2commands`.                                                                                                                                                               
-:ref:`skim <block:skim>`                                                                                                                                                                                 Cuts off the top and bottom percentile of the array.                                                                                                                                                    
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`laser_display <block:laser_display>`
+     - Produces a plot of a range-finder scan. 
+   * - :ref:`laser_dot_display <block:laser_dot_display>`
+     - Produces a plot of a range-finder scan variation (derivative). 
+   * - :ref:`organic_scale <block:organic_scale>`
+     - A (almost failed!) attempt to scale a signal into [-1,1] according to the history. 
+   * - :ref:`pose2commands <block:pose2commands>`
+     - Computes the velocity commands from the odometry data.
+   * - :ref:`pose2vel_ <block:pose2vel_>`
+     - Block used by :ref:`block:pose2commands`.
+   * - :ref:`skim <block:skim>`
+     - Cuts off the top and bottom percentile of the array.
 
-:ref:`module:procgraph_signals`
+Package ``procgraph_signals``
+------------------------------------------------------------
+
 
 Blocks performing operations with a dynamic nature. 
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`derivative <block:derivative>`                                                                                                                                                                     Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``). See also :ref:`block:derivative2`.                                                                                            
-:ref:`derivative2 <block:derivative2>`                                                                                                                                                                   Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``). See also :ref:`block:derivative`.                                                                                                
-:ref:`extract <block:extract>`                                                                                                                                                                           This block extracts some of the components of a vector.                                                                                                                                                 
-:ref:`forward_difference <block:forward_difference>`                                                                                                                                                     Computes ``x[t+1] - x[t-1]`` normalized with timestamp.                                                                                                                                                 
-:ref:`fps_data_limit <block:fps_data_limit>`                                                                                                                                                             This block limits the output update to a certain framerate.                                                                                                                                             
-:ref:`fps_limit <block:fps_limit>`                                                                                                                                                                       This block limits the output update to a certain *realtime* framerate.                                                                                                                                  
-:ref:`fps_print <block:fps_print>`                                                                                                                                                                       Prints the fps count for the input signals.                                                                                                                                                             
-:ref:`history <block:history>`                                                                                                                                                                           This block collects the history of a quantity, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:last_n_samples`.                                                 
-:ref:`historyt <block:historyt>`                                                                                                                                                                         This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`.                            
-:ref:`join <block:join>`                                                                                                                                                                                 This block joins multiple signals into one.                                                                                                                                                             
-:ref:`last_n_samples <block:last_n_samples>`                                                                                                                                                             This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.                                                  
-:ref:`low_pass <block:low_pass>`                                                                                                                                                                         Implements simple low-pass filtering.                                                                                                                                                                   
-:ref:`make_tuple <block:make_tuple>`                                                                                                                                                                     Creates a tuple out of the input signals values.                                                                                                                                                        
-:ref:`sieve <block:sieve>`                                                                                                                                                                               This block decimates the data in time by transmitting only one in ``n`` updates.                                                                                                                        
-:ref:`slice <block:slice>`                                                                                                                                                                               Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).                                                                                                                        
-:ref:`sync <block:sync>`                                                                                                                                                                                 This block synchronizes a set of streams to the first stream (the master).                                                                                                                              
-:ref:`two_step_difference <block:two_step_difference>`                                                                                                                                                   Computes ``x[t+1] - x[t]`` normalized with timestamp.                                                                                                                                                   
-:ref:`wait <block:wait>`                                                                                                                                                                                 This block waits a given number of updates before transmitting the output.                                                                                                                              
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`derivative <block:derivative>`
+     - Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``). See also :ref:`block:derivative2`.
+   * - :ref:`derivative2 <block:derivative2>`
+     - Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``). See also :ref:`block:derivative`.
+   * - :ref:`extract <block:extract>`
+     - This block extracts some of the components of a vector.
+   * - :ref:`forward_difference <block:forward_difference>`
+     - Computes ``x[t+1] - x[t-1]`` normalized with timestamp. 
+   * - :ref:`fps_data_limit <block:fps_data_limit>`
+     - This block limits the output update to a certain framerate.
+   * - :ref:`fps_limit <block:fps_limit>`
+     - This block limits the output update to a certain *realtime* framerate. 
+   * - :ref:`fps_print <block:fps_print>`
+     - Prints the fps count for the input signals.
+   * - :ref:`history <block:history>`
+     - This block collects the history of a quantity, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:last_n_samples`.
+   * - :ref:`historyt <block:historyt>`
+     - This block collects the signals samples of a signals, and outputs *one* signal containing a tuple  ``(t,x)``. See also :ref:`block:last_n_samples` and :ref:`block:history`. 
+   * - :ref:`join <block:join>`
+     - This block joins multiple signals into one.
+   * - :ref:`last_n_samples <block:last_n_samples>`
+     - This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``. See also :ref:`block:historyt` and :ref:`block:history`.
+   * - :ref:`low_pass <block:low_pass>`
+     - Implements simple low-pass filtering. 
+   * - :ref:`make_tuple <block:make_tuple>`
+     - Creates a tuple out of the input signals values. 
+   * - :ref:`sieve <block:sieve>`
+     - This block decimates the data in time by transmitting only one in ``n`` updates.
+   * - :ref:`slice <block:slice>`
+     - Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).
+   * - :ref:`sync <block:sync>`
+     - This block synchronizes a set of streams to the first stream (the master). 
+   * - :ref:`two_step_difference <block:two_step_difference>`
+     - Computes ``x[t+1] - x[t]`` normalized with timestamp.
+   * - :ref:`wait <block:wait>`
+     - This block waits a given number of updates before transmitting the output.
 
-:ref:`module:procgraph_statistics`
+Package ``procgraph_statistics``
+------------------------------------------------------------
+
 
 Blocks for common statistical operations.
 
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
-:ref:`cov2corr <block:cov2corr>`                                                                                                                                                                         Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.                                                                              
-:ref:`covariance <block:covariance>`                                                                                                                                                                     Computes the covariance matrix of the input                                                                                                                                                             
-:ref:`expectation <block:expectation>`                                                                                                                                                                   Computes the sample expectation of a signal.                                                                                                                                                            
-:ref:`normalize <block:normalize>`                                                                                                                                                                       Removes the mean from a signal.                                                                                                                                                                         
-:ref:`soft_variance <block:soft_variance>`                                                                                                                                                               Computes the element-wise "soft" variance (expectation of error absolute value)                                                                                                                         
-:ref:`variance <block:variance>`                                                                                                                                                                         Computes the element-wise variance.                                                                                                                                                                     
-======================================================================================================================================================================================================== ========================================================================================================================================================================================================
+.. list-table::
+   :widths: 30 70
 
+   * - :ref:`cov2corr <block:cov2corr>`
+     - Compute the correlation matrix from the covariance matrix. If zero_diagonal = True, the diagonal is set to 0 instead of 1.
+   * - :ref:`covariance <block:covariance>`
+     - Computes the covariance matrix of the input.
+   * - :ref:`expectation <block:expectation>`
+     - Computes the sample expectation of a signal.
+   * - :ref:`normalize <block:normalize>`
+     - Removes the mean from a signal.
+   * - :ref:`soft_variance <block:soft_variance>`
+     - Computes the element-wise "soft" variance (expectation of error absolute value)
+   * - :ref:`variance <block:variance>`
+     - Computes the element-wise variance.
 
 .. _`module:procgraph.components.debug_components`:
 
@@ -687,12 +802,16 @@ Package ``procgraph_hdf``
 
 .. rst-class:: procgraph:desc
 
-This is a set of blocks to read and write logs in HDF5 format. 
+This is a set of blocks to read and write logs in HDF_ format. 
 
 
 .. rst-class:: procgraph:desc_rest
 
-You need the ``pytables`` package to be installed.
+You need the pytables_ package to be installed.
+
+.. _pytables: http://pytables.org
+
+.. _HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
 
 .. _`block:hdfread`:
 
@@ -759,19 +878,17 @@ Block ``hdfwrite``
 ------------------------------------------------------------------
 This block writes the incoming signals to a file in HDF_ format. 
 
-.. HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
-
 The HDF format is organized as follows: ::
 
      /            (root)
-     /procgraph_log             (group with name procgraph)
-     /procgraph_log/signal1     (table)
-     /procgraph_log/signal2     (table)
+     /procgraph             (group with name procgraph)
+     /procgraph/signal1     (table)
+     /procgraph/signal2     (table)
      ...
 
 Each table has the following fields:
 
-     time         (float)
+     time         (float64 timestamp)
      value        (the datatype of the signal)
 
 If a signal changes datatype, then an error is thrown.
@@ -821,14 +938,11 @@ Blocks for basic operations on images.
 
 .. rst-class:: procgraph:desc_rest
 
-The  module contains blocks that perform basic operations
-on images. The library is autoloaded and has no software dependency.
+This package contains blocks that perform basic operations
+on images. The library has no software dependency.
 
-For more complex operations see also:
-
-* :ref:`module:procgraph_cv`
-* :ref:`module:procgraph_pil`
-
+For more complex operations see also :ref:`module:procgraph_cv` and
+:ref:`module:procgraph_pil`
 
 **Example**
 
@@ -1578,7 +1692,7 @@ Various operations wrapping numpy functions.
 
 Block ``abs``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.absolute`.
+Wrapper around :np:data:`numpy.absolute`.
 
 
 .. rst-class:: procgraph:input
@@ -1609,7 +1723,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``arctan``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.arctan`.
+Wrapper around :np:data:`numpy.arctan`.
 
 
 .. rst-class:: procgraph:input
@@ -1679,7 +1793,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``deg2rad``
 ------------------------------------------------------------------
-Converts degrees to radians.
+Converts degrees to radians (wrapper around :np:data:`numpy.radians`.)
 
 
 .. rst-class:: procgraph:input
@@ -1710,7 +1824,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``dstack``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.dstack`.
+Wrapper around :np:data:`numpy.ma.dstack`.
 
 
 .. rst-class:: procgraph:input
@@ -1743,7 +1857,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``fliplr``
 ------------------------------------------------------------------
-Wrapper for :py:func:`numpy.fliplr`.
+Flips the array left/right (wrapper for :py:func:`numpy.fliplr`.)
 
 
 .. rst-class:: procgraph:input
@@ -1774,7 +1888,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``flipud``
 ------------------------------------------------------------------
-Wrapper for :py:func:`numpy.flipud`.
+Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)
 
 
 .. rst-class:: procgraph:input
@@ -1836,7 +1950,7 @@ Implemented in `/src/procgraph_numpy_ops/gradient1d.py <https://github.com/Andre
 
 Block ``hstack``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.hstack`.
+Wrapper around :np:data:`numpy.ma.hstack`.
 
 
 .. rst-class:: procgraph:input
@@ -1869,7 +1983,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``log``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.log`.
+Wrapper around :np:data:`numpy.log`.
 
 
 .. rst-class:: procgraph:input
@@ -1900,7 +2014,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``max``
 ------------------------------------------------------------------
-Maximum over all elements.
+Maximum over **all** elements.
 
 
 .. rst-class:: procgraph:input
@@ -1924,6 +2038,45 @@ Output
 Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
 
 
+.. _`block:maximum`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``maximum``
+------------------------------------------------------------------
+Limits the numpy array to the given threshold.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``threshold``: |towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
+
+
 .. _`block:mean`:
 
 
@@ -1931,73 +2084,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``mean``
 ------------------------------------------------------------------
-Compute the arithmetic mean along the specified axis. 
-
-Returns the average of the array elements.  The average is taken over
-the flattened array by default, otherwise over the specified axis.
-`float64` intermediate and return values are used for integer inputs.
-
-Parameters
-----------
-a : array_like
-    Array containing numbers whose mean is desired. If `a` is not an
-    array, a conversion is attempted.
-axis : int, optional
-    Axis along which the means are computed. The default is to compute
-    the mean of the flattened array.
-dtype : data-type, optional
-    Type to use in computing the mean.  For integer inputs, the default
-    is `float64`; for floating point inputs, it is the same as the
-    input dtype.
-out : ndarray, optional
-    Alternate output array in which to place the result.  The default
-    is ``None``; if provided, it must have the same shape as the
-    expected output, but the type will be cast if necessary.
-    See `doc.ufuncs` for details.
-
-Returns
--------
-m : ndarray, see dtype parameter above
-    If `out=None`, returns a new array containing the mean values,
-    otherwise a reference to the output array is returned.
-
-See Also
---------
-average : Weighted average
-
-Notes
------
-The arithmetic mean is the sum of the elements along the axis divided
-by the number of elements.
-
-Note that for floating-point input, the mean is computed using the
-same precision the input has.  Depending on the input data, this can
-cause the results to be inaccurate, especially for `float32` (see
-example below).  Specifying a higher-precision accumulator using the
-`dtype` keyword can alleviate this issue.
-
-Examples
---------
->>> a = np.array([[1, 2], [3, 4]])
->>> np.mean(a)
-2.5
->>> np.mean(a, axis=0)
-array([ 2.,  3.])
->>> np.mean(a, axis=1)
-array([ 1.5,  3.5])
-
-In single precision, `mean` can be inaccurate:
-
->>> a = np.zeros((2, 512*512), dtype=np.float32)
->>> a[0, :] = 1.0
->>> a[1, :] = 0.1
->>> np.mean(a)
-0.546875
-
-Computing the mean in float64 is more accurate:
-
->>> np.mean(a, dtype=np.float64)
-0.55000000074505806
+Wrapper around :np:data:`numpy.mean`.
 
 
 .. rst-class:: procgraph:config
@@ -2033,14 +2120,14 @@ Output
 Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
 
 
-.. _`block:my_maximum`:
+.. _`block:minimum`:
 
 
 .. rst-class:: procgraph:block
 
-Block ``my_maximum``
+Block ``minimum``
 ------------------------------------------------------------------
-|towrite|
+Limits the numpy array to the given threshold.
 
 
 .. rst-class:: procgraph:config
@@ -2056,7 +2143,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``value``: |towrite|
+- ``value``: Any numpy array.
 
 
 .. rst-class:: procgraph:output
@@ -2064,46 +2151,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: |towrite|
-
-
-.. rst-class:: procgraph:source
-
-Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
-
-
-.. _`block:my_minimum`:
-
-
-.. rst-class:: procgraph:block
-
-Block ``my_minimum``
-------------------------------------------------------------------
-|towrite|
-
-
-.. rst-class:: procgraph:config
-
-Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``threshold``: |towrite|
-
-
-.. rst-class:: procgraph:input
-
-Input
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``value``: |towrite|
-
-
-.. rst-class:: procgraph:output
-
-Output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-- ``0``: |towrite|
+- ``0``: Array of same shape.
 
 
 .. rst-class:: procgraph:source
@@ -2184,7 +2232,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``rad2deg``
 ------------------------------------------------------------------
-Converts radians to degrees.
+Converts radians to degrees (wrapper around :np:data:`numpy.degrees`.)
 
 
 .. rst-class:: procgraph:input
@@ -2254,7 +2302,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``sign``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.sign`.
+Wrapper around :np:data:`numpy.sign`.
 
 
 .. rst-class:: procgraph:input
@@ -2349,7 +2397,7 @@ Implemented in `/src/procgraph_numpy_ops/smooth1d.py <https://github.com/AndreaC
 
 Block ``square``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.core.umath.square`.
+Wrapper around :np:data:`numpy.square`.
 
 
 .. rst-class:: procgraph:input
@@ -2380,7 +2428,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``sum``
 ------------------------------------------------------------------
-Sum over all elements.
+Sum over **all** elements.
 
 
 .. rst-class:: procgraph:input
@@ -2452,7 +2500,7 @@ Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCe
 
 Block ``vstack``
 ------------------------------------------------------------------
-Wrapper around :py:func:`numpy.vstack`.
+Wrapper around :np:data:`numpy.ma.vstack`.
 
 
 .. rst-class:: procgraph:input
@@ -3694,7 +3742,7 @@ Implemented in `/src/procgraph_statistics/cov2corr.py <https://github.com/Andrea
 
 Block ``covariance``
 ------------------------------------------------------------------
-Computes the covariance matrix of the input
+Computes the covariance matrix of the input.
 
 
 .. rst-class:: procgraph:config

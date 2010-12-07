@@ -7,9 +7,11 @@ to write
 Block-builder API
 -----------------
 
-.. module::  procgraph.core.block
+.. module::  procgraph
 
 .. autoclass:: Block
    :members: 
+
+
 
 

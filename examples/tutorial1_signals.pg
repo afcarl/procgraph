@@ -1,0 +1,5 @@
+
+
+|mplayer file="coastguard.mp4"| --> rgb
+
+rgb --> |mencoder vbitrate=100 file="coastguard1.avi"|

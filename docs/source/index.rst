@@ -26,7 +26,12 @@ ProcGraph
     * :ref:`install`
     * :ref:`why`
     * :ref:`tutorial0`
+
+    **Manual**
+
     * :ref:`creating_new_blocks`    
+    * :ref:`running`    
+    * :ref:`packaging`    
     * :ref:`faq`
 
 

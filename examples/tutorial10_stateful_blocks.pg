@@ -1,0 +1,14 @@
+--- model tutorial10_stateful_blocks
+
+import tutorial10_blocks
+
+
+|mplayer file="coastguard.mp4"|  --> rgb
+
+
+    rgb --> |psychedelic| --> processed
+    
+
+    processed --> |mencoder file="coastguard10.avi"|
+
+
