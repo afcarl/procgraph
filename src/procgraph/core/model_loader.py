@@ -123,6 +123,9 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
         
+        # Make sure we use an absolute filename
+        f = os.path.realpath(f)
+                
         cache = os.path.splitext(f)[0] + '.pgc'
         if not ignore_cache and \
             os.path.exists(cache) and \
@@ -134,6 +137,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
                 # XXX repeated code 
                 debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
+                
                 models = parse_model(model_spec, filename=f)
                 pickle.dump(models, open(cache, 'w'))   
             #print "Using cache %s" % cache
@@ -205,7 +209,12 @@ def add_models_to_library(library, string, name=None,
 def model_from_string(model_spec, name=None, config=None,
                       library=None, filename=None):
     ''' Instances a model from a specification. Optional
-        attributes can be passed. Returns a Model object. '''
+        attributes can be passed. Returns a Model object. 
+        
+        Additional models in the spec (after the first) are automatically
+        added to the library (defined_in = calling module).
+        
+    '''
     if config is None:
         config = {}
     if library is None:
@@ -227,6 +236,7 @@ def model_from_string(model_spec, name=None, config=None,
         for support in parsed_models[1:]:
             pg_add_parsed_model_to_library(support, library, defined_in=mod)
 
+    # Get the first one
     parsed_model = parsed_models[0]
     
     model = create_from_parsing_results(parsed_model, name=name,

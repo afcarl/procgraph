@@ -12,20 +12,18 @@ PROCGRAPH_LOG_GROUP = 'procgraph'
 
 class HDFwrite(Block):
     ''' This block writes the incoming signals to a file in HDF_ format.
-    
-    .. HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
      
     The HDF format is organized as follows: ::
     
          /            (root)
-         /procgraph_log             (group with name procgraph)
-         /procgraph_log/signal1     (table)
-         /procgraph_log/signal2     (table)
+         /procgraph             (group with name procgraph)
+         /procgraph/signal1     (table)
+         /procgraph/signal2     (table)
          ...
          
     Each table has the following fields:
     
-         time         (float)
+         time         (float64 timestamp)
          value        (the datatype of the signal)
          
     If a signal changes datatype, then an error is thrown.

@@ -1,6 +1,10 @@
-''' This is a set of blocks to read and write logs in HDF5 format.
+''' This is a set of blocks to read and write logs in HDF_ format.
 
-You need the ``pytables`` package to be installed.
+You need the pytables_ package to be installed.
+
+.. _pytables: http://pytables.org
+ 
+.. _HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
 
 '''
 

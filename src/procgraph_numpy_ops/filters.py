@@ -31,7 +31,6 @@ def take(a, axis=0, indices=COMPULSORY):
         raise Exception('take(axis=%s,indices=%s) failed on array '
                         'with shape %s: %s' % (axis, indices, a.shape, e))
 
-
         
 @simple_block
 def outer(a, b):
@@ -74,55 +73,64 @@ def normalize_Linf(x):
     return x / numpy.abs(x).max()
 
 @simple_block
-def my_minimum(value, threshold=COMPULSORY):
+def minimum(value, threshold=COMPULSORY):
+    ''' Limits the numpy array to the given threshold. 
+    
+        :param value: Any numpy array.
+        :return: Array of same shape.
+    '''
     assert threshold != COMPULSORY
     return numpy.minimum(value, threshold)
 
 @simple_block
-def my_maximum(value, threshold=COMPULSORY):
+def maximum(value, threshold=COMPULSORY):
+    ''' Limits the numpy array to the given threshold. '''
     assert threshold != COMPULSORY
     return numpy.maximum(value, threshold)
 
 
-register_simple_block(numpy.mean, 'mean', params={'axis':0})
+register_simple_block(numpy.mean, 'mean', params={'axis':0},
+      doc='Wrapper around :np:data:`numpy.mean`.')
 
 register_simple_block(numpy.square, 'square',
-      doc='Wrapper around :py:func:`numpy.core.umath.square`.')
+      doc='Wrapper around :np:data:`numpy.square`.')
 
 register_simple_block(numpy.log, 'log',
-      doc='Wrapper around :py:func:`numpy.core.umath.log`.')
+      doc='Wrapper around :np:data:`numpy.log`.')
 
 register_simple_block(numpy.abs, 'abs',
-      doc='Wrapper around :py:func:`numpy.core.umath.absolute`.')
+      doc='Wrapper around :np:data:`numpy.absolute`.')
 
 register_simple_block(numpy.sign, 'sign',
-      doc='Wrapper around :py:func:`numpy.core.umath.sign`.')
+      doc='Wrapper around :np:data:`numpy.sign`.')
 
 register_simple_block(numpy.arctan, 'arctan',
-      doc='Wrapper around :py:func:`numpy.arctan`.')
+      doc='Wrapper around :np:data:`numpy.arctan`.')
 
 register_simple_block(lambda x, y: numpy.dstack((x, y)), 'dstack', num_inputs=2,
-      doc='Wrapper around :py:func:`numpy.dstack`.')
+      doc='Wrapper around :np:data:`numpy.ma.dstack`.')
 
 register_simple_block(lambda x, y: numpy.hstack((x, y)), 'hstack', num_inputs=2,
-      doc='Wrapper around :py:func:`numpy.hstack`.')
+      doc='Wrapper around :np:data:`numpy.ma.hstack`.')
 
 register_simple_block(lambda x, y: numpy.vstack((x, y)), 'vstack', num_inputs=2,
-      doc='Wrapper around :py:func:`numpy.vstack`.')
+      doc='Wrapper around :np:data:`numpy.ma.vstack`.')
 
 register_simple_block(lambda x: numpy.max(array(x).flat), 'max',
-      doc='Maximum over all elements.')
+      doc='Maximum over **all** elements. ')
 
 register_simple_block(lambda x: numpy.sum(array(x).flat), 'sum',
-      doc='Sum over all elements.')
+      doc='Sum over **all** elements. ')
 
 register_simple_block(numpy.flipud, 'flipud',
-                      doc='Wrapper for :py:func:`numpy.flipud`.')
+     doc='Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)')
+
 register_simple_block(numpy.fliplr, 'fliplr',
-                      doc='Wrapper for :py:func:`numpy.fliplr`.')
+     doc='Flips the array left/right (wrapper for :py:func:`numpy.fliplr`.)')
  
 register_simple_block(numpy.radians, 'deg2rad',
-                      doc='Converts degrees to radians.')
+    doc='Converts degrees to radians (wrapper around :np:data:`numpy.radians`.)')
+
 register_simple_block(numpy.degrees, 'rad2deg',
-                      doc='Converts radians to degrees.')
+    doc='Converts radians to degrees (wrapper around :np:data:`numpy.degrees`.)')
  

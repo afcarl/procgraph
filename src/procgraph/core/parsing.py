@@ -8,6 +8,7 @@ from .parsing_elements import VariableReference, ParsedBlock, \
     ParsedSignalList, Connection, Where, \
     output_from_tokens, input_from_tokens, config_from_tokens
 from .exceptions import PGSyntaxError
+import os
 
 
 def eval_dictionary(s, loc, tokens): #@UnusedVariable
@@ -267,7 +268,7 @@ def parse_model(string, filename=None):
     if not string.strip():
         raise PGSyntaxError('Passed empty string.', Where(filename, string, 0))
     
-    #  this is not threadsafe (but we don't have threads, so it's all good) 
+    #  this is not threadsafe (but we don't have threads, so it's all good)
     ParsedModel.static_filename = filename
     
     try:

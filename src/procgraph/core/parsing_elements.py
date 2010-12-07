@@ -1,11 +1,10 @@
-import sys
 from pyparsing import lineno, col
+import sys
 
-from .block_meta import split_docstring, BlockInput, \
-    BlockOutput, BlockConfig
+from .block_meta import split_docstring, BlockInput, BlockOutput, BlockConfig
 from .exceptions import SemanticError, x_not_found
-
 from .constants import FIXED
+
 
 class Where:
     ''' An object of this class represents a place in a file. 
@@ -42,10 +41,11 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         s += (space + '^\n')
         s += (space + '|\n')
-        s += (space + 'here or nearby\n')
+        s += (space + 'here or nearby')
         return s
         
     def print_where(self, s=sys.stdout):
+        # XXX: repeated code
         s.write('\n\n')
         prefix = '    '
         write = lambda x: s.write(prefix + x)
@@ -61,7 +61,7 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         write(space + '^\n')
         write(space + '|\n')
-        write(space + 'here or nearby\n')
+        write(space + 'here or nearby')
          
 
 class ParsedElement:
