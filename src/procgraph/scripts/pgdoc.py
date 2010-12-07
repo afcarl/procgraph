@@ -195,24 +195,21 @@ def main():
     for module_name in sorted(modules):
         module = modules[module_name]
         
-        f.write('%s\n\n' % module_reference(module.name))
+        #f.write('%s\n' % module_reference(module.name))
+        f.write('Package ``%s``\n' % module.name)
+        f.write('-' * 60 + '\n\n\n')
         
         d = getstr(module.desc, '%s description' % module.name)
         f.write(d + '\n\n')
+
         
-        col1 = 200
-        col2 = 200
-        f.write('='*col1 + ' ' + '=' * col2 + '\n')
-        
+        rows = []
         for block_name in sorted(module.blocks):
             block = module.blocks[block_name]            
             desc = getstr(block.desc, '%s:%s desc' % (module_name, block_name)) 
             name = block_reference(block.name)
-            f.write(name.ljust(col1) + ' ' + desc.ljust(col2) + '\n')             
-            
-
-        f.write('='*col1 + ' ' + '=' * col2 + '\n')
-        f.write('\n\n')
+            rows.append((name, desc))
+        write_rst_table(f, rows, widths=[30, 70])
     
     for module_name in sorted(modules):
         module = modules[module_name]
@@ -337,5 +334,43 @@ def block_reference(name):
 
 def module_reference(name):
     return ":ref:`module:%s`" % name
+
+"""    
+.. list-table:: Frozen Delights!
+   :widths: 15 10 30
+   :header-rows: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+   * - Crunchy Frog
+     - 1.49
+     - If we took the bones out, it wouldn't be
+       crunchy, now would it?
+   * - Gannet Ripple
+     - 1.99
+     - On a stick!
+"""
  
+def write_rst_table(f, rows, widths=[30, 70]):
+    # XXX: does not work with multiline
+    f.write('.. list-table::\n')
+    f.write('   :widths: %s\n' % " ".join([str(w) for w in widths]))
+    f.write('\n')
+    
+    for row in rows:
+        print row.__repr__()
+        for i, item in enumerate(row):
+            print item.__repr__()
+            if '\n' in item:
+                print('Warning: malformed cell %r.' % item)
+            if i == 0:
+                f.write('   * - %s\n' % item)
+            else:
+                f.write('     - %s\n' % item)
+    f.write('\n')
+
 
