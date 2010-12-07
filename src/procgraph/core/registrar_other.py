@@ -8,6 +8,7 @@ from .model_loader import add_models_to_library
 from .constants import COMPULSORY, TIMESTAMP
 from .docstring_parsing import parse_docstring_annotations, DocStringInfo
 import types
+from .exceptions import BadConfig, BadInput
 
 def make_generic(name, inputs, num_outputs,
                  operation, params={}, docs=None):
@@ -95,10 +96,16 @@ def make_generic(name, inputs, num_outputs,
                 
             try:
                 result = operation(*args, **params)
-            except Exception as e:
-                traceback.print_exc()
-                raise ModelExecutionError("While executing %s: %s." % \
-                                          (operation, e), block=self)
+            # Functions can throw BadInput and BadConfig, but we have to fill
+            # in the block reference for them.
+            except (BadInput, BadConfig) as e:
+                e.block = self
+                raise
+                
+#            except Exception as e:
+#                traceback.print_exc()
+#                raise ModelExecutionError("While executing %s: %s." % \
+#                                          (operation, e), block=self)
         
             if num_outputs == 1:
                 self.set_output(0, result)
