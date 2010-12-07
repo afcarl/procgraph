@@ -161,10 +161,18 @@ def pg(filename, config,
         model = library.instance(filename, name=None,
                                          config=config)
     else:
+        # See if it exists
         if not os.path.exists(filename):
-            # TODO: add where for command line
-            raise SemanticError('Unknown model or file "%s".' % filename)
+            # Maybe try with extension .pg
+            filename_pg = "%s.pg" % filename
+            if os.path.exists(filename_pg):
+                filename = filename_pg
+            else:
+                # TODO: add where for command line
+                raise SemanticError('Unknown model or file "%s".' % filename)
 
+        # Make sure we use absolute pathnames so that we know the exact directory
+        filename = os.path.realpath(filename)
         model_spec = open(filename).read()
         model = model_from_string(model_spec, config=config,
                                   filename=filename, library=library)
