@@ -105,6 +105,8 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     
     # We mix the normal config with the defaults
     # FIXME: None -> no where information
+    #        In fact, parsed_model is the one we are instancing, NOT 
+    #        where the error is made.
     resolved = resolve_config(parsed_model.config, normal_config, None) 
     # we give none so that it can be filled in by the caller
     
@@ -201,16 +203,27 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             properties[key] = expand_value(value, element=element) 
         pass  
     
-    for x in parsed_model.imports:
-        package = x.package
-        if not package in sys.modules:
-            info("Importing package %r..." % package)
-            try:
-                __import__(package)
-            except Exception as e:
-                raise SemanticError('Could not import package "%s": %s' % \
-                                        (package, e), element=x)
+    # Make sure we can access python modules in the same directory as the
+    # filename; we add the directory to the sys.path
     
+    old_sys_path = list(sys.path)
+    if parsed_model.where.filename is not None:
+        dir = os.path.dirname(parsed_model.where.filename)
+        if dir is not None:
+            sys.path.append(dir) 
+    
+    try:
+        for x in parsed_model.imports:
+            package = x.package
+            if not package in sys.modules:
+                info("Importing package %r..." % package)
+                try:
+                    __import__(package)
+                except Exception as e:
+                    raise SemanticError('Could not import package "%s": %s' % \
+                                            (package, e), element=x)
+    finally:
+        sys.path = old_sys_path
      
     # Then we instantiate all the blocks
    
@@ -515,18 +528,18 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                     input_block = model.name2block[s.block_name]
                     if not input_block.is_valid_output_name(s.name):
                         # TODO: make other friendly messages like this
-                        msg = ("A link refers to an unknown output %r.\n" % 
+                        msg = ("A link refers to an unknown output %r. " % 
                                s.name)
-                        msg += ("The known outputs are: %s.\n" % 
+                        msg += ("The known outputs are: %s." % 
                                 input_block.get_output_signals_names()) 
-                        msg += "  link: %s \n" % s
-                        msg += " block: %s \n" % input_block  
+                        # msg += "  link: %s \n" % s
+                        # msg += " block: %s \n" % input_block  
                         raise SemanticError(msg, element=s)
                     s.local_input = input_block.canonicalize_output(s.name)
                 else:
                     if not s.name in model.name2block_connection:
                         msg = 'Link %s refers to unknown signal %r. ' \
-                              ' We know %s.' % (s, s.name,
+                              'We know %s.' % (s, s.name,
                                     aslist(model.name2block_connection.keys()))
                         raise SemanticError(msg, element=s)
                     defined_signal = model.name2block_connection[s.name]
