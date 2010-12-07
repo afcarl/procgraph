@@ -72,7 +72,7 @@ def gradient(grayscale, aperture_size=3):
         :rtype: array(HxW,float)
     """    
         
-    check_2d_array(grayscale)
+    check_2d_array(grayscale, "grayscale")
     
     im = numpy_to_cv(grayscale)
     shape = (im.width, im.height)
@@ -102,9 +102,8 @@ def smooth(grayscale, gaussian_std=5.0):
         :rtype: array(HxW,float)
         
     """
-    # FIXME: this kind of documentation is not read correctly
     
-    check_2d_array(grayscale, name="input to gradient() ")
+    check_2d_array(grayscale, "grayscale")
     grayscale = grayscale.astype('float32')
     
     im = numpy_to_cv(grayscale)
