@@ -14,14 +14,16 @@ def is_package_available(p):
          print("Warning: cannot import %r: %s" % (p, e)) 
          return False
 
-missing = set()
+missing = {}
 problems = set()
 for module, info in index['packages'].items():
     for requirement, options in info['requires'].items():
         if not any([is_package_available(op) for op in options]):
             print("For package %r, dependency %r cannot be satisfied." % 
 				  (module, requirement))
-            missing.add(requirement)
+            missing[requirement] = options
+            # XXX: this is slightly incorrect if different packages want
+            # the same module but different options.
             problems.add(module)
 
 if missing:
@@ -29,8 +31,12 @@ if missing:
     print('Dependency search problems summary')
     print('----------------------------------\n')
     print('I could not find the following packages installed:\n')
-    for m in missing:
-        print(' - %-20s' % m)
+    for requirement, options  in missing.items():
+    	if len(options) > 1:
+    		o = '(Satisfiable by %s.)' % " or ".join([x.__repr__() for x in options])
+    	else:
+    		o = ''
+        print(' - %-20s  %s' % (requirement, o))
     print('\nThese missing requirements could make the following packages not work properly:\n')
     for p in problems:
         desc = index['packages'][p]['desc']
@@ -44,8 +50,6 @@ if missing:
 
 
 
-
-
 packages = find_packages(where='src')
 
 setup(name='procgraph',
@@ -53,8 +57,8 @@ setup(name='procgraph',
       package_dir={'':'src'},
       packages=packages,
       install_requires=['pyparsing',
-                        'simplejson',
-                        'numpy',
+                        'simplejson', #TODO: get rid of this
+                        'numpy', # TODO: make numpy optional?
                         'setproctitle',
                         'termcolor'],
       entry_points={
