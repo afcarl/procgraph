@@ -2,6 +2,7 @@ import subprocess
 
 from procgraph import Block
 from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
+import numpy
  
 # TODO: detect an error in Mencoder (perhaps size too large)
 # TODO: cleanup processes after finishing
@@ -89,13 +90,16 @@ class MEncoder(Block):
     
         make_sure_dir_exists(self.config.file)
             
+        self.info('Writing %dx%d %s video stream at %.1f fps to %r.' % 
+                  (self.width, self.height, format, fps, self.config.file))
+        
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
                 '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' % 
                 (self.width, self.height, fps, format),
                 '-ovc', 'lavc', '-lavcopts',
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
                  '-o', self.config.file]
-        self.info('command line: %s' % " ".join(args))
+        self.debug('command line: %s' % " ".join(args))
                  
         if self.config.quiet:
             self.process = subprocess.Popen(args,
@@ -107,7 +111,10 @@ class MEncoder(Block):
         if self.config.timestamps:
             self.timestamps_file = open(self.config.file + '.timestamps', 'w') 
 
-    def write_value(self, timestamp, image):            
+    def write_value(self, timestamp, image):
+        # very important! make sure we are using a reasonable array
+        if not image.flags['C_CONTIGUOUS']:
+            image = numpy.ascontiguousarray(image)            
         self.process.stdin.write(image.data)
         self.process.stdin.flush()
 

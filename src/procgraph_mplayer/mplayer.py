@@ -1,8 +1,7 @@
 # OS X: install from http://ffmpegx.com/download.html
 import subprocess, os, numpy
  
-from procgraph  import Generator, Block, ModelExecutionError
-
+from procgraph  import Generator, Block, ModelExecutionError, BadConfig
  
 class MPlayer(Generator):
     ''' Decodes a video stream. ''' 
@@ -19,6 +18,10 @@ class MPlayer(Generator):
     def init(self): 
         self.file = self.config.file
         
+        if not os.path.exists(self.config.file):
+            raise BadConfig('File %r does not exist.' % self.config.file,
+                            self, 'file')
+            
         # first we identify the video resolution
         args = 'mplayer -identify -vo null -ao null -frames 0'.split() \
                + [self.file]
@@ -48,7 +51,8 @@ class MPlayer(Generator):
         self.height = info[id_height]
         self.fps = info[id_fps]
         
-        self.debug('Detected %dx%d video stream at %.1fps in %r.' % 
+        # TODO: reading non-RGB streams not supported
+        self.info('Reading %dx%d video stream at %.1f fps in %r.' % 
                    (self.width, self.height, self.fps, self.config.file))
 
         self.shape = (self.height, self.width, 3)
@@ -71,7 +75,7 @@ class MPlayer(Generator):
                 fifo_name 
                 ]
         
-        self.info("command line: %s" % " ".join(args))
+        self.debug("command line: %s" % " ".join(args))
          
         if self.config.quiet:
             self.process = subprocess.Popen(args, stdout=open('/dev/null'),
