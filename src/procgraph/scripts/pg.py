@@ -1,12 +1,11 @@
 import sys, os 
 from optparse import OptionParser
 
-from ..core.model_loader import model_from_string, pg_look_for_models
+from ..core.model_loader import model_from_string, pg_look_for_models, ModelSpec
 from ..core.registrar import default_library, Library
 from ..core.exceptions import PGException, SemanticError
 from ..core.visualization import error, info
 from ..core.constants import PATH_ENV_VAR
-from procgraph.core.model_loader import ModelSpec
 
 usage_short = \
 """Usage:    
@@ -151,14 +150,16 @@ def pg(filename, config,
         __import__(module)
     
     library = Library(default_library)
-    pg_look_for_models(library, ignore_cache=nocache,
+    
+    pg_look_for_models(library,
+                       ignore_cache=nocache,
                        additional_paths=additional_directories)
     
     # load standard components
     import procgraph.components #@UnusedImport
 
     if library.exists(block_type=filename):
-#            w = Where('command line', filename, 0)
+        # XXX w = Where('command line', filename, 0)
         # Check that it is a model, and not a block.
         generator = library.get_generator_for_block_type(filename)
         if not isinstance(generator, ModelSpec):
@@ -186,7 +187,7 @@ def pg(filename, config,
                 filename = filename_pg
             else:
                 # TODO: add where for command line
-                raise SemanticError('Unknown model or file "%s".' % filename)
+                raise SemanticError('Unknown model or file %r.' % filename)
 
         # Make sure we use absolute pathnames so that we know the exact directory
         filename = os.path.realpath(filename)

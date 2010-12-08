@@ -45,8 +45,8 @@ def import_magic(module_name, required, member=None):
     if False: # TODO: think of configuration switch
         debug(warn)
     
-    msg = 'I tried to let you continue, but it seems that module %r really ' \
-          ' needs %r to work. Sorry! ' % (module_name, required)
+    msg = ('I tried to let you continue, but it seems that module %r really '
+           ' needs %r to work. Sorry! ' % (module_name, required))
         
     class warn_and_throw:
         def __getattr__(self, method_name): #@UnusedVariable

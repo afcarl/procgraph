@@ -34,8 +34,8 @@ class ModelSpec(object):
                 
             def instance(self, block_type, name, config, parent_library=None):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % 
-                                        self.forbid, parent.parsed_model)
+                    msg = 'Recursion error for model %r.' % self.forbid
+                    raise SemanticError(msg, parent.parsed_model)
                 else:
                     #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name,
@@ -43,8 +43,8 @@ class ModelSpec(object):
                     
             def get_generator_for_block_type(self, block_type):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % 
-                                        self.forbid, parent.parsed_model)
+                    msg = 'Recursion error for model %r.' % self.forbid
+                    raise SemanticError(msg, parent.parsed_model)
                 else:
                     return Library.get_generator_for_block_type(self,
                                                                 block_type)
@@ -103,14 +103,15 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     if not paths:
         if False:
             # TODO: add verbose switch
-            warning("No paths given and environment var %s not defined." % 
+            warning("No paths given and environment var %r not defined." % 
                      PATH_ENV_VAR) 
         
     # enumerate each sub directory
     all_files = set()
     for path in paths:
         if not os.path.isdir(path):
-            raise Exception('Invalid path "%s" to search for models. ' % path) 
+            # XXX: should I use exception?
+            raise Exception('Invalid path %r to search for models. ' % path) 
         
         for root, dirs, files in os.walk(path): #@UnusedVariable
             for f in files: 
@@ -127,9 +128,9 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         f = os.path.realpath(f)
                 
         cache = os.path.splitext(f)[0] + '.pgc'
-        if not ignore_cache and \
-            os.path.exists(cache) and \
-            os.path.getmtime(cache) > os.path.getmtime(f):
+        if (not ignore_cache and 
+            os.path.exists(cache) and 
+            os.path.getmtime(cache) > os.path.getmtime(f)):
             try:
                 models = pickle.load(open(cache))
             except Exception as e:
@@ -161,8 +162,9 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         for parsed_model in models:
             if library.exists(parsed_model.name):
                 prev = library.name2block[parsed_model.name].parsed_model.where
-                raise SemanticError('Found model %r in %r, already in %r. ' % \
-                            (parsed_model.name, f, prev.filename), parsed_model)
+                msg = ('Found model %r in %r, already in %r. ' % 
+                       (parsed_model.name, f, prev.filename))
+                raise SemanticError(msg, parsed_model)
                 
             if assign_to_module is None:
                 assign_to_module = path
@@ -179,8 +181,9 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
         #  and I do:
         #    pg -d . tutorials.pg
         # This will fail because it will try to read tutorials.pg twice
-        raise SemanticError('I already have registered %r from %r. ' % \
-                            (parsed_model.name, prev.filename), parsed_model)
+        msg = ('I already have registered model %r from %r. ' % 
+              (parsed_model.name, prev.filename))
+        raise SemanticError(msg, parsed_model)
     # print "Registering model '%s' " % parsed_model.name
 
     model_spec = ModelSpec(parsed_model, defined_in)

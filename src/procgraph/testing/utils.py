@@ -8,6 +8,7 @@ from ..core.registrar import default_library, Library
 
 # load standard components
 import procgraph.components #@UnusedImport
+from procgraph.core.exceptions import add_prefix
 
 
 def define_generic(nin, nout):
@@ -33,9 +34,9 @@ class PGTestCase(unittest.TestCase):
             parsed = parse_model(model_spec)
             return parsed
         except Exception as e:
-            print "Oops, seems like we had an error for '''%s'''" % model_spec
             traceback.print_exc()
-            raise e
+            self.fail("Could not parse model:\n%s\nGot error: %s" % 
+                  (self.write_fancy(model_spec), e))
         
     def check_semantic_ok(self, model_spec, config={}):
         ''' Tests that the given string can parse OK and we can create a model.
@@ -46,52 +47,61 @@ class PGTestCase(unittest.TestCase):
         library = Library(parent=default_library)
         
         try:
-            model = model_from_string(model_spec, config=config,
-                                      library=library)
+            model = model_from_string(model_spec, config=config, library=library)
             return model
         except SemanticError as e:
-            print "Oops, seems like we had an error for '''%s'''" % model_spec
             traceback.print_exc()
-            raise e
+            self.fail("Semantic error for not parse model:\n%s\nGot error: %s" % 
+                  (self.write_fancy(model_spec), e))
             
 
     def check_syntax_error(self, model_spec):
         ''' Tests that the given string parsing gives a syntax error. '''
-        failed = False
         try:
             parsed = parse_model(model_spec)
-            print "OOPS, we could parse '''%s'''" % model_spec
-            print parsed
+            self.fail('Expected SemanticError for model:\n%s\nParsed as:\n%s' % 
+                      (self.write_fancy(model_spec), parsed))
         except PGSyntaxError as e:
-            print "OK, syntax failed with error:  %s" % e
-            failed = True
-        
-        if not failed:
-            raise Exception('This was assumed to fail: \n"""%s"""' % model_spec)
-            self.assertTrue(False)
+            e.__str__()
+            return e
+            
 
     def check_semantic_error(self, model_spec, config={}):
-        ''' Tests that the given string parses ok but gives a
-            semantic error. '''
-        # make sure we can parse it
+        ''' Tests that the given string parses ok but gives a semantic error. '''
+        # make sure we can parse it, before
         parsed = parse_model(model_spec)
         
-        failed = False
         try:
-            # try again
             library = Library(parent=default_library)
-            model = model_from_string(model_spec, config=config,
-                                      library=library)
-            print "OOPS, we could interpret '''%s'''" % model_spec
-            print parsed 
-            model.summary()
+            model_from_string(model_spec, config=config, library=library)
+            self.fail('Expected SemanticError for model:\n%s\n%s' % 
+                      (self.write_fancy(model_spec), parsed))
+
         except SemanticError as e:
-            failed = True
-            print "OK, semantics failed with error:  %s" % e
-             
-        if not failed:
-            self.assertTrue(False)
-    
+            pass
+            # make sure we can write it as a string 
+            e.__str__()
+            return e
+            
+    def check_execution_throws(self, possible_errors, model_spec, config={}):
+        ''' Tests that the model execution throws the specific error
+            semantic error. Returns the exception if it is thrown. '''
+        library = Library(parent=default_library)
+        model = model_from_string(model_spec, config=config, library=library)
+        try:
+            model.reset_execution()
+            while model.has_more():       
+                model.update()
+            model.finish()
+            self.fail('Expected one of %s for model:\n%s' % 
+                      (str(possible_errors), self.write_fancy(model_spec)))
+        except possible_errors as e:
+            # make sure we can write e as a string:
+            str(e)
+            return e
+
+    def write_fancy(self, model_spec):
+        return add_prefix(model_spec, '  |')
 
 class VerifyBlock(Block):
     ''' 

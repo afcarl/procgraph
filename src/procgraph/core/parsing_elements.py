@@ -29,7 +29,7 @@ class Where:
 
     def __str__(self):
         s = ''
-        s += ('In file %s:\n' % self.filename)
+        s += 'In file %s:\n' % self.filename
         context = 3;
         lines = self.string.split('\n')
         start = max(0, self.line - context)
@@ -39,9 +39,9 @@ class Where:
             
         fill = len(pattern % (i + 1))
         space = ' ' * fill + ' ' * (self.col - 1) 
-        s += (space + '^\n')
-        s += (space + '|\n')
-        s += (space + 'here or nearby')
+        s += space + '^\n'
+        s += space + '|\n'
+        s += space + 'here or nearby'
         return s
         
     def print_where(self, s=sys.stdout):
@@ -258,8 +258,8 @@ class ParsedModel(ParsedElement):
                 # (we don't mix the two cases)
                 if inputs_defined:
                     if not input_name in inputs_defined:
-                        raise SemanticError(x_not_found('input', input_name,
-                                                         inputs_defined), block)
+                        msg = x_not_found('input', input_name, inputs_defined)
+                        raise SemanticError(msg, block)
                     else:
                         # good! this was already specified
                         pass
@@ -287,8 +287,8 @@ class ParsedModel(ParsedElement):
                         block.config['name'] = self.input[0].name
                     else:
                         # otherwise fail
-                        msg = 'This input block did not specify a name, and '\
-                            'I do not know which input it refers to.'
+                        msg = ('This input block did not specify a name, and '
+                               'I do not know which input it refers to.')
                         raise SemanticError(msg, block)
                     
         for block in output_blocks:
@@ -300,9 +300,8 @@ class ParsedModel(ParsedElement):
                 # if some outputs were specified, it should be there
                 if outputs_defined:
                     if not output_name in outputs_defined:
-                        raise SemanticError(
-                            x_not_found('output', output_name, outputs_defined),
-                            block)
+                        msg = x_not_found('output', output_name, outputs_defined) 
+                        raise SemanticError(msg, block)
                     else:
                         # good! this was already specified
                         pass
@@ -328,8 +327,8 @@ class ParsedModel(ParsedElement):
                         block.config['name'] = self.output[0].name
                     else:
                         # otherwise fail
-                        msg = 'This output block did not specify a name, and '\
-                            'I do not know which output it refers to.'
+                        msg = ('This output block did not specify a name, and '
+                               'I do not know which output it refers to.')
                         raise SemanticError(msg, block)
         
     def __repr__(self):

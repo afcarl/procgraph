@@ -5,15 +5,14 @@ from pyparsing import ParseResults
 from .exceptions import SemanticError, x_not_found, aslist
 from .registrar import default_library
 from .model import Model
-from .visualization import semantic_warning
-from .parsing_elements import ParsedSignalList, VariableReference, \
-     ParsedBlock, ParsedModel, ParsedSignal
+from .visualization import semantic_warning, info
+from .parsing_elements import (ParsedSignalList, VariableReference,
+                               ParsedBlock, ParsedModel, ParsedSignal)
 
 from .visualization import debug as debug_main
 from .block_config import resolve_config
 from .block_meta import VARIABLE, DEFINED_AT_RUNTIME
 from .model_io import ModelInput
-from procgraph.core.visualization import info
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -23,23 +22,26 @@ def check_link_compatibility_input(previous_block, previous_link):
     num_found = previous_block.num_output_signals()
     
     if num_required > num_found:
-        raise SemanticError('Required %s, found only %s.' % 
-                            (num_required, num_found), previous_link)
+        msg = 'Required at least %d, found only %d.' % (num_required, num_found)
+        raise SemanticError(msg, previous_link)
     # XXX, still something not quite right
     
     # We check that we have good matches for the previous                    
     for i, s in enumerate(previous_link.signals):
         assert isinstance(s, ParsedSignal)
+        
         if s.block_name is not None:
-            raise SemanticError('Could not give a block name when the '
-                                ' conection is between two blocks.',
-                                previous_link)
+            msg = ('Could not give the block a name when the connection is '
+                   'between two blocks.')
+            raise SemanticError(msg, s)
+        
         if s.local_input is None:
             s.local_input = i
                     
         if not previous_block.is_valid_output_name(s.local_input):
-            raise SemanticError('Could not find output name "%s"(%s) in %s' % \
-                        (s.local_input, type(s.local_input), previous_block))
+            msg = ('Could not find output name "%s"(%s) in %s' % 
+                    (s.local_input, type(s.local_input), previous_block))
+            raise SemanticError(msg, s)
             
         s.local_input = previous_block.canonicalize_output(s.local_input)
 
@@ -54,8 +56,8 @@ def check_link_compatibility_output(block, previous_link):
             s.local_output = i
                     
         if not block.is_valid_input_name(s.local_output):
-            raise SemanticError('Could not find input name "%s" in %s' % \
-                            (s.local_output, block))
+            msg = 'Could not find input name %r in %s' % (s.local_output, block)
+            raise SemanticError(msg, s)
             
         s.local_output = block.canonicalize_input(s.local_output)
  
@@ -76,6 +78,7 @@ def expand_references_in_string(s, function):
 
 def create_from_parsing_results(parsed_model, name=None, config={},
                                 library=None, STRICT=False):
+    assert isinstance(parsed_model, ParsedModel)
     
     def debug(s):
         if False:
@@ -85,14 +88,11 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     
     if library is None:
         library = default_library
-    if not isinstance(parsed_model, ParsedModel):
-        raise TypeError('I expect a ParsedModel instance, not a "%s".' % 
-                        parsed_model.__class__.__name__)
-        
-    model = Model(name=name, model_name=parsed_model.name)
-    model.define_input_signals_new(map(lambda x: x.name, parsed_model.input))
-    model.define_output_signals_new(map(lambda x: x.name, parsed_model.output))
     
+    
+    model = Model(name=name, model_name=parsed_model.name)
+    model.define_input_signals_new([x.name for x in parsed_model.input])
+    model.define_output_signals_new([x.name for x in parsed_model.output])
     
     # first we divide the config in normal, and recursive config
     normal_config = {}
@@ -130,9 +130,9 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     for assignment in parsed_model.assignments:
         # We make sure we are not overwriting configuration    
         if assignment.key in resolved:
-            msg = ('Assignment to "%s" overwrites a config variable.' + \
-                  ' Perhaps you want to change the default instead?') % \
-                    assignment.key
+            msg = ('Assignment to "%s" overwrites a config variable.' 
+                  ' Perhaps you want to change the default instead?' % 
+                    assignment.key)
             raise SemanticError(msg, assignment)
 
         all_config.append((assignment.key, assignment.value, assignment))
@@ -160,8 +160,8 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             if variable in os.environ:
                 return os.environ[variable]
             if not variable in properties:
-                raise SemanticError(
-                    x_not_found('variable', variable, properties), element)
+                msg = x_not_found('variable', variable, properties)
+                raise SemanticError(msg, element)
             used_properties.add(variable) 
             return expand_value(properties[variable], element=element)
         
@@ -194,9 +194,9 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             else:    
                 # XXX probably should be better
                 if not isinstance(properties[object], dict):
-                    raise SemanticError(
-                    'Error while processing "%s=%s". I already now key.' % \
-                            (key, value), element)
+                    msg = ('Error while processing "%s=%s": I already know'
+                           ' the key.' % (key, value)) 
+                    raise SemanticError(msg, element)
             referenced_blocks.append((object, element))
             properties[object][property] = value # XX or expand?
         else:
@@ -220,8 +220,8 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 try:
                     __import__(package)
                 except Exception as e:
-                    raise SemanticError('Could not import package "%s": %s' % \
-                                            (package, e), element=x)
+                    msg = 'Could not import package "%s": %s' % (package, e)
+                    raise SemanticError(msg, x)
     finally:
         sys.path = old_sys_path
      
@@ -255,13 +255,14 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                     for s in (previous_link.signals):
                         # We cannot have a local output
                         if s.local_output is not None:
-                            raise SemanticError(('Terminator connection %s ' + 
-                                'cannot have a local output') % s, element=s)  
+                            msg = ('Terminator connection %s cannot have a '
+                                   'local output' % s)
+                            raise SemanticError(msg, s)  
              
                         if s.name in model.public_signal_names():           
                             msg = ('Public signal name %r already taken.' % 
                                    s.name)
-                            raise SemanticError(msg, element=s)
+                            raise SemanticError(msg, s)
                         
                         model.connect(block1=previous_block,
                                       block1_signal=s.local_input,
@@ -279,8 +280,8 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 # also we can check right now a common error
                 if (previous_block is not None and 
                     previous_block.num_output_signals() == 0):
-                    msg = 'This block does not define outputs yet it is not ' \
-                          'the last in the sequence.'
+                    msg = ('This block does not define outputs; yet it is not ' 
+                           'the last in the sequence.')
                     raise SemanticError(msg, previous_block)
                 
                 block_type = expand_value(element.operation, element=element)
@@ -314,13 +315,12 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 for key, value in list(block_config.items()):
                     block_config[key] = expand_value(value, element=element)
                     
-
-                
                 if not library.exists(block_type):
-                    raise SemanticError(x_not_found('block type', block_type,
-                                                    library.get_known_blocks()),
-                                        element=element)
-                debug('instancing %s:%s config: %s' % \
+                    msg = x_not_found('block type', block_type,
+                                      library.get_known_blocks())
+                    raise SemanticError(msg, element)
+                
+                debug('instancing %s:%s config: %s' % 
                       (element.name, element.operation, block_config))
                 
                 try:
@@ -361,13 +361,13 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     # (before we warn it as just an unused variable in the next paragraph) 
     for block_name, element in referenced_blocks:
         if not block_name in model.name2block:
-            raise SemanticError(
-                x_not_found('block', block_name, model.name2block), element)
+            msg = x_not_found('block', block_name, model.name2block) 
+            raise SemanticError(msg, element)
     
     unused_properties = set(properties.keys()).difference(used_properties)
     if unused_properties:
-        msg = 'Unused properties: %s. (Used: %s.)' % \
-            (aslist(unused_properties), aslist(used_properties)) 
+        msg = ('Unused properties: %s. (Used: %s.)' % 
+               (aslist(unused_properties), aslist(used_properties))) 
         if STRICT:
             raise SemanticError(msg, element=parsed_model)
         else:
@@ -386,8 +386,8 @@ def define_output_signals(output, block):
         block.define_output_signals_new([block.config.name])
         return
 
-    output_is_defined_at_runtime = len(output) == 1 and \
-                                   output[0].type == DEFINED_AT_RUNTIME
+    output_is_defined_at_runtime = (len(output) == 1 and 
+                                    output[0].type == DEFINED_AT_RUNTIME)
     
     if output_is_defined_at_runtime:
         names = block.get_output_signals()
@@ -431,8 +431,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
         # (if we expect something, then we throw an error)
         if previous_link is None:
             if min_expected > 0:
-                msg = 'I expected at least %d input signals' \
-                      ' but the block is not connected to anything.'
+                msg = ('I expected at least %d input signals' 
+                       ' but the block is not connected to anything.')
                 raise SemanticError(msg, block)
             else:
                 # no inputs for this block
@@ -443,9 +443,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
             num_given = len(previous_link.signals)
             ok = (min_expected <= num_given <= max_expected)
             if not ok:
-                msg = 'I expected between %d and %d input signals, '\
-                      'and I got %d.' % (min_expected, max_expected,
-                                         num_given)
+                msg = ('I expected between %d and %d input signals, and I got '
+                       '%d.' % (min_expected, max_expected, num_given))
                 raise SemanticError(msg, block)
             # Define input signals given the names
             names = []
@@ -475,8 +474,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
         # raise an exception
         if previous_link is None:
             if (num_expected > 0):
-                msg = 'The block expected at least %d input signals'\
-                  ' but none were given.' % num_expected
+                msg = ('The block expected at least %d input signals'
+                      ' but none were given.' % num_expected)
                 raise SemanticError(msg, block)
         else: 
             # we have a previous block, the number of signals
@@ -484,8 +483,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
             num_given = len(previous_link.signals)
             
             if num_expected != num_given:
-                msg = 'The block expected %d input signals, got %d.' % \
-                      (num_expected, num_given)
+                msg = ('The block expected %d input signals, got %d.' % 
+                      (num_expected, num_given))
                 raise SemanticError(msg, block)
     
 
@@ -516,14 +515,14 @@ def define_input_signals(input, block, previous_link, previous_block, model):
             for s in previous_link.signals:
                 # Cannot use local_input here
                 if s.local_input is not None:
-                    raise SemanticError('Link %s cannot use local input ' 
-                                        ' without antecedent. ' % s, s)
+                    msg = 'Link %s uses local input without antecedent. ' % s
+                    raise SemanticError(msg, s)
                 # Check if it is using an explicit block name
                 if s.block_name is not None:
                     if not s.block_name in model.name2block:
-                        raise SemanticError(
-                        'Link %s refers to unknown block %r; we know %s.' % 
-                        (s, s.block_name, aslist(model.name2block.keys())), s)
+                        msg = ('Link %s refers to unknown block %r; we know %s.' % 
+                        (s, s.block_name, aslist(model.name2block.keys())))
+                        raise SemanticError(msg, s)
                         
                     input_block = model.name2block[s.block_name]
                     if not input_block.is_valid_output_name(s.name):
@@ -538,9 +537,9 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                     s.local_input = input_block.canonicalize_output(s.name)
                 else:
                     if not s.name in model.name2block_connection:
-                        msg = 'Link %s refers to unknown signal %r. ' \
+                        msg = ('Link %s refers to unknown signal %r. '
                               'We know %s.' % (s, s.name,
-                                    aslist(model.name2block_connection.keys()))
+                                    aslist(model.name2block_connection.keys())))
                         raise SemanticError(msg, element=s)
                     defined_signal = model.name2block_connection[s.name]
                     input_block = defined_signal.block1

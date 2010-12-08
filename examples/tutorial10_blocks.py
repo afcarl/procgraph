@@ -15,7 +15,6 @@ class Psychedelic(Block):
     def init(self):
         self.channel = 0
         
-        
     def update(self):
         self.channel = (self.channel + 1) % 3
         self.output.processed = choose(self.input.rgb, self.channel)

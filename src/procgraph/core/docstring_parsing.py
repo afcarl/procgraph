@@ -12,9 +12,8 @@ class Arg:
             type = type.strip()
         self.type = type
     def __eq__(self, other):
-        return \
-               self.type == other.type and \
-               self.desc == other.desc
+        return (self.type == other.type and 
+                self.desc == other.desc)
                
     def __repr__(self):
         return "Arg(%r,%r)" % (self.desc, self.type)
@@ -28,9 +27,9 @@ class DocStringInfo:
         # self.raises
     
     def __eq__(self, other):
-        return self.docstring == other.docstring and \
-               self.params == other.params and \
-               self.returns == other.returns
+        return (self.docstring == other.docstring and
+                self.params == other.params and
+                self.returns == other.returns)
     
      
     def __str__(self):
@@ -82,10 +81,10 @@ def parse_docstring_annotations(docstring):
     # var_keys = ['var', 'ivar', 'cvar']
     # raises, raise, except, exception
     
-    docstring, params_ann = parse_annotations(docstring, param_keys) 
-    docstring, types_ann = parse_annotations(docstring, type_keys)
-    docstring, returns_ann = parse_annotations(docstring, return_keys, empty=True)
-    docstring, rtype_ann = parse_annotations(docstring, rtype_keys, empty=True)
+    docstring, params_ann = parse_annotations(docstring, param_keys, False) 
+    docstring, types_ann = parse_annotations(docstring, type_keys, False)
+    docstring, returns_ann = parse_annotations(docstring, return_keys, True)
+    docstring, rtype_ann = parse_annotations(docstring, rtype_keys, True)
     
     params = {}
     names = set(params_ann.keys() + types_ann.keys())

@@ -8,19 +8,8 @@ class BlockWriterError(PGException):
 
 class ModelWriterError(PGException):
     ''' An error by who wrote the model, can be either Syntax or Semantic '''
-    def __init__(self, error, block=None):
-        Exception.__init__(self, error + ' (block %s)' % block)
-        self.block = block
+    pass
 
-    def __str__(self):
-        if self.block is not None:
-            if self.block.where is not None:
-                return Exception.__str__(self) + '\n' + \
-                       self.block.where.__str__()
-            else:
-                return Exception.__str__(self) + ' (no position given) '
-        else:
-            return Exception.__str__(self) + ' (no element given) '
 
 class SemanticError(ModelWriterError):
     ''' A semantic error by who wrote the model spec.
@@ -32,38 +21,29 @@ class SemanticError(ModelWriterError):
         self.element = element
 
     def __str__(self):
-        if self.element is not None:
-            if self.element.where is not None:
-                s = "Semantic error: %s" % self.error
-                s += "\n\n" + add_prefix(self.element.where.__str__(), ' ')
-                return s
-            else:
-                return 'Semantic error: %s (no position given) ' % self.error
-        else:
-            return 'Semantic error: %s (no element given) ' % self.error
+        s = "Semantic error: %s" % self.error
+        s += format_where(self.element)
+        return s
 
 class PGSyntaxError(ModelWriterError):
     ''' A syntactic error by who wrote the model spec.'''
     def __init__(self, error, where=None):
-        Exception.__init__(self, error)
+        self.error = error
         self.where = where
         
     def __str__(self):
-        return Exception.__str__(self) + '\n' + self.where.__str__()
+        s = self.error
+        s += "\n\n" + add_prefix(self.where.__str__(), ' ')
+        return s 
 
 class ModelExecutionError(PGException):
     ''' Runtime errors, including misuse by the user '''
-    def __init__(self, error, block):
-        Exception.__init__(self, error)
-        self.block = block
-    def __str__(self):
-        return Exception.__str__(self) + '\n' + self.block.where.__str__()
+    pass
 
 class BadInput(ModelExecutionError):
     ''' Exception thrown to communicate a problem with one
         of the inputs to the block. '''
     def __init__(self, error, block, input_signal):
-        #ModelExecutionError.__init__(self, error, block)
         self.block = block
         self.error = error
         self.input_signal = input_signal
@@ -75,10 +55,7 @@ class BadInput(ModelExecutionError):
             name = '(unknown)'
         
         s = "Bad input %r for block %r: %s" % (self.input_signal, name, self.error)
-        
-        if self.block is not None:
-            s += "\n\n" + add_prefix(self.block.where.__str__(), ' ')
-
+        s += format_where(self.block)
         return s
 
 class BadConfig(ModelExecutionError):
@@ -97,10 +74,7 @@ class BadConfig(ModelExecutionError):
             name = '(unknown)'
         
         s = "Bad config %r for block %r: %s" % (self.config, name, self.error)
-        
-        if self.block is not None:
-            s += "\n\n" + add_prefix(self.block.where.__str__(), ' ')
-
+        s += format_where(self.block)
         return s
     
 # A couple of functions for pretty errors
@@ -113,8 +87,8 @@ def aslist(x):
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
     # TODO: add guess in case of typos
-    return 'Could not find %s "%s". I know %s.' % \
-        (what, x, aslist(iterable))
+    return ('Could not find %s %r. I know %s.' % 
+            (what, x, aslist(iterable)))
 
 def add_prefix(s, prefix):
     result = ""
@@ -122,6 +96,15 @@ def add_prefix(s, prefix):
         result += prefix + l + '\n'
     return result
     
+def format_where(element_or_block):
+    e = element_or_block
+    if e is not None:
+        if e.where is not None:
+            return "\n\n" + add_prefix(e.where.__str__(), ' ')
+        else:
+            return " (no position given)"
+    else:
+        return " (no element/block given)"
     
     
     

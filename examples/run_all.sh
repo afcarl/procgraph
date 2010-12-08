@@ -10,7 +10,7 @@ pg tutorial3_config in=coastguard.mp4 out=coastguard3.avi
 
 # pg tutorial4_models in=coastguard.mp4 out=coastguard4.avi
  
-pg tutorial5_config_advanced  in=coastguard.mp4 out=coastguard5.avi
+# pg tutorial5_config_advanced  in=coastguard.mp4 out=coastguard5.avi
 
 pg tutorial6_signals_advanced 
 

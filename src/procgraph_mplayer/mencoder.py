@@ -104,7 +104,7 @@ class MEncoder(Block):
         if self.config.quiet:
             self.process = subprocess.Popen(args,
                 stdin=subprocess.PIPE, stdout=open('/dev/null'),
-                                            stderr=open('/dev/null'),)
+                                       stderr=open('/dev/null'),)
         else:
             self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
 

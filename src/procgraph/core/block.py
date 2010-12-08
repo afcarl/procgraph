@@ -90,10 +90,10 @@ class Block(BlockMetaSugar):
     
     def define_input_signals_new(self, signals):
         if not isinstance(signals, list):
-            raise BlockWriterError(
-                'I expect the parameter to define_input_signals()' + 
-               ' to be a list, got a %s: %s' % \
-                                   (signals.__class__.__name__, signals))
+            msg = ('I expect the parameter to define_input_signals() to be a '
+                    'list, instead got a %s: %s' % 
+                    (signals.__class__.__name__, signals))
+            raise BlockWriterError(msg)
 
         # reset structures
         self.__input_signal_names = []
@@ -101,8 +101,8 @@ class Block(BlockMetaSugar):
         self.__input_signal_name2id = {}
         for i, s in enumerate(signals):
             if not isinstance(s, str):
-                raise BlockWriterError(('Invalid list of names for input: %s ' + 
-                                        'they should be strings') % signals)
+                msg = 'Invalid list of names for input: %s ' % signals
+                raise BlockWriterError(msg)
 
             self.__input_signal_names.append(str(s))
             self.__input_signal_name2id[str(s)] = i
@@ -110,18 +110,20 @@ class Block(BlockMetaSugar):
              
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
-            raise BlockWriterError(
-                    'I expect the parameter to define_output_signals()' + 
-                   ' to be a list, got a %s: %s' % \
+            msg = ('I expect the parameter to define_output_signals()' + 
+                   ' to be a list, got a %s: %s' % 
                    (signals.__class__.__name__, signals))
+            raise BlockWriterError(msg)
+
         # reset structures
         self.__output_signal_names = []
         self.__output_signals = []
         self.__output_signal_name2id = {}
         for i, s in enumerate(signals):
             if not isinstance(s, str):
-                raise BlockWriterError('Invalid list of names for output: %s; ' 
-                                        ' I expect strings.' % signals)
+                msg = ('Invalid list of names for output: %s; ' 
+                        ' I expect strings.' % signals)
+                raise BlockWriterError(msg)
             
             self.__output_signal_names.append(str(s))
             self.__output_signal_name2id[str(s)] = i
@@ -129,9 +131,10 @@ class Block(BlockMetaSugar):
         
     def get_config(self, conf):
         if not conf in self.__config:
-            raise ModelExecutionError(
-                'For block %s: could not find parameter "%s" in config %s.' % 
-                             (self, conf, self.__config), self)
+            msg = ('For block %s: could not find parameter %r in config %s.' % 
+                   (self, conf, self.__config)) 
+            raise ModelExecutionError(msg, self)
+
         return self.__config[conf]
         
     def set_state(self, varname, value):
@@ -154,6 +157,7 @@ class Block(BlockMetaSugar):
             will default to the maximum of the input signals timestamp. '''
         if timestamp is None:
             if len(self.__input_signals) == 0:
+                # XXX: change exception?
                 raise Exception('Timestamp not specified and no inputs')
             
             timestamp = max(self.get_input_signals_timestamps())
@@ -194,8 +198,8 @@ class Block(BlockMetaSugar):
             input signal. 
         '''
         if not self.is_valid_input_name(num_or_id):
-            raise ModelWriterError(
-                'Unknown output name "%s".' % str(num_or_id), self)
+            msg = 'Unknown output name %r.' % str(num_or_id) 
+            raise ModelWriterError(msg, self)
             
         if isinstance(num_or_id, str):
             # convert from name to number 
@@ -207,8 +211,8 @@ class Block(BlockMetaSugar):
             output signal. 
         '''
         if not self.is_valid_output_name(num_or_id):
-            raise ModelWriterError(
-                'Unknown output name "%s".' % str(num_or_id), self)
+            msg = 'Unknown output name %r.' % str(num_or_id) 
+            raise ModelWriterError(msg, self)
         
         if isinstance(num_or_id, str):
             # convert from name to number
@@ -224,7 +228,7 @@ class Block(BlockMetaSugar):
             return num_or_id in self.__input_signal_name2id
         if isinstance(num_or_id, type(0)):
             return num_or_id < len(self.__input_signals)
-        raise ValueError()
+        raise ValueError() # XXX: better message
     
     def canonicalize_input(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
@@ -234,7 +238,7 @@ class Block(BlockMetaSugar):
             return num_or_id 
         if isinstance(num_or_id, type(0)):
             return self.__input_signal_names[num_or_id]
-        raise ValueError()
+        raise ValueError() # XXX: better message
         
     def is_valid_output_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
@@ -245,7 +249,7 @@ class Block(BlockMetaSugar):
             return num_or_id in self.__output_signal_name2id
         if isinstance(num_or_id, type(0)):
             return num_or_id < len(self.__output_signals)
-        raise ValueError()
+        raise ValueError() # XXX: better message
     
     def canonicalize_output(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
@@ -255,19 +259,19 @@ class Block(BlockMetaSugar):
             return num_or_id 
         if isinstance(num_or_id, type(0)):
             return self.__output_signal_names[num_or_id]
-        raise ValueError()
+        raise ValueError() # XXX: better message
      
     def get_output_signals_timestamps(self):
         ''' Returns a list of the output values timestamps. '''
-        return map(lambda x: x.timestamp, self.__output_signals)
+        return [x.timestamp for x in self.__output_signals]
     
     def get_input_signals_timestamps(self):
         ''' Returns a list of the input signals timestamps. '''
-        return map(lambda x: x.timestamp, self.__input_signals)
+        return [x.timestamp for x in  self.__input_signals]
     
     def get_input_signals_values(self):
         ''' Returns a list of the input signals values. '''
-        return map(lambda x: x.value, self.__input_signals)
+        return [x.value for x in self.__input_signals]
     
     def __repr__(self):
         s = 'B:%s:%s(' % (self.__class__.__name__, self.name)

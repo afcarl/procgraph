@@ -87,12 +87,14 @@ class ExecutionStats:
         # sort by percentage
         all = sorted(self.samples.values(), key=lambda x:-x.perc_wall)
         min_perc = 3
-        print '--- Statistics (ignoring < %d) baseline: %s %d iterations' % \
-            (min_perc , baseline.block, baseline.num) 
+        print ('--- Statistics (ignoring < %d) baseline: %s %d iterations' % 
+              (min_perc , baseline.block, baseline.num)) 
         for s in all:
             perc_cpu = ceil(s.perc_cpu * 100)
             perc_wall = ceil(s.perc_wall * 100)
-            if s != baseline and (perc_cpu < min_perc) and (perc_wall < min_perc):
+            if (s != baseline and 
+                 (perc_cpu < min_perc) and 
+                 (perc_wall < min_perc)):
                 continue
             perc_times = ceil(s.perc_times * 100)
             

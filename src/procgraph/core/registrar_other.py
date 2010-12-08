@@ -1,13 +1,11 @@
-import traceback, inspect
+import inspect, types
 
 from .block import Block
-from .exceptions import  ModelExecutionError
 from .registrar import default_library
 from .model_loader import add_models_to_library
 
 from .constants import COMPULSORY, TIMESTAMP
 from .docstring_parsing import parse_docstring_annotations, DocStringInfo
-import types
 from .exceptions import BadConfig, BadInput
 
 def make_generic(name, inputs, num_outputs,
@@ -102,11 +100,6 @@ def make_generic(name, inputs, num_outputs,
                 e.block = self
                 raise
                 
-#            except Exception as e:
-#                traceback.print_exc()
-#                raise ModelExecutionError("While executing %s: %s." % \
-#                                          (operation, e), block=self)
-        
             if num_outputs == 1:
                 self.set_output(0, result)
             else:
