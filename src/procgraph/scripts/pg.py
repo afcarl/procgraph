@@ -6,6 +6,7 @@ from ..core.registrar import default_library, Library
 from ..core.exceptions import PGException, SemanticError
 from ..core.visualization import error, info
 from ..core.constants import PATH_ENV_VAR
+from procgraph.core.model_loader import ModelSpec
 
 usage_short = \
 """Usage:    
@@ -158,8 +159,24 @@ def pg(filename, config,
 
     if library.exists(block_type=filename):
 #            w = Where('command line', filename, 0)
-        model = library.instance(filename, name=None,
-                                         config=config)
+        # Check that it is a model, and not a block.
+        generator = library.get_generator_for_block_type(filename)
+        if not isinstance(generator, ModelSpec):
+            # XXX nothing given
+            raise SemanticError('The name %r corresponds to a block, not a model. '
+                                'You can only use "pg" with models. ' % filename)
+            
+        if len(generator.input) > 0:
+            inputs = ", ".join([x.name.__repr__() for x in generator.input])
+            msg = ('The model %r has %d input(s) (%s). "pg" can only execute models '
+                  'without inputs.' % (filename, len(generator.input), inputs))
+            # XXX nothing given
+            raise SemanticError(msg, generator.input[0])
+        
+        model = library.instance(filename,
+                                 name='cmdline',
+                                 config=config)
+                                 
     else:
         # See if it exists
         if not os.path.exists(filename):
