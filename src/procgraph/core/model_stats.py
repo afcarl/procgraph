@@ -87,7 +87,7 @@ class ExecutionStats:
         # sort by percentage
         all = sorted(self.samples.values(), key=lambda x:-x.perc_wall)
         min_perc = 3
-        print ('--- Statistics (ignoring < %d) baseline: %s %d iterations' % 
+        print('--- Statistics (ignoring < %d) baseline: %s %d iterations' % 
               (min_perc , baseline.block, baseline.num)) 
         for s in all:
             perc_cpu = ceil(s.perc_cpu * 100)
@@ -118,11 +118,11 @@ class ExecutionStats:
             else:
                 stats = ' ' * len('update %4d fps' % 0)
 
-            print ''.join([
-'- cpu: %4dms %2d%%; ' % (1000 * s.mean_cpu, perc_cpu),
-'wall: %4dms %2d%%; ' % (1000 * s.mean_wall, perc_wall),
-'exec: %2d%% %3.1fx %s; %s  ' % (perc_times, s.baseline_fraction,
-                                          stats, comment),
-str(s.block)])
-     
+            print(''.join([
+                '- cpu: %4dms %2d%%; ' % (1000 * s.mean_cpu, perc_cpu),
+                'wall: %4dms %2d%%; ' % (1000 * s.mean_wall, perc_wall),
+                'exec: %2d%% %3.1fx %s; %s  ' % (perc_times, s.baseline_fraction,
+                                                          stats, comment),
+                                                          str(s.block)]))
+
         

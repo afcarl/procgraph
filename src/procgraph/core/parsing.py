@@ -103,9 +103,7 @@ dict_key = good_name | quoted
 dictionary << (Suppress("{") + 
     Optional(
              delimitedList(
-                 Group(
-                     dict_key('key') + Suppress(':') + value('value')
-                     ) 
+                 Group(dict_key('key') + Suppress(':') + value('value')) 
                  ) 
              )('content') + 
     Suppress("}"))
@@ -121,10 +119,10 @@ array.setParseAction(eval_array)
 
 def parse_value(string, filename=None):
     ''' This is useful for debugging '''
-    # XXX this is a mess that needs cleaning
+    
     try:
         ret_value = value.parseString(string)
-        
+        # I gave up in trying to understand how pyparsing works...
         if (isinstance(ret_value['val'], dict) or
            isinstance(ret_value['val'], int) or
            isinstance(ret_value['val'], list) or
@@ -199,13 +197,12 @@ def create_model_grammar():
     source_sink = block + ZeroOrMore(between + block)
     
     # all of those are colled a connection
-    connection = arrow_arrow | sink | source | source_sink
+    connection = arrow_arrow | sink | source | source_sink # order matters
       
     connection.setParseAction(wrap(Connection.from_tokens))
     
     # allow breaking lines with backslash
     continuation = '\\' + lineEnd
-    # continuation = Regex('\\\w*\n')
     connection.ignore(continuation)
     
     assignment = (key("key") + S('=') + value("value"))
@@ -272,7 +269,7 @@ def parse_model(string, filename=None):
         msg = 'Passed empty string.'
         raise PGSyntaxError(msg, Where(filename, string, 0))
     
-    #  this is not threadsafe (but we don't have threads, so it's all good)
+    # this is not threadsafe (but we don't have threads, so it's all good)
     ParsedModel.static_filename = filename
     
     try:

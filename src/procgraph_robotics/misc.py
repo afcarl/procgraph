@@ -8,4 +8,4 @@ def skim(a, percent=5):
 
 register_simple_block(skim, doc=skim_top_and_bottom.__doc__)
 
-  #doc='Skims the top and bottom percentile from the data.')
+#doc='Skims the top and bottom percentile from the data.')

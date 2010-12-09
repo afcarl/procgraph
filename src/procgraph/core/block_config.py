@@ -26,7 +26,7 @@ def resolve_config(list_of_config, given_config, block, STRICT=True):
 
     if required_not_passed:
         msg = ('Some required config (%s) was not passed.' % 
-                    aslist(required_not_passed))
+                aslist(required_not_passed))
         raise SemanticError(msg, block)
     
     if passed_not_defined:

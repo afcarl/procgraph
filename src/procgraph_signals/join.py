@@ -32,7 +32,7 @@ class Join(Block):
                 sizes[name] = size
             else:
                 if size != sizes[name]:
-                    raise Exception('Signal %s changed size from %s to %s.' % \
+                    raise Exception('Signal %s changed size from %s to %s.' % 
                                     (name, sizes[name], size))
             
             result.extend(value)
