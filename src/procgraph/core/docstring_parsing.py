@@ -87,7 +87,7 @@ def parse_docstring_annotations(docstring):
     docstring, rtype_ann = parse_annotations(docstring, rtype_keys, True)
     
     params = {}
-    names = set(params_ann.keys() + types_ann.keys())
+    names = set(list(params_ann.keys()) + list(types_ann.keys()))
     for name in names:
         params[name] = Arg(params_ann.get(name, None),
                             types_ann.get(name, None))

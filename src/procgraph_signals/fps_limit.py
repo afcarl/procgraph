@@ -2,7 +2,6 @@ import time
 
 from procgraph import Block 
 
-
 class FPSLimit(Block):
     ''' This block limits the output update to a certain *realtime* framerate.
     

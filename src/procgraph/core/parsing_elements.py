@@ -1,5 +1,5 @@
-from pyparsing import lineno, col
 import sys
+from pyparsing import lineno, col
 
 from .block_meta import split_docstring, BlockInput, BlockOutput, BlockConfig
 from .exceptions import SemanticError, x_not_found
@@ -161,16 +161,15 @@ class ParsedAssignment(ParsedElement):
     def from_tokens(tokens):
         return ParsedAssignment(tokens['key'], tokens['value'])
           
-
-
+          
 def config_from_tokens(tokens):
     variable = tokens.get('variable')
     has_default = 'default' in tokens
     default = tokens.get('default', None)
-    docstring = tokens.get('docstring', None)
-    #return ConfigStatement(variable, has_default, default, docstring)
+    docstring = tokens.get('docstring', None) 
     desc, desc_rest = split_docstring(docstring)
     return BlockConfig(variable, has_default, default, desc, desc_rest, None) 
+
 
 def output_from_tokens(tokens):
     name = tokens.get('name')
@@ -188,7 +187,6 @@ def input_from_tokens(tokens):
     desc, desc_rest = split_docstring(docstring)
     return BlockInput(FIXED, name, None, None, desc, desc_rest, None)
         
-
       
 class Connection(ParsedElement):
     def __init__(self, elements):
@@ -202,6 +200,7 @@ class Connection(ParsedElement):
     def from_tokens(tokens):
         return Connection(tokens)
 
+
 class VariableReference(ParsedElement):
     def __init__(self, variable):
         ParsedElement.__init__(self)
@@ -213,6 +212,7 @@ class VariableReference(ParsedElement):
     @staticmethod
     def from_tokens(tokens):
         return VariableReference(tokens['variable'])
+
 
 class ParsedModel(ParsedElement):
     static_filename = 'not set'

@@ -1,7 +1,4 @@
-import sys
-
 from .exceptions import BlockWriterError, ModelWriterError
-
 from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
  
 class BlockConfig:
@@ -180,7 +177,8 @@ def trim(docstring):
     lines = docstring.expandtabs().splitlines()
 
     # Determine minimum indentation (first line doesn't count):
-    indent = sys.maxint
+    maxi = 10000
+    indent = maxi
     for line in lines[1:]:
         stripped = line.lstrip()
         if stripped:
@@ -188,7 +186,7 @@ def trim(docstring):
 
     # Remove indentation (first line is special):
     trimmed = [lines[0].strip()]
-    if indent < sys.maxint:
+    if indent < maxi:
         for line in lines[1:]:
             trimmed.append(line[indent:].rstrip())
 

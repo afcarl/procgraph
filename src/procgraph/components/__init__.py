@@ -1,4 +1,4 @@
-import debug_components
+from . import debug_components
 
 # TODO: make this list automatically generated
 

@@ -1,18 +1,18 @@
-import os, re, sys
+import os
+import re
+import sys
 from copy import deepcopy
 from pyparsing import ParseResults
 
 from .exceptions import SemanticError, x_not_found, aslist
 from .registrar import default_library
 from .model import Model
-from .visualization import semantic_warning, info
-from .parsing_elements import (ParsedSignalList, VariableReference,
-                               ParsedBlock, ParsedModel, ParsedSignal)
-
-from .visualization import debug as debug_main
+from .visualization import debug as debug_main, semantic_warning, info
 from .block_config import resolve_config
 from .block_meta import VARIABLE, DEFINED_AT_RUNTIME
 from .model_io import ModelInput
+from .parsing_elements import (ParsedSignalList, VariableReference,
+                               ParsedBlock, ParsedModel, ParsedSignal)
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -457,7 +457,6 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                 elif previous_link.signals[i].local_input is not None:
                     name = previous_link.signals[i].local_input
                 else:
-                    print previous_link.signals[i]
                     assert False
                 names.append(name)
             block.define_input_signals_new(names)
@@ -521,7 +520,7 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                 if s.block_name is not None:
                     if not s.block_name in model.name2block:
                         msg = ('Link %s refers to unknown block %r; we know %s.' % 
-                        (s, s.block_name, aslist(model.name2block.keys())))
+                               (s, s.block_name, aslist(model.name2block)))
                         raise SemanticError(msg, s)
                         
                     input_block = model.name2block[s.block_name]
@@ -537,9 +536,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                     s.local_input = input_block.canonicalize_output(s.name)
                 else:
                     if not s.name in model.name2block_connection:
-                        msg = ('Link %s refers to unknown signal %r. '
-                              'We know %s.' % (s, s.name,
-                                    aslist(model.name2block_connection.keys())))
+                        msg = ('Link %s refers to unknown signal %r. We know %s.' 
+                               % (s, s.name, aslist(model.name2block_connection)))
                         raise SemanticError(msg, element=s)
                     defined_signal = model.name2block_connection[s.name]
                     input_block = defined_signal.block1

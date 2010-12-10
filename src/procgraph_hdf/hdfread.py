@@ -1,6 +1,7 @@
 import operator
 
 from procgraph  import Block, Generator, BadConfig
+
 from .tables_cache import tc_open_for_reading, tc_close
 from .hdfwrite import PROCGRAPH_LOG_GROUP
 
@@ -42,8 +43,8 @@ class HDFread(Generator):
                                 self, 'signals')
             for s in signal_list:
                 if not s in all_signals:
-                    msg = 'Signal %r not present in log (available: %r)' % \
-                            (s, all_signals)
+                    msg = ('Signal %r not present in log (available: %r)' % 
+                            (s, all_signals))
                     raise BadConfig(msg, self, 'signals')
                 self.signals.append(s)
                 
@@ -130,9 +131,5 @@ class HDFread(Generator):
     def finish(self):
         tc_close(self.hf)
         
-        
-        
-        
-        
-        
+         
         

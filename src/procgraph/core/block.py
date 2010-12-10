@@ -149,7 +149,8 @@ class Block(BlockMetaSugar):
     
     def get_state_vars(self):
         ''' Returns a list of the names for the state variables. '''
-        return self.__state.keys()
+        # TODO: remove this?
+        return list(self.__state.keys())
     
     # Functions that can be called during runtime
     def set_output(self, num_or_id, value, timestamp=None):

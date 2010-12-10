@@ -1,13 +1,13 @@
-# TODO: move this to scripts/
-import sys, os
+import sys
+import os
 from collections import namedtuple
 from optparse import OptionParser
 
 from ..core.model_loader import  ModelSpec
 from ..core.registrar import default_library 
 from ..core.block import Block
-from ..core.block_meta import split_docstring, FIXED, VARIABLE, \
-                              DEFINED_AT_RUNTIME
+from ..core.block_meta import (split_docstring, FIXED, VARIABLE,
+                              DEFINED_AT_RUNTIME)
 from ..core.import_magic import get_module_info
 
 # TODO: make it possible to document simple functions 
@@ -152,7 +152,7 @@ def main():
         translate[root] = reference 
          
     if not args:
-        print "Give at least one module"
+        print("Give at least one module.")
         sys.exit(-1)
     
     given_modules = args
@@ -181,7 +181,7 @@ def main():
     
     if options.label is None:
         options.label = args[0]
-        print 'Using "%s" as label.' % options.label
+        print('Using %r as label.' % options.label)
     
     f.write('.. |towrite| replace:: **to write** \n\n')
     

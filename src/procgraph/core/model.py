@@ -1,6 +1,6 @@
 import time
 
-from .exceptions import  SemanticError, ModelExecutionError, ModelWriterError
+from .exceptions import SemanticError, ModelExecutionError, ModelWriterError
 from .block import Block, Generator
 from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats

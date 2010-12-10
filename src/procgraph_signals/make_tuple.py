@@ -1,6 +1,5 @@
 from procgraph import Block
 
-
 class MakeTuple(Block):
     ''' Creates a tuple out of the input signals values. 
     

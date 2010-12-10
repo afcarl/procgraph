@@ -1,10 +1,11 @@
-''' This is a set of blocks to read and write logs in HDF_ format.
-
-You need the pytables_ package to be installed.
-
-.. _pytables: http://pytables.org
- 
-.. _HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
+''' 
+    This is a set of blocks to read and write logs in HDF_ format.
+    
+    You need the pytables_ package to be installed.
+    
+    .. _pytables: http://pytables.org
+     
+    .. _HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
 
 '''
 
@@ -20,8 +21,8 @@ from procgraph import import_magic
 tables = import_magic(__name__, 'tables')
 
 
-import hdfwrite
-import hdfread
+from . import hdfwrite
+from . import hdfread
 
 
 from procgraph import pg_add_this_package_models

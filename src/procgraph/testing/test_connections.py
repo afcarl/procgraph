@@ -1,5 +1,5 @@
-from procgraph import SemanticError
-from procgraph.core.model_loader import model_from_string # XXX:
+from ..core.exceptions import SemanticError
+from ..core.model_loader import model_from_string # XXX:
 
 from .utils import PGTestCase
 

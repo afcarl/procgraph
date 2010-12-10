@@ -1,4 +1,7 @@
-import os, fnmatch, inspect, cPickle as pickle
+import os
+import fnmatch
+import inspect
+import cPickle as pickle
 
 from .model_instantiation import create_from_parsing_results
 from .visualization import warning, debug, info
@@ -9,6 +12,7 @@ from .constants import PATH_ENV_VAR
 
 class ModelSpec(object):
     ''' Class used to register as a block type '''
+    
     def __init__(self, parsed_model, defined_in):
         self.parsed_model = parsed_model
         

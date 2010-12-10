@@ -79,6 +79,8 @@ class BadConfig(ModelExecutionError):
     
 # A couple of functions for pretty errors
 def aslist(x):
+    if isinstance(x, dict):
+        x = list(x.keys())
     if x:
         return ", ".join(sorted(x))
     else:
@@ -105,6 +107,5 @@ def format_where(element_or_block):
             return " (no position given)"
     else:
         return " (no element/block given)"
-    
     
     

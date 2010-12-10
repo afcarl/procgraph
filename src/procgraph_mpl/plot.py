@@ -1,4 +1,5 @@
-import time, numpy
+import time
+import numpy
 
 from procgraph import Block, BadInput, BadConfig
 

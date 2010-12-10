@@ -10,7 +10,6 @@ class FPSPrint(Block):
         self.state.last_timestamp = None
         
     def update(self):
-        
         current = max(self.get_input_signals_timestamps())
         last = self.state.last_timestamp
         if last is not None:

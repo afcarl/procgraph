@@ -1,26 +1,27 @@
-''' Blocks performing operations with a dynamic nature. 
+''' 
+    Blocks performing operations with a dynamic nature. 
 
-This library contains blocks that perform operations with time.
-This library is autoloaded. 
+    This library contains blocks that perform operations with time.
+     
 '''
 
-import derivative
-import derivative2
-import history
-import sync
-import sieve
-import wait
+from . import derivative
+from . import derivative2
+from . import history
+from . import sync
+from . import sieve
+from . import wait
 
-import historyt
-import fps_data_limit
-import fps_print
+from . import historyt
+from . import fps_data_limit
+from . import fps_print
 # import sync2
-import low_pass
-import last_n_samples
-import fps_limit
+from . import low_pass
+from . import last_n_samples
+from . import fps_limit
 
 # static TODO: move?
-import join
-import extract
-import make_tuple
+from . import join
+from . import extract
+from . import make_tuple
 

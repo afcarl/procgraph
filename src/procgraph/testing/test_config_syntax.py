@@ -1,7 +1,6 @@
 from .utils import PGTestCase
 
-good_examples = \
-[
+good_examples = [
 """
 --- model ciao
 config x1
@@ -14,8 +13,7 @@ documentation string'''
 """
 ]
 
-bad_examples = \
-[
+bad_examples = [
 """
 # cannot have newline before doc string
 --- model ciao

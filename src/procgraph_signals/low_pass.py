@@ -20,7 +20,6 @@ class LowPass(Block):
         self.state.y = None 
         
     def update(self):
-        
         u = self.input[0]
         alpha = self.config.alpha
         

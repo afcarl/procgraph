@@ -13,7 +13,7 @@ ImageDraw = import_magic(__name__, 'PIL.ImageDraw')
 
 
 
-import pil_operations
-import pil_conversions
-import text
-import imread
+from . import pil_operations
+from . import pil_conversions
+from . import text
+from . import imread

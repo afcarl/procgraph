@@ -20,13 +20,11 @@ class HistoryT(Block):
     Block.output('history', 'Tuple ``(t,x)`` containing two arrays.')
     
     def init(self):
-        
         self.state.x = []
         self.state.t = []
         self.state.first_timestamp = None
 
     def update(self):
-        
         sample = self.get_input(0)
         timestamp = self.get_input_timestamp(0)
         
@@ -36,7 +34,6 @@ class HistoryT(Block):
         if self.config.natural:
             timestamp = timestamp - self.state.first_timestamp
             
-         
         x = self.state.x
         t = self.state.t
         
@@ -46,7 +43,6 @@ class HistoryT(Block):
         while abs(t[0] - t[-1]) > self.config.interval:
             t.pop(0)
             x.pop(0)
-    
     
         self.output.history = (t, x)
  

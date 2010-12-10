@@ -1,9 +1,6 @@
-''' Operations using the OpenCV library. 
+''' 
 
-**Packages dependencies**
-
-* ``opencv`` (or ``cv``)
-
+    Operations using the OpenCV library. 
 
 '''
 
@@ -20,4 +17,4 @@ from procgraph import import_magic
 cv = import_magic(__name__, 'cv')
 
 
-import opencv_utils 
+from . import opencv_utils 

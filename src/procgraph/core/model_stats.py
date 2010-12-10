@@ -85,7 +85,7 @@ class ExecutionStats:
             s.baseline_fraction = s.num * 1.0 / baseline.num
             
         # sort by percentage
-        all = sorted(self.samples.values(), key=lambda x:-x.perc_wall)
+        all = sorted(list[self.samples.values()], key=lambda x:-x.perc_wall)
         min_perc = 3
         print('--- Statistics (ignoring < %d) baseline: %s %d iterations' % 
               (min_perc , baseline.block, baseline.num)) 

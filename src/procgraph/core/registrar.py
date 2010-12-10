@@ -54,7 +54,7 @@ class Library:
             return self.parent.get_generator_for_block_type(block_type)
     
     def get_known_blocks(self):
-        blocks = self.name2block.keys()
+        blocks = list(self.name2block.keys())
         if self.parent:
             blocks.extend(self.parent.get_known_blocks())
         return blocks
@@ -62,6 +62,5 @@ class Library:
         
 default_library = Library()
  
-        
 
 

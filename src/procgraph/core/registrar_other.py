@@ -86,8 +86,8 @@ def make_generic(name, inputs, num_outputs,
                 args.append(self.get_input(input_signal))
                 
             params = {}
-            for key, value in parameters.items():
-                if value == TIMESTAMP:
+            for key in parameters:
+                if parameters[key] == TIMESTAMP:
                     params[key] = max(self.get_input_signals_timestamps())
                 else:
                     params[key] = self.get_config(key)

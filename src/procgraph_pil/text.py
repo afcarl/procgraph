@@ -1,9 +1,7 @@
 import subprocess, os, numpy
 
 from procgraph import Block, BadConfig
-
-
-from procgraph.core.visualization import info  as info_main, error as error_main 
+from procgraph.core.visualization import info as info_main, error as error_main 
 
 def info(s):
     info_main('procgraph_pil/text: %s' % s)

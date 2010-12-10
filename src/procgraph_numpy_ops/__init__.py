@@ -1,5 +1,5 @@
 ''' Various operations wrapping numpy functions. '''
 
-import filters
-import gradient1d
-import smooth1d
+from . import filters
+from . import gradient1d
+from . import smooth1d

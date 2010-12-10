@@ -1,8 +1,8 @@
+import numpy
 import subprocess 
 
 from procgraph import Block
 from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
-import numpy
  
 # TODO: detect an error in Mencoder (perhaps size too large)
 # TODO: cleanup processes after finishing

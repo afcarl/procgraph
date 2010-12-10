@@ -1,5 +1,7 @@
 # OS X: install from http://ffmpegx.com/download.html
-import subprocess, os, numpy
+import subprocess
+import os
+import numpy
  
 from procgraph  import Generator, Block, ModelExecutionError, BadConfig
  
@@ -23,8 +25,8 @@ class MPlayer(Generator):
                             self, 'file')
             
         # first we identify the video resolution
-        args = 'mplayer -identify -vo null -ao null -frames 0'.split() \
-               + [self.file]
+        args = ('mplayer -identify -vo null -ao null -frames 0'.split() 
+                + [self.file])
         output = check_output(args)
         
         info = {}
@@ -43,8 +45,8 @@ class MPlayer(Generator):
         id_width, id_height, id_fps = keys
         for k in keys:
             if not k in info:
-                msg = 'Could not find key %s in properties %s.' % \
-                      (k, sorted(info.keys())) 
+                msg = ('Could not find key %s in properties %s.' % 
+                      (k, sorted(info.keys())))
                 raise ModelExecutionError(msg, self)
             
         self.width = info[id_width]
@@ -78,7 +80,8 @@ class MPlayer(Generator):
         self.debug("command line: %s" % " ".join(args))
          
         if self.config.quiet:
-            self.process = subprocess.Popen(args, stdout=open('/dev/null'),
+            self.process = subprocess.Popen(args,
+                                            stdout=open('/dev/null'),
                                             stderr=open('/dev/null'),)
         else:
             self.process = subprocess.Popen(args)

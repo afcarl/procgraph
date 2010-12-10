@@ -1,9 +1,9 @@
-''' Blocks for common statistical operations.
-
+''' 
+    Blocks for common statistical operations.
 
 '''
 
-import expectation
-import variance
-import covariance
-import cov2corr
+from . import expectation
+from . import variance
+from . import covariance
+from . import cov2corr

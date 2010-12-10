@@ -1,4 +1,5 @@
-''' An example package for ProcGraph that shows how to organize your code. 
+''' 
+    An example package for ProcGraph that shows how to organize your code. 
 
     This is the documentation string for the package. Like all docstrings,
     it consists of a short summary (above) and a longer description (this.)
@@ -44,5 +45,5 @@ pickle = import_magic(__name__, 'pickle')
  
 
 # now, import the modules that defines the blocks
-import example0_simplest_block
+from . import example0_simplest_block
 

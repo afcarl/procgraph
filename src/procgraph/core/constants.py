@@ -1,4 +1,5 @@
-''' All the arbitrary constants used by ProcGraph.
+''' 
+    All the arbitrary constants used by ProcGraph.
 
 
     Note that some of these come from prototypes, and I should get rid of them.
