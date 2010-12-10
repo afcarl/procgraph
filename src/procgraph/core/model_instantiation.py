@@ -178,7 +178,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         
         # XXX: we shouldn't have here ParseResults
         elif isinstance(value, list) or isinstance(value, ParseResults):
-            return map(lambda s: expand_value(s, element), value)
+            return [ expand_value(s, element) for s in  value]
         else:
             return value
 
@@ -400,13 +400,13 @@ def define_output_signals(output, block):
         # define output signals with the same name as the input signals
         names = block.get_input_signals_names()
         # TODO: maybe add a suffix someday
-        names = map(lambda x: x, names)
+        # names = [name + suffix for name in names]
         
         block.define_output_signals_new(names)
         
     else:
         # simply define the output signals
-        names = map(lambda x:x.name, output)                        
+        names = [x.name for x in output]                        
         block.define_output_signals_new(names)
 
 
@@ -464,7 +464,7 @@ def define_input_signals(input, block, previous_link, previous_block, model):
     else: # the input is not arbitrary
         # define right away the names, it does not depend 
         # on anything else
-        names = map(lambda x:x.name, input)                        
+        names = [x.name for x in input]                        
         block.define_input_signals_new(names)
 
         # now check we were given the right input

@@ -249,7 +249,7 @@ class ParsedModel(ParsedElement):
             lambda x: isinstance(x, ParsedBlock) and x.operation == 'output'))                
         
         for block in input_blocks:
-            inputs_defined = map(lambda x: x.name, self.input)
+            inputs_defined = [x.name for x in self.input]
             input_name = block.config.get('name', None)
             if input_name is not None:
                 # if a name is specified, check if some input
@@ -292,7 +292,7 @@ class ParsedModel(ParsedElement):
                         raise SemanticError(msg, block)
                     
         for block in output_blocks:
-            outputs_defined = map(lambda x: x.name, self.output)
+            outputs_defined = [x.name for x in self.output]
             output_name = block.config.get('name', None)
             if output_name is not None:
                 # if a name is specified, check if some output

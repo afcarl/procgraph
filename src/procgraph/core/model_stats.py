@@ -75,9 +75,9 @@ class ExecutionStats:
         
         
         # update percentage
-        total_cpu = sum(map(lambda s: s.mean_cpu * s.num, samples))
-        total_wall = sum(map(lambda s: s.mean_wall * s.num, samples))
-        total_times = sum(map(lambda s:  s.num, samples))
+        total_cpu = sum([s.mean_cpu * s.num for s in samples])
+        total_wall = sum([s.mean_wall * s.num for s in samples])
+        total_times = sum([ s.num for s in samples])
         for s in samples:
             s.perc_cpu = s.mean_cpu * s.num / total_cpu
             s.perc_wall = s.mean_wall * s.num / total_wall
