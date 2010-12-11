@@ -7,3 +7,4 @@ docs/build/
 .DS_Store
 *.pgc
 .noseids
+src/coverage_information

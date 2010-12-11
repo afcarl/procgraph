@@ -85,7 +85,9 @@ def good_mixing_3():
 class SyntaxTestMultiple(PGTestCase):
     
     def test_same_name_mistake(self):
-        ''' Test that we detect when a input, output, config name is repeated. '''
+        ''' Test that we detect when a input, output, config name
+            is repeated. 
+        '''
         self.assertRaises(BlockWriterError, same_name_mistake_config)
         self.assertRaises(BlockWriterError, same_name_mistake_input)
         self.assertRaises(BlockWriterError, same_name_mistake_output)

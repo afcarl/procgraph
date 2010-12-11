@@ -1,0 +1,13 @@
+--- model tutorial7_simple_blocks
+
+import tutorial7_blocks
+
+
+|player:mplayer file="coastguard.mp4"|  --> rgb
+
+
+    rgb --> |green_channel| --> processed
+    
+
+    processed --> |mencoder file="coastguard7.avi"|
+

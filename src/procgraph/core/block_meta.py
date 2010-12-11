@@ -1,10 +1,5 @@
-import sys
-
 from .exceptions import BlockWriterError, ModelWriterError
-
-FIXED = 'fixed-signal'
-VARIABLE = 'variable-signal'
-DEFINED_AT_RUNTIME = 'defined-at-runtime'
+from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
  
 class BlockConfig:
     def __init__(self, variable, has_default, default, desc, desc_rest, where):
@@ -43,19 +38,21 @@ def block_config(name, description=None, default='not-given'):
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     has_default = default != 'not-given'
-    if filter(lambda x: x.variable == name, BlockMeta.tmp_config):
+    if [x for x in BlockMeta.tmp_config if x.variable == name]:
         raise BlockWriterError('Already described config variable "%s".' % name)
-    BlockMeta.tmp_config.append(BlockConfig(name, has_default, default, desc, desc_rest, None))
+    BlockMeta.tmp_config.append(BlockConfig(name, has_default, default,
+                                            desc, desc_rest, None))
 
 def block_input(name, description=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
-    if filter(lambda x: x.name == name, BlockMeta.tmp_input):
+    if [x for x in BlockMeta.tmp_input if x.name == name]:
         raise BlockWriterError('Already described input variable "%s".' % name)
     if BlockMeta.tmp_input and BlockMeta.tmp_input[-1].type == VARIABLE:
         raise BlockWriterError('Cannot mix variable and fixed input.')
-    BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None, desc, desc_rest, None))
+    BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None,
+                                          desc, desc_rest, None))
 
 def block_input_is_variable(description=None, min=None, max=None):
     assert description is None or isinstance(description, str) 
@@ -63,13 +60,14 @@ def block_input_is_variable(description=None, min=None, max=None):
     if BlockMeta.tmp_input:
         raise BlockWriterError('Cannot mix variable and fixed input'
                                ' or variable with variable.')
-    BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max, desc, desc_rest, None))
+    BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max,
+                                          desc, desc_rest, None))
     
 def block_output(name, description=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
-    if filter(lambda x: x.name == name, BlockMeta.tmp_output):
+    if [x for x in BlockMeta.tmp_output if x.name == name]:
         raise BlockWriterError('Already described output variable "%s".' % name)
     if BlockMeta.tmp_output and BlockMeta.tmp_output[-1].type == VARIABLE:
         raise BlockWriterError('Cannot mix variable and fixed output.')
@@ -82,7 +80,8 @@ def block_output_is_variable(description=None, suffix=None):
     if BlockMeta.tmp_output:
         raise BlockWriterError('Cannot mix variable and fixed output'
                                ' or variable with variable.')
-    BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix, desc, desc_rest, None))
+    BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
+                                            desc, desc_rest, None))
 
 def block_output_is_defined_at_runtime(description=None):
     assert description is None or isinstance(description, str) 
@@ -90,7 +89,8 @@ def block_output_is_defined_at_runtime(description=None):
     if BlockMeta.tmp_output:
         raise BlockWriterError('Cannot mix variable and fixed output'
                                ' or variable with variable.')
-    BlockMeta.tmp_output.append(BlockOutput(DEFINED_AT_RUNTIME, None, desc, desc_rest, None))
+    BlockMeta.tmp_output.append(BlockOutput(DEFINED_AT_RUNTIME, None,
+                                            desc, desc_rest, None))
     
 class BlockMeta(type):
     aliases = []
@@ -112,11 +112,12 @@ class BlockMeta(type):
         BlockMeta.tmp_output = []
         BlockMeta.tmp_input = []
 
-        has_variable_input = filter(lambda x: x.type == VARIABLE, BlockMeta.tmp_input)
-        has_variable_output = filter(lambda x: x.type == VARIABLE, BlockMeta.tmp_output)
+        has_variable_input = [x for x in BlockMeta.tmp_input if x.type == VARIABLE]
+        has_variable_output = [x for x in BlockMeta.tmp_output if x.type == VARIABLE] 
         
         if has_variable_output and not has_variable_input:
-            raise ModelWriterError('Cannot have variable output without variable input.')
+            raise ModelWriterError('Cannot have variable output without ' 
+                                   'variable input.')
         
         if len(BlockMeta.aliases) > 1:
             raise ModelWriterError("We don't support multiple aliases yet. "
@@ -176,7 +177,8 @@ def trim(docstring):
     lines = docstring.expandtabs().splitlines()
 
     # Determine minimum indentation (first line doesn't count):
-    indent = sys.maxint
+    maxi = 10000
+    indent = maxi
     for line in lines[1:]:
         stripped = line.lstrip()
         if stripped:
@@ -184,7 +186,7 @@ def trim(docstring):
 
     # Remove indentation (first line is special):
     trimmed = [lines[0].strip()]
-    if indent < sys.maxint:
+    if indent < maxi:
         for line in lines[1:]:
             trimmed.append(line[indent:].rstrip())
 
@@ -208,7 +210,8 @@ def split_docstring(s):
         return None, None
     s = trim(s)
     all_lines = s.split('\n') 
-    valid_lines = filter(None, map(str.strip, all_lines))
+    stripped = [l.strip() for l in all_lines]
+    valid_lines = [l for l in stripped if l]
     if valid_lines:
         for i in range(len(all_lines)):
             if all_lines[i]: # found first

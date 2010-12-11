@@ -20,7 +20,6 @@ class History(Block):
         self.state.t = []
     
     def update(self):
-        
         sample = self.get_input(0)
         timestamp = self.get_input_timestamp(0)
          
@@ -29,7 +28,6 @@ class History(Block):
         
         x.append(sample)
         t.append(timestamp)
-        
         
         while abs(t[0] - t[-1]) > self.config.interval:
             t.pop(0)

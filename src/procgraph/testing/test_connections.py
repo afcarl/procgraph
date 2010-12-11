@@ -1,5 +1,5 @@
-from procgraph import SemanticError
-from procgraph.core.model_loader import model_from_string # XXX:
+from ..core.exceptions import SemanticError
+from ..core.model_loader import model_from_string # XXX:
 
 from .utils import PGTestCase
 
@@ -102,8 +102,7 @@ class SemanticsTest(PGTestCase):
         for example in good_examples2:
             self.check_semantic_ok(example)
 
-    
-    
+     
 class ParamsTest(PGTestCase):
     
     def test1(self):
@@ -117,6 +116,4 @@ class ParamsTest(PGTestCase):
                           model_desc, config={'g2.k': 2})
        
 
-    
-    
     

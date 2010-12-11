@@ -1,4 +1,5 @@
-''' Blocks using Matplotlib to display data. 
+''' 
+    Blocks using Matplotlib to display data. 
 
 '''
 
@@ -15,6 +16,6 @@ if import_succesful(matplotlib):
 pylab = import_magic(__name__, 'matplotlib.pylab')
 
 
-import plot
+from . import plot
 
 from pylab_to_image import pylab2rgb 

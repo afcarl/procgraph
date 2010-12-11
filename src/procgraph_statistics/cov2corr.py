@@ -1,10 +1,18 @@
 from numpy import multiply, sqrt
 
-from procgraph import  register_simple_block
+from procgraph import simple_block
 
+@simple_block
 def cov2corr(covariance, zero_diagonal=True):
-    ''' Compute the correlation matrix from the covariance matrix.
-    If zero_diagonal = True, the diagonal is set to 0 instead of 1. '''
+    ''' 
+    Compute the correlation matrix from the covariance matrix.
+    If zero_diagonal = True, the diagonal is set to 0 instead of 1. 
+
+    :param zero_diagonal: Whether to set the (noninformative) diagonal to zero.
+    :param covariance: A 2D numpy array.
+    :return: correlation: The exctracted correlation.
+    
+    '''
     # TODO: add checks
     outer = multiply.outer
 
@@ -17,6 +25,4 @@ def cov2corr(covariance, zero_diagonal=True):
             correlation[i, i] = 0
     
     return correlation
-
-
-register_simple_block(cov2corr, params={'zero_diagonal': True})
+ 

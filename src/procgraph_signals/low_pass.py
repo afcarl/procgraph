@@ -8,19 +8,18 @@ class LowPass(Block):
         y[k] = alpha * u[k] + (1-alpha) * y[k-1]
     
     '''
-    
+    # TODO: make a serious low-pass block
     Block.alias('low_pass')
     
-    Block.config('alpha')
+    Block.config('alpha', 'Innovation rate')
     
-    Block.input('value')
-    Block.output('lowpass')
+    Block.input('value', 'Any numpy array.')
+    Block.output('lowpass', 'The lowpass version.')
     
     def init(self): 
         self.state.y = None 
         
     def update(self):
-        
         u = self.input[0]
         alpha = self.config.alpha
         

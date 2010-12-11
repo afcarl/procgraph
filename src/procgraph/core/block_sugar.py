@@ -60,8 +60,7 @@ class ConfigProxy(Proxy):
         return self.__dict__['block'].get_config(key)
     
     def __setattr__(self, i, v):
-        self.__dict__['block'].set_config_default(i, v)
+        raise ValueError('You can only read config %r, not change it.' % i)
     def __setitem__(self, key, value):
-        self.__dict__['block'].set_config_default(key, value)
-    
+        raise ValueError('You can only read config %r, not change it.' % key)
 

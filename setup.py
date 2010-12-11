@@ -14,33 +14,39 @@ def is_package_available(p):
          print("Warning: cannot import %r: %s" % (p, e)) 
          return False
 
-missing = set()
+missing = {}
 problems = set()
 for module, info in index['packages'].items():
     for requirement, options in info['requires'].items():
         if not any([is_package_available(op) for op in options]):
             print("For package %r, dependency %r cannot be satisfied." % 
 				  (module, requirement))
-            missing.add(requirement)
+            missing[requirement] = options
+            # XXX: this is slightly incorrect if different packages want
+            # the same module but different options.
             problems.add(module)
 
 if missing:
     print('\n\n')
-    print('I could not find the following packages installed:')
-    for m in missing:
-        print(' - %s' % m)
-    print('\nThese missing requirements could make the following packages not work properly:')
+    print('Dependency search problems summary')
+    print('----------------------------------\n')
+    print('I could not find the following packages installed:\n')
+    for requirement, options  in missing.items():
+    	if len(options) > 1:
+    		o = '(Satisfiable by %s.)' % " or ".join([x.__repr__() for x in options])
+    	else:
+    		o = ''
+        print(' - %-20s  %s' % (requirement, o))
+    print('\nThese missing requirements could make the following packages not work properly:\n')
     for p in problems:
         desc = index['packages'][p]['desc']
-        print(' - %15s  (%s)' % (p, desc))
+        print(' - %-20s  (%s)' % (p, desc))
         
-    print('\nI will go ahead and install everything, but you should install the missing'
-          ' packages for maximum functionality.\n'
-          )
-    raw_input('    Press any key to continue...')  
+    print('\nI will go ahead and install everything, but you should install the missing \n'
+          'packages for maximum functionality. An error will be thrown when you actually \n'
+          'try to use the blocks in those packages. \n')
+    raw_input('             Press any key to continue...')  
     print('\n\n')
-
-
 
 
 
@@ -49,11 +55,10 @@ packages = find_packages(where='src')
 setup(name='procgraph',
 	  version="0.9",
       package_dir={'':'src'},
-      #packages=['procgraph'] + ok_to_install,
       packages=packages,
       install_requires=['pyparsing',
-                        'simplejson',
-                        'numpy',
+                        'simplejson', #TODO: get rid of this
+                        'numpy', # TODO: make numpy optional?
                         'setproctitle',
                         'termcolor'],
       entry_points={

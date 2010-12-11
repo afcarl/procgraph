@@ -12,19 +12,19 @@ class HistoryT(Block):
     Block.alias('historyt')
     
     Block.config('interval', 'Length of interval (seconds).', default=10)
-    Block.config('natural', 'If true, set 0 as the log beginning.', default=True)
+    Block.config('natural', 'If true, set 0 to be timestamp of the log '
+                 'beginning. This allows to have prettier graphs',
+                 default=True)
     
     Block.input('x', 'Any signal.')
     Block.output('history', 'Tuple ``(t,x)`` containing two arrays.')
     
     def init(self):
-        
         self.state.x = []
         self.state.t = []
         self.state.first_timestamp = None
 
     def update(self):
-        
         sample = self.get_input(0)
         timestamp = self.get_input_timestamp(0)
         
@@ -34,7 +34,6 @@ class HistoryT(Block):
         if self.config.natural:
             timestamp = timestamp - self.state.first_timestamp
             
-         
         x = self.state.x
         t = self.state.t
         
@@ -44,7 +43,6 @@ class HistoryT(Block):
         while abs(t[0] - t[-1]) > self.config.interval:
             t.pop(0)
             x.pop(0)
-    
     
         self.output.history = (t, x)
  

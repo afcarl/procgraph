@@ -1,24 +1,32 @@
 # OS X: install from http://ffmpegx.com/download.html
-import subprocess, os, numpy
+import subprocess
+import os
+import numpy
  
-from procgraph  import Generator, Block, ModelExecutionError
-
+from procgraph  import Generator, Block, ModelExecutionError, BadConfig
  
 class MPlayer(Generator):
     ''' Decodes a video stream. ''' 
 
     Block.alias('mplayer')
     
-    Block.config('file', 'Input video file. Any format that ``mplayer`` understands.')
-    Block.config('quiet', 'If true, suppress messages from mplayer.', default=True)
+    Block.config('file', 'Input video file. This can be in any format that '
+                         '``mplayer`` understands.')
+    Block.config('quiet', 'If true, suppress stderr messages from mplayer.',
+                          default=True)
     
     Block.output('video', 'RGB stream as numpy array.')
          
     def init(self): 
         self.file = self.config.file
         
+        if not os.path.exists(self.config.file):
+            raise BadConfig('File %r does not exist.' % self.config.file,
+                            self, 'file')
+            
         # first we identify the video resolution
-        args = 'mplayer -identify -vo null -ao null -frames 0'.split() + [self.file]
+        args = ('mplayer -identify -vo null -ao null -frames 0'.split() 
+                + [self.file])
         output = check_output(args)
         
         info = {}
@@ -37,14 +45,16 @@ class MPlayer(Generator):
         id_width, id_height, id_fps = keys
         for k in keys:
             if not k in info:
-                raise ModelExecutionError('Could not find key %s in properties %s' % 
-                                          (k, sorted(info.keys())), self)
-        
+                msg = ('Could not find key %s in properties %s.' % 
+                      (k, sorted(info.keys())))
+                raise ModelExecutionError(msg, self)
+            
         self.width = info[id_width]
         self.height = info[id_height]
         self.fps = info[id_fps]
         
-        self.debug('Detected %dx%d video stream at %.1fps in %r.' % 
+        # TODO: reading non-RGB streams not supported
+        self.info('Reading %dx%d video stream at %.1f fps in %r.' % 
                    (self.width, self.height, self.fps, self.config.file))
 
         self.shape = (self.height, self.width, 3)
@@ -58,7 +68,8 @@ class MPlayer(Generator):
             os.unlink(fifo_name)
         os.mkfifo(fifo_name)
         args = ['mencoder', self.file, '-ovc', 'raw',
-                '-rawvideo', 'w=%d:h=%d:format=%s' % (self.width, self.height, format),
+                '-rawvideo', 'w=%d:h=%d:format=%s' % 
+                    (self.width, self.height, format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
                 '-nosound',
@@ -66,10 +77,11 @@ class MPlayer(Generator):
                 fifo_name 
                 ]
         
-        self.info("command line: %s" % " ".join(args))
+        self.debug("command line: %s" % " ".join(args))
          
         if self.config.quiet:
-            self.process = subprocess.Popen(args, stdout=open('/dev/null'),
+            self.process = subprocess.Popen(args,
+                                            stdout=open('/dev/null'),
                                             stderr=open('/dev/null'),)
         else:
             self.process = subprocess.Popen(args)

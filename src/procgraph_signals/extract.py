@@ -1,4 +1,4 @@
-from procgraph import Block, COMPULSORY, register_simple_block
+from procgraph import Block, COMPULSORY, simple_block
 
 
 # Make it generic?
@@ -8,9 +8,9 @@ class Extract(Block):
     
     '''
     Block.alias('extract')
-    Block.input('vector')
-    Block.output('part')
-    Block.config('index') 
+    Block.input('vector', 'Any numpy array')
+    Block.output('part', 'The part extracted')
+    Block.config('index', 'Index (or indices) to extract.') 
 
     def update(self):
         index = self.config.index
@@ -20,12 +20,19 @@ class Extract(Block):
         
         self.output.part = part
          
-         
-def slice(signal, start, end):
-    ''' Slices a signal by extracting from index ``start`` to index ``end`` (INCLUSIVE).'''
+@simple_block
+def slice(signal, start=COMPULSORY, end=COMPULSORY):
+    ''' Slices a signal by extracting from index ``start`` to index ``end``
+        (INCLUSIVE).
+        
+        :param signal: Any 1d numpy array
+        :param start:  Slice start.
+        :param end:    Slice end (inclusive).
+        
+        :return: sliced: The sliced signal.
+    '''
+    assert start != COMPULSORY
+    assert end != COMPULSORY
     return signal[start:(end + 1)]
-
-    
-register_simple_block(slice, 'slice', params={'start':COMPULSORY, 'end':COMPULSORY})
-
+ 
     

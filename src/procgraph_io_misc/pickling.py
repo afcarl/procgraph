@@ -28,7 +28,7 @@ class PickleGroup(Block):
     '''
     Block.alias('pickle_group')
     Block.config('file', 'File to write to.')
-    Block.input_is_variable() 
+    Block.input_is_variable('Any number of pickable signals.') 
         
     def write(self, x, filename):
         make_sure_dir_exists(filename)

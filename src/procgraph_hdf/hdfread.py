@@ -1,9 +1,12 @@
 import operator
 
 from procgraph  import Block, Generator, BadConfig
+
 from .tables_cache import tc_open_for_reading, tc_close
 from .hdfwrite import PROCGRAPH_LOG_GROUP
 
+
+# TODO: respect original order
 
 class HDFread(Generator):
     ''' This block reads a log written with HDFwrite.
@@ -11,11 +14,11 @@ class HDFread(Generator):
     '''
     
     Block.alias('hdfread')
-    Block.output_is_defined_at_runtime()
+    Block.output_is_defined_at_runtime('The signals read from the log.')
     Block.config('file', 'HDF file to read')
     Block.config('signals', 'Which signals to output (and in what order). '
-                 'Should be a comma-separated list. '
-                 'If you do not specify it will be all signal in the original order',
+                 'Should be a comma-separated list. If you do not specify it '
+                 ' will be all signal in the original order',
                  default=None)
     
     def get_output_signals(self):
@@ -40,8 +43,9 @@ class HDFread(Generator):
                                 self, 'signals')
             for s in signal_list:
                 if not s in all_signals:
-                    raise BadConfig('Signal %r not present in log (available: %r)' % 
-                                    (s, all_signals), self, 'signals')
+                    msg = ('Signal %r not present in log (available: %r)' % 
+                            (s, all_signals))
+                    raise BadConfig(msg, self, 'signals')
                 self.signals.append(s)
                 
         return self.signals
@@ -127,9 +131,5 @@ class HDFread(Generator):
     def finish(self):
         tc_close(self.hf)
         
-        
-        
-        
-        
-        
+         
         

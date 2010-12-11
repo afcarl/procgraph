@@ -67,3 +67,5 @@ class SubstitutionTest(PGTestCase):
     def testBadExamples(self):
         for example in bad_examples:
             self.check_semantic_error(example)
+            
+            

@@ -1,27 +1,58 @@
 import numpy
 from numpy import maximum, minimum, zeros
 
-from procgraph import register_simple_block
+from procgraph import simple_block, COMPULSORY
 from procgraph.block_utils import check_2d_array
 
-def skim_top(a, top_percent):
-    ''' Cuts off the top percentile of the array. '''
+@simple_block 
+def skim_top(a, top_percent=COMPULSORY):
+    ''' Cuts off the top percentile of the array.
+    
+        :param top_percent: How much to cut off (decimal).
+        :type top_percent: float,>=0,<90
+    '''
     assert top_percent >= 0 and top_percent < 90
     threshold = numpy.percentile(a.flat, 100 - top_percent) 
     return numpy.minimum(a, threshold)
+
+@simple_block 
+def skim_top_and_bottom(a, percent=COMPULSORY):
+    ''' Cuts off the top and bottom percentile of the array. 
     
-def skim_top_and_bottom(a, percent):
-    ''' Cuts off the top and bottom percentile of the array. '''
+        :param a: Any numpy array. 
+        :type  a: array
+            
+        :param percent: How much to cut off (decimal).
+        :type  percent: float,>=0,<90
+
+        :return: Skimmed version of ``a``.
+        :rtype: a
+        
+    '''
     assert percent >= 0 and percent < 90
     threshold_max = numpy.percentile(a.flat, 100 - percent) 
     threshold_min = numpy.percentile(a.flat, percent)
     return numpy.maximum(threshold_min, numpy.minimum(a, threshold_max))
 
+@simple_block
 def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     """ 
-    Converts a 2D value to normalized uint8 RGB red=positive, blue=negative 0-255.
+        Converts a 2D float value to a RGB representation, where
+        red is positive, blue is negative, white is zero.
     
-     
+        :param value: The field to represent.
+        :type  value: HxW array
+        
+        :param max_value: Maximum of absolute value (if None, detect).
+        :type max_value: float,>0
+        :param skim:      Fraction to skim (in percent).
+        :type skim:      float,>0,<100
+        :param nan_color:  Color to give for regions of NaN and Inf.
+        :type nan_color:  color
+        
+        :return: posneg: A RGB image.
+        :rtype: HxWx3 uint8
+
     """
     
     check_2d_array(value, 'input to posneg')
@@ -36,7 +67,8 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
 
     
     if len(value.shape) != 2:
-        raise Exception('I expected a H x W image, got shape %s.' % str(value.shape))
+        raise Exception('I expected a H x W image, got shape %s.' % 
+                        str(value.shape))
     
     isfinite = numpy.isfinite(value)
     isnan = numpy.logical_not(isfinite)
@@ -83,29 +115,34 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
     return result
 
 
-register_simple_block(posneg, params={'max_value': None, 'skim': 0})
-
-
+@simple_block
 def scale(value, min_value=None, max_value=None,
-                 min_color=[1, 1, 1], max_color=[0, 0, 0], nan_color=[0.5, 0.5, 0.5]):
-    """ Provides a RGB representation of the values by interpolating the range 
-    [min(value),max(value)] into the colorspace [min_color, max_color].
+                min_color=[1, 1, 1], max_color=[0, 0, 0],
+                nan_color=[1, 0, 0]):
+    """ 
+        Provides a RGB representation of the values by interpolating the range 
+        [min(value),max(value)] into the colorspace [min_color, max_color].
+        
+        :param value: The field to represent.
+        :type  value: HxW array
+            
+        :param max_value: If specified, everything *above* is clipped.
+        :type max_value: float
+        :param min_value: If specified, everything *below* is clipped.
+        :type min_value: float
     
-    Input: a numpy array with finite values squeeze()able to (W,H).
-    
-    Configuration:
-    
-    -  ``min_value``:  If specified, this is taken to be the threshold. Everything
-                         below min_value is considered to be equal to min_value.
-    -  ``max_value``:  Optional upper threshold.
-    -  ``min_color``:  color associated to minimum value. Default: [1,1,1] = white.
-    -  ``max_color``:  color associated to maximum value. Default: [0,0,0] = black.
-    
-    Raises :py:class:`.ValueError` if min_value == max_value
-    
-    Returns:  a (W,H,3) numpy array with dtype uint8 representing a RGB image.
-      
+        :param min_color:  Color to give to the minimum values.
+        :type min_color:  color
+        :param max_color:  Color to give to the maximum values.
+        :type max_color:  color
+        :param nan_color:  Color to give for regions of NaN and Inf.
+        :type nan_color:  color
+        
+        :return: scale: A RGB image.
+        :rtype: HxWx3 uint8
+
     """
+    #Raises :py:class:`.ValueError` if min_value == max_value
     
     check_2d_array(value, 'input to scale()')
     
@@ -134,14 +171,16 @@ def scale(value, min_value=None, max_value=None,
         value[isnan] = numpy.inf
         min_value = numpy.min(value)
 
-    if max_value == min_value or numpy.isnan(min_value) or numpy.isnan(max_value):
+    if (max_value == min_value 
+        or numpy.isnan(min_value) 
+        or numpy.isnan(max_value)):
+        # XXX: maybe allow set this case as an exception?
 #        raise ValueError('I end up with max_value = %s = %s = min_value.' % \
 #                         (max_value, min_value))
         result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
         result[:, :, :] = 255
         return result
 
-    #print min_value, max_value
     
     value01 = (value - min_value) / (max_value - min_value)
     
@@ -158,9 +197,3 @@ def scale(value, min_value=None, max_value=None,
         result[:, :, u] = col
     
     return result
-
-register_simple_block(scale,
-    params={'min_color':[1, 1, 1], 'max_color':[0, 0, 0],
-            'nan_color':[1, 0, 0],
-            'min_value':None, 'max_value': None})
-

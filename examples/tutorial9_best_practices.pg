@@ -1,0 +1,23 @@
+--- model tutorial9_best_practices
+''' 
+    Same as tutorial8.
+
+'''
+
+import tutorial8_blocks
+
+
+|player:mplayer file="coastguard.mp4"|  --> rgb
+
+
+    rgb --> |choose channel=0| --> red
+    rgb --> |choose channel=1| --> green
+    rgb --> |choose channel=2| --> blue
+    
+    rgb, red, green, blue --> |sync| --> |grid cols=2| --> processed
+    
+    
+
+    processed --> |mencoder file="coastguard9.avi"|
+
+

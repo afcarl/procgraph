@@ -1,9 +1,12 @@
+import numpy
 import subprocess 
 
 from procgraph import Block
 from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
  
 # TODO: detect an error in Mencoder (perhaps size too large)
+# TODO: cleanup processes after finishing
+
 class MEncoder(Block):
     ''' Encodes a video stream using ``mencoder``.
     
@@ -11,7 +14,8 @@ class MEncoder(Block):
     ''' 
     Block.alias('mencoder')
     
-    Block.input('image', 'H x W x 3  uint8 numpy array representing an RGB image.') 
+    Block.input('image', 'Either a HxWx3 uint8 numpy array representing '
+                         'an RGB image, or a HxW representing grayscale. ') 
     
     Block.config('file', 'Output file (AVI format.)')
     Block.config('fps', 'Framerate of resulting movie. If not specified, '
@@ -20,7 +24,8 @@ class MEncoder(Block):
                              'we use this safe value instead.', default=10)
                         
     Block.config('vcodec', 'Codec to use.', default='mpeg4')
-    Block.config('vbitrate', 'Bitrate -- default is reasonable.', default=2000000)
+    Block.config('vbitrate', 'Bitrate -- default is reasonable.',
+                             default=2000000)
     Block.config('quiet', "If True, suppress mencoder's messages", default=True)
     Block.config('timestamps', "If True, also writes <file>.timestamps that"
         " includes a line with the timestamp for each frame", default=True)
@@ -85,25 +90,31 @@ class MEncoder(Block):
     
         make_sure_dir_exists(self.config.file)
             
+        self.info('Writing %dx%d %s video stream at %.1f fps to %r.' % 
+                  (self.width, self.height, format, fps, self.config.file))
+        
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
                 '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' % 
                 (self.width, self.height, fps, format),
                 '-ovc', 'lavc', '-lavcopts',
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
                  '-o', self.config.file]
-        self.info('command line: %s' % " ".join(args))
+        self.debug('command line: %s' % " ".join(args))
                  
         if self.config.quiet:
             self.process = subprocess.Popen(args,
                 stdin=subprocess.PIPE, stdout=open('/dev/null'),
-                                            stderr=open('/dev/null'),)
+                                       stderr=open('/dev/null'),)
         else:
             self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
 
         if self.config.timestamps:
             self.timestamps_file = open(self.config.file + '.timestamps', 'w') 
 
-    def write_value(self, timestamp, image):            
+    def write_value(self, timestamp, image):
+        # very important! make sure we are using a reasonable array
+        if not image.flags['C_CONTIGUOUS']:
+            image = numpy.ascontiguousarray(image)            
         self.process.stdin.write(image.data)
         self.process.stdin.flush()
 

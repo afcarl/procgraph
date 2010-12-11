@@ -139,7 +139,9 @@ class TestSync(PGTestCase):
             lines = filter(lambda x: x.strip(), example.split('\n'))
             print lines
             assert len(lines) == 3
-            config = {'master': lines[0], 'slave1': lines[1], 'slave2': lines[2]}
+            config = {'master': lines[0],
+                      'slave1': lines[1],
+                      'slave2': lines[2]}
     
             
             model = default_library.instance('sync_test', name=None,

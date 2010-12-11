@@ -37,7 +37,8 @@ class Sync(Generator):
     '''
     Block.alias('sync')
     
-    Block.input_is_variable('Signals to synchronize. The first is the master.', min=2)
+    Block.input_is_variable('Signals to synchronize. The first is the master.',
+                             min=2)
     Block.output_is_variable('Synchronized signals.')
     
     def init(self): 
@@ -88,8 +89,8 @@ class Sync(Generator):
                 debug('Ignoring %s because timestamp still 0' % name)
                 continue
             
-            if  name in self.state.already_seen \
-                and self.state.already_seen[name] == current_timestamp:
+            if  (name in self.state.already_seen and
+                 self.state.already_seen[name] == current_timestamp):
                 continue 
             else:
                 self.state.already_seen[name] = current_timestamp
@@ -98,10 +99,11 @@ class Sync(Generator):
             # if there is nothing in the queue
             # or this is a new sample
             if (len(queue) == 0) or newest(queue).timestamp != current_timestamp: # new sample
-                debug("Inserting signal '%s'  ts %s (queue len: %d)" % \
+                debug("Inserting signal '%s'  ts %s (queue len: %d)" % 
                       (name, current_timestamp, len(queue)))
                 #debug('Before the queue is: %s' % queue)
-                add_last(queue, Sample(timestamp=current_timestamp, value=current_value))
+                add_last(queue, Sample(timestamp=current_timestamp,
+                                       value=current_value))
                 
                 #debug('Now the queue is: %s' % queue)
                 
@@ -124,7 +126,8 @@ class Sync(Generator):
             for slave in slaves:
                 slave_queue = queues[slave]
                 # remove oldest
-                while len(slave_queue) > 1 and oldest(slave_queue).timestamp < master_timestamp:
+                while (len(slave_queue) > 1 and 
+                      oldest(slave_queue).timestamp < master_timestamp):
                     debug("DROP one from %s" % slave)
                     slave_queue.pop()
                 
@@ -144,7 +147,8 @@ class Sync(Generator):
                     slave_timestamp, slave_value = slave_queue.pop()
                     ## not true anymore, assert slave_timestamp >= master_timestamp
                     difference = slave_timestamp - master_timestamp
-                    debug(" - %s timestamp %s diff %s" % (slave, slave_timestamp, difference))
+                    debug(" - %s timestamp %s diff %s" % 
+                          (slave, slave_timestamp, difference))
                     output_values.append(slave_value)
                 output.insert(0, (master_timestamp, output_values))
 
@@ -160,7 +164,6 @@ class Sync(Generator):
                 self.set_output(i, values[i], timestamp) 
             
         
-        
     def next_data_status(self):
         output = self.get_state('output')
         if not output: # no output ready
@@ -168,5 +171,4 @@ class Sync(Generator):
         else:
             timestamp = self.output[-1][0]
             return (True, timestamp)
-        
          

@@ -1,19 +1,18 @@
-import os, fnmatch
-import cPickle as pickle
+import os
+import fnmatch
 import inspect
-
+import cPickle as pickle
 
 from .model_instantiation import create_from_parsing_results
 from .visualization import warning, debug, info
-create_from_parsing_results
 from .parsing import parse_model, ParsedModel
 from .exceptions import SemanticError
 from .registrar import default_library, Library
-
-PATH_ENV_VAR = 'PROCGRAPH_PATH'
+from .constants import PATH_ENV_VAR
 
 class ModelSpec(object):
     ''' Class used to register as a block type '''
+    
     def __init__(self, parsed_model, defined_in):
         self.parsed_model = parsed_model
         
@@ -39,8 +38,8 @@ class ModelSpec(object):
                 
             def instance(self, block_type, name, config, parent_library=None):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % self.forbid,
-                                        parent.parsed_model)
+                    msg = 'Recursion error for model %r.' % self.forbid
+                    raise SemanticError(msg, parent.parsed_model)
                 else:
                     #print "Instancing %s (forbid %s)" % (block_type, self.forbid)
                     return Library.instance(self, block_type, name,
@@ -48,14 +47,16 @@ class ModelSpec(object):
                     
             def get_generator_for_block_type(self, block_type):
                 if block_type == self.forbid:
-                    raise SemanticError('Recursion error for model "%s".' % self.forbid,
-                                        parent.parsed_model)
+                    msg = 'Recursion error for model %r.' % self.forbid
+                    raise SemanticError(msg, parent.parsed_model)
                 else:
-                    return Library.get_generator_for_block_type(self, block_type)
+                    return Library.get_generator_for_block_type(self,
+                                                                block_type)
 
     
         sandbox = ForbidRecursion(library, parsed_model.name)     
-        model = create_from_parsing_results(parsed_model, name, config, library=sandbox)
+        model = create_from_parsing_results(parsed_model, name, config,
+                                            library=sandbox)
 
         return model
 
@@ -79,8 +80,8 @@ def pg_add_this_package_models(file, assign_to, subdir='models'):
                        assign_to_module=assign_to)
 
 
-def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_cache=False,
-                       assign_to_module=None):
+def pg_look_for_models(library, additional_paths=None, ignore_env=False,
+                       ignore_cache=False, assign_to_module=None):
     ''' Call this function at the beginning of the executions.
     It scans the disk for model definitions, and register
     them as available block types. 
@@ -89,7 +90,10 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
     variable (colon separated list of paths), unless ignore_env is True.
     
     assign_to_module is a string that gives the nominal module the model
-    is associated to -- this is only used for the documentation generation. 
+    is associated to -- this is only used for the documentation generation.
+    
+    TODO: add global cache in user directory.
+     
     '''
     
     paths = []
@@ -103,13 +107,15 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
     if not paths:
         if False:
             # TODO: add verbose switch
-            warning("No paths given and environment var %s not defined." % PATH_ENV_VAR) 
+            warning("No paths given and environment var %r not defined." % 
+                     PATH_ENV_VAR) 
         
     # enumerate each sub directory
     all_files = set()
     for path in paths:
         if not os.path.isdir(path):
-            raise Exception('Invalid path "%s" to search for models. ' % path) 
+            # XXX: should I use exception?
+            raise Exception('Invalid path %r to search for models. ' % path) 
         
         for root, dirs, files in os.walk(path): #@UnusedVariable
             for f in files: 
@@ -122,25 +128,37 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
         
+        # Make sure we use an absolute filename
+        f = os.path.realpath(f)
+                
         cache = os.path.splitext(f)[0] + '.pgc'
-        if not ignore_cache and \
-            os.path.exists(cache) and \
-            os.path.getmtime(cache) > os.path.getmtime(f):
+        if (not ignore_cache and 
+            os.path.exists(cache) and 
+            os.path.getmtime(cache) > os.path.getmtime(f)):
             try:
                 models = pickle.load(open(cache))
             except Exception as e:
-                info('Cannot unpickle file %s: %s.' % (cache, e))
+                info('Cannot unpickle file %r: %s' % (cache, e))
                 # XXX repeated code 
-                debug("Parsing %s" % os.path.relpath(f))
+                debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
+                
                 models = parse_model(model_spec, filename=f)
                 pickle.dump(models, open(cache, 'w'))   
             #print "Using cache %s" % cache
         else:
-            debug("Parsing %s" % os.path.relpath(f))
+            debug("Parsing %r." % os.path.relpath(f))
             model_spec = open(f).read()
             models = parse_model(model_spec, filename=f)
-            pickle.dump(models, open(cache, 'w'))
+            try:
+                file = open(cache, 'w')    
+            except:
+                # Cannot write on the cache for whatever reason
+                file = None
+                
+            if file:            
+                pickle.dump(models, file)
+                file.close() 
         
         if models[0].name is None:
             models[0].name = base
@@ -148,8 +166,9 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False, ignore_
         for parsed_model in models:
             if library.exists(parsed_model.name):
                 prev = library.name2block[parsed_model.name].parsed_model.where
-                raise SemanticError('Found model %r in %r, already in %r. ' % \
-                            (parsed_model.name, f, prev.filename), parsed_model)
+                msg = ('Found model %r in %r, already in %r. ' % 
+                       (parsed_model.name, f, prev.filename))
+                raise SemanticError(msg, parsed_model)
                 
             if assign_to_module is None:
                 assign_to_module = path
@@ -166,15 +185,17 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
         #  and I do:
         #    pg -d . tutorials.pg
         # This will fail because it will try to read tutorials.pg twice
-        raise SemanticError('I already have registered "%s" from %s. ' % \
-                            (parsed_model.name, prev.filename), parsed_model)
+        msg = ('I already have registered model %r from %r. ' % 
+              (parsed_model.name, prev.filename))
+        raise SemanticError(msg, parsed_model)
     # print "Registering model '%s' " % parsed_model.name
 
     model_spec = ModelSpec(parsed_model, defined_in)
     library.register(parsed_model.name, model_spec)
 
 
-def add_models_to_library(library, string, name=None, filename=None, defined_in=None):
+def add_models_to_library(library, string, name=None,
+                          filename=None, defined_in=None):
     '''
     defined_in: module NAME (to display in documentation)
         (Compulsory!)
@@ -192,9 +213,15 @@ def add_models_to_library(library, string, name=None, filename=None, defined_in=
                                        defined_in=defined_in)
         
                
-def model_from_string(model_spec, name=None, config=None, library=None, filename=None):
+def model_from_string(model_spec, name=None, config=None,
+                      library=None, filename=None):
     ''' Instances a model from a specification. Optional
-        attributes can be passed. Returns a Model object. '''
+        attributes can be passed. Returns a Model object. 
+        
+        Additional models in the spec (after the first) are automatically
+        added to the library (defined_in = calling module).
+        
+    '''
     if config is None:
         config = {}
     if library is None:
@@ -216,6 +243,7 @@ def model_from_string(model_spec, name=None, config=None, library=None, filename
         for support in parsed_models[1:]:
             pg_add_parsed_model_to_library(support, library, defined_in=mod)
 
+    # Get the first one
     parsed_model = parsed_models[0]
     
     model = create_from_parsing_results(parsed_model, name=name,

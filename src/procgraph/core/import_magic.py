@@ -1,21 +1,22 @@
 import sys
-from .visualization import debug
 from types import ModuleType
 
-# TODO: move somewhere else
-sname = 'procgraph_info'  
-fname = 'requires'
-REQUIRES_PARSED = 'requires_parsed'
-    
+from .visualization import debug
+from .constants import PROCGRAPH_INFO_VARIABLE, REQUIRES, REQUIRES_PARSED 
+
+
 def import_magic(module_name, required, member=None):
-    ''' Equivalent to "from required import member" or "import required". '''
+    ''' Equivalent to "from required import member" or "import required".
+        Check that it was succesfull with import_succesful(). 
+    '''
     info_structure = get_module_info(module_name)
     # Check that it was mentioned in the structure
     required_base = required.split('.')[0]
     if not required_base in info_structure[REQUIRES_PARSED]:
         raise Exception('Please specify that you need %r as a dependency '
                         'in the field %r of the %r structure in module %r.' % 
-                        (required_base, fname, sname, module_name))
+                        (required_base, REQUIRES, PROCGRAPH_INFO_VARIABLE,
+                         module_name))
     
     # FIXME: there's a bug in here, should find which base was selected
     if required == required_base:
@@ -31,20 +32,21 @@ def import_magic(module_name, required, member=None):
                     raise Exception('No member %r in %r' % (member, o))
                 return mod.__dict__[member]
             return mod
-        except Exception as e:
-            # could not load it!
+        except Exception as e: #@UnusedVariable
             # TODO: show error
             # print e
             pass
         
     # We could not load anything.
-    debug('Could not load dependency %r for %r. '
-          'I will let you continue, but an error might be thrown when the package '
-          'actually tries to use it.' % 
-          (required, module_name))
+    warn = ('Could not load dependency %r for %r.\n I will try to continue,' 
+           ' but an error might be thrown when %s actually tries to use %s.' % 
+           (required, module_name, module_name, required))
     
-    msg = 'I tried to let you continue, but it seems that module %r really needs ' \
-          '%r to work. Sorry! ' % (module_name, required)
+    if False: # TODO: think of configuration switch
+        debug(warn)
+    
+    msg = ('I tried to let you continue, but it seems that module %r really '
+           ' needs %r to work. Sorry! ' % (module_name, required))
         
     class warn_and_throw:
         def __getattr__(self, method_name): #@UnusedVariable
@@ -55,24 +57,25 @@ def import_magic(module_name, required, member=None):
 def get_module_info(module_name):
     # TODO: better Exception?
     if not module_name in sys.modules:
-        raise Exception('Please pass the module __name__ (got: %r).' % module_name)
+        raise Exception('Please pass  __package__ as argument (got: %r).' 
+                        % module_name)
 
     module = sys.modules[module_name]
     
-    if not sname in module.__dict__:
+    if not PROCGRAPH_INFO_VARIABLE in module.__dict__:
         raise Exception('Please define the structure %r for module %r. '
-                        % (sname, module_name)) 
+                        % (PROCGRAPH_INFO_VARIABLE, module_name)) 
 
-    info = module.__dict__[sname] 
+    info = module.__dict__[PROCGRAPH_INFO_VARIABLE] 
     
     ''' Returns dict   name -> list of possible modules '''
     parsed = {}
-    if not fname in info:
+    if not REQUIRES in info:
         #raise Exception('Please define a field %r in dict %s.%s.' % 
-        #                (fname, module_name, sname))
+        #                (REQUIRES, module_name, PROCGRAPH_INFO_VARIABLE))
         pass
     else:
-        requires = info[fname]
+        requires = info[REQUIRES]
         for r in requires:
             if isinstance(r, str):
                 # normal

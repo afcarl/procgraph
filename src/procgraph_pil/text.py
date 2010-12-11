@@ -1,9 +1,7 @@
 import subprocess, os, numpy
 
 from procgraph import Block, BadConfig
-
-
-from procgraph.core.visualization import info  as info_main, error as error_main 
+from procgraph.core.visualization import info as info_main, error as error_main 
 
 def info(s):
     info_main('procgraph_pil/text: %s' % s)
@@ -18,8 +16,11 @@ from .pil_conversions import Image_from_array
 class Text(Block):
     ''' This block provides text overlays over an image. 
     
+    This block is very powerful, but the configuration is a bit complicated.
+    
     You should provide a list of dictionary in the configuration variable 
-     ``texts``. Each dictionary in the list describes one piece of text.
+    ``texts``. Each dictionary in the list describes how and where to write
+    one piece of text.
      
     An example of valid configuration is the following: ::
     
@@ -35,17 +36,19 @@ class Text(Block):
       Array of two integers giving the position of the text in the image
       
     ``color``
-      Text color. It can be a keyword color or an hexadecimal string (``white`` or 
-      ``#ffffff``).
+      Text color. It can be a keyword color or an hexadecimal string 
+      (``white`` or ``#ffffff``).
       
     ``bg``
       background color
     
     ``halign``
-      Horizontal alignment. Choose between ``left`` (default), ``center``, ``right``.
+      Horizontal alignment. 
+      Choose between ``left`` (default), ``center``, ``right``.
       
     ``valign``
-      Vertical alignment. Choose between ``top`` (default), ``middle``, ``center``.
+      Vertical alignment. 
+      Choose between ``top`` (default), ``middle``, ``center``.
     
     ``size``
       Font size in pixels
@@ -69,7 +72,7 @@ class Text(Block):
     
     Block.alias('text')
     
-    Block.config('texts', 'Text specification')
+    Block.config('texts', 'Text specification (see block description).')
     
     Block.input('rgb', 'Input image.')
     Block.output('rgb', 'Output image with overlaid text.')
@@ -88,7 +91,8 @@ class Text(Block):
         # Add stats
         macros = {}
         macros['timestamp'] = self.get_input_timestamp(0)
-        macros['time'] = self.get_input_timestamp(0) - self.state.first_timestamp
+        macros['time'] = \
+            self.get_input_timestamp(0) - self.state.first_timestamp
         macros['frame'] = self.state.frame
         
         rgb = self.input.rgb
@@ -137,11 +141,12 @@ def find_file(font_name):
         a = subprocess.Popen(['locate', pattern], stdout=subprocess.PIPE); 
         lines = a.stdout.read();
         if len(lines) == 0:
-            error('Cannot find filename respecting pattern "%s" anywhere' % pattern)
+            error('Cannot find a file matching the pattern %r.' % pattern)
             return None
         options = lines.split('\n')
         guess = options[0]
-        info('Found %d matches for %s, using  "%s".' % (len(options), pattern, guess))
+        info('Found %d matches for %s, using  "%s".' % 
+             (len(options), pattern, guess))
         return guess
     except Exception as e:
         error('Cannot run "locate": %s' % e)
@@ -153,10 +158,10 @@ def get_font(name, size):
     if not fonts.has_key(tuple):
         filename = name + '.ttf'
         if not os.path.exists(filename):
-            info('Could not find file "%s", searching using "locate"...' % filename)
+            info('Could not find file %r, trying "locate"...' % filename)
             name = find_file(name)
             if name is None:
-                error('Could not find file "%s" anywhere, using default font' % name)
+                error('Could not find %r anywhere, using default font' % name)
                 fonts[tuple] = ImageFont.load_default()
             else:
                 fonts[tuple] = ImageFont.truetype(name, size)
@@ -203,7 +208,8 @@ def process_text(draw, t):
         print('Uknown vertical-align key %s' % valign)
 
     if bg:
-        for a in [ [-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1], [-1, +1], [1, 1], [1, -1]]:
+        for a in [ [-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
+                   [-1, +1], [1, 1], [1, -1]]:
             draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
     
     draw.text([x, y], string, fill=color, font=font)

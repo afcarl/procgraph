@@ -1,9 +1,10 @@
 import sys
 from pyparsing import lineno, col
 
-from .block_meta import split_docstring, BlockInput, FIXED, \
-    BlockOutput, BlockConfig
+from .block_meta import split_docstring, BlockInput, BlockOutput, BlockConfig
 from .exceptions import SemanticError, x_not_found
+from .constants import FIXED
+
 
 class Where:
     ''' An object of this class represents a place in a file. 
@@ -11,7 +12,8 @@ class Where:
     All parsed elements contain a reference to a :py:class:`Where` object
     so that we can output pretty error messages.
     '''
-    def __init__(self, filename, string, character=None, line=None, column=None):
+    def __init__(self, filename, string,
+                 character=None, line=None, column=None):
         self.filename = filename
         self.string = string
         if character is None:
@@ -27,7 +29,7 @@ class Where:
 
     def __str__(self):
         s = ''
-        s += ('In file %s:\n' % self.filename)
+        s += 'In file %s:\n' % self.filename
         context = 3;
         lines = self.string.split('\n')
         start = max(0, self.line - context)
@@ -37,12 +39,13 @@ class Where:
             
         fill = len(pattern % (i + 1))
         space = ' ' * fill + ' ' * (self.col - 1) 
-        s += (space + '^\n')
-        s += (space + '|\n')
-        s += (space + 'here or nearby\n')
+        s += space + '^\n'
+        s += space + '|\n'
+        s += space + 'here or nearby'
         return s
         
     def print_where(self, s=sys.stdout):
+        # XXX: repeated code
         s.write('\n\n')
         prefix = '    '
         write = lambda x: s.write(prefix + x)
@@ -58,7 +61,7 @@ class Where:
         space = ' ' * fill + ' ' * (self.col - 1) 
         write(space + '^\n')
         write(space + '|\n')
-        write(space + 'here or nearby\n')
+        write(space + 'here or nearby')
          
 
 class ParsedElement:
@@ -133,7 +136,8 @@ class ParsedBlock(ParsedElement):
         self.config = config
         
     def __repr__(self):
-        return 'Block(op=%s,name=%s,config=%s)' % (self.operation, self.name, self.config)
+        return ('Block(op=%s,name=%s,config=%s)' % 
+                (self.operation, self.name, self.config))
 
     @staticmethod
     def from_tokens(tokens):
@@ -157,16 +161,15 @@ class ParsedAssignment(ParsedElement):
     def from_tokens(tokens):
         return ParsedAssignment(tokens['key'], tokens['value'])
           
-
-
+          
 def config_from_tokens(tokens):
     variable = tokens.get('variable')
     has_default = 'default' in tokens
     default = tokens.get('default', None)
-    docstring = tokens.get('docstring', None)
-    #return ConfigStatement(variable, has_default, default, docstring)
+    docstring = tokens.get('docstring', None) 
     desc, desc_rest = split_docstring(docstring)
     return BlockConfig(variable, has_default, default, desc, desc_rest, None) 
+
 
 def output_from_tokens(tokens):
     name = tokens.get('name')
@@ -184,7 +187,6 @@ def input_from_tokens(tokens):
     desc, desc_rest = split_docstring(docstring)
     return BlockInput(FIXED, name, None, None, desc, desc_rest, None)
         
-
       
 class Connection(ParsedElement):
     def __init__(self, elements):
@@ -198,6 +200,7 @@ class Connection(ParsedElement):
     def from_tokens(tokens):
         return Connection(tokens)
 
+
 class VariableReference(ParsedElement):
     def __init__(self, variable):
         ParsedElement.__init__(self)
@@ -209,6 +212,7 @@ class VariableReference(ParsedElement):
     @staticmethod
     def from_tokens(tokens):
         return VariableReference(tokens['variable'])
+
 
 class ParsedModel(ParsedElement):
     static_filename = 'not set'
@@ -239,13 +243,13 @@ class ParsedModel(ParsedElement):
                     if condition(element):
                         yield element
         
-        input_blocks = list(look_for_blocks(lambda x: isinstance(x, ParsedBlock) \
-                                      and x.operation == 'input'))                
-        output_blocks = list(look_for_blocks(lambda x: isinstance(x, ParsedBlock) \
-                                      and x.operation == 'output'))                
+        input_blocks = list(look_for_blocks(
+            lambda x: isinstance(x, ParsedBlock) and x.operation == 'input'))                
+        output_blocks = list(look_for_blocks(
+            lambda x: isinstance(x, ParsedBlock) and x.operation == 'output'))                
         
         for block in input_blocks:
-            inputs_defined = map(lambda x: x.name, self.input)
+            inputs_defined = [x.name for x in self.input]
             input_name = block.config.get('name', None)
             if input_name is not None:
                 # if a name is specified, check if some input
@@ -254,16 +258,17 @@ class ParsedModel(ParsedElement):
                 # (we don't mix the two cases)
                 if inputs_defined:
                     if not input_name in inputs_defined:
-                        raise SemanticError(
-                            x_not_found('input', input_name, inputs_defined), block)
+                        msg = x_not_found('input', input_name, inputs_defined)
+                        raise SemanticError(msg, block)
                     else:
                         # good! this was already specified
                         pass
                 else:
                     # we have a name, and no input was specified,
                     # so we add it (with warning)
-                    bi = BlockInput(type=FIXED, name=input_name, min=None, max=None,
-                                    desc=None, desc_rest=None, where=block.where)
+                    bi = BlockInput(type=FIXED, name=input_name,
+                                min=None, max=None,
+                                desc=None, desc_rest=None, where=block.where)
                     self.input.append(bi)
             else:
                 # we don't have a name
@@ -272,8 +277,8 @@ class ParsedModel(ParsedElement):
                 if not inputs_defined:
                     block.config['name'] = "in%d" % len(self.input)
                     bi = BlockInput(type=FIXED, name=block.config['name'],
-                                    min=None, max=None,
-                                    desc=None, desc_rest=None, where=block.where)
+                                min=None, max=None,
+                                desc=None, desc_rest=None, where=block.where)
                     # TODO add warning
                     self.input.append(bi)
                 else:
@@ -282,12 +287,12 @@ class ParsedModel(ParsedElement):
                         block.config['name'] = self.input[0].name
                     else:
                         # otherwise fail
-                        msg = 'This input block did not specify a name, and '\
-                            'I do not know which input it refers to.'
+                        msg = ('This input block did not specify a name, and '
+                               'I do not know which input it refers to.')
                         raise SemanticError(msg, block)
                     
         for block in output_blocks:
-            outputs_defined = map(lambda x: x.name, self.output)
+            outputs_defined = [x.name for x in self.output]
             output_name = block.config.get('name', None)
             if output_name is not None:
                 # if a name is specified, check if some output
@@ -295,9 +300,8 @@ class ParsedModel(ParsedElement):
                 # if some outputs were specified, it should be there
                 if outputs_defined:
                     if not output_name in outputs_defined:
-                        raise SemanticError(
-                            x_not_found('output', output_name, outputs_defined),
-                            block)
+                        msg = x_not_found('output', output_name, outputs_defined) 
+                        raise SemanticError(msg, block)
                     else:
                         # good! this was already specified
                         pass
@@ -305,7 +309,7 @@ class ParsedModel(ParsedElement):
                     # we have a name, and no output was specified,
                     # so we add it (with warning)
                     bo = BlockOutput(type=FIXED, name=output_name,
-                                    desc=None, desc_rest=None, where=block.where)
+                                desc=None, desc_rest=None, where=block.where)
                     # TODO add warning
                     self.output.append(bo)
             else:
@@ -315,7 +319,7 @@ class ParsedModel(ParsedElement):
                 if not outputs_defined:
                     block.config['name'] = "out%d" % len(self.output)
                     bo = BlockOutput(type=FIXED, name=block.config['name'],
-                                    desc=None, desc_rest=None, where=block.where)
+                                desc=None, desc_rest=None, where=block.where)
                     self.output.append(bo)
                 else:
                     # if exactly 1 output is specified, use that
@@ -323,8 +327,8 @@ class ParsedModel(ParsedElement):
                         block.config['name'] = self.output[0].name
                     else:
                         # otherwise fail
-                        msg = 'This output block did not specify a name, and '\
-                            'I do not know which output it refers to.'
+                        msg = ('This output block did not specify a name, and '
+                               'I do not know which output it refers to.')
                         raise SemanticError(msg, block)
         
     def __repr__(self):

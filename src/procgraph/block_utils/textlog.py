@@ -1,17 +1,20 @@
-import traceback, os
+import traceback
+import os
 
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
 
 
 class TextLog(Generator):
-    ''' This represents a generic log reader that reads
+    ''' 
+        sThis represents a generic log reader that reads
         from a file line-by-line. 
         
         Subclasses should overload the parse_format() static method.
         Also they should put the adequate output() methods.
     '''
     
-    Block.config('file', 'Filename. If it ends with ``bz2`` it is treated as compressed.')
+    Block.config('file', 'File to read. If it ends with ``bz2``, it is treated '
+                         'as compressed.')
     
     def init(self):
         filename = self.config.file
@@ -69,8 +72,8 @@ class TextLog(Generator):
                 self.read_next_line()
         except Exception as e:
             traceback.print_exc()
-            msg = "While reading line %s of file %s (='%s'): %s" % \
-                (line, self.get_config('file'), next_line, e)
+            msg = ("While reading line %s of file %s (='%s'): %s" % 
+                   (line, self.get_config('file'), next_line, e))
             raise ModelExecutionError(msg, self)    
 
     def next_data_status(self):
@@ -92,5 +95,5 @@ class TextLog(Generator):
             Return None is the line should be ignored (for example it is a comment)
             Otherwise, return a tuple (timestamp, array of (name, value) ).
         """
-        raise ValueError("Implement this.")
+        raise ValueError("Function parse_format() not implemented.")
 

@@ -4,7 +4,7 @@ from procgraph  import register_model_spec
 
 register_model_spec("""
 --- model covariance
-''' Computes the covariance matrix of the input '''
+''' Computes the covariance matrix of the input. '''
 input x 'Unidimensional numpy array.'
 output cov_x 'Square matrix representing sample covariance.'
 config wait=10 'Number of sample to have reliable expectation.'

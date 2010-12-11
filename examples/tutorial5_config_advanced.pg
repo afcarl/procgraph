@@ -1,0 +1,25 @@
+# Show how to put multiple models, and how to write 
+--- model tutorial5_config_advanced
+''' The master model '''
+config in        "Input file"
+config out       "Output file"
+config sigma = 4 "Sigma (pixels)"
+
+
+|player:mplayer| --> |tut:tutorial5_filter| --> |encoder:mencoder file=$out|
+
+player.file  = $in
+tut.sigma    = $sigma
+encoder.file = $out
+
+--- model tutorial5_filter
+''' The filtering model '''
+
+input  rgb        "Input image"
+output processed  "The processed image"
+config sigma = 5  "Gaussian filter size in pixels"
+
+|input name=rgb| --> |smooth| --> |output name=processed|
+
+# We can use the block type if there is no confusion
+smooth.gaussian_std = $sigma

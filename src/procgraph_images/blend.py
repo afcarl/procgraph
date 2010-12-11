@@ -55,20 +55,20 @@ def blend(a, b):
 
 class Blend(Block):
     '''
-        This block blends two or more images.
+        Blend two or more images.
         
-        RGB images are interpreted as having full alpha (opaque) 
-    
-        All images must have the same width.
+        RGB images are interpreted as having full alpha (opaque). 
+        All images must have the same width and height.
         
     '''
     Block.alias('blend')
     
-    Block.input_is_variable('images to blend')
+    Block.input_is_variable('images to blend', min=2)
     
     Block.output('rgb', 'The output is a RGB image (no alpha)')
         
     def update(self):
+        # TODO: check images
         result = None
         for signal in self.get_input_signals_names():
             image = self.get_input(signal)

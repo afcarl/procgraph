@@ -2,6 +2,7 @@ import numpy
 from StringIO import StringIO
 
 from procgraph_pil import Image
+
 from . import pylab
 
 

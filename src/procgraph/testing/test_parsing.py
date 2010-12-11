@@ -108,3 +108,4 @@ class SyntaxTest(PGTestCase):
     def testExamples(self):
         for example in good_examples:
             self.check_syntax_ok(example)
+

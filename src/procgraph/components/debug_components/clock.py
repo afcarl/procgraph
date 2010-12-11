@@ -2,8 +2,8 @@ from procgraph import Generator, Block
 
 class Clock(Generator):
     Block.alias('clock')
-    Block.config('interval', default=1)
-    Block.output('clock')
+    Block.config('interval', 'Delta between ticks.', default=1)
+    Block.output('clock', 'Clock signal.')
     
     def init(self): 
         self.state.clock = 0

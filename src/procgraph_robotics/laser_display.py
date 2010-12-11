@@ -16,18 +16,19 @@ class LaserDisplay(Block):
     
     Block.alias('laser_display')
     
-    Block.config('width', default=320)
-    Block.config('height', default=320)
-    Block.config('max_readings', default=30)
+    Block.config('width', 'Width of the resulting image.', default=320)
+    Block.config('height', 'Height of the resulting image.', default=320)
+    Block.config('max_readings', 'Readings are clipped at this threshold (m).',
+                                 default=30)
     Block.config('groups', 'How to group and draw the readings. (see example) ')
     Block.config('title', 'By default it displays the signal name.'
                         ' Set the empty string to disable.', default=None)
     
     Block.config('transparent', 'Gives transparent RGBA rather than RGB.',
                   default=False)
-    Block.input('readings')
+    Block.input('readings', 'The laser readings (array of floats).')
     
-    Block.output('image')
+    Block.output('image', 'The laser visualization (rgba).')
       
         
     def update(self):
@@ -35,8 +36,8 @@ class LaserDisplay(Block):
         readings = array(self.input.readings)
         
         if len(readings.shape) > 1:
-            raise BadInput('Expected flat array, got shape %s' % str(readings.shape),
-                           self, 0)
+            msg = 'Expected flat array, got shape %s' % str(readings.shape)
+            raise BadInput(msg, self, 0)
 
         f = pylab.figure(frameon=False,
                         figsize=(self.config.width / 100.0,

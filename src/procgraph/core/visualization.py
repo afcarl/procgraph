@@ -4,8 +4,8 @@ from os import environ as env
 try:
     from termcolor import colored as termcolor_colored #@UnresolvedImport
 except:
-    sys.stderr.write('procgraph can make use of the package "termcolor".\
- Please install it.\n')
+    sys.stderr.write('procgraph can make use of the package "termcolor". '
+                     'Please install it.\n')
     def termcolor_colored(x, color=None, on_color=None, attrs=None): #@UnusedVariable
         ''' emulation of the termcolor interface '''
         return x
@@ -22,8 +22,8 @@ def colored(x, color=None, on_color=None, attrs=None):
 try:
     from setproctitle import setproctitle #@UnresolvedImport @UnusedImport
 except:
-    sys.stderr.write('procgraph can make use of the package "setproctitle".\
- Please install it.\n')
+    sys.stderr.write('procgraph can make use of the package "setproctitle". '
+                     'Please install it.\n')
     def setproctitle(x):
         ''' emulation of the setproctitle interface '''
         pass
@@ -84,7 +84,8 @@ def info(string):
     write_message(string, lambda x: 'pg: ' + colored(x, 'green'))
     
 def debug(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, 'cyan', attrs=['dark']))
+    write_message(string,
+                  lambda x: 'pg: ' + colored(x, 'cyan', attrs=['dark']))
     
 def write_message(string, formatting):
     sys.stdout.flush()

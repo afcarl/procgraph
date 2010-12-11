@@ -1,4 +1,5 @@
-import time, numpy
+import time
+import numpy
 
 from procgraph import Block, BadInput, BadConfig
 
@@ -18,7 +19,8 @@ class Plot(Block):
             and we plot ``x`` versus ``y`` (see also :ref:`block:make_tuple`).
             
         2.  A list of numbers, or a 1-dimensional numpy array of length N. 
-            In this case, it is interpreted as the y values, and we set  ``x = 1:N``. 
+            In this case, it is interpreted as the y values, 
+            and we set  ``x = 1:N``. 
         
      '''
      
@@ -26,19 +28,21 @@ class Plot(Block):
     
     Block.config('width', 'Image dimension', default=320)
     Block.config('height', 'Image dimension', default=240)
-    Block.config('xlabel', default=None)
-    Block.config('ylabel', default=None)
-    Block.config('legend', default=None)
-    Block.config('title', default=None)
-    Block.config('format', default='-')
+    Block.config('xlabel', 'X label for the plot.', default=None)
+    Block.config('ylabel', 'Y label for the plot.', default=None)
+    Block.config('legend', 'List of strings to use as legend handles.', default=None)
+    Block.config('title', 'If None, use the signal name. Set to ``""`` to disable.',
+                     default=None)
+    Block.config('format', 'Line format ("-",".","x-",etc.)', default='-')
     Block.config('symmetric', 'An alternative to y_min, y_max.'
                             ' Makes sure the plot is symmetric for y. ',
                                 default=False)
-    Block.config('x_min', default=None)
-    Block.config('x_max', default=None)
-    Block.config('y_min', default=None)
-    Block.config('y_max', default=None)
-    Block.config('keep', default=False)
+    Block.config('x_min', 'If set, force the X axis to have this minimum.', default=None)
+    Block.config('x_max', 'If set, force the X axis to have this maximum.', default=None)
+    Block.config('y_min', 'If set, force the Y axis to have this minimum.', default=None)
+    Block.config('y_max', 'If set, force the Y axis to have this maximum.', default=None)
+    Block.config('keep', 'If True, tries to reuse the figure, without closing.'
+                         ' (buggy on some backends)', default=False)
     Block.config('transparent', 'If true, outputs a RGBA image instead of RGB.',
                  default=False)
 
@@ -145,7 +149,8 @@ class Plot(Block):
         for i in range(self.num_input_signals()):
             value = self.input[i]
             if value is None:
-                raise BadInput('Input is None (did you forget a |sync|?)', self, i)
+                raise BadInput('Input is None (did you forget a |sync|?)',
+                               self, i)
             elif isinstance(value, tuple):
                 if len(value) != 2:
                     raise BadInput('Expected tuple of length 2 instead of %d.' % 
@@ -162,11 +167,13 @@ class Plot(Block):
                 
                 # X must be one-dimensional
                 if len(x.shape) > 1:
-                    raise BadInput('Bad x vector w/shape %s.' % str(x.shape), self, i)
+                    raise BadInput('Bad x vector w/shape %s.' % str(x.shape),
+                                   self, i)
                 
                 # y should be of dimensions ...?
                 if len(y.shape) > 2:
-                    raise BadInput('Bad shape for y vector %s.' % str(y.shape), self, i)
+                    raise BadInput('Bad shape for y vector %s.' % str(y.shape),
+                                   self, i)
                 
                 if len(x) != y.shape[0]:
                     raise BadInput('Incompatible dimensions x: %s, y: %s' % 
@@ -177,7 +184,8 @@ class Plot(Block):
             else: 
                 y = numpy.array(value)
                 if len(y.shape) > 2:
-                    raise BadInput('Bad shape for y vector %s.' % str(y.shape), self, i)
+                    raise BadInput('Bad shape for y vector %s.' % str(y.shape),
+                                   self, i)
 
                 if len(y.shape) == 1:
                     x = numpy.array(range(len(y)))     
@@ -215,7 +223,8 @@ class Plot(Block):
                 self.limits[3] = self.config.y_max
                 
             if self.config.symmetric:
-                if self.config.y_min is not None or self.config.y_max is not None:
+                if self.config.y_min is not None or \
+                   self.config.y_max is not None:
                     raise BadConfig('Cannot specify symmetric together with'
                                     'y_min or y_max.', self, 'symmetric')
                 

@@ -1,24 +1,28 @@
-# TODO: move this to scripts/
-import sys, os
+import sys
+import os
 from collections import namedtuple
 from optparse import OptionParser
 
 from ..core.model_loader import  ModelSpec
 from ..core.registrar import default_library 
 from ..core.block import Block
-from ..core.block_meta import split_docstring, FIXED
-from procgraph.core.import_magic import get_module_info
+from ..core.block_meta import (split_docstring, FIXED, VARIABLE,
+                              DEFINED_AT_RUNTIME)
+from ..core.import_magic import get_module_info
 
+# TODO: make it possible to document simple functions 
  
 type_block = 'block'
 type_model = 'model'
 type_simple_block = 'simple_block'
 
-ModelDoc = namedtuple('ModelDoc', 'name source module type implementation input '
+ModelDoc = namedtuple('ModelDoc',
+                      'name source module type implementation input '
                       'output config desc desc_rest')
 
 # module : reference to actual module instance
-ModuleDoc = namedtuple('ModuleDoc', 'name blocks desc desc_rest module procgraph_info')
+ModuleDoc = namedtuple('ModuleDoc',
+                       'name blocks desc desc_rest module procgraph_info')
 
 
 def get_module_name_with_doc(original_module_name):
@@ -60,7 +64,6 @@ def collect_info(block_type, block_generator):
         type = type_block
         implementation = block_generator
         
-        #print block_type, "block_generator.__module__", block_generator.__module__
         if block_generator.defined_in:
             original_module_name = block_generator.defined_in
             assert isinstance(block_generator.defined_in, str)
@@ -118,13 +121,11 @@ def get_all_info(library):
         actual = __import__(name, fromlist=['ceremony'])
         
         desc, desc_rest = split_docstring(actual.__doc__)
-        
-#        if name == 'procgraph_foo':
-#            print name, actual.__dict__.keys()
+         
         try:
             procgraph_info = get_module_info(name)
         except Exception as e:
-            print "Could not load info for %r: %s" % (name, e)
+            print("Warning: procgraph_info missing for %r: %s" % (name, e))
             procgraph_info = {}
         
         modules[name] = ModuleDoc(name=name, blocks=module_blocks,
@@ -137,8 +138,10 @@ def main():
     parser = OptionParser()
      
     parser.add_option("--output", default='pgdoc.rst', help="HTML output file.")
-    parser.add_option("--label", default=None, help="Adds a RST label to the generated docs.")
-    parser.add_option("--translate", action='append', default=[], help="directory=url")
+    parser.add_option("--label", default=None,
+                      help="Adds a RST label to the generated docs.")
+    parser.add_option("--translate", action='append', default=[],
+                      help="directory=url")
 
     (options, args) = parser.parse_args()
     
@@ -149,7 +152,7 @@ def main():
         translate[root] = reference 
          
     if not args:
-        print "Give at least one module"
+        print("Give at least one module.")
         sys.exit(-1)
     
     given_modules = args
@@ -178,7 +181,7 @@ def main():
     
     if options.label is None:
         options.label = args[0]
-        print 'Using "%s" as label.' % options.label
+        print('Using %r as label.' % options.label)
     
     f.write('.. |towrite| replace:: **to write** \n\n')
     
@@ -192,29 +195,21 @@ def main():
     for module_name in sorted(modules):
         module = modules[module_name]
         
-        f.write('%s\n\n' % module_reference(module.name))
+        #f.write('%s\n' % module_reference(module.name))
+        f.write('Package ``%s``\n' % module.name)
+        f.write('-' * 60 + '\n\n\n')
         
-        if module.desc:
-            f.write(module.desc + '\n\n')
+        d = getstr(module.desc, '%s description' % module.name)
+        f.write(d + '\n\n')
+
         
-        col1 = 200
-        col2 = 200
-        f.write('='*col1 + ' ' + '=' * col2 + '\n')
-        
+        rows = []
         for block_name in sorted(module.blocks):
-            block = module.blocks[block_name]
-
-            if block.desc is None:
-                print('Warning: in module %r, block %r does not have a description.' 
-                      % (module_name, block_name))
-            
-            desc = str(block.desc) 
+            block = module.blocks[block_name]            
+            desc = getstr(block.desc, '%s:%s desc' % (module_name, block_name)) 
             name = block_reference(block.name)
-            f.write(name.ljust(col1) + ' ' + desc.ljust(col2) + '\n')             
-            
-
-        f.write('='*col1 + ' ' + '=' * col2 + '\n')
-        f.write('\n\n')
+            rows.append((name, desc))
+        write_rst_table(f, rows, widths=[30, 70])
     
     for module_name in sorted(modules):
         module = modules[module_name]
@@ -225,9 +220,10 @@ def main():
         f.write('=' * 60 + '\n\n\n')
 
 
-        if module.desc:
-            f.write(rst_class('procgraph:desc'))
-            f.write(module.desc + '\n\n')
+        f.write(rst_class('procgraph:desc'))
+        f.write(getstr(module.desc, module_name) + '\n\n')            
+
+            
         if module.desc_rest:
             f.write(rst_class('procgraph:desc_rest'))
             f.write(module.desc_rest + '\n\n')
@@ -237,11 +233,11 @@ def main():
             
             f.write(block_anchor(block.name))
             f.write(rst_class('procgraph:block'))
-            f.write('``%s``\n' % block.name)
-            f.write('-' * 60 + '\n')
+            f.write('Block ``%s``\n' % block.name)
+            f.write('-' * 66 + '\n')
             
-            if block.desc:
-                f.write(block.desc + '\n\n')
+            d = getstr(block.desc, '%s:%s' % (module_name, block_name))
+            f.write(d + '\n\n')
                 
             if block.desc_rest:
                 f.write(block.desc_rest + '\n\n')
@@ -251,11 +247,13 @@ def main():
                 f.write('Configuration\n')
                 f.write('^' * 60 + '\n\n')
                 for c in block.config:
+                    d = getstr(c.desc, '%s:%s config %s' % 
+                                        (module_name, block_name, c.variable))
                     if c.has_default:
                         f.write('- ``%s`` (default: %s): %s\n\n' % 
-                                (c.variable, c.default, c.desc))
+                                (c.variable, c.default, d))
                     else:
-                        f.write('- ``%s``: %s\n\n' % (c.variable, c.desc))
+                        f.write('- ``%s``: %s\n\n' % (c.variable, d))
                         # TODO: add desc_rest
       
             if block.input:
@@ -263,27 +261,53 @@ def main():
                 f.write('Input\n')
                 f.write('^' * 60 + '\n\n')
                 for i in block.input:
+                    d = getstr(i.desc, '%s:%s input %s' % 
+                                        (module_name, block_name, i.name))
+                    
                     if i.type == FIXED:
                         f.write('- ``%s``: %s\n\n' % 
-                                (i.name, i.desc))
+                                (i.name, d))
+                    elif i.type == VARIABLE:
+                        
+                        if i.max is None and i.min is None:
+                            condition = ""
+                        elif i.max is None:
+                            condition = ": n >= %d" % (i.min)
+                        elif i.min is None:
+                            condition = ": n <= %d" % (i.max)
+                        else:
+                            condition = ": %d <= n <= %d" % (i.min, i.max)
+                        f.write('- %s (variable number%s)\n\n' % (d, condition))
                     else:
-                        f.write('%s (variable: %s <= n <= %s)\n\n' % (i.desc, i.min, i.max))
+                        raise Exception(i.type)
 
             if block.output:
                 f.write(rst_class('procgraph:output'))
                 f.write('Output\n')
                 f.write('^' * 60 + '\n\n')
                 for o in block.output:
+                    d = getstr(o.desc, '%s:%s output %s' % 
+                                        (module_name, block_name, o.name))
+                    
                     if o.type == FIXED:
-                        f.write('- ``%s``: %s\n\n' % 
-                                (o.name, o.desc))
+                        f.write('- ``%s``: %s\n\n' % (o.name, d))
+                    elif o.type == VARIABLE:
+                        f.write('- %s (variable number)\n\n' % d)
+                    elif o.type == DEFINED_AT_RUNTIME:
+                        f.write('- %s (signals are defined at runtime)\n\n' % d)
                     else:
-                        f.write('%s (variable number)\n\n' % (o.desc))
-              
+                        raise Exception(o.type)
             
             url = get_source_ref(block.source, translate)
             f.write(rst_class('procgraph:source'))
             f.write('Implemented in %s. \n\n\n' % url)
+
+def getstr(s, what):
+    if s is None:
+        print('Missing documentation: %s' % what)
+        return "|towrite|"
+    else:
+        return s
 
 def get_source_ref(source, translation):
     source = os.path.realpath(source)
@@ -310,5 +334,43 @@ def block_reference(name):
 
 def module_reference(name):
     return ":ref:`module:%s`" % name
+
+"""    
+.. list-table:: Frozen Delights!
+   :widths: 15 10 30
+   :header-rows: 1
+
+   * - Treat
+     - Quantity
+     - Description
+   * - Albatross
+     - 2.99
+     - On a stick!
+   * - Crunchy Frog
+     - 1.49
+     - If we took the bones out, it wouldn't be
+       crunchy, now would it?
+   * - Gannet Ripple
+     - 1.99
+     - On a stick!
+"""
  
+def write_rst_table(f, rows, widths=[30, 70]):
+    # XXX: does not work with multiline
+    f.write('.. list-table::\n')
+    f.write('   :widths: %s\n' % " ".join([str(w) for w in widths]))
+    f.write('\n')
+    
+    for row in rows:
+        print row.__repr__()
+        for i, item in enumerate(row):
+            print item.__repr__()
+            if '\n' in item:
+                print('Warning: malformed cell %r.' % item)
+            if i == 0:
+                f.write('   * - %s\n' % item)
+            else:
+                f.write('     - %s\n' % item)
+    f.write('\n')
+
 

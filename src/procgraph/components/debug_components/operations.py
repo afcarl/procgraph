@@ -1,4 +1,4 @@
-from ...core.registrar_other import register_simple_block
+from ...core.registrar_other import simple_block
 from ...core.block import Block
 
 class Minus(Block):
@@ -44,11 +44,37 @@ class Minus(Block):
         
         self.set_output(0, result)
   
-   
-    
+@simple_block(alias='+')
+def plus(x, y):
+    ''' 
+        Sum of two signals. 
+        
+        :param x: First signal.
+        :param y: Second signal.
+        :return: sum: Sum of the two signals.
+    '''
+    return x + y
 
-register_simple_block(lambda x, y: x + y, '+', num_inputs=2)
-register_simple_block(lambda x, y: x * y, '*', num_inputs=2)
-#register_simple_block(lambda x, y: x - y, '-', num_inputs=2)
-register_simple_block(lambda x, y: x / y, '/', num_inputs=2)
- 
+@simple_block(alias='*')
+def product(x, y):
+    ''' 
+        Product of two signals. 
+        
+        :param x: First signal.
+        :param y: Second signal.
+        :return: product: Product of the two signals.
+        
+    '''
+    return x + y
+
+@simple_block(alias='/')
+def ratio(x, y):
+    ''' 
+        Ratio of two signals. 
+        
+        :param x: First signal.
+        :param y: Second signal.
+        :return: ratio: First signal divided by the second.
+    '''
+    return x / y
+     

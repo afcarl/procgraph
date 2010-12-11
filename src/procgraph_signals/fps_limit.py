@@ -2,7 +2,6 @@ import time
 
 from procgraph import Block 
 
-
 class FPSLimit(Block):
     ''' This block limits the output update to a certain *realtime* framerate.
     
@@ -38,8 +37,10 @@ class FPSLimit(Block):
                 self.state.last_timestamp = current
 
             
-        if should_update:
-            # Just copy the input to the output
-            for i in range(self.num_input_signals()):
-                self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
- 
+        if not should_update:
+            return
+        
+        # Just copy the input to the output
+        for i in range(self.num_input_signals()):
+            self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
+

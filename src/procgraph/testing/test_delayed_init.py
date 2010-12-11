@@ -15,7 +15,9 @@ class DelayedTest(PGTestCase):
         self.assertTrue(block1.are_output_signals_defined())
         
         print block1
-        
+
+# XXX: what's the deal here?
+#  
 #    def test_check_definitions(self):
 #        
 #        model_desc = """ 

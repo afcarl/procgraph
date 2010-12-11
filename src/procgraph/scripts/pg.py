@@ -1,11 +1,12 @@
-import sys, os 
+import sys
+import os 
 from optparse import OptionParser
 
-from ..core.model_loader import model_from_string, pg_look_for_models
+from ..core.model_loader import model_from_string, pg_look_for_models, ModelSpec
 from ..core.registrar import default_library, Library
 from ..core.exceptions import PGException, SemanticError
 from ..core.visualization import error, info
-
+from ..core.constants import PATH_ENV_VAR
 
 usage_short = \
 """Usage:    
@@ -16,10 +17,8 @@ Type "pg --help" for all the options and a few examples.
 
 """
 
-usage_long = \
-"""%s
-
-Examples:
+usage_long = usage_short + \
+"""Examples:
 
 1) Execute a model that does not need parameters:
     
@@ -27,19 +26,17 @@ Examples:
 
 2) Execute a model, reading the a directory for additional models:
 
-    $ pg -d my_models/  my_model.pg
+    $ pg -d my_models/  my_model
 
    (Note that the current directory is not read by default).    
    There is also an environment variable that has the same effect:
 
-    $ export PROCGRAPH_PATH=my_models
+    $ export {PATH_ENV_VAR}=my_models
 
 3) Execute a model, but first load a module that might contain additional block
    definitions.
 
-    $ pg -m my_blocks  my_model.pg 
-""" % usage_short
-    
+    $ pg -m my_blocks  my_model.pg      """.format(PATH_ENV_VAR=PATH_ENV_VAR)    
     
 
 def main(): 
@@ -63,11 +60,14 @@ def main():
 
     parser.add_option("--debug", action="store_true", default=False,
                       help="Displays debug information on the model.")
-
-    parser.add_option("--trace", action="store_true", default=False,
-                      help="If true, try to display raw stack trace in case of error.")
+ 
+    parser.add_option("--trace", action="store_true",
+                      default=False, dest="trace",
+                      help="If true, try to display raw stack trace in case of "
+                           " error, instead of the usual friendly message.")
     
-    parser.add_option("--stats", action="store_true", default=False,
+    parser.add_option("--stats", action="store_true",
+                      default=False, dest="stats",
                       help="Displays execution statistics, including CPU usage.")
     
     parser.add_option("--nocache", action="store_true", default=False,
@@ -145,21 +145,47 @@ def pg(filename, config,
         __import__(module)
     
     library = Library(default_library)
-    pg_look_for_models(library, ignore_cache=nocache,
+    
+    pg_look_for_models(library,
+                       ignore_cache=nocache,
                        additional_paths=additional_directories)
     
     # load standard components
     import procgraph.components #@UnusedImport
 
     if library.exists(block_type=filename):
-#            w = Where('command line', filename, 0)
-        model = library.instance(filename, name=None,
-                                         config=config)
+        # XXX w = Where('command line', filename, 0)
+        # Check that it is a model, and not a block.
+        generator = library.get_generator_for_block_type(filename)
+        if not isinstance(generator, ModelSpec):
+            # XXX nothing given
+            raise SemanticError('The name %r corresponds to a block, not a model. '
+                                'You can only use "pg" with models. ' % filename)
+            
+        if len(generator.input) > 0:
+            inputs = ", ".join([x.name.__repr__() for x in generator.input])
+            msg = ('The model %r has %d input(s) (%s). "pg" can only execute models '
+                  'without inputs.' % (filename, len(generator.input), inputs))
+            # XXX nothing given
+            raise SemanticError(msg, generator.input[0])
+        
+        model = library.instance(filename,
+                                 name='cmdline',
+                                 config=config)
+                                 
     else:
+        # See if it exists
         if not os.path.exists(filename):
-            # TODO: add where for command line
-            raise SemanticError('Unknown model or file "%s".' % filename)
+            # Maybe try with extension .pg
+            filename_pg = "%s.pg" % filename
+            if os.path.exists(filename_pg):
+                filename = filename_pg
+            else:
+                # TODO: add where for command line
+                raise SemanticError('Unknown model or file %r.' % filename)
 
+        # Make sure we use absolute pathnames so that we know the exact directory
+        filename = os.path.realpath(filename)
         model_spec = open(filename).read()
         model = model_from_string(model_spec, config=config,
                                   filename=filename, library=library)

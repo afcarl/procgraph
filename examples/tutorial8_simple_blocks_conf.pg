@@ -1,0 +1,14 @@
+--- model tutorial8_simple_blocks
+
+import tutorial8_blocks
+
+
+|player:mplayer file="coastguard.mp4"|  --> rgb
+
+
+    rgb --> |choose channel=0| --> processed
+    
+
+    processed --> |mencoder file="coastguard8.avi"|
+
+

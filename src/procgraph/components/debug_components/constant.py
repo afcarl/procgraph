@@ -1,26 +1,21 @@
-from procgraph.core.block import ETERNITY
-
-from procgraph import Block          
+from procgraph import Block, ETERNITY
 
 class Constant(Block):
     ''' Output a numerical constant that never changes.
     
         Example: ::
     
-            |constant value=42 name=meaning| -> ...
+            |constant value=42| -> ...
             
-        Two parameters:
-        
-        * ``value``, necessary
-        * ``name``, optional signal name (default: const)
     ''' 
     
     Block.alias('constant')
     
     Block.config('value', 'Constant value to output.') 
-    Block.output('constant')
+    Block.output('constant', 'The constant value.')
         
     def update(self):
+        # XXX: are you sure we need ETERNITY?
         self.set_output(0, self.config.value, timestamp=ETERNITY)
         
     def __repr__(self):

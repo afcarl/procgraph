@@ -1,38 +1,42 @@
 import numpy
 
-from procgraph import register_simple_block
+from procgraph import simple_block
 
 # Taken from the numpy cookbook
 
+@simple_block
 def smooth1d(x, window_len=11, window='hanning'):
-    """smooth the data using a window with requested size.
+    """
+    Smooth the data using a window with requested size.
     
     This method is based on the convolution of a scaled window with the signal.
     The signal is prepared by introducing reflected copies of the signal 
     (with the window size) in both ends so that transient parts are minimized
     in the begining and end part of the output signal.
     
-    input:
-        x: the input signal 
-        window_len: the dimension of the smoothing window; should be an odd integer
-        window: the type of window from 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'
-            flat window will produce a moving average smoothing.
+    ``window`` must be one of  'flat', 'hanning', 'hamming', 'bartlett', 
+    'blackman'.
+    A flat window will produce a moving average smoothing.
 
-    output:
-        the smoothed signal
+    
+    :param x: the input signal 
+    :param window_len: the dimension of the smoothing window;  an odd integer
+    :param window: the type of window from 
+    :return: smoothed: the smoothed signal
         
-    example:
+    example: ::
 
-    t=linspace(-2,2,0.1)
-    x=sin(t)+randn(len(t))*0.1
-    y=smooth(x)
+        t=linspace(-2,2,0.1)
+        x=sin(t)+randn(len(t))*0.1
+        y=smooth(x)
     
     see also: 
     
     numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
     scipy.signal.lfilter
  
-    TODO: the window parameter could be the window itself if an array instead of a string   
+    TODO: the window parameter could be the window itself if an 
+          array instead of a string   
     """
 
     if x.ndim != 1:
@@ -47,10 +51,13 @@ def smooth1d(x, window_len=11, window='hanning'):
 
 
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise ValueError, "Window is on of 'flat', 'hanning', 'hamming', 'bartlett', 'blackman'"
+        raise ValueError("Window %r is not one of 'flat', 'hanning', 'hamming',"
+                         "'bartlett', 'blackman'." % window)
 
 
-    s = numpy.r_[2 * x[0] - x[window_len:1:-1], x, 2 * x[-1] - x[-1:-window_len:-1]]
+    s = numpy.r_[2 * x[0] - x[window_len:1:-1],
+                 x,
+                 2 * x[-1] - x[-1:-window_len:-1]]
     #print(len(s))
     if window == 'flat': #moving average
         w = numpy.ones(window_len, 'd')
@@ -60,6 +67,4 @@ def smooth1d(x, window_len=11, window='hanning'):
     y = numpy.convolve(w / w.sum(), s, mode='same')
     return y[window_len - 1:-window_len + 1]
 
-
-register_simple_block(smooth1d, 'smooth1d', params={'window_len':11, 'window':'hanning'})
 

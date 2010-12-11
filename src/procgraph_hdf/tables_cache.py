@@ -15,12 +15,14 @@ def tc_open_for_reading(filename):
     if filename in OpenFile.open_files:
         open = OpenFile.open_files[filename] 
         open.num_references += 1
-        # print "tc: reused %s r (%s total) " % (filename, len(OpenFile.open_files))
+        # print "tc: reused %s r (%s total) " % 
+        #   (filename, len(OpenFile.open_files))
         return open.pytables_handle
     else: 
         f = tables.openFile(filename, 'r')
         OpenFile.open_files[filename] = OpenFile(f)
-        # print "tc: opened %s r (%s total) " % (filename, len(OpenFile.open_files))
+        # print "tc: opened %s r (%s total) " % 
+        #   (filename, len(OpenFile.open_files))
         return f
 
 def tc_open_for_writing(filename):
@@ -34,7 +36,8 @@ def tc_open_for_writing(filename):
         f = tables.openFile(filename, 'w')
         OpenFile.open_files[filename] = OpenFile(f)
         
-        # print "tc: opened %s w (%s total) " % (filename, len(OpenFile.open_files))
+        # print "tc: opened %s w (%s total) " %  
+        # (filename, len(OpenFile.open_files))
         return f
 
 
@@ -49,7 +52,8 @@ def tc_open_for_appending(filename):
         f = tables.openFile(filename, 'r+')
         OpenFile.open_files[filename] = OpenFile(f)
         
-        # print "tc: opened %s w (%s total) " % (filename, len(OpenFile.open_files))
+        # print "tc: opened %s w (%s total) " % 
+        # (filename, len(OpenFile.open_files))
         return f
 
     
