@@ -3,9 +3,9 @@ from optparse import OptionParser
 
 from ..core.model_loader import model_from_string, pg_look_for_models
 from ..core.registrar import default_library, Library
-from ..core.exceptions import PGException 
+from ..core.exceptions import PGException, SemanticError
 from ..core.visualization import error, info
-from procgraph.core.exceptions import SemanticError
+
 
 usage_short = \
 """Usage:    
@@ -15,11 +15,10 @@ usage_short = \
 Type "pg --help" for all the options and a few examples.
 
 """
+
 usage_long = \
-"""Usage:    
-        
-    pg [options]  <model>.pg   [param=value  param=value ... ]
-    
+"""%s
+
 Examples:
 
 1) Execute a model that does not need parameters:
@@ -30,7 +29,7 @@ Examples:
 
     $ pg -d my_models/  my_model.pg
 
-   (Note that the current directory is not ready by default).    
+   (Note that the current directory is not read by default).    
    There is also an environment variable that has the same effect:
 
     $ export PROCGRAPH_PATH=my_models
@@ -39,7 +38,7 @@ Examples:
    definitions.
 
     $ pg -m my_blocks  my_model.pg 
-"""
+""" % usage_short
     
     
 
@@ -48,9 +47,7 @@ def main():
 
     additional_modules = []
     def load_module(option, opt_str, value, parser): #@UnusedVariable
-        #info('Importing module %s' % value)
         additional_modules.append(value)
-        #__import__(value)
     
     additional_directories = []
     def add_directory(option, opt_str, value, parser): #@UnusedVariable
@@ -58,45 +55,39 @@ def main():
     
     parser.add_option("-m", dest="module",
                   action="callback", callback=load_module,
-                  type="string", help='Loads the specified module')
+                  type="string", help='Loads the specified module.')
 
     parser.add_option("-d", dest='directory', type="string",
                       action="callback", callback=add_directory,
                       help='Additional directory to search for models.')
 
-    parser.add_option("--debug", action="store_true",
-                      default=False, dest="debug",
+    parser.add_option("--debug", action="store_true", default=False,
                       help="Displays debug information on the model.")
 
-    parser.add_option("--trace", action="store_true",
-                      default=False, dest="trace",
+    parser.add_option("--trace", action="store_true", default=False,
                       help="If true, try to display raw stack trace in case of error.")
     
-    parser.add_option("--stats", action="store_true",
-                      default=False, dest="stats",
+    parser.add_option("--stats", action="store_true", default=False,
                       help="Displays execution statistics, including CPU usage.")
     
-    parser.add_option("--nocache", action="store_true",
-                      default=False, dest="nocache",
+    parser.add_option("--nocache", action="store_true", default=False,
                       help="Ignores the parsing cache.")
     
     
     (options, args) = parser.parse_args()
     
     
+    # TODO: make an option to display all the known models
+    #if options.debug:
+    #    print "Configuration: %s" % config
+    
     if not args:
         print usage_short
-        
-        #print "Known models: %s" % \
-        #    ", ".join(sorted(default_library.get_known_blocks()))
         sys.exit(-1) 
     
     
     filename = args.pop(0)
     
-    #if options.debug:
-    #    print "Configuration: %s" % config
-
     if options.trace:
         look_for = RuntimeError
     else:
@@ -106,10 +97,14 @@ def main():
         config = parse_cmdline_args(args)
         
         pg(filename, config,
-           nocache=options.nocache, debug=options.debug, stats=options.stats,
+           nocache=options.nocache, 
+           debug=options.debug, 
+           stats=options.stats,
            additional_directories=additional_directories,
            additional_modules=additional_modules)
+    
         sys.exit(0)
+    
     except look_for as e:
         error(e)
         if not options.trace:
