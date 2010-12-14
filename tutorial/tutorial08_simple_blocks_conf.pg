@@ -1,6 +1,6 @@
---- model tutorial8_simple_blocks
+--- model tutorial08_simple_blocks
 
-import tutorial8_blocks
+import tutorial08_blocks
 
 
 |player:mplayer file="coastguard.mp4"|  --> rgb

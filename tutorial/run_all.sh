@@ -2,23 +2,23 @@
 set -e
 set -x
 
-pg tutorial0_basics
+pg tutorial00_basics
 
-pg tutorial1_signals
+pg tutorial01_signals
 
-pg tutorial3_config in=coastguard.mp4 out=coastguard3.avi
+pg tutorial03_config in=coastguard.mp4 out=coastguard3.avi
 
-pg tutorial4_models in=coastguard.mp4 out=coastguard4.avi
+pg tutorial04_models in=coastguard.mp4 out=coastguard4.avi
  
-pg tutorial5_config_advanced  in=coastguard.mp4 out=coastguard5.avi levels=8
+pg tutorial05_config_advanced  in=coastguard.mp4 out=coastguard5.avi levels=8
 
-pg tutorial6_signals_advanced 
+pg tutorial06_signals_advanced 
 
-pg tutorial7_simple_blocks
+pg tutorial07_simple_blocks
 
-pg tutorial8_simple_blocks_conf
+pg tutorial08_simple_blocks_conf
 
-pg tutorial9_best_practices
+pg tutorial09_best_practices
 
 pg tutorial10_stateful_blocks
 

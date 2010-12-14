@@ -1,10 +1,10 @@
---- model tutorial9_best_practices
+--- model tutorial09_best_practices
 ''' 
     Same as tutorial8.
 
 '''
 
-import tutorial8_blocks
+import tutorial09_blocks
 
 
 |player:mplayer file="coastguard.mp4"|  --> rgb

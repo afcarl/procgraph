@@ -1,7 +1,7 @@
 from procgraph import Block
 
 # We can still use blocks as normal functions
-from tutorial9_blocks import choose
+from tutorial09_blocks import choose
 
 
 class Psychedelic(Block):

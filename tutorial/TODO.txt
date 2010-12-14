@@ -1,1 +1,0 @@
-* use something else instead of "smooth" that depends on opencv

@@ -1,18 +1,18 @@
 # Show how to put multiple models, and how to write 
---- model tutorial5_config_advanced
+--- model tutorial05_config_advanced
 ''' The master model '''
 config in        "Input file"
 config out       "Output file"
 config levels = 3 "Number of channels for posterization."
 
 
-|player:mplayer| --> |tut:tutorial5_filter| --> |encoder:mencoder file=$out|
+|player:mplayer| --> |tut:tutorial05_filter| --> |encoder:mencoder file=$out|
 
 player.file  = $in
 tut.levels   = $levels
 encoder.file = $out
 
---- model tutorial5_filter
+--- model tutorial05_filter
 ''' The filtering model '''
 
 input  rgb        "Input image"
