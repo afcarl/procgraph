@@ -13,4 +13,4 @@ config out  "Output file"
 input  rgb        "Input image"
 output processed  "The processed image"
 
-|input name=rgb| --> |smooth gaussian_std=5| --> |output name=processed|
+|input name=rgb| --> |posterize levels=3| --> |output name=processed|

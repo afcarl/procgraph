@@ -21,6 +21,8 @@ from . import compose
 from . import imggrid
 from . import border
 
+from . import posterize
+
 from .blend import blend
 from .copied_from_reprep import posneg, scale
 

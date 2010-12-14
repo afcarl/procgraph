@@ -2,8 +2,9 @@
 import subprocess
 import os
 import numpy
+import tempfile
  
-from procgraph  import Generator, Block, ModelExecutionError, BadConfig
+from procgraph import Generator, Block, ModelExecutionError, BadConfig
  
 class MPlayer(Generator):
     ''' Decodes a video stream. ''' 
@@ -61,12 +62,10 @@ class MPlayer(Generator):
         self.dtype = 'uint8'
 
         format = "rgb24"
-        # FIXME: change fifo filename
-        # FIXME FIXME 
-        fifo_name = 'mencoder_fifo'
-        if os.path.exists(fifo_name):
-            os.unlink(fifo_name)
-        os.mkfifo(fifo_name)
+        
+        self.temp_dir = tempfile.mkdtemp(prefix='procgraph_fifo_dir')
+        self.fifo_name = os.path.join(self.temp_dir, 'mencoder_fifo')
+        os.mkfifo(self.fifo_name)
         args = ['mencoder', self.file, '-ovc', 'raw',
                 '-rawvideo', 'w=%d:h=%d:format=%s' % 
                     (self.width, self.height, format),
@@ -74,7 +73,7 @@ class MPlayer(Generator):
                 '-vf', 'format=rgb24',
                 '-nosound',
                 '-o',
-                fifo_name 
+                self.fifo_name 
                 ]
         
         self.debug("command line: %s" % " ".join(args))
@@ -91,7 +90,7 @@ class MPlayer(Generator):
         self.state.next_frame = None
         self.state.finished = False
         
-        self.stream = open(fifo_name, 'r')
+        self.stream = open(self.fifo_name, 'r')
         
         self.read_next_frame()
         
@@ -127,6 +126,13 @@ class MPlayer(Generator):
             return (True, self.state.timestamp)
         
  
+    def finish(self):
+        # TODO: make sure process is closed?
+        
+        if os.path.exists(self.fifo_name):
+            os.unlink(self.fifo_name)
+        if os.path.exists(self.temp_dir):
+            os.rmdir(self.temp_dir)
 
 
 # backported from 2.7

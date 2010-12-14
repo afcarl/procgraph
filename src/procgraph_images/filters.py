@@ -9,10 +9,10 @@ def rgb2gray(rgb):
         by computing the luminance. 
         
         :param rgb: RGB image
-        :type rgb: HxWx3 uint8
+        :type rgb: array(HxWx3,uint8),H>0,W>0
         
         :return: A RGB image in shades of gray.
-        :rtype: HxW uint8
+        :rtype: array(HxW,uint8)
     '''  
     assert_rgb_image(rgb, 'input to rgb2grayscale')  
     r = rgb[:, :, 0].squeeze()
@@ -30,10 +30,10 @@ def gray2rgb(gray):
         by replicating the gray channel over R,G,B. 
         
         :param gray: grayscale
-        :type  gray: HxW uint8
+        :type  gray: array(HxW,uint8),H>0,W>0
         
         :return: A RGB image in shades of gray.
-        :rtype: HxWx3 uint8
+        :rtype: array(HxWx3,uint8)
     '''  
     assert_gray_image(gray, 'input to rgb2grayscale')
       

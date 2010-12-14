@@ -3,13 +3,13 @@
 ''' The master model '''
 config in        "Input file"
 config out       "Output file"
-config sigma = 4 "Sigma (pixels)"
+config levels = 3 "Number of channels for posterization."
 
 
 |player:mplayer| --> |tut:tutorial5_filter| --> |encoder:mencoder file=$out|
 
 player.file  = $in
-tut.sigma    = $sigma
+tut.levels   = $levels
 encoder.file = $out
 
 --- model tutorial5_filter
@@ -17,9 +17,9 @@ encoder.file = $out
 
 input  rgb        "Input image"
 output processed  "The processed image"
-config sigma = 5  "Gaussian filter size in pixels"
+config levels = 3 "Number of channels for posterization."
 
-|input name=rgb| --> |smooth| --> |output name=processed|
+|input name=rgb| --> |posterize| --> |output name=processed|
 
 # We can use the block type if there is no confusion
-smooth.gaussian_std = $sigma
+posterize.levels = $levels
