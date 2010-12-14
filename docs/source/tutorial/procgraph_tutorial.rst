@@ -5,16 +5,15 @@
 The ProcGraph tutorial
 ======================
 
-Welcome to the ProcGraph tutorial. 
+Welcome to the |procgraph| tutorial. 
 
-This tutorial will guide you through the first steps with ProcGraph, from the 
-basic syntax, up to the recommended design patterns and how to document your 
-creations.
+This tutorial will guide you through the first steps with |procgraph|, from the basic syntax,
+up to the recommended design patterns and how to document your creations.
 
 
-Before you start: Albeit ProcGraph is pretty much data-agnostic, most of the examples involve
+Before you start: Albeit |procgraph| is pretty much data-agnostic, most of the examples involve
 reading and manipulating a video, as it is fun to have an immediate visual
-feedback of what you are doing. All the scripts refer to a file ``coastguard.mp4``,
+feedback of what you are doing. All the scripts refer to a file :download:`coastguard.mp4`,
 included in the sources, which should be in your directory.
 
 Even though it is fine to read this on the web, cutting&paste the examples to your terminal,
@@ -36,37 +35,37 @@ it is advised that you download the ProcGraph source code. There, in the directo
 ..
 
 	.. literalinclude:: tutorial01_signals.pg
-	   :language: python
+	   :language: ruby
  
 	.. literalinclude:: tutorial02_sync.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial03_config.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial04_models.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial05_config_advanced.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial06_signals_advanced.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial07_blocks.py
 	   :language: python
 
 	.. literalinclude:: tutorial07_simple_blocks.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial08_blocks.py
 	   :language: python
 
 	.. literalinclude:: tutorial08_simple_blocks_conf.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial09_best_practices.pg
-	   :language: python
+	   :language: ruby
 
 	.. literalinclude:: tutorial09_blocks.py
 	   :language: python
@@ -75,4 +74,4 @@ it is advised that you download the ProcGraph source code. There, in the directo
 	   :language: python
 
 	.. literalinclude:: tutorial10_stateful_blocks.pg
-	   :language: python
+	   :language: ruby
