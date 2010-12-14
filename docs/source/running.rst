@@ -1,3 +1,4 @@
+.. include:: definitions.txt
 
 .. _running:
 
@@ -19,17 +20,17 @@ There are two ways:
 
   This is explained in :ref:`pg_function`.
 
+..
+	Advanced
+	--------
 
-# Advanced
-# --------
-# 
-# The function ``pg()`` and the command line executable ``pg`` do not offer
-# any 
-# 
-# In general, you are encouraged to create new blocks, instead of messing with model
-# execution.
-# 
-# This is explained in :ref:`pg_interactive`.
+	The function ``pg()`` and the command line executable ``pg`` do not offer
+	any 
+
+	In general, you are encouraged to create new blocks, instead of messing with model
+	execution.
+
+	This is explained in :ref:`pg_interactive`.
 
 
 .. _pg_program:

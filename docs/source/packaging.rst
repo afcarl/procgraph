@@ -1,3 +1,7 @@
+.. include:: definitions.txt
+
+.. _packaging:
+
 Packaging your blocks
 =======================
 
@@ -6,7 +10,7 @@ Packaging your blocks
 
 
 Using ``procgraph_info``
------------------------
+--------------------------
 
 |towrite|
 

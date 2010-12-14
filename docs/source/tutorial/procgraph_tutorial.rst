@@ -1,0 +1,78 @@
+.. include:: ../definitions.txt
+
+.. _tutorial:
+
+The ProcGraph tutorial
+======================
+
+Welcome to the ProcGraph tutorial. 
+
+This tutorial will guide you through the first steps with ProcGraph, from the 
+basic syntax, up to the recommended design patterns and how to document your 
+creations.
+
+
+Before you start: Albeit ProcGraph is pretty much data-agnostic, most of the examples involve
+reading and manipulating a video, as it is fun to have an immediate visual
+feedback of what you are doing. All the scripts refer to a file ``coastguard.mp4``,
+included in the sources, which should be in your directory.
+
+Even though it is fine to read this on the web, cutting&paste the examples to your terminal,
+it is advised that you download the ProcGraph source code. There, in the directory
+``docs/tutorial`` you will find all these scripts and resources in separate files ready to run.
+
+.. include:: tutorial00.rst
+.. include:: tutorial01.rst
+.. include:: tutorial02.rst
+.. include:: tutorial03.rst
+.. include:: tutorial04.rst
+.. include:: tutorial05.rst
+.. include:: tutorial06.rst
+.. include:: tutorial07.rst
+.. include:: tutorial08.rst
+.. include:: tutorial09.rst
+.. include:: tutorial10.rst
+
+..
+
+	.. literalinclude:: tutorial01_signals.pg
+	   :language: python
+ 
+	.. literalinclude:: tutorial02_sync.pg
+	   :language: python
+
+	.. literalinclude:: tutorial03_config.pg
+	   :language: python
+
+	.. literalinclude:: tutorial04_models.pg
+	   :language: python
+
+	.. literalinclude:: tutorial05_config_advanced.pg
+	   :language: python
+
+	.. literalinclude:: tutorial06_signals_advanced.pg
+	   :language: python
+
+	.. literalinclude:: tutorial07_blocks.py
+	   :language: python
+
+	.. literalinclude:: tutorial07_simple_blocks.pg
+	   :language: python
+
+	.. literalinclude:: tutorial08_blocks.py
+	   :language: python
+
+	.. literalinclude:: tutorial08_simple_blocks_conf.pg
+	   :language: python
+
+	.. literalinclude:: tutorial09_best_practices.pg
+	   :language: python
+
+	.. literalinclude:: tutorial09_blocks.py
+	   :language: python
+
+	.. literalinclude:: tutorial10_blocks.py
+	   :language: python
+
+	.. literalinclude:: tutorial10_stateful_blocks.pg
+	   :language: python

@@ -25,7 +25,7 @@ ProcGraph
 
     * :ref:`install`
     * :ref:`why`
-    * :ref:`tutorial0`
+    * :ref:`tutorial`
 
     **Manual**
 
@@ -43,7 +43,7 @@ ProcGraph
 
     * Additional libraries (separate packages):
       
-      * :ref:`procgraph_rawseeds`
+      * procgraph_rawseeds_
 
 
 .. raw:: html
@@ -53,4 +53,12 @@ ProcGraph
 
 
 .. _procgraph_rawseeds: http://andreacensi.github.com/procgraph_rawseeds/
+
+
+
+.. toctree::
+   :glob:
+
+   *
+   procgraph_tutorial
 
