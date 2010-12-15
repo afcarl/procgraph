@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The ProcGraph tutorial &mdash; procgraph v0.9.0 documentation</title>
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph v0.9.0 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph v0.9.0 documentation</span></a></h1>
+        <h2 class="heading"><span>The ProcGraph tutorial</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="the-procgraph-tutorial">
+<span id="tutorial"></span><h1>The ProcGraph tutorial<a class="headerlink" href="#the-procgraph-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Welcome to the <span class="procgraph-brand">ProcGraph</span> tutorial!
+This tutorial will guide you through the first steps with <span class="procgraph-brand">ProcGraph</span>, from the basic syntax,
+up to the recommended design patterns and how to document your creations.</p>
+<p>Even though it is fine to read this on the web, cutting&amp;paste the examples to your terminal or editor, it is advised that you download the <span class="procgraph-brand">ProcGraph</span> source code. There, in the directory
+<tt class="docutils literal"><span class="pre">docs/tutorial</span></tt>, you will find all these scripts and resources in separate files ready to run.</p>
+<div class="section" id="basic-syntax">
+<span id="tutorial-basic-syntax"></span><h2>Basic syntax<a class="headerlink" href="#basic-syntax" title="Permalink to this headline">¶</a></h2>
+<p>The basic <span class="procgraph-brand">ProcGraph</span> metaphors are <em>blocks</em> and <em>signals</em>. A <em>model</em> is an interconnection of blocks, and it is specified using <span class="procgraph-brand">ProcGraph</span>&#8216;s <em>model language</em>. This language is very much inspired by ASCII art; the idea being that a graphical representation of blocks is useful to understand your models, yet, the fact that everything is plain text makes the source clear, and editing fast.</p>
+<p>Enough words! The first model that we consider can be found in the file
+<a class="reference download internal" href="../downloads/tutorial00_basics.pg"><tt class="xref download docutils literal"><span class="pre">tutorial00_basics.pg</span></tt></a>:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="c1"># Read from a .mp4 file, write to a .avi file.</span>
+<span class="o">|</span><span class="n">mplayer</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.mp4&quot;</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">vbitrate</span><span class="o">=</span><span class="mi">1000</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard00.avi&quot;</span><span class="o">|</span>
+</pre></div>
+</div>
+<p>This model is composed by two blocks: <a class="reference internal" href="../library.html#block-mplayer"><em>Block mplayer</em></a> and <a class="reference internal" href="../library.html#block-mencoder"><em>Block mencoder</em></a>. An instantiation of a block is specified using the syntax  <tt class="docutils literal"><span class="pre">|block-type</span> <span class="pre">param=value|</span></tt>, with multiple parameters allowed. A complete list of the blocks, with documentation on what parameters they accept, is available at <a class="reference internal" href="../library.html#library"><em>ProcGraph core blocks</em></a>; this tutorial will explain also how to create your own blocks.</p>
+<p>The two blocks are connected by the arrow <tt class="docutils literal"><span class="pre">--&gt;</span></tt>. This means that all signals from the first block flow into the second. In this case,  <a class="reference internal" href="../library.html#block-mplayer"><em>Block mplayer</em></a> has only one output, and  <a class="reference internal" href="../library.html#block-mencoder"><em>Block mencoder</em></a> has only one input, but we will see that blocks can be very flexible in how many signals they accept or produce.</p>
+<p>It&#8217;s time to run this model. As you might have guessed, the model transcodes one
+video file to another format. Albeit <span class="procgraph-brand">ProcGraph</span> is pretty much data-agnostic, most of the examples involve
+reading and manipulating a video, as it is fun to have an immediate visual
+feedback of what you are doing. All the scripts refer to the file <a class="reference download internal" href="../downloads/coastguard.mp4"><tt class="xref download docutils literal"><span class="pre">coastguard.mp4</span></tt></a>,
+which should be in your current directory; you can, of course, use any video you want.</p>
+<p><span class="procgraph-brand">ProcGraph</span> has both an API to run modules from inside your Python code (see <a class="reference internal" href="../running.html#running"><em>Executing ProcGraph models</em></a>), and a command-line program that runs the models for you, called <tt class="docutils literal"><span class="pre">pg</span></tt>. In this tutorial, we are going to use the latter. If <span class="procgraph-brand">ProcGraph</span> is properly installed, you can run a model using
+the syntax <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">&lt;model</span> <span class="pre">name&gt;</span></tt>. If you saved the above model to a file <tt class="docutils literal"><span class="pre">tutorial00_basics.pg</span></tt>, then you can run it using:</p>
+<div class="highlight-python"><pre>$ pg tutorial00_basics</pre>
+</div>
+<p>The expected output is <a class="reference download internal" href="../downloads/coastguard00.avi"><tt class="xref download docutils literal"><span class="pre">coastguard00.avi</span></tt></a>.</p>
+</div>
+<div class="section" id="naming-signals">
+<span id="tutorial-naming-signals"></span><h2>Naming signals<a class="headerlink" href="#naming-signals" title="Permalink to this headline">¶</a></h2>
+<p>We will see that <span class="procgraph-brand">ProcGraph</span> models can become quite complex.
+In particular, you are not limited to have only one series of blocks;
+you can process the same signal in a parallel pathway.
+So one necessary ability is being able to give <em>names</em> to signals
+so that you can refer to them later.</p>
+<p>You can see an example of this in <a class="reference download internal" href="../downloads/tutorial01_signals.pg"><tt class="xref download docutils literal"><span class="pre">tutorial01_signals.pg</span></tt></a>:</p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="c1"># Model demonstrating the syntax for naming signals.</span>
+<span class="o">|</span><span class="n">mplayer</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.mp4&quot;</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">rgb</span>
+
+   <span class="n">rgb</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">vbitrate</span><span class="o">=</span><span class="mi">100</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard01.avi&quot;</span><span class="o">|</span>
+</pre></div>
+</div>
+<p>Here, we give the name <tt class="docutils literal"><span class="pre">rgb</span></tt> to the output of the first block.
+Then, we can refer to this signal later, and use it as input to
+the second block.</p>
+<p>In general, if a block has multiple outputs, you would use the
+syntax:</p>
+<div class="highlight-python"><pre>|block| --&gt; signal1, signal2, signal3</pre>
+</div>
+<p>to give the various outputs names.</p>
+</div>
+</div>
+<div class="section" id="an-extended-example">
+<h1>An extended example<a class="headerlink" href="#an-extended-example" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+</div>
+<div class="section" id="passing-configuration-variables">
+<h1>Passing configuration variables<a class="headerlink" href="#passing-configuration-variables" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="c1"># Show how to use configuration</span>
+
+<span class="n">config</span> <span class="k">in</span>   <span class="s2">&quot;Input file&quot;</span>
+<span class="n">config</span> <span class="n">out</span>  <span class="s2">&quot;Output file&quot;</span>
+
+<span class="o">|</span><span class="n">mplayer</span> <span class="n">file</span><span class="o">=</span><span class="vg">$in</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">rgb</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="vg">$out</span><span class="o">|</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="organizing-code-in-multiple-models">
+<h1>Organizing code in multiple models<a class="headerlink" href="#organizing-code-in-multiple-models" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="c1"># Show how to put multiple models, and how to write </span>
+<span class="o">---</span> <span class="n">model</span> <span class="n">tutorial04_models</span>
+<span class="s1">&#39;&#39;&#39; The master model &#39;&#39;&#39;</span>
+<span class="n">config</span> <span class="k">in</span>   <span class="s2">&quot;Input file&quot;</span>
+<span class="n">config</span> <span class="n">out</span>  <span class="s2">&quot;Output file&quot;</span>
+
+<span class="o">|</span><span class="n">mplayer</span> <span class="n">file</span><span class="o">=</span><span class="vg">$in</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">tutorial04_filter</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="vg">$out</span><span class="o">|</span>
+
+
+<span class="o">---</span> <span class="n">model</span> <span class="n">tutorial04_filter</span>
+<span class="s1">&#39;&#39;&#39; The filtering model &#39;&#39;&#39;</span>
+
+<span class="n">input</span>  <span class="n">rgb</span>        <span class="s2">&quot;Input image&quot;</span>
+<span class="n">output</span> <span class="n">processed</span>  <span class="s2">&quot;The processed image&quot;</span>
+
+<span class="o">|</span><span class="n">input</span> <span class="nb">name</span><span class="o">=</span><span class="n">rgb</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">posterize</span> <span class="n">levels</span><span class="o">=</span><span class="mi">3</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">output</span> <span class="nb">name</span><span class="o">=</span><span class="n">processed</span><span class="o">|</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shortcuts-for-complex-configuration">
+<h1>Shortcuts for complex configuration<a class="headerlink" href="#shortcuts-for-complex-configuration" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="c1"># Show how to put multiple models, and how to write </span>
+<span class="o">---</span> <span class="n">model</span> <span class="n">tutorial05_config_advanced</span>
+<span class="s1">&#39;&#39;&#39; The master model &#39;&#39;&#39;</span>
+<span class="n">config</span> <span class="k">in</span>        <span class="s2">&quot;Input file&quot;</span>
+<span class="n">config</span> <span class="n">out</span>       <span class="s2">&quot;Output file&quot;</span>
+<span class="n">config</span> <span class="n">levels</span> <span class="o">=</span> <span class="mi">3</span> <span class="s2">&quot;Number of channels for posterization.&quot;</span>
+
+
+<span class="o">|</span><span class="n">player</span><span class="ss">:mplayer</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">tut</span><span class="ss">:tutorial05_filter</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">encoder</span><span class="ss">:mencoder</span> <span class="n">file</span><span class="o">=</span><span class="vg">$out</span><span class="o">|</span>
+
+<span class="n">player</span><span class="o">.</span><span class="n">file</span>  <span class="o">=</span> <span class="vg">$in</span>
+<span class="n">tut</span><span class="o">.</span><span class="n">levels</span>   <span class="o">=</span> <span class="vg">$levels</span>
+<span class="n">encoder</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="vg">$out</span>
+
+<span class="o">---</span> <span class="n">model</span> <span class="n">tutorial05_filter</span>
+<span class="s1">&#39;&#39;&#39; The filtering model &#39;&#39;&#39;</span>
+
+<span class="n">input</span>  <span class="n">rgb</span>        <span class="s2">&quot;Input image&quot;</span>
+<span class="n">output</span> <span class="n">processed</span>  <span class="s2">&quot;The processed image&quot;</span>
+<span class="n">config</span> <span class="n">levels</span> <span class="o">=</span> <span class="mi">3</span> <span class="s2">&quot;Number of channels for posterization.&quot;</span>
+
+<span class="o">|</span><span class="n">input</span> <span class="nb">name</span><span class="o">=</span><span class="n">rgb</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">posterize</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">output</span> <span class="nb">name</span><span class="o">=</span><span class="n">processed</span><span class="o">|</span>
+
+<span class="c1"># We can use the block type if there is no confusion</span>
+<span class="n">posterize</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="vg">$levels</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="explicit-signal-routing">
+<h1>Explicit signal routing<a class="headerlink" href="#explicit-signal-routing" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="c1"># Given a block name, we can route the signal</span>
+<span class="c1"># Useful for doing different things with the same model </span>
+<span class="o">|</span><span class="n">player</span><span class="ss">:mplayer</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.mp4&quot;</span><span class="o">|</span>  <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.avi&quot;</span><span class="o">|</span>
+
+    <span class="n">player</span><span class="o">.</span><span class="n">video</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard06.avi&quot;</span><span class="o">|</span>    
+    <span class="c1"># Also by signal number (0: first output)</span>
+    <span class="c1"># player.0 --&gt; |mencoder file=&quot;coastguard06.avi&quot;|</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-simple-blocks-from-python-functions">
+<h1>Creating simple blocks from Python functions<a class="headerlink" href="#creating-simple-blocks-from-python-functions" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">simple_block</span>
+
+<span class="nd">@simple_block</span>
+<span class="k">def</span> <span class="nf">green_channel</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+    <span class="n">green</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">green</span>
+    <span class="n">rgb</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">green</span>
+    <span class="k">return</span> <span class="n">rgb</span>    
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-configuration-to-simple-blocks">
+<h1>Adding configuration to simple blocks<a class="headerlink" href="#adding-configuration-to-simple-blocks" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">simple_block</span>
+
+<span class="nd">@simple_block</span>
+<span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="n">channel</span><span class="p">]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+</div>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="o">---</span> <span class="n">model</span> <span class="n">tutorial08_simple_blocks</span>
+<span class="n">import</span> <span class="n">tutorial08_blocks</span>
+
+<span class="o">|</span><span class="n">player</span><span class="ss">:mplayer</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.mp4&quot;</span><span class="o">|</span>  <span class="o">--&gt;</span> <span class="n">rgb</span>
+    
+    <span class="n">rgb</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">choose</span> <span class="n">channel</span><span class="o">=</span><span class="mi">0</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">processed</span>
+    
+    <span class="n">processed</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard08.avi&quot;</span><span class="o">|</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="best-practices-for-documenting-simple-blocks">
+<h1>Best practices for documenting simple blocks<a class="headerlink" href="#best-practices-for-documenting-simple-blocks" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="o">---</span> <span class="n">model</span> <span class="n">tutorial09_best_practices</span>
+<span class="s1">&#39;&#39;&#39; Same as tutorial8. &#39;&#39;&#39;</span>
+
+<span class="n">import</span> <span class="n">tutorial09_blocks</span>
+
+<span class="o">|</span><span class="n">player</span><span class="ss">:mplayer</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.mp4&quot;</span><span class="o">|</span>  <span class="o">--&gt;</span> <span class="n">rgb</span>
+
+    <span class="n">rgb</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">choose</span> <span class="n">channel</span><span class="o">=</span><span class="mi">0</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">red</span>
+    <span class="n">rgb</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">choose</span> <span class="n">channel</span><span class="o">=</span><span class="mi">1</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">green</span>
+    <span class="n">rgb</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">choose</span> <span class="n">channel</span><span class="o">=</span><span class="mi">2</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">blue</span>
+    
+    <span class="n">rgb</span><span class="p">,</span> <span class="n">red</span><span class="p">,</span> <span class="n">green</span><span class="p">,</span> <span class="n">blue</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">sync</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">grid</span> <span class="n">cols</span><span class="o">=</span><span class="mi">2</span><span class="o">|</span> <span class="o">--&gt;</span> <span class="n">processed</span>
+    
+    <span class="n">processed</span> <span class="o">--&gt;</span> <span class="o">|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard09.avi&quot;</span><span class="o">|</span>
+    
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">simple_block</span><span class="p">,</span> <span class="n">BadConfig</span>
+
+<span class="nd">@simple_block</span>
+<span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="n">rgb</span><span class="p">,</span> <span class="n">channel</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Chooses a channel from an rgb image and replicates it </span>
+<span class="sd">        over the other two.</span>
+
+<span class="sd">        Raises an error if ``channel`` is invalid.</span>
+<span class="sd">    </span>
+<span class="sd">        :param rgb: Input image.</span>
+<span class="sd">        :param channel: Which channel to choose.        </span>
+<span class="sd">        :return: processed: The processed image.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">channel</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="s">&#39;Invalid channel specified.&#39;</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s">&#39;channel&#39;</span><span class="p">)</span>
+    
+    <span class="n">v</span> <span class="o">=</span> <span class="n">rgb</span><span class="p">[:,:,</span><span class="n">channel</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dstack</span><span class="p">((</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">,</span><span class="n">v</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-stateful-blocks-from-python-classes">
+<h1>Creating stateful blocks from Python classes<a class="headerlink" href="#creating-stateful-blocks-from-python-classes" title="Permalink to this headline">¶</a></h1>
+<p><span style="font-weight:bold">This section must still be written.</span></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span>
+
+<span class="k">class</span> <span class="nc">Psychedelic</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;psychedelic&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;rgb&#39;</span><span class="p">,</span> <span class="s">&#39;An RGB image.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;processed&#39;</span><span class="p">,</span> <span class="s">&#39;The processed image.&#39;</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">channel</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">3</span>
+
+        <span class="n">rgb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">rgb</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">channel</span><span class="p">:</span>
+                <span class="n">rgb</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">processed</span> <span class="o">=</span> <span class="n">rgb</span>
+</pre></div>
+</div>
+<div class="highlight-ruby"><div class="highlight"><pre><span class="o">---</span> <span class="n">model</span> <span class="n">tutorial10_stateful_blocks</span>
+<span class="n">import</span> <span class="n">tutorial10_blocks</span>
+
+<span class="o">|</span><span class="n">mplayer</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard.mp4&quot;</span><span class="o">|--&gt;|</span><span class="n">psychedelic</span><span class="o">|--&gt;|</span><span class="n">mencoder</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;coastguard10.avi&quot;</span><span class="o">|</span>
+</pre></div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

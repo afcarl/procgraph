@@ -75,200 +75,52 @@
         
   <span class="target" id="module-procgraph"></span><div class="section" id="blocks">
 <span id="creating-new-blocks"></span><h1>Blocks<a class="headerlink" href="#blocks" title="Permalink to this headline">¶</a></h1>
-<p>The abstractions that <span class="procgraph-brand">ProcGraph</span> uses are common to many other environments, such
-as Simulink</p>
-<p><span class="procgraph-brand">ProcGraph</span> models are created by interconnecting <strong>blocks</strong>.
-Each block has:</p>
+<p><span class="procgraph-brand">ProcGraph</span> <strong>models</strong> are created by interconnecting <strong>blocks</strong>.
+The abstractions that <span class="procgraph-brand">ProcGraph</span> uses are common to many other environments,
+such as Simulink.</p>
+<p>Each block has zero or more of the following:</p>
 <ul class="simple">
-<li>zero or more <strong>configuration parameters</strong>,
+<li><strong>configuration parameters</strong>,
 each with or without a default value, that must be specified when the model
-is instantiated and are constant in time.</li>
-<li>zero or more <strong>input signals</strong></li>
-<li>zero or more <strong>output signals</strong></li>
+is instantiated.</li>
+<li><strong>input signals</strong></li>
+<li><strong>output signals</strong></li>
 </ul>
-<p><span class="procgraph-brand">ProcGraph</span> allows you to attach a documentation string to configuration parameters, inputs and outputs, that is reproduced neatly in the documentation.</p>
-<div class="section" id="types-of-blocks">
-<h2>Types of blocks<a class="headerlink" href="#types-of-blocks" title="Permalink to this headline">¶</a></h2>
+<p><span class="procgraph-brand">ProcGraph</span> allows you to attach a documentation string to configuration
+parameters, inputs and outputs, that is reproduced neatly in the documentation,
+so use every occasion to document your ideas.</p>
+<div class="section" id="creating-blocks">
+<h2>Creating blocks<a class="headerlink" href="#creating-blocks" title="Permalink to this headline">¶</a></h2>
 <p>There are three ways to create new blocks:</p>
 <ol class="arabic">
-<li><p class="first">For using simple Python functions as stateless blocks,
-just register them
-using the function <tt class="xref py py-func docutils literal"><span class="pre">register_simple_block()</span></tt>.</p>
-<p>This is explained in <a class="reference internal" href="#simple-blocks"><em>Turning simple instantaneous functions into blocks</em></a>.</p>
+<li><p class="first">Every model created using <span class="procgraph-brand">ProcGraph</span>&#8216;s model language can be reused as
+a block from another model. Just define inputs, outputs, and configuration.</p>
+<p>The model syntax is explained in <a class="reference internal" href="writing_blocks_models.html#creating-models"><em>Defining models using ProcGraph&#8217;s language</em></a>.</p>
 </li>
-<li><p class="first">To create a stateful block in Python, subclass the class <tt class="docutils literal"><span class="pre">Block</span></tt>.</p>
-<p>This is explained in <a class="reference internal" href="#normal-blocks"><em>More complicated blocks</em></a>.</p>
-<p>A normal block updates its output only when it has new input.
+<li><p class="first">To create a <em>stateless</em> function from any Python function,
+you just need to use the decorator <tt class="xref py py-func docutils literal"><span class="pre">simple_block()</span></tt>.</p>
+<p>This is explained in <a class="reference internal" href="writing_blocks_simple.html#simple-blocks"><em>Turning simple instantaneous functions into blocks</em></a>.</p>
+</li>
+<li><p class="first">To create a <em>stateful</em> block in Python, subclass the class <tt class="docutils literal"><span class="pre">Block</span></tt>,
+and define the methods <tt class="docutils literal"><span class="pre">init()</span></tt>, <tt class="docutils literal"><span class="pre">update()</span></tt>, and so on.</p>
+<p>This is explained in <a class="reference internal" href="writing_blocks_classes.html#normal-blocks"><em>More complicated blocks</em></a>.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="advanced-topics">
+<h2>Advanced topics<a class="headerlink" href="#advanced-topics" title="Permalink to this headline">¶</a></h2>
+<p>The previous three cases cover 95% of what you need to do in <span class="procgraph-brand">ProcGraph</span>.
+However, there are some special cases that require more discussion.</p>
+<ul>
+<li><p class="first"><a href="#id1"><span class="problematic" id="id2">**</span></a>Generators*: A normal block updates its output only when it has new input.
 A block that produces output even without a new input is called a &#8220;Generator&#8221;
 and it is treated differently by <span class="procgraph-brand">ProcGraph</span>.</p>
 <p>This is explained in <em class="xref std std-ref">creating_generators</em>.</p>
 </li>
-<li><p class="first">Finally, every model created using Procgraph&#8217;s language can be used as a block
-inside another model.</p>
-<p>The syntax is explained in <em class="xref std std-ref">creating_models</em>.</p>
-</li>
-</ol>
-<div class="section" id="turning-simple-instantaneous-functions-into-blocks">
-<span id="simple-blocks"></span><h3>Turning simple instantaneous functions into blocks<a class="headerlink" href="#turning-simple-instantaneous-functions-into-blocks" title="Permalink to this headline">¶</a></h3>
+<li><p class="first">Using timestamp from simple blocks.</p>
 <p><span style="font-weight:bold">This section must still be written.</span></p>
-</div>
-<div class="section" id="more-complicated-blocks">
-<span id="normal-blocks"></span><h3>More complicated blocks<a class="headerlink" href="#more-complicated-blocks" title="Permalink to this headline">¶</a></h3>
-<p>To create a stateful block, subclass the class <tt class="docutils literal"><span class="pre">Block</span></tt> and use the class methods
-to define input, output and configuration.</p>
-</div>
-</div>
-<div class="section" id="quick-summary-of-block-api">
-<h2>Quick summary of Block API<a class="headerlink" href="#quick-summary-of-block-api" title="Permalink to this headline">¶</a></h2>
-<p>Here is a summary of how to create a new block type, and how to interact with
-the API:</p>
-<ol class="arabic simple">
-<li>Subclass <tt class="xref py py-class docutils literal"><span class="pre">Block</span></tt>.</li>
-<li>Use the method <tt class="xref py py-func docutils literal"><span class="pre">Block.alias()</span></tt> to define the block type name.</li>
-<li>Use the method <tt class="xref py py-func docutils literal"><span class="pre">Block.config()</span></tt> to define the block configuration (if any).</li>
-<li>Use the method <tt class="xref py py-func docutils literal"><span class="pre">Block.input()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">Block.output()</span></tt> to define input and output signals (if any).</li>
-<li><strong>do not use</strong> the <tt class="docutils literal"><span class="pre">__init__()</span></tt> method; rather, do any initialization in the <tt class="docutils literal"><span class="pre">init()</span></tt> method, which is called once, before any input is available.</li>
-<li>Put the block logic in the <tt class="docutils literal"><span class="pre">update()</span></tt> function, which is called every time a new input is available.</li>
-</ol>
-<p>In the <tt class="docutils literal"><span class="pre">init()</span></tt> function:</p>
-<ul>
-<li><p class="first">You can access configuration parameters using the syntax:</p>
-<div class="highlight-python"><pre>self.config.&lt;parameter name&gt;</pre>
-</div>
-</li>
-<li><p class="first">You can access state variables using:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">my_state</span> <span class="o">=</span> <span class="o">...</span>
-</pre></div>
-</div>
-</li>
-<li><p class="first">You cannot access input/output yet.</p>
 </li>
 </ul>
-<p>In the <tt class="docutils literal"><span class="pre">update()</span></tt> function:</p>
-<ul>
-<li><p class="first">You can access configuration parameters and state variables.</p>
-</li>
-<li><p class="first">You can access input and output using the syntax:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">received</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="s">&#39;signal_name&#39;</span><span class="p">]</span> <span class="c"># by name</span>
-<span class="n">received</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">signal_name</span>    <span class="c"># by name (syntax sugar)</span>
-<span class="n">received</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>             <span class="c"># by number</span>
-</pre></div>
-</div>
-<p>and output as well:</p>
-<blockquote>
-<p>self.output.processed = ...
-self.output[&#8216;processed&#8217;] = ...
-self.output[0] = ...</p>
-</blockquote>
-</li>
-</ul>
-</div>
-<div class="section" id="example-of-a-stateless-block">
-<h2>Example of a stateless block<a class="headerlink" href="#example-of-a-stateless-block" title="Permalink to this headline">¶</a></h2>
-<p>The following is the minimal example of a stateless block. It defines
-a gain block that could be invoked with this syntax:</p>
-<div class="highlight-python"><pre>source --&gt; |gain k=2| --&gt; source_times_2</pre>
-</div>
-<p>Note the use of <tt class="xref py py-func docutils literal"><span class="pre">Block.alias()</span></tt> to give an alias for the block type (if not given, the class name will be used); the use of <tt class="xref py py-func docutils literal"><span class="pre">Block.config()</span></tt> to specify a configuration parameter,
-and <tt class="xref py py-func docutils literal"><span class="pre">Block.input()</span></tt>, <tt class="xref py py-func docutils literal"><span class="pre">Block.output()</span></tt> to specify (and document) input and output.</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span>
-
-<span class="k">class</span> <span class="nc">Gain</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39; A simple example of a gain block. &#39;&#39;&#39;</span>
-
-    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;gain&#39;</span><span class="p">)</span>
-
-    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;k&#39;</span><span class="p">,</span> <span class="s">&#39;Multiplicative gain&#39;</span><span class="p">)</span>
-
-    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;in&#39;</span><span class="p">,</span> <span class="s">&#39;Input value&#39;</span><span class="p">)</span>
-    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;out&#39;</span><span class="p">,</span> <span class="s">&#39;Output multiplied by k.&#39;</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">k</span>
-        <span class="c"># equivalent to:</span>
-        <span class="c"># self.output[&#39;out&#39;] = self.input[&#39;in&#39;] * self.config.k</span>
-</pre></div>
-</div>
-<p>The &#8220;meat&#8221; of the block goes in the <tt class="docutils literal"><span class="pre">update()</span></tt> function. It is called whenever
-one of the inputs change. In the <tt class="docutils literal"><span class="pre">update()</span></tt> function, you compute the
-output from the input. To access the input, there are several</p>
-</div>
-<div class="section" id="example-of-a-stateful-block">
-<h2>Example of a stateful block<a class="headerlink" href="#example-of-a-stateful-block" title="Permalink to this headline">¶</a></h2>
-<p>The following is a minimal example of a stateful block. It has one input and one output.
-The output is the sample average of the input. There are two state variables: the number
-of samples processed and the current sample average.</p>
-<p>Note how the block uses the <tt class="docutils literal"><span class="pre">init()</span></tt> function to initialize its structures,
-and the <tt class="docutils literal"><span class="pre">self.state</span></tt> structure to hold them.</p>
-<blockquote>
-<dl class="docutils">
-<dt>class Expectation(Block):</dt>
-<dd><p class="first">&#8216;&#8217;&#8217; Computes the sample expectation of a signal. &#8216;&#8217;&#8217;
-Block.alias(&#8216;expectation&#8217;)</p>
-<p>Block.input(&#8216;x&#8217;, &#8216;Any numpy array.&#8217;)
-Block.output(&#8216;Ex&#8217;, &#8216;Expectation of input.&#8217;)</p>
-<dl class="last docutils">
-<dt>def init(self):</dt>
-<dd>self.state.num_samples = 0</dd>
-<dt>def update(self):</dt>
-<dd><p class="first">N = self.state.num_samples</p>
-<dl class="docutils">
-<dt>if N == 0:</dt>
-<dd>self.state.Ex = self.input.x.copy()</dd>
-<dt>else:</dt>
-<dd>self.state.Ex = (self.state.Ex * N + self.input.x) / float(N + 1);</dd>
-</dl>
-<p class="last">self.state.num_samples += 1
-self.output.Ex = self.state.Ex</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</blockquote>
-<p>(See <em class="xref std std-ref">execution_model</em> for advanced topics dealing with timestamp)</p>
-</div>
-<div class="section" id="the-init-method">
-<h2>The init() method<a class="headerlink" href="#the-init-method" title="Permalink to this headline">¶</a></h2>
-<p>Do not use your class&#8217;s constructor to initialize the block. There are
-all sorts of issues with custom constructors that make writing things
-such as module serialization hard.</p>
-<p>Instead, <span class="procgraph-brand">ProcGraph</span> provides the facilities you need for configuration,
-initialization, etc.</p>
-<dl class="docutils">
-<dt>The init() method is supposed to set up</dt>
-<dd>method: basic usage.</dd>
-</dl>
-<p>The return value of init() is ignored, except in one special case described in the
-next section.</p>
-<p>Advanced init() usage &#8211; partial initialization</p>
-<p>Note that there some special cases for which initialization cannot be
-completed before until the block is in the model and signals are connected.
-One typical example is when we want to write a block that can operate
-on multiple signal, of which we do not know the number. Consider as an example
-the case in which we want to write a block performing a &#8220;min&#8221; operation.:</p>
-<div class="highlight-python"><pre># three values
-|constant value=1| -&gt; x
-|constant value=2| -&gt; y
-|constant value=3| -&gt; z
-
-# take the min
-x,y,z -&gt; |min| -&gt; minimum</pre>
-</div>
-<p>When the block min is initialized, it is outside the block</p>
-</div>
-<div class="section" id="the-update-method">
-<h2>The update() method<a class="headerlink" href="#the-update-method" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><p class="first">If the computation is not finished, return Block.UPDATE_NOT_FINISHED.
-This will tell <span class="procgraph-brand">ProcGraph</span> to consider the computation still pending,
-and update() will be called again in the future with the same input signals.</p>
-<p>All other return values are just ignored by <span class="procgraph-brand">ProcGraph</span>.</p>
-</li>
-</ul>
-<div class="section" id="writing-generators">
-<h3>Writing generators<a class="headerlink" href="#writing-generators" title="Permalink to this headline">¶</a></h3>
-<p><span style="font-weight:bold">This section must still be written.</span></p>
-</div>
 </div>
 </div>
 

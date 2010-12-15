@@ -77,158 +77,158 @@
 <h1>User API<a class="headerlink" href="#user-api" title="Permalink to this headline">¶</a></h1>
 <p>to write</p>
 </div>
-<div class="section" id="module-procgraph.core.block">
-<span id="block-builder-api"></span><h1>Block-builder API<a class="headerlink" href="#module-procgraph.core.block" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-procgraph">
+<span id="block-builder-api"></span><h1>Block-builder API<a class="headerlink" href="#module-procgraph" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="procgraph.core.block.Block">
-<em class="property">class </em><tt class="descclassname">procgraph.core.block.</tt><tt class="descname">Block</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block">
+<em class="property">class </em><tt class="descclassname">procgraph.</tt><tt class="descname">Block</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="headerlink" href="#procgraph.Block" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="procgraph.core.block.Block.canonicalize_input">
-<tt class="descname">canonicalize_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.canonicalize_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.canonicalize_input" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.canonicalize_input">
+<tt class="descname">canonicalize_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.canonicalize_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the signal spec (either string or id) to string
 (useful because more user-friendly).</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.canonicalize_output">
-<tt class="descname">canonicalize_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.canonicalize_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.canonicalize_output" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.canonicalize_output">
+<tt class="descname">canonicalize_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.canonicalize_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the signal spec (either string or id) to string
 (useful because more user-friendly).</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.debug">
-<tt class="descname">debug</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.debug" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.debug">
+<tt class="descname">debug</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#procgraph.Block.debug" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes a debug message.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.error">
-<tt class="descname">error</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.error" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.error">
+<tt class="descname">error</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#procgraph.Block.error" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes a debug message.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.from_outside_set_input">
-<tt class="descname">from_outside_set_input</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.from_outside_set_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.from_outside_set_input" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.from_outside_set_input">
+<tt class="descname">from_outside_set_input</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp</em><big>)</big><a class="headerlink" href="#procgraph.Block.from_outside_set_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets an input value. This is used from outside, not 
 from the block. (This is overloaded by Model)</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_input">
-<tt class="descname">get_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_input">
+<tt class="descname">get_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.get_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the value of an input signal.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_input_signals_names">
-<tt class="descname">get_input_signals_names</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_signals_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_names" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_input_signals_names">
+<tt class="descname">get_input_signals_names</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_input_signals_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of names of currently defined input signals.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_input_signals_timestamps">
-<tt class="descname">get_input_signals_timestamps</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_signals_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_timestamps" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_input_signals_timestamps">
+<tt class="descname">get_input_signals_timestamps</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_input_signals_timestamps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the input signals timestamps.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_input_signals_values">
-<tt class="descname">get_input_signals_values</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_signals_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_values" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_input_signals_values">
+<tt class="descname">get_input_signals_values</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_input_signals_values" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the input signals values.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_input_timestamp">
-<tt class="descname">get_input_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_input_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_timestamp" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_input_timestamp">
+<tt class="descname">get_input_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.get_input_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the timestamp of an input signal.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_io_repr">
-<tt class="descname">get_io_repr</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_io_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_io_repr" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_io_repr">
+<tt class="descname">get_io_repr</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_io_repr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a representation of io ports for this block.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_output">
-<tt class="descname">get_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_output">
+<tt class="descname">get_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.get_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the value of an output signal.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_output_signals_names">
-<tt class="descname">get_output_signals_names</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output_signals_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_signals_names" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_output_signals_names">
+<tt class="descname">get_output_signals_names</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_output_signals_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the list of names of currently defined output signals.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_output_signals_timestamps">
-<tt class="descname">get_output_signals_timestamps</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output_signals_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_signals_timestamps" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_output_signals_timestamps">
+<tt class="descname">get_output_signals_timestamps</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_output_signals_timestamps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the output values timestamps.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_output_timestamp">
-<tt class="descname">get_output_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_output_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_timestamp" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_output_timestamp">
+<tt class="descname">get_output_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.get_output_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the timestamp of an output signal.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_state">
-<tt class="descname">get_state</tt><big>(</big><em>varname</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_state" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_state">
+<tt class="descname">get_state</tt><big>(</big><em>varname</em><big>)</big><a class="headerlink" href="#procgraph.Block.get_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Can be called during init() and update() .</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.get_state_vars">
-<tt class="descname">get_state_vars</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.get_state_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_state_vars" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.get_state_vars">
+<tt class="descname">get_state_vars</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.get_state_vars" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a list of the names for the state variables.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.info">
-<tt class="descname">info</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.info" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.info">
+<tt class="descname">info</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#procgraph.Block.info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Writes an info message.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.init">
-<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.init" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initializes the block.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.is_valid_input_name">
-<tt class="descname">is_valid_input_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.is_valid_input_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.is_valid_input_name" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.is_valid_input_name">
+<tt class="descname">is_valid_input_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.is_valid_input_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that num_or_id (string or int) is a valid handle
 for one of the signals.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.is_valid_output_name">
-<tt class="descname">is_valid_output_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.is_valid_output_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.is_valid_output_name" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.is_valid_output_name">
+<tt class="descname">is_valid_output_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.is_valid_output_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks that num_or_id (string or int) is a valid handle
 for one of the signals.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.set_output">
-<tt class="descname">set_output</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp=None</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.set_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.set_output" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.set_output">
+<tt class="descname">set_output</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp=None</em><big>)</big><a class="headerlink" href="#procgraph.Block.set_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets an output value. If timestamp is omitted, it
 will default to the maximum of the input signals timestamp.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.set_state">
-<tt class="descname">set_state</tt><big>(</big><em>varname</em>, <em>value</em><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.set_state" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>varname</em>, <em>value</em><big>)</big><a class="headerlink" href="#procgraph.Block.set_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Can be called during init() and update().</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="procgraph.core.block.Block.update">
-<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="modules/procgraph/core/block.html#Block.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.update" title="Permalink to this definition">¶</a></dt>
+<dt id="procgraph.Block.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performs the block function.
 Use set_state() for temporary storage.</p>
 </dd></dl>
