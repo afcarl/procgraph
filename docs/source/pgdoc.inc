@@ -1,14 +1,8 @@
 .. |towrite| replace:: **to write** 
 
-.. _`pgdoc:procgraph.components`:
-
-Summary 
-============================================================
-
 
 Package ``procgraph.components.debug_components``
 ------------------------------------------------------------
-
 
 Components used for debugging and unit tests.
 
@@ -34,11 +28,11 @@ Components used for debugging and unit tests.
    * - :ref:`print <block:print>`
      - Print a representation of the input values along with their timestamp.
 
+
 Package ``procgraph_cv``
 ------------------------------------------------------------
 
-
-Operations using the OpenCV library. 
+Operations using the OpenCV library.
 
 .. list-table::
    :widths: 30 70
@@ -48,9 +42,9 @@ Operations using the OpenCV library.
    * - :ref:`smooth <block:smooth>`
      - Smooths an image with a Gaussian filter.
 
+
 Package ``procgraph_foo``
 ------------------------------------------------------------
-
 
 An example package for ProcGraph that shows how to organize your code. 
 
@@ -60,9 +54,9 @@ An example package for ProcGraph that shows how to organize your code.
    * - :ref:`block_example <block:block_example>`
      - This is a documented example of the simplest block possible. 
 
+
 Package ``procgraph_hdf``
 ------------------------------------------------------------
-
 
 This is a set of blocks to read and write logs in HDF_ format. 
 
@@ -76,9 +70,9 @@ This is a set of blocks to read and write logs in HDF_ format.
    * - :ref:`hdfwrite <block:hdfwrite>`
      - This block writes the incoming signals to a file in HDF_ format. 
 
+
 Package ``procgraph_images``
 ------------------------------------------------------------
-
 
 Blocks for basic operations on images. 
 
@@ -97,6 +91,8 @@ Blocks for basic operations on images.
      - A block that creates a larger image by arranging them in a grid.
    * - :ref:`posneg <block:posneg>`
      - Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.
+   * - :ref:`posterize <block:posterize>`
+     - Posterizes the given image with the specified number of levels.
    * - :ref:`rgb2gray <block:rgb2gray>`
      - Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.
    * - :ref:`scale <block:scale>`
@@ -106,9 +102,9 @@ Blocks for basic operations on images.
    * - :ref:`skim_top_and_bottom <block:skim_top_and_bottom>`
      - Cuts off the top and bottom percentile of the array.
 
+
 Package ``procgraph_io_misc``
 ------------------------------------------------------------
-
 
 Miscellaneous functions to be better organized.
 
@@ -124,9 +120,9 @@ Miscellaneous functions to be better organized.
    * - :ref:`to_file <block:to_file>`
      - Prints the input line by line to a given file.
 
+
 Package ``procgraph_mpl``
 ------------------------------------------------------------
-
 
 Blocks using Matplotlib to display data.
 
@@ -136,9 +132,9 @@ Blocks using Matplotlib to display data.
    * - :ref:`plot <block:plot>`
      - Plots the inputs using matplotlib. 
 
+
 Package ``procgraph_mplayer``
 ------------------------------------------------------------
-
 
 Blocks for encoding/decoding video based on MPlayer.
 
@@ -150,9 +146,9 @@ Blocks for encoding/decoding video based on MPlayer.
    * - :ref:`mplayer <block:mplayer>`
      - Decodes a video stream.
 
+
 Package ``procgraph_numpy_ops``
 ------------------------------------------------------------
-
 
 Various operations wrapping numpy functions.
 
@@ -208,9 +204,9 @@ Various operations wrapping numpy functions.
    * - :ref:`vstack <block:vstack>`
      - Wrapper around :np:data:`numpy.ma.vstack`.
 
+
 Package ``procgraph_pil``
 ------------------------------------------------------------
-
 
 Blocks for image operations based on the PIL library
 
@@ -224,9 +220,9 @@ Blocks for image operations based on the PIL library
    * - :ref:`text <block:text>`
      - This block provides text overlays over an image. 
 
+
 Package ``procgraph_robotics``
 ------------------------------------------------------------
-
 
 Some functions specific to robotics applications. 
 
@@ -246,9 +242,9 @@ Some functions specific to robotics applications.
    * - :ref:`skim <block:skim>`
      - Cuts off the top and bottom percentile of the array.
 
+
 Package ``procgraph_signals``
 ------------------------------------------------------------
-
 
 Blocks performing operations with a dynamic nature. 
 
@@ -292,9 +288,9 @@ Blocks performing operations with a dynamic nature.
    * - :ref:`wait <block:wait>`
      - This block waits a given number of updates before transmitting the output.
 
+
 Package ``procgraph_statistics``
 ------------------------------------------------------------
-
 
 Blocks for common statistical operations.
 
@@ -640,14 +636,7 @@ Package ``procgraph_cv``
 
 .. rst-class:: procgraph:desc
 
-Operations using the OpenCV library. 
-
-
-.. rst-class:: procgraph:desc_rest
-
-**Packages dependencies**
-
-* ``opencv`` (or ``cv``)
+Operations using the OpenCV library.
 
 .. _`block:gradient`:
 
@@ -1094,7 +1083,7 @@ Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray ch
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``gray``: grayscale (HxW uint8)
+- ``gray``: grayscale (array(HxW,uint8),H>0,W>0)
 
 
 .. rst-class:: procgraph:output
@@ -1102,7 +1091,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: A RGB image in shades of gray. (HxWx3 uint8)
+- ``0``: A RGB image in shades of gray. (array(HxWx3,uint8))
 
 
 .. rst-class:: procgraph:source
@@ -1192,6 +1181,45 @@ Output
 Implemented in `/src/procgraph_images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/copied_from_reprep.py>`_. 
 
 
+.. _`block:posterize`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``posterize``
+------------------------------------------------------------------
+Posterizes the given image with the specified number of levels.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``levels`` (default: 2): number of levels (int,>=2)
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``rgb``: RGB image (array(HxWx3,uint8),H>0,W>0)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: A RGB image with the specified number of levels. (array(HxWx3,uint8))
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/posterize.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/posterize.py>`_. 
+
+
 .. _`block:rgb2gray`:
 
 
@@ -1207,7 +1235,7 @@ Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``rgb``: RGB image (HxWx3 uint8)
+- ``rgb``: RGB image (array(HxWx3,uint8),H>0,W>0)
 
 
 .. rst-class:: procgraph:output
@@ -1215,7 +1243,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: A RGB image in shades of gray. (HxW uint8)
+- ``0``: A RGB image in shades of gray. (array(HxW,uint8))
 
 
 .. rst-class:: procgraph:source
@@ -2722,7 +2750,6 @@ Some functions specific to robotics applications.
 
 .. rst-class:: procgraph:desc_rest
 
-
 Requires: http://github.com/AndreaCensi/snp_geometry
 
 .. _`block:laser_display`:
@@ -3007,7 +3034,6 @@ Blocks performing operations with a dynamic nature.
 .. rst-class:: procgraph:desc_rest
 
 This library contains blocks that perform operations with time.
-This library is autoloaded.
 
 .. _`block:derivative`:
 
@@ -3674,7 +3700,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Arbitrary signals, minus the first ``n`` updates. (variable number)
+- Copy of the signals, minus the first n updates. (variable number)
 
 
 .. rst-class:: procgraph:source

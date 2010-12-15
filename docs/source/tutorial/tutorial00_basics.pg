@@ -1,4 +1,2 @@
-
-# Read from a .mp4 file,  write to a .avi file.
- 
-|mplayer file="coastguard.mp4"| --> |mencoder vbitrate=100 file="coastguard00.avi"|
+# Read from a .mp4 file, write to a .avi file.
+|mplayer file="coastguard.mp4"| --> |mencoder vbitrate=1000 file="coastguard00.avi"|

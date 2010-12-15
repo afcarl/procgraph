@@ -1,5 +1,4 @@
-
-
+# Model demonstrating the syntax for naming signals.
 |mplayer file="coastguard.mp4"| --> rgb
 
-rgb --> |mencoder vbitrate=100 file="coastguard1.avi"|
+   rgb --> |mencoder vbitrate=100 file="coastguard01.avi"|

@@ -2,7 +2,7 @@
 
 .. _running:
 
-Executing |procgraph| models
+Executing ProcGraph models
 ============================
 
 

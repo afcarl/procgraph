@@ -137,9 +137,7 @@ def get_all_info(library):
 def main(): 
     parser = OptionParser()
      
-    parser.add_option("--output", default='pgdoc.rst', help="HTML output file.")
-    parser.add_option("--label", default=None,
-                      help="Adds a RST label to the generated docs.")
+    parser.add_option("--output", default='pgdoc.rst', help="RST output file.")
     parser.add_option("--translate", action='append', default=[],
                       help="directory=url")
 
@@ -179,25 +177,15 @@ def main():
 
     f = open(options.output, 'w')
     
-    if options.label is None:
-        options.label = args[0]
-        print('Using %r as label.' % options.label)
-    
     f.write('.. |towrite| replace:: **to write** \n\n')
-    
-    f.write(".. _`%s`:\n\n" % options.label)
-
-    f.write('Summary \n')
-    f.write('=' * 60 + '\n\n\n')
-
 
     # first write a summary
     for module_name in sorted(modules):
         module = modules[module_name]
         
         #f.write('%s\n' % module_reference(module.name))
-        f.write('Package ``%s``\n' % module.name)
-        f.write('-' * 60 + '\n\n\n')
+        f.write('\nPackage ``%s``\n' % module.name)
+        f.write('-' * 60 + '\n\n')
         
         d = getstr(module.desc, '%s description' % module.name)
         f.write(d + '\n\n')
@@ -362,9 +350,7 @@ def write_rst_table(f, rows, widths=[30, 70]):
     f.write('\n')
     
     for row in rows:
-        print row.__repr__()
         for i, item in enumerate(row):
-            print item.__repr__()
             if '\n' in item:
                 print('Warning: malformed cell %r.' % item)
             if i == 0:
