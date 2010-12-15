@@ -9,8 +9,7 @@ from ..core.import_magic import REQUIRES_PARSED
 def main(): 
     parser = OptionParser()
      
-    parser.add_option("--output", default='procgraph_packages.py',
-                      help="HTML output file.")
+    parser.add_option("--output", default='procgraph_packages.py')
     parser.add_option("--src", default='src', help="Source directory")
     
     (options, args) = parser.parse_args()

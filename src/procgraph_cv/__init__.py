@@ -1,7 +1,5 @@
 ''' 
-
-    Operations using the OpenCV library. 
-
+    Blocks using the OpenCV library. 
 '''
 
 procgraph_info = {

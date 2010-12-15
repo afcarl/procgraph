@@ -12,4 +12,4 @@
     original, our_version, encoding_error --> |sync| --> |grid cols=3| --> side_by_side
 
     ''' Output the result. '''
-    side_by_side --> |mencoder file="coastguard00.avi" fps=5|
+    side_by_side --> |mencoder file="coastguard02.avi" fps=5|

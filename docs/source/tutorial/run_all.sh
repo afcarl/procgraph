@@ -6,11 +6,11 @@ pg tutorial00_basics
 
 pg tutorial01_signals
 
-pg tutorial03_config in=coastguard.mp4 out=coastguard3.avi
+pg tutorial03_config in=coastguard.mp4 out=coastguard03.avi
 
-pg tutorial04_models in=coastguard.mp4 out=coastguard4.avi
+pg tutorial04_models in=coastguard.mp4 out=coastguard04.avi
  
-pg tutorial05_config_advanced  in=coastguard.mp4 out=coastguard5.avi levels=8
+pg tutorial05_config_advanced  in=coastguard.mp4 out=coastguard05.avi levels=8
 
 pg tutorial06_signals_advanced 
 

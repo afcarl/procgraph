@@ -2,12 +2,8 @@
 
 import tutorial07_blocks
 
-
 |player:mplayer file="coastguard.mp4"|  --> rgb
-
 
     rgb --> |green_channel| --> processed
     
-
-    processed --> |mencoder file="coastguard7.avi"|
-
+    processed --> |mencoder file="coastguard07.avi"|

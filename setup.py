@@ -57,7 +57,6 @@ setup(name='procgraph',
       package_dir={'':'src'},
       packages=packages,
       install_requires=['pyparsing',
-                        'simplejson', #TODO: get rid of this
                         'numpy', # TODO: make numpy optional?
                         'setproctitle',
                         'termcolor'],

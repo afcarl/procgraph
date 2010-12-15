@@ -1,4 +1,4 @@
-import simplejson as json
+from . import json
 
 from procgraph import Block 
 

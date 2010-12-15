@@ -13,33 +13,30 @@
 ProcGraph
 =========
 
-|procgraph| ("processing graph") is a Python library for rapid prototyping of processing pipelines for logged and realtime data.  New blocks can be added in Python, or using a textual model specification language.
-
-
-**Note: this is currently very unstable software (albeit I use it day to day). Adventurous early adopters are welcome!**
+|procgraph| ("processing graph") is a Python library for rapid prototyping of processing pipelines for logged and realtime data.  New blocks can be added in Python, or using a textual model specification language. 
 
 
 .. container:: col1
 
     **Getting started**
 
-    * :ref:`install`
     * :ref:`why`
+    * :ref:`Download and install <install>`
     * :ref:`tutorial`
+    * :ref:`faq`
 
-    **Manual**
+    **Reference documentation**
 
     * :ref:`creating_new_blocks`    
     * :ref:`running`    
     * :ref:`packaging`    
-    * :ref:`faq`
 
 
 .. container:: col2
 
-    **Block libraries**
+    **Block libraries documentation**
 
-    * :ref:`Included blocks <pgdoc:procgraph.components>`
+    * :ref:`Included blocks <library>`
 
     * Additional libraries (separate packages):
       
@@ -55,10 +52,11 @@ ProcGraph
 .. _procgraph_rawseeds: http://andreacensi.github.com/procgraph_rawseeds/
 
 
+.. 
+	.. toctree::
+	   :glob:
 
-.. toctree::
-   :glob:
-
-   *
-   procgraph_tutorial
+	   *
+	   tutorial/index.rst
+	
 
