@@ -57,16 +57,13 @@ number = Word(nums)
 point = Literal('.')
 e = CaselessLiteral('E')
 plusorminus = Literal('+') | Literal('-')
-integer = Combine(Optional(plusorminus) + number)
-floatnumber = Combine(integer + 
-                   Optional(point + Optional(number)) + 
-                   Optional(e + integer)
-                 )
-integer.setParseAction(python_interpretation)
+integer = Combine(O(plusorminus) + number)
+floatnumber = Combine(integer + O(point + O(number)) + O(e + integer))
+integer.setParseAction(python_interpretation) #XXX: make it better
 floatnumber.setParseAction(python_interpretation)
 # comments
-comment = Suppress(Literal('#') + restOfLine)
-good_name = Combine(Word(alphas) + Optional(Word(alphanums + '_')))
+comment = S(Literal('#') + restOfLine)
+good_name = Combine(Word(alphas) + O(Word(alphanums + '_')))
 
 # All kinds of python strings
 
@@ -78,7 +75,7 @@ multi_quoted = (QuotedString(quoteChar='"""', escChar='\\',
                               multiline=True, unquoteResults=True))
 quoted = multi_quoted | single_quoted 
 
-reference = Combine(Suppress('$') + good_name('variable'))
+reference = Combine(S('$') + good_name('variable'))
 
 reference.setParseAction(VariableReference.from_tokens)
 
@@ -100,20 +97,18 @@ value << (
 # dictionaries
     
 dict_key = good_name | quoted
-dictionary << (Suppress("{") + 
-    Optional(
+dictionary << (S("{") + 
+    O(
              delimitedList(
-                 Group(dict_key('key') + Suppress(':') + value('value')) 
+                 Group(dict_key('key') + S(':') + value('value')) 
                  ) 
              )('content') + 
-    Suppress("}"))
+    S("}"))
     
     
 dictionary.setParseAction(eval_dictionary)
      
-array << Group(Suppress("[") + 
-               O(delimitedList(value)('elements')) + 
-               Suppress("]"))
+array << Group(S("[") + O(delimitedList(value)('elements')) + S("]"))
 
 array.setParseAction(eval_array)
 
@@ -242,7 +237,7 @@ def create_model_grammar():
                     ZeroOrMore(newline)) 
     
     named_model = (
-        Suppress(Combine('---' + Optional(Word('-')))) + Suppress('model') + 
+        S(Combine('---' + O(Word('-')))) + S('model') + 
         good_name('model_name') + OneOrMore(newline) + 
         O(quoted('docstring')) + 
         model_content('content')

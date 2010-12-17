@@ -115,4 +115,3 @@ def smooth(grayscale, gaussian_std=5.0):
     result_a = cv_to_numpy(smoothed).squeeze() 
     return result_a
 
- 

@@ -11,7 +11,7 @@ def is_package_available(p):
 		__import__(p)
 		return True
  	except ImportError as e:
-         print("Warning: cannot import %r: %s" % (p, e)) 
+         # print("Warning: cannot import %r: %s" % (p, e)) 
          return False
 
 missing = {}
@@ -33,11 +33,15 @@ if missing:
     print('I could not find the following packages installed:\n')
     for requirement, options  in missing.items():
     	if len(options) > 1:
-    		o = '(Satisfiable by %s.)' % " or ".join([x.__repr__() for x in options])
+    		possible = " or ".join([x.__repr__() for x in options])
+    		o = '(Satisfiable by %s.)' % possible
     	else:
     		o = ''
         print(' - %-20s  %s' % (requirement, o))
-    print('\nThese missing requirements could make the following packages not work properly:\n')
+        
+    print('\nThese missing requirements could make the following packages '
+		  'not work properly:\n')
+    
     for p in problems:
         desc = index['packages'][p]['desc']
         print(' - %-20s  (%s)' % (p, desc))
@@ -53,7 +57,7 @@ if missing:
 packages = find_packages(where='src')
 
 setup(name='procgraph',
-	  version="0.9",
+	  version="0.9.1",
       package_dir={'':'src'},
       packages=packages,
       install_requires=['pyparsing',
