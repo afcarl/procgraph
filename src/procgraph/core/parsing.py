@@ -1,6 +1,9 @@
+from pyparsing import ParserElement
+ParserElement.enablePackrat()
+
 from pyparsing import (Regex, Word, delimitedList, alphas, Optional, OneOrMore,
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd,
-    ParserElement, Combine, nums, Literal, CaselessLiteral,
+    Combine, nums, Literal, CaselessLiteral,
     restOfLine, QuotedString, ParseException, Forward)
 
 from .parsing_elements import (VariableReference, ParsedBlock,
@@ -19,16 +22,6 @@ def eval_dictionary(s, loc, tokens): #@UnusedVariable
             d[a['key']] = a['value']
     return d 
 
-#def eval_value(s, loc, tokens): #@UnusedVariable
-#    # print 'value got tokens %s = %r' % (tokens.__class__.__name__, tokens)
-#
-#    #res = tokens.asList()
-#    
-#    res = tokens
-#    
-#    # print ' -> value returns %s = %r ' % (res.__class__.__name__, res)
-#    return res
-
 def eval_array(s, loc, tokens): #@UnusedVariable
     elements = tokens.asList()
     res = []
@@ -37,10 +30,6 @@ def eval_array(s, loc, tokens): #@UnusedVariable
         res.append(t)
         
     return res
-
-def python_interpretation(s, loc, tokens): #@UnusedVariable
-    val = eval(tokens[0]) # XXX why 0?
-    return val
 
 # Shortcuts
 S = Suppress
@@ -59,8 +48,9 @@ e = CaselessLiteral('E')
 plusorminus = Literal('+') | Literal('-')
 integer = Combine(O(plusorminus) + number)
 floatnumber = Combine(integer + O(point + O(number)) + O(e + integer))
-integer.setParseAction(python_interpretation) #XXX: make it better
-floatnumber.setParseAction(python_interpretation)
+integer.setParseAction(lambda tokens: int(tokens[0]))
+floatnumber.setParseAction(lambda tokens: float(tokens[0]))
+
 # comments
 comment = S(Literal('#') + restOfLine)
 good_name = Combine(Word(alphas) + O(Word(alphanums + '_')))
