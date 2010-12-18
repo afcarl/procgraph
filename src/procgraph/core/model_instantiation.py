@@ -375,6 +375,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             define_output_signals(generator.output, dummy_block)
             dummy_block.init()
             model.add_block(block_name, dummy_block)
+            # TODO: warn
             
     # TODO: warn if no output block was defined
         
