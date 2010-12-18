@@ -13,7 +13,7 @@ from .block_meta import VARIABLE, DEFINED_AT_RUNTIME
 from .model_io import ModelInput
 from .parsing_elements import (ParsedSignalList, VariableReference,
                                ParsedBlock, ParsedModel, ParsedSignal)
-
+from .constants import STRICT
 
 def check_link_compatibility_input(previous_block, previous_link):
     assert isinstance(previous_link, ParsedSignalList)
@@ -77,7 +77,7 @@ def expand_references_in_string(s, function):
 
 
 def create_from_parsing_results(parsed_model, name=None, config={},
-                                library=None, STRICT=False):
+                                library=None):
     assert isinstance(parsed_model, ParsedModel)
     
     def debug(s):
@@ -88,7 +88,6 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     
     if library is None:
         library = default_library
-    
     
     model = Model(name=name, model_name=parsed_model.name)
     model.define_input_signals_new([x.name for x in parsed_model.input])
@@ -130,8 +129,8 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     for assignment in parsed_model.assignments:
         # We make sure we are not overwriting configuration    
         if assignment.key in resolved:
-            msg = ('Assignment to "%s" overwrites a config variable.' 
-                  ' Perhaps you want to change the default instead?' % 
+            msg = ('Assignment to %r overwrites a config variable. ' 
+                   'Perhaps you want to change the default instead?' % 
                     assignment.key)
             raise SemanticError(msg, assignment)
 
@@ -143,18 +142,13 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     properties = {}
     # We keep track of what properties we use
     used_properties = set() # of strings
- 
+    # This instead collects the block_properties
+    block_properties = {}  # {str: {str: *}}
         
     def expand_value(value, element=None):
         ''' Function that looks for VariableReference and does the 
             substitution. 
-        '''
-        #if context is None:
-        #    context = []
-        # there's no recursion now...
-        #    if value in context:
-        #context.append(value)
-        
+        ''' 
         if isinstance(value, VariableReference):
             variable = value.variable
             if variable in os.environ:
@@ -178,7 +172,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         
         # XXX: we shouldn't have here ParseResults
         elif isinstance(value, list) or isinstance(value, ParseResults):
-            return [ expand_value(s, element) for s in  value]
+            return [ expand_value(s, element) for s in value]
         else:
             return value
 
@@ -189,19 +183,18 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         if '.' in key:
             # TODO: put this in syntax
             object, property = key.split('.', 1)
-            if not object in properties:
-                properties[object] = {}
-            else:    
-                # XXX probably should be better
-                if not isinstance(properties[object], dict):
-                    msg = ('Error while processing "%s=%s": I already know'
-                           ' the key.' % (key, value)) 
-                    raise SemanticError(msg, element)
+            if not object in block_properties:
+                block_properties[object] = {}
+            # else:    
+                # # XXX probably should be better
+                # if not isinstance(properties[object], dict):
+                #     msg = ('Error while processing "%s=%s": I already know'
+                #            ' the key.' % (key, value)) 
+                #     raise SemanticError(msg, element)
             referenced_blocks.append((object, element))
-            properties[object][property] = value # XX or expand?
+            block_properties[object][property] = value # XX or expand?
         else:
             properties[key] = expand_value(value, element=element) 
-        pass  
     
     # Make sure we can access python modules in the same directory as the
     # filename; we add the directory to the sys.path
@@ -220,7 +213,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 try:
                     __import__(package)
                 except Exception as e:
-                    msg = 'Could not import package "%s": %s' % (package, e)
+                    msg = 'Could not import package %r: %s' % (package, e)
                     raise SemanticError(msg, x)
     finally:
         sys.path = old_sys_path
@@ -302,16 +295,13 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 # update the configuration if given
                 block_config = {}
                 block_config.update(element.config)
-                if element.name in properties:
-                    more_config_for_block = properties[element.name] 
+                if element.name in block_properties:
+                    more_config_for_block = block_properties[element.name] 
                     # For example:
                     #   wait = 10       ->  { wait: 10 }
                     #   wait.time  = 3  ->  { wait: {time: 3} }
-                    if isinstance(more_config_for_block, dict):
-                        block_config.update(more_config_for_block)
-                        # delete so we can keep track of unused properties
-                        used_properties.add(element.name)
-                
+                    block_config.update(more_config_for_block)
+                    
                 for key, value in list(block_config.items()):
                     block_config[key] = expand_value(value, element=element)
                     
@@ -373,9 +363,23 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         else:
             semantic_warning(msg, parsed_model)
     
+    # One last thing: define dummy blocks for inputs without |input| blocks
+    for signal in model.get_input_signals_names():
+        if not signal in model.model_input_ports:
+            block_type = 'input'
+            block_name = 'dummy_input_%s' % signal
+            block_config = {'name':signal}
+            dummy_block = library.instance(block_type, block_name, block_config)
+            generator = library.get_generator_for_block_type(block_type)
+            define_input_signals(generator.input, dummy_block, None, None, model)
+            define_output_signals(generator.output, dummy_block)
+            dummy_block.init()
+            model.add_block(block_name, dummy_block)
+            
+    # TODO: warn if no output block was defined
         
     # Process load statements
-    model.init()
+    model.init() # XXX: defer?
     
     return model
 

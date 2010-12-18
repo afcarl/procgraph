@@ -13,6 +13,7 @@
 STRICT_CHECK_OF_DEFINED_IO = False
 
 
+STRICT=True
 
 ### For the procgraph_info  dictionary:
 

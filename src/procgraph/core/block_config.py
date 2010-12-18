@@ -25,12 +25,12 @@ def resolve_config(list_of_config, given_config, block, STRICT=True):
     passed_not_defined = passed_variables.difference(defined_variables) 
 
     if required_not_passed:
-        msg = ('Some required config (%s) was not passed.' % 
+        msg = ('Some required config (%r) was not passed.' % 
                 aslist(required_not_passed))
         raise SemanticError(msg, block)
     
     if passed_not_defined:
-        msg = ('We were passed config (%s) which was not defined formally '
+        msg = ('We were passed some config variable(s) (%r) which was not defined formally '
                'as a config variable.\nThe defined ones are: %s.' % 
                (aslist(passed_not_defined), aslist(defined_variables)))
         if STRICT:
