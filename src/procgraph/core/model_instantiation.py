@@ -335,13 +335,8 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 assert block.are_input_signals_defined()
                 assert block.are_output_signals_defined()
 
-                block.init()
-                
-                
-                # first init(), then add because of ModelInput/Output
                 block = model.add_block(name=element.name, block=block)
-                
-                
+                        
                 previous_link = None                    
                 previous_block = block
             # end if 
@@ -373,14 +368,10 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             generator = library.get_generator_for_block_type(block_type)
             define_input_signals(generator.input, dummy_block, None, None, model)
             define_output_signals(generator.output, dummy_block)
-            dummy_block.init()
             model.add_block(block_name, dummy_block)
             
     # TODO: warn if no output block was defined
-        
-    # Process load statements
-    model.init() # XXX: defer?
-    
+            
     return model
 
 def define_output_signals(output, block):
