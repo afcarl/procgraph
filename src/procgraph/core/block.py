@@ -16,7 +16,8 @@ class Block(BlockMetaSugar):
     __metaclass__ = BlockMeta
 
     def __init__(self, name, config, library): #@UnusedVariable
-        assert isinstance(name, str)
+        assert isinstance(name, str), \
+            'The block name must be a string, not %s' % name.__class__
 
         self.name = name
         
@@ -65,21 +66,21 @@ class Block(BlockMetaSugar):
     
     # Used during initialization
     def num_input_signals(self):
-        assert self.are_input_signals_defined()
+        assert self.are_input_signals_defined(), 'No input defined for %s' % self
         return len(self.__input_signals)
     
     def num_output_signals(self):
-        assert self.are_output_signals_defined()
+        assert self.are_output_signals_defined(), 'No output defined for %s' % self
         return len(self.__output_signals)
     
     def get_input_signals_names(self):
         ''' Returns the list of names of currently defined input signals. '''
-        assert self.are_input_signals_defined()
+        assert self.are_input_signals_defined(), 'No input defined for %s' % self
         return list(self.__input_signal_names)
 
     def get_output_signals_names(self):
         ''' Returns the list of names of currently defined output signals. '''
-        assert self.are_output_signals_defined()
+        assert self.are_output_signals_defined(), 'No output defined for %s' % self
         return list(self.__output_signal_names)
     
     def are_input_signals_defined(self):
@@ -223,7 +224,8 @@ class Block(BlockMetaSugar):
     def is_valid_input_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
             for one of the signals. ''' 
-        assert self.are_input_signals_defined()
+        assert self.are_input_signals_defined(), \
+            'No input defined for %s (checking %r)' % (self, num_or_id)
 
         if isinstance(num_or_id, str):
             return num_or_id in self.__input_signal_name2id
@@ -234,7 +236,8 @@ class Block(BlockMetaSugar):
     def canonicalize_input(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
             (useful because more user-friendly). ''' 
-        assert self.is_valid_input_name(num_or_id)
+        assert self.is_valid_input_name(num_or_id), \
+            '%r is not a valid input name.' % (self, num_or_id)
         if isinstance(num_or_id, str):
             return num_or_id 
         if isinstance(num_or_id, type(0)):
@@ -244,7 +247,8 @@ class Block(BlockMetaSugar):
     def is_valid_output_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
             for one of the signals. ''' 
-        assert self.are_output_signals_defined()
+        assert self.are_output_signals_defined(), \
+            'No output defined for %s (checking %r)' % (self, num_or_id)
 
         if isinstance(num_or_id, str):
             return num_or_id in self.__output_signal_name2id
@@ -255,7 +259,8 @@ class Block(BlockMetaSugar):
     def canonicalize_output(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
             (useful because more user-friendly). ''' 
-        assert self.is_valid_output_name(num_or_id)
+        assert self.is_valid_output_name(num_or_id), \
+            '%r is not a valid output name.' % (self, num_or_id)
         if isinstance(num_or_id, str):
             return num_or_id 
         if isinstance(num_or_id, type(0)):

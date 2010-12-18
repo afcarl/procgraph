@@ -21,7 +21,7 @@ class SemanticError(ModelWriterError):
         self.element = element
 
     def __str__(self):
-        s = "Semantic error: %s" % self.error
+        s = self.error
         s += format_where(self.element)
         return s
 

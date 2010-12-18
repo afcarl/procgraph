@@ -160,7 +160,7 @@ def pg(filename, config,
         if not isinstance(generator, ModelSpec):
             # XXX nothing given
             raise SemanticError('The name %r corresponds to a block, not a model. '
-                                'You can only use "pg" with models. ' % filename)
+                                'You can only use "pg" with models. ' % filename, None)
             
         if len(generator.input) > 0:
             inputs = ", ".join([x.name.__repr__() for x in generator.input])
@@ -182,7 +182,7 @@ def pg(filename, config,
                 filename = filename_pg
             else:
                 # TODO: add where for command line
-                raise SemanticError('Unknown model or file %r.' % filename)
+                raise SemanticError('Unknown model or file %r.' % filename, None) #XXX
 
         # Make sure we use absolute pathnames so that we know the exact directory
         filename = os.path.realpath(filename)
