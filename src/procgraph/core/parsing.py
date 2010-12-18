@@ -1,5 +1,5 @@
 from pyparsing import ParserElement
-ParserElement.enablePackrat()
+#ParserElement.enablePackrat()
 
 from pyparsing import (Regex, Word, delimitedList, alphas, Optional, OneOrMore,
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd,
@@ -47,8 +47,15 @@ point = Literal('.')
 e = CaselessLiteral('E')
 plusorminus = Literal('+') | Literal('-')
 integer = Combine(O(plusorminus) + number)
-floatnumber = Combine(integer + O(point + O(number)) + O(e + integer))
-integer.setParseAction(lambda tokens: int(tokens[0]))
+#floatnumber = Combine(integer + O(point + O(number)) + O(e + integer))
+floatnumber = (Combine(integer + point + O(number) + O(e + integer)) | 
+                Combine(integer + e + integer))
+
+def convert_int(tokens):
+    assert(len(tokens) == 1)
+    return int(tokens[0])
+
+integer.setParseAction(convert_int)
 floatnumber.setParseAction(lambda tokens: float(tokens[0]))
 
 # comments
@@ -79,8 +86,9 @@ value << (
           dictionary | 
           reference | 
           good_name | # order is important...
-          floatnumber | # order is important... 
-          integer 
+          #integer | 
+          floatnumber | 
+           integer 
          )('val')
 
 
@@ -106,7 +114,7 @@ def parse_value(string, filename=None):
     ''' This is useful for debugging '''
     
     try:
-        ret_value = value.parseString(string)
+        ret_value = value.parseString(string, parseAll=True)
         # I gave up in trying to understand how pyparsing works...
         if (isinstance(ret_value['val'], dict) or
            isinstance(ret_value['val'], int) or

@@ -2,13 +2,18 @@ from .exceptions import BlockWriterError, ModelWriterError
 from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
  
 class BlockConfig:
-    def __init__(self, variable, has_default, default, desc, desc_rest, where):
+    def __init__(self, variable, has_default, default, desc, desc_rest, where=None):
         self.variable = variable
         self.has_default = has_default
         self.default = default
         self.desc = desc
         self.desc_rest = desc_rest
         self.where = where
+        
+    def __repr__(self):
+        return ('BlockConfig(%r,%r,%r,%r,%r)' % 
+                (self.variable, self.has_default, self.default,
+                  self.desc, self.desc_rest))
         
 class BlockInput:
     def __init__(self, type, name, min, max, desc, desc_rest, where):
@@ -19,6 +24,8 @@ class BlockInput:
         self.desc = desc
         self.desc_rest = desc_rest
         self.where = where
+        
+    # TODO: add repr
         
 class BlockOutput:
     def __init__(self, type, name, desc, desc_rest, where):

@@ -47,6 +47,7 @@ class BadInput(ModelExecutionError):
         self.block = block
         self.error = error
         self.input_signal = input_signal
+        self.bad_value = block.get_input(input_signal)
     
     def __str__(self):
         if self.block is not None:
@@ -54,7 +55,9 @@ class BadInput(ModelExecutionError):
         else:
             name = '(unknown)'
         
-        s = "Bad input %r for block %r: %s" % (self.input_signal, name, self.error)
+        # TODO: add short bad_value
+        s = ("Bad input %r for block %r: %s" % 
+             (self.input_signal, name, self.error))
         s += format_where(self.block)
         return s
 
@@ -66,14 +69,16 @@ class BadConfig(ModelExecutionError):
         self.config = config
         self.error = error
         self.block = block
-
+        self.bad_value = block.config[config]
+        
     def __str__(self):
         if self.block is not None:
             name = self.block.name
         else:
             name = '(unknown)'
         
-        s = "Bad config %r for block %r: %s" % (self.config, name, self.error)
+        s = ("Bad config %r = %r for block %r: %s" % 
+             (self.config, self.bad_value, name, self.error))
         s += format_where(self.block)
         return s
     

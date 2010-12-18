@@ -169,6 +169,9 @@ def pg(filename, config,
             # XXX nothing given
             raise SemanticError(msg, generator.input[0])
         
+        if debug:
+            print('Parsed model:\n\n%s' % generator.parsed_model)
+            
         model = library.instance(filename,
                                  name='cmdline',
                                  config=config)

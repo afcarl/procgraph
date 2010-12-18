@@ -3,8 +3,13 @@ from .utils import PGTestCase
 from ..core.parsing import parse_value
 
 examples = { 
+            '0': 0,
+            '0.0': 0.0,
+            '1.0': 1.0,
+            '1': 1,
             '[]': [],
             '[1]': [1],
+            '[1.0]': [1.0],
             '[1,2]': [1, 2],
             '[1,[2]]': [1, [2]],
             '[[]]': [[]],
@@ -39,9 +44,24 @@ examples = {
 
 class SyntaxTest2(PGTestCase):
                         
+    def test_numbers(self):
+        self.assertEqual(type(parse_value('1')), int)
+
+    def test_numbers2(self):
+        self.assertEqual(type(parse_value('1.0')), float)
+        #assert isinstance(parse_value('1.0'), float)
+
+    def test_numbers3(self):
+        l = parse_value('[1.0]')
+        assert isinstance(l[0], float)
+        
+    def test_numbers4(self):
+        l = parse_value('[1]')
+        assert isinstance(l[0], int)
+                
     def testExamples(self):
         for example, expected in examples.items():
-            print "Trying '%s'" % example
+            print("Trying '%s'" % example)
             found = parse_value(example)
             
             ok = (found == expected) or (str(found) == str(expected))

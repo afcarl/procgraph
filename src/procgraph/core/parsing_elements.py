@@ -215,6 +215,7 @@ class VariableReference(ParsedElement):
 
 
 class ParsedModel(ParsedElement):
+    # temporary storage while parsing
     static_filename = 'not set'
     
     def __init__(self, name, docstring, elements):
@@ -332,7 +333,26 @@ class ParsedModel(ParsedElement):
                         raise SemanticError(msg, block)
         
     def __repr__(self):
-        return 'Model:%s(%s)' % (self.name, self.elements)
+        s = 'Model %r: %d elements\n' % (self.name, len(self.elements)) 
+        
+        parts = [
+            ('config parameters', self.config),
+
+            ('input signals', self.input),
+            ('output signals', self.output),
+            ('import statements', self.imports),
+            ('assignments', self.assignments),
+            ('blocks connections', self.connections),
+        ]
+        
+        for (part, elements) in parts:
+            if len(elements) == 0:
+                s += '- No %s.\n' % part
+            else:
+                s += '- %d %s:\n' % (len(elements), part)
+                for e in elements:
+                    s += '  * %r\n' % e
+        return s
         
     @staticmethod
     def from_named_model(tokens):

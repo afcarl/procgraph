@@ -1,4 +1,4 @@
-from procgraph.core.model_loader import model_from_string
+from ..core.model_loader import model_from_string
 
 from .utils import PGTestCase
 
