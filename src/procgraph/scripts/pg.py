@@ -97,8 +97,8 @@ def main():
         config = parse_cmdline_args(args)
         
         pg(filename, config,
-           nocache=options.nocache, 
-           debug=options.debug, 
+           nocache=options.nocache,
+           debug=options.debug,
            stats=options.stats,
            additional_directories=additional_directories,
            additional_modules=additional_modules)
@@ -195,7 +195,7 @@ def pg(filename, config,
         return
 
     count = 0
-    model.reset_execution()
+    model.init()
     while model.has_more():       
         model.update()
         

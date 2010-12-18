@@ -35,11 +35,10 @@ class PipelineTest(PGTestCase):
             self.try_one(example)
     
     def try_one(self, model_desc):
-        print "Trying with '''%s'''" % model_desc
+        print("Trying with '''%s'''" % model_desc)
         gain = 3
         model = model_from_string(model_desc, config={'g1.k': gain})
-        
-        # model.summary()
+        model.init()
         
         for i in range(5):
             value = i
@@ -48,7 +47,7 @@ class PipelineTest(PGTestCase):
             
             self.assertTrue(model.has_more())
             while model.has_more():
-                print "update %s  y = %s" % (i, model.get_output(0))
+                print("update %s  y = %s" % (i, model.get_output(0)))
                 model.update()
 
             self.assertEqual(model.get_output(0), gain * value)

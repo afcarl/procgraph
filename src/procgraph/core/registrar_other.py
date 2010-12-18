@@ -10,7 +10,6 @@ from .exceptions import BadConfig, BadInput
 
 def make_generic(name, inputs, num_outputs,
                  operation, params={}, docs=None):
-
     # make a copy
     parameters = dict(params)
     

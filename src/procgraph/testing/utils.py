@@ -48,6 +48,7 @@ class PGTestCase(unittest.TestCase):
         
         try:
             model = model_from_string(model_spec, config=config, library=library)
+            model.init()
             return model
         except SemanticError as e:
             traceback.print_exc()
@@ -73,7 +74,10 @@ class PGTestCase(unittest.TestCase):
         
         try:
             library = Library(parent=default_library)
-            model_from_string(model_spec, config=config, library=library)
+            model = model_from_string(model_spec, config=config, library=library)
+            model.init()
+            # Note: we only have check_semantic_error, perhaps we need
+            # another for the tests that do need init()?
             self.fail('Expected SemanticError for model:\n%s\n%s' % 
                       (self.write_fancy(model_spec), parsed))
 
@@ -89,7 +93,7 @@ class PGTestCase(unittest.TestCase):
         library = Library(parent=default_library)
         model = model_from_string(model_spec, config=config, library=library)
         try:
-            model.reset_execution()
+            model.init()
             while model.has_more():       
                 model.update()
             model.finish()

@@ -76,6 +76,7 @@ class Model(Generator):
         
         self.stats = ExecutionStats()
     
+        self._already_inited = False 
  
     def add_block(self, name, block):
         '''  Add a block to the model.
@@ -87,6 +88,7 @@ class Model(Generator):
             self.generators.append(block)
             
         if isinstance(block, ModelInput):
+            block.init() # get the name from config
             if not self.is_valid_input_name(block.signal_name):
                 msg = 'Input %r was not defined formally.' % block.signal_name
                 if STRICT_CHECK_OF_DEFINED_IO:
@@ -104,25 +106,28 @@ class Model(Generator):
                 
             self.model_input_ports[block.signal_name] = block
         
-        if (isinstance(block, ModelOutput) and 
-               not self.is_valid_output_name(block.signal_name)):
-            msg = 'Output %r was not defined formally.' % block.signal_name
-            if STRICT_CHECK_OF_DEFINED_IO:
-                raise SemanticError(msg, block)
-            else:
-                warning("Warning: %s" % msg)
-        
-            if self.are_output_signals_defined():
-                all_outputs = self.get_output_signals_names()
-            else: 
-                all_outputs = [] 
-                
-            # XXX bug: output_signals -> output_signals
-            self.define_output_signals_new(all_outputs + [block.signal_name])
+        if isinstance(block, ModelOutput):
+            block.init() # get the name from config
+            
+            if not self.is_valid_output_name(block.signal_name):
+                msg = 'Output %r was not defined formally.' % block.signal_name
+                if STRICT_CHECK_OF_DEFINED_IO:
+                    raise SemanticError(msg, block)
+                else:
+                    warning("Warning: %s" % msg)
+            
+                if self.are_output_signals_defined():
+                    all_outputs = self.get_output_signals_names()
+                else: 
+                    all_outputs = [] 
+                    
+                # XXX bug: output_signals -> output_signals
+                self.define_output_signals_new(all_outputs + [block.signal_name])
         
         return block
     
     def from_outside_set_input(self, num_or_id, value, timestamp):
+        assert self._already_inited, 'The block must first be init()ed.' 
         Block.from_outside_set_input(self, num_or_id, value, timestamp)
         
         signal_name = self.canonicalize_input(num_or_id)
@@ -200,9 +205,12 @@ class Model(Generator):
                 block.reset_execution()
     
     def init(self):
-        # TODO: we should do init here
-        pass 
-            
+        assert not self._already_inited, 'The block has already been init()ed.'
+        self._already_inited = True
+        for block in self.name2block.values():
+            block.init()
+        self.reset_execution()
+                        
     def finish(self):
         for block in self.name2block.values():
             block.finish() 

@@ -147,9 +147,11 @@ class TestSync(PGTestCase):
             model = default_library.instance('sync_test', name=None,
                                              config=config)
 
-            model.reset_execution()
+            model.init()
             while model.has_more():       
                 model.update()
+            model.finish()
+            
             final = model.get_output(0)
             if final != 9:
                 raise Exception('expected final output to be 9, not %s' % final)
