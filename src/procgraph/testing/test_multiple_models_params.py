@@ -133,11 +133,12 @@ class ParamsTest(PGTestCase):
                                       config=config, library=library)
             
             print "Trying with '''%s'''" % model_spec
-            model.reset_execution()
+            model.init()
             print "before"
             while model.has_more():
                 print "before iteration", model.get_output(0)
                 model.update()
+            model.finish()
             print "end", model.get_output(0)
 
             self.assertEqual(model.get_output(0), 42)

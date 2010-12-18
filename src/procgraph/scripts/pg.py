@@ -196,7 +196,6 @@ def pg(filename, config,
 
     count = 0
     model.init()
-    model.reset_execution()
     while model.has_more():       
         model.update()
         

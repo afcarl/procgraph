@@ -94,7 +94,6 @@ class PGTestCase(unittest.TestCase):
         model = model_from_string(model_spec, config=config, library=library)
         try:
             model.init()
-            model.reset_execution()
             while model.has_more():       
                 model.update()
             model.finish()

@@ -76,6 +76,7 @@ class Model(Generator):
         
         self.stats = ExecutionStats()
     
+        self._already_inited = False 
  
     def add_block(self, name, block):
         '''  Add a block to the model.
@@ -126,6 +127,7 @@ class Model(Generator):
         return block
     
     def from_outside_set_input(self, num_or_id, value, timestamp):
+        assert self._already_inited, 'The block must first be init()ed.' 
         Block.from_outside_set_input(self, num_or_id, value, timestamp)
         
         signal_name = self.canonicalize_input(num_or_id)
@@ -203,8 +205,11 @@ class Model(Generator):
                 block.reset_execution()
     
     def init(self):
+        assert not self._already_inited, 'The block has already been init()ed.'
+        self._already_inited = True
         for block in self.name2block.values():
             block.init()
+        self.reset_execution()
                         
     def finish(self):
         for block in self.name2block.values():
