@@ -11,6 +11,7 @@ from .parsing_elements import (VariableReference, ParsedBlock,
     ParsedSignalList, Connection, Where,
     output_from_tokens, input_from_tokens, config_from_tokens)
 from .exceptions import PGSyntaxError
+from types import EllipsisType
 
 
 def eval_dictionary(s, loc, tokens): #@UnusedVariable
@@ -47,9 +48,11 @@ point = Literal('.')
 e = CaselessLiteral('E')
 plusorminus = Literal('+') | Literal('-')
 integer = Combine(O(plusorminus) + number)
-#floatnumber = Combine(integer + O(point + O(number)) + O(e + integer))
+# Note that '42' is not a valid float...
 floatnumber = (Combine(integer + point + O(number) + O(e + integer)) | 
                 Combine(integer + e + integer))
+
+ellipsis_value = Literal('...').setParseAction(lambda tokens: Ellipsis) #@UnusedVariable
 
 def convert_int(tokens):
     assert(len(tokens) == 1)
@@ -78,19 +81,18 @@ reference.setParseAction(VariableReference.from_tokens)
 
 dictionary = Forward()
 array = Forward()
-value = Forward()
 
-value << (
+value = (
+          ellipsis_value | 
           quoted | 
           array | 
           dictionary | 
           reference | 
-          good_name | # order is important...
-          #integer | 
+          good_name | # order is important... 
           floatnumber | 
-           integer 
+          integer 
          )('val')
-
+#value.setParseAction(lambda tokens: tokens[0])
 
 # dictionaries
     
@@ -115,17 +117,16 @@ def parse_value(string, filename=None):
     
     try:
         ret_value = value.parseString(string, parseAll=True)
-        # I gave up in trying to understand how pyparsing works...
-        if (isinstance(ret_value['val'], dict) or
-           isinstance(ret_value['val'], int) or
-           isinstance(ret_value['val'], list) or
-           isinstance(ret_value['val'], str) or
-           isinstance(ret_value['val'], float)):
-            ret = ret_value['val']
-        else:
-            ret = ret_value['val'].asList()
-        
-        return ret
+        return ret_value['val']
+#        # I gave up in trying to understand how pyparsing works...
+#        x = ret_value['val']
+#        if isinstance(x, (dict, int, float, list, str, EllipsisType)):
+#            ret = x
+#        else:
+#            assert False
+#            ret = x.asList()
+#        
+#        return ret
 
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)

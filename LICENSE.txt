@@ -1,4 +1,4 @@
-Compmake is Copyright 2010, Andrea Censi, California Institute of Technology.
+ProcGraph is Copyright 2010, Andrea Censi, California Institute of Technology.
 It is released under the terms of the GNU Lesser General Public License, 
 version 3, as reproduced below.
 

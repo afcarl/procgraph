@@ -57,7 +57,15 @@ if missing:
 packages = find_packages(where='src')
 
 setup(name='procgraph',
-	  version="0.9.1",
+      author="Andrea Censi",
+      author_email="andrea@cds.caltech.edu",
+      url='http://andreacensi.github.com/procgraph/',
+      
+      description = "",
+      keywords = "",
+      license = "LGPL",
+    
+      version="0.9.1",
       package_dir={'':'src'},
       packages=packages,
       install_requires=['pyparsing',
