@@ -5,31 +5,32 @@ from procgraph  import Block, Generator, BadConfig
 from .tables_cache import tc_open_for_reading, tc_close
 from .hdfwrite import PROCGRAPH_LOG_GROUP
 
+def check_is_procgraph_log(hf):
+    if not PROCGRAPH_LOG_GROUP in hf.root:
+        raise Exception('File %r does not appear to be a procgraph HDF'
+                        ' log: %r' % (hf.filename, hf))
+    # TODO: check there is at least one signal
 
 # TODO: respect original order
 
 class HDFread(Generator):
-    ''' This block reads a log written with HDFwrite.
+    ''' 
+        This block reads a log written with :ref:`block:hdfwrite`.
     
     '''
-    
     Block.alias('hdfread')
     Block.output_is_defined_at_runtime('The signals read from the log.')
     Block.config('file', 'HDF file to read')
     Block.config('signals', 'Which signals to output (and in what order). '
                  'Should be a comma-separated list. If you do not specify it '
-                 ' will be all signal in the original order',
+                 ' will be all signals (TODO: in the original order).',
                  default=None)
     
     def get_output_signals(self):
         self.hf = tc_open_for_reading(self.config.file)
+        check_is_procgraph_log(self.hf)
         
-        group_name = PROCGRAPH_LOG_GROUP
-        if not group_name in self.hf.root:
-            raise Exception('File %r does not appear to be a pg log: %r' % 
-                            (self.config.file, self.hf))
-        
-        self.log_group = self.hf.root._f_getChild(group_name)
+        self.log_group = self.hf.root._f_getChild(PROCGRAPH_LOG_GROUP)
         # todo: make sure we get the order
         all_signals = list(self.log_group._v_children) 
         
@@ -68,9 +69,8 @@ class HDFread(Generator):
     def _choose_next_signal(self):
         ''' Returns a tuple (name,timestamp) of the signal that produces 
             the next event, or (None,None) if we finished the log. '''
-        
-        # enumerate timestamps
-        status = [] # array of tuples (signal, timestamp)
+        # array of tuples (signal, timestamp)
+        status = [] 
         for signal in self.signals:
             index = self.signal2index[signal] 
             if index is not None:
@@ -83,7 +83,6 @@ class HDFread(Generator):
         else:   
             sorted_status = sorted(status, key=operator.itemgetter(1)) 
             return sorted_status[0] 
-        
         
     def next_data_status(self):
         ''' 
@@ -107,7 +106,6 @@ class HDFread(Generator):
             return (False, None)
         else:
             return (True, next_timestamp)
-        
 
     def update(self):
         next_signal, next_timestamp = self._choose_next_signal()
@@ -127,9 +125,7 @@ class HDFread(Generator):
         else:
             self.signal2index[next_signal] = index + 1
          
-        
     def finish(self):
         tc_close(self.hf)
-        
          
         

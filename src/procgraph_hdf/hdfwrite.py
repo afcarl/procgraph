@@ -122,13 +122,9 @@ class HDFwrite(Block):
         row[0]['value'][:] = value
         # row[0]['value'] = value  <--- gives memory error
         table.append(row)
-        
-        if len(table) % 100 == 0:
-            print('Signal: %20s  rows %6d' % (signal, len(table)))
-        
-        # if len(table) == 3000:
-        #    raise Exception()
-        
+#        
+#        if len(table) % 100 == 0:
+#            print('Signal: %20s  rows %6d' % (signal, len(table)))
     
     def finish(self):
         tc_close(self.hf)

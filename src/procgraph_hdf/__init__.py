@@ -9,7 +9,6 @@
 
 '''
 
-
 procgraph_info = {
     # List of python packages 
     'requires':  ['tables']
@@ -23,6 +22,7 @@ tables = import_magic(__name__, 'tables')
 
 from . import hdfwrite
 from . import hdfread
+from . import hdfread_many
 
 
 from procgraph import pg_add_this_package_models
