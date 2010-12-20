@@ -1,5 +1,7 @@
 from pyparsing import ParserElement
-#ParserElement.enablePackrat()
+# Enable memoization; much faster, but we can't use
+# parse actions with side effects.
+ParserElement.enablePackrat()
 
 from pyparsing import (Regex, Word, delimitedList, alphas, Optional, OneOrMore,
     stringEnd, alphanums, ZeroOrMore, Group, Suppress, lineEnd,
@@ -11,8 +13,6 @@ from .parsing_elements import (VariableReference, ParsedBlock,
     ParsedSignalList, Connection, Where,
     output_from_tokens, input_from_tokens, config_from_tokens)
 from .exceptions import PGSyntaxError
-from types import EllipsisType
-
 
 def eval_dictionary(s, loc, tokens): #@UnusedVariable
     if not 'content' in tokens:
@@ -29,13 +29,11 @@ def eval_array(s, loc, tokens): #@UnusedVariable
     for i in range(len(elements)):
         t = elements[i]
         res.append(t)
-        
     return res
 
 # Shortcuts
 S = Suppress
 O = Optional
-
 
 # Important: should be at the beginning
 # make end of lines count
@@ -92,7 +90,6 @@ value = (
           floatnumber | 
           integer 
          )('val')
-#value.setParseAction(lambda tokens: tokens[0])
 
 # dictionaries
     
@@ -118,15 +115,6 @@ def parse_value(string, filename=None):
     try:
         ret_value = value.parseString(string, parseAll=True)
         return ret_value['val']
-#        # I gave up in trying to understand how pyparsing works...
-#        x = ret_value['val']
-#        if isinstance(x, (dict, int, float, list, str, EllipsisType)):
-#            ret = x
-#        else:
-#            assert False
-#            ret = x.asList()
-#        
-#        return ret
 
     except ParseException as e:
         where = Where(filename, string, line=e.lineno, column=e.col)
@@ -190,7 +178,7 @@ def create_model_grammar():
     sink = signals + arrow + block + ZeroOrMore(between + block)  
     source_sink = block + ZeroOrMore(between + block)
     
-    # all of those are colled a connection
+    # all of those are called a "connection"
     connection = arrow_arrow | sink | source | source_sink # order matters
       
     connection.setParseAction(wrap(Connection.from_tokens))
@@ -274,4 +262,18 @@ def parse_model(string, filename=None):
         msg = 'Error in parsing string: %s' % e
         raise PGSyntaxError(msg, where=where)
     
+    
+# Register handler for ellipsis, so that ParsedModel is pickable.
+# Ellipsis is they only object we use that is not pickable by default.
+import copy_reg
+import types
+
+def code_unpickler(data): #@UnusedVariable
+    return Ellipsis
+
+def code_pickler(code): #@UnusedVariable
+    return code_unpickler, (None,)
+
+copy_reg.pickle(types.EllipsisType, code_pickler, code_unpickler)
+
         

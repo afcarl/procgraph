@@ -121,8 +121,6 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             for f in files: 
                 if fnmatch.fnmatch(f, '*.pg'):
                     all_files.add((path, os.path.join(root, f)))
-                    
-        #print "Scanning %s " % path
             
     for path, f in all_files:
         split = os.path.splitext(os.path.basename(f))
@@ -138,28 +136,30 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             try:
                 models = pickle.load(open(cache))
             except Exception as e:
-                info('Cannot unpickle file %r: %s' % (cache, e))
+                debug('Cannot unpickle file %r: %s' % (cache, e))
                 # XXX repeated code 
                 debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
                 
                 models = parse_model(model_spec, filename=f)
-                pickle.dump(models, open(cache, 'w'))   
-            #print "Using cache %s" % cache
+             
         else:
             debug("Parsing %r." % os.path.relpath(f))
             model_spec = open(f).read()
             models = parse_model(model_spec, filename=f)
-            try:
-                file = open(cache, 'w')    
-            except:
-                # Cannot write on the cache for whatever reason
-                file = None
-                
-            if file:            
+
+        try:
+            with open(cache, 'w') as file:
                 pickle.dump(models, file)
-                file.close() 
-        
+        except Exception as e:
+            # Cannot write on the cache for whatever reason
+            debug('Cannot write cache file: %s' % e)
+            try:
+                if os.path.exists(cache):
+                    os.unlink(cache)
+            except:
+                pass
+                
         if models[0].name is None:
             models[0].name = base
     
@@ -188,7 +188,6 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
         msg = ('I already have registered model %r from %r. ' % 
               (parsed_model.name, prev.filename))
         raise SemanticError(msg, parsed_model)
-    # print "Registering model '%s' " % parsed_model.name
 
     model_spec = ModelSpec(parsed_model, defined_in)
     library.register(parsed_model.name, model_spec)
@@ -236,15 +235,20 @@ def model_from_string(model_spec, name=None, config=None,
     for x in parsed_models:
         assert isinstance(x, ParsedModel)
     
+    # Get the first one
+    parsed_model = parsed_models[0]
+    
     if len(parsed_models) > 1: 
         frm = inspect.stack()[1]
         mod = inspect.getmodule(frm[0])
                 
         for support in parsed_models[1:]:
             pg_add_parsed_model_to_library(support, library, defined_in=mod)
+            
+            # TODO: introduce the concept of submodels?
+            # support.parent = parsed_model
+            # parsed_model.children.append(support)
 
-    # Get the first one
-    parsed_model = parsed_models[0]
     
     model = create_from_parsing_results(parsed_model, name=name,
                                         config=config, library=library)
