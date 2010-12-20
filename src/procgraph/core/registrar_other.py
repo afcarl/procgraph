@@ -4,8 +4,8 @@ from .block import Block
 from .registrar import default_library
 from .model_loader import add_models_to_library
 
-from .constants import COMPULSORY, TIMESTAMP
 from .docstring_parsing import parse_docstring_annotations, DocStringInfo
+from .constants import COMPULSORY, TIMESTAMP
 from .exceptions import BadConfig, BadInput
 
 def make_generic(name, inputs, num_outputs,
@@ -107,22 +107,11 @@ def make_generic(name, inputs, num_outputs,
         
     return GenericOperation
     
+# TODO: add num_inputs, so that we can get rid of COMPULSORY. 
 def simple_block(alias=None, num_outputs=1):
     ''' Decorator for turning functions into simple blocks. '''
-        
-    def wrap(function):
-        frm = inspect.stack()[1]
-        mod = inspect.getmodule(frm[0])
-        defined_in = mod.__name__
-    
-        #print("Registering %s: %s (with params %s %s)" % 
-        #      (defined_in, function, alias, num_outputs))
-        register_simple_block(function, name=alias, num_outputs=num_outputs,
-                              defined_in=defined_in)
-        return function
     
     # OK, this is black magic. You are not expected to understand this.
-    # Ask Guido!
     if type(alias) is types.FunctionType:
         frm = inspect.stack()[1]
         mod = inspect.getmodule(frm[0])
@@ -136,6 +125,16 @@ def simple_block(alias=None, num_outputs=1):
                               defined_in=defined_in)
         return function
     else:
+        def wrap(function):
+            frm = inspect.stack()[1]
+            mod = inspect.getmodule(frm[0])
+            defined_in = mod.__name__
+        
+            #print("Registering %s: %s (with params %s %s)" % 
+            #      (defined_in, function, alias, num_outputs))
+            register_simple_block(function, name=alias, num_outputs=num_outputs,
+                                  defined_in=defined_in)
+            return function
         return wrap
 
 def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
