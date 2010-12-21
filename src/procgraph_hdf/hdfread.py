@@ -105,6 +105,14 @@ class HDFread(Generator):
         
         self.set_output(next_signal, value=value, timestamp=next_timestamp)
         
+        # update index
+        if index + 1 == len(table):
+            # finished
+            self.signal2index[next_signal] = None
+        else:
+            self.signal2index[next_signal] = index + 1
+            
+        # write status message if not quiet
         if next_signal == self.signals[0] and not self.config.quiet:
             self.write_update_message(index, len(table), next_signal)
         
@@ -116,7 +124,7 @@ class HDFread(Generator):
             percentage = index * 100.0 / T
             T = str(T)
             index = str(index).rjust(len(T))
-            self.status('Read %.0f%% (%s/%s) (tracking signal %r).' % 
+            self.info('Read %.0f%% (%s/%s) (tracking signal %r).' % 
                         (percentage, index, T, signal))
          
     def finish(self):

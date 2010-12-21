@@ -310,17 +310,17 @@ class Block(BlockMetaSugar):
     def info(self, s):
         ''' Writes an info message. '''
         from .visualization import info as pg_info
-        pg_info(self.name + ': ' + s)
+        pg_info("%s: %s" % (self.name, s))
         
     def debug(self, s):
         ''' Writes a debug message. '''
         from .visualization import debug as pg_debug
-        pg_debug(self.name + ': ' + s)
+        pg_debug("%s: %s" % (self.name, s))
     
     def error(self, s):
         ''' Writes a debug message. '''
         from .visualization import error as pg_error
-        pg_error(self.name + ': ' + s)
+        pg_error("%s: %s" % (self.name, s))
     
 
 class Generator(Block):
