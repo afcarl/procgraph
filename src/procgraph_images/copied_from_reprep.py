@@ -4,12 +4,16 @@ from numpy import maximum, minimum, zeros
 from procgraph import simple_block, COMPULSORY
 from procgraph.block_utils import check_2d_array
 
+# TODO: add for pycontracts
+# add_contract('color', 'list[3](>=0,<=1)')
+
+
 @simple_block 
 def skim_top(a, top_percent=COMPULSORY):
     ''' Cuts off the top percentile of the array.
     
         :param top_percent: How much to cut off (decimal).
-        :type top_percent: float,>=0,<90
+         :type top_percent: float,>=0,<90
     '''
     assert top_percent >= 0 and top_percent < 90
     threshold = numpy.percentile(a.flat, 100 - top_percent) 
@@ -20,13 +24,13 @@ def skim_top_and_bottom(a, percent=COMPULSORY):
     ''' Cuts off the top and bottom percentile of the array. 
     
         :param a: Any numpy array. 
-        :type  a: array
+         :type a: array[x]
             
         :param percent: How much to cut off (decimal).
-        :type  percent: float,>=0,<90
+         :type percent: float,>=0,<90
 
         :return: Skimmed version of ``a``.
-        :rtype: a
+         :rtype: array[x]
         
     '''
     assert percent >= 0 and percent < 90
@@ -41,17 +45,19 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
         red is positive, blue is negative, white is zero.
     
         :param value: The field to represent.
-        :type  value: HxW array
+         :type value: array[HxW]
         
-        :param max_value: Maximum of absolute value (if None, detect).
-        :type max_value: float,>0
-        :param skim:      Fraction to skim (in percent).
-        :type skim:      float,>0,<100
+        :param max_value:  Maximum of absolute value (if None, detect).
+         :type max_value:  float,>0
+        
+        :param skim:       Fraction to skim (in percent).
+         :type skim:       float,>0,<100
+         
         :param nan_color:  Color to give for regions of NaN and Inf.
-        :type nan_color:  color
+         :type nan_color:  color
         
         :return: posneg: A RGB image.
-        :rtype: HxWx3 uint8
+         :rtype: array[HxWx3](uint8)
 
     """
     
@@ -124,22 +130,23 @@ def scale(value, min_value=None, max_value=None,
         [min(value),max(value)] into the colorspace [min_color, max_color].
         
         :param value: The field to represent.
-        :type  value: HxW array
+         :type value: array[HxW],H>0,W>0
             
         :param max_value: If specified, everything *above* is clipped.
-        :type max_value: float
+         :type max_value: float
+        
         :param min_value: If specified, everything *below* is clipped.
-        :type min_value: float
+         :type min_value: float
     
         :param min_color:  Color to give to the minimum values.
-        :type min_color:  color
+         :type min_color:  color
         :param max_color:  Color to give to the maximum values.
-        :type max_color:  color
+         :type max_color:  color
         :param nan_color:  Color to give for regions of NaN and Inf.
-        :type nan_color:  color
+         :type nan_color:  color
         
         :return: scale: A RGB image.
-        :rtype: HxWx3 uint8
+        :rtype: array[HxWx3](uint8)
 
     """
     #Raises :py:class:`.ValueError` if min_value == max_value

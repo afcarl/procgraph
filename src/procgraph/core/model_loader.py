@@ -4,7 +4,7 @@ import inspect
 import cPickle as pickle
 
 from .model_instantiation import create_from_parsing_results
-from .visualization import warning, debug, info
+from .visualization import warning, debug
 from .parsing import parse_model, ParsedModel
 from .exceptions import SemanticError
 from .registrar import default_library, Library

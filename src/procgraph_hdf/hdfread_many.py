@@ -1,3 +1,6 @@
+import glob
+import numpy
+import os
 import operator
 
 from procgraph import Block, Generator, BadConfig
@@ -5,9 +8,6 @@ from procgraph import Block, Generator, BadConfig
 from .tables_cache import tc_open_for_reading, tc_close
 from .hdfwrite import PROCGRAPH_LOG_GROUP
 from .hdfread import check_is_procgraph_log
-import glob
-import numpy
-import os
 
 class HDFread_many(Generator):
     ''' 
@@ -31,8 +31,10 @@ class HDFread_many(Generator):
     Block.config('files', 'HDF files to read; you can use the wildcard ``*``.')
     Block.config('signals', 'Which signals to output (and in what order). '
                  'Should be a comma-separated list. ')
-    Block.config('quiet', 'Disables advancements status messages.', default=False)
-    
+
+    Block.config('quiet', 'If true, disables advancements status messages.',
+                 default=False)
+        
     def get_output_signals(self):
         self.signals = filter(lambda x:x, self.config.signals.split(','))
         if not self.signals:
@@ -68,11 +70,16 @@ class HDFread_many(Generator):
             
             timestamp = signal2table[s][0]['time']
             logs.append((hf, timestamp, signal2table))
-        
+                    
         # Sort them by timestamp
         self.logs = sorted(logs, key=operator.itemgetter(1))
         self.current_log = None
         
+        for log in logs:
+            filename = log[0].filename
+            length = len(list(log[2].values())[0])
+            self.status('- queued log (%6d rows) from %r' % (length, filename))
+
         self.start_reading_next_log()
         
     def status(self, s):

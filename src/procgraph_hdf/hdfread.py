@@ -4,6 +4,7 @@ from procgraph  import Block, Generator, BadConfig
 
 from .tables_cache import tc_open_for_reading, tc_close
 from .hdfwrite import PROCGRAPH_LOG_GROUP
+import numpy
 
 def check_is_procgraph_log(hf):
     if not PROCGRAPH_LOG_GROUP in hf.root:
@@ -26,6 +27,9 @@ class HDFread(Generator):
                  ' will be all signals (TODO: in the original order).',
                  default=None)
     
+    Block.config('quiet', 'If true, disables advancements status messages.',
+                 default=False)
+                 
     def get_output_signals(self):
         self.hf = tc_open_for_reading(self.config.file)
         check_is_procgraph_log(self.hf)
@@ -84,23 +88,7 @@ class HDFread(Generator):
             sorted_status = sorted(status, key=operator.itemgetter(1)) 
             return sorted_status[0] 
         
-    def next_data_status(self):
-        ''' 
-        This is complicated but necessary. Do you have another value?
-        - Yes, and it will be of this timestamp. (I can see it from the log)
-        - No, this generator has finished.
-        - Yes, but this is realtime and it does not depend on me.
-          For example, I'm waiting for the next sensor data. 
-          Ask me later. 
-          
-        In those cases, we return 
-        
-            (True, timestamp)
-            (False, None)
-            (True, None)
-          
-        '''
-        
+    def next_data_status(self): 
         next_signal, next_timestamp = self._choose_next_signal()
         if next_signal is None:
             return (False, None)
@@ -110,7 +98,6 @@ class HDFread(Generator):
     def update(self):
         next_signal, next_timestamp = self._choose_next_signal()
         
-        # get value
         table = self.signal2table[next_signal]
         index = self.signal2index[next_signal]
         assert next_timestamp == table[index]['time']
@@ -124,6 +111,21 @@ class HDFread(Generator):
             self.signal2index[next_signal] = None
         else:
             self.signal2index[next_signal] = index + 1
+            
+        # write status message if not quiet
+        if next_signal == self.signals[0] and not self.config.quiet:
+            self.write_update_message(index, len(table), next_signal)
+        
+    def write_update_message(self, index, T, signal, nintervals=10):
+        interval = int(numpy.floor(T * 1.0 / nintervals))
+        if (index > 0 and 
+            index != interval * (nintervals) and 
+            index % interval == 0): 
+            percentage = index * 100.0 / T
+            T = str(T)
+            index = str(index).rjust(len(T))
+            self.info('Read %.0f%% (%s/%s) (tracking signal %r).' % 
+                        (percentage, index, T, signal))
          
     def finish(self):
         tc_close(self.hf)
