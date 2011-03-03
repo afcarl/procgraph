@@ -103,7 +103,6 @@ setup(name='procgraph',
            'pgindex = procgraph.scripts.pgindex:main'
         ]
       },
-      tests_require=['nose']
 )
 
 
