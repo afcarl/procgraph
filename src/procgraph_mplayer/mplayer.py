@@ -25,6 +25,14 @@ class MPlayer(Generator):
             raise BadConfig('File %r does not exist.' % self.config.file,
                             self, 'file')
             
+        timestamps_file = self.config.file + '.timestamps'
+        if os.path.exists(timestamps_file):
+            self.info('Reading timestamps from %r.' % timestamps_file)
+            self.timestamps = open(timestamps_file)
+        else:
+            self.timestamps = None
+            self.info('Using fps for timestamps.')
+            
         # first we identify the video resolution
         args = ('mplayer -identify -vo null -ao null -frames 0'.split() 
                 + [self.file])
@@ -85,8 +93,11 @@ class MPlayer(Generator):
         else:
             self.process = subprocess.Popen(args)
 
-        self.delta = 1.0 / self.fps
-        self.state.timestamp = self.delta
+        if not self.timestamps:
+            self.delta = 1.0 / self.fps
+
+        self.state.timestamp = None            
+        self.state.timestamp = self.get_next_timestamp() 
         self.state.next_frame = None
         self.state.finished = False
         
@@ -94,11 +105,22 @@ class MPlayer(Generator):
         
         self.read_next_frame()
         
+    def get_next_timestamp(self):
+        if self.timestamps:
+            l = self.timestamps.readline()
+            return float(l)
+        else:
+            if self.state.timestamp is None:
+                return 0
+            else:
+                return self.state.timestamp  + self.delta
+                
+                
     def update(self):
         self.set_output(0,
                         value=self.state.next_frame,
                         timestamp=self.state.timestamp)
-        self.state.timestamp += self.delta        
+        self.state.timestamp = self.get_next_timestamp() 
     
         self.state.next_frame = None
         self.read_next_frame()

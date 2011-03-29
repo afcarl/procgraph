@@ -107,6 +107,10 @@ register_simple_block(numpy.sign, 'sign',
 register_simple_block(numpy.arctan, 'arctan',
       doc='Wrapper around :np:data:`numpy.arctan`.')
 
+register_simple_block(numpy.real, 'real',
+      doc='Wrapper around :np:data:`numpy.real`.')
+
+
 register_simple_block(lambda x, y: numpy.dstack((x, y)), 'dstack', num_inputs=2,
       doc='Wrapper around :np:data:`numpy.ma.dstack`.')
 
