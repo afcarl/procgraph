@@ -6,7 +6,7 @@ from procgraph import Generator, Block, ModelExecutionError, BadConfig
 
 class TextLog(Generator):
     ''' 
-        sThis represents a generic log reader that reads
+        This represents a generic log reader that reads
         from a file line-by-line. 
         
         Subclasses should overload the parse_format() static method.
@@ -21,7 +21,6 @@ class TextLog(Generator):
         filename = os.path.expandvars(filename)
         filename = os.path.expanduser(filename)
 
-        
         if not os.path.exists(filename):
             raise BadConfig('File %r does not exist.' % filename, self, 'file')
             
@@ -90,10 +89,13 @@ class TextLog(Generator):
         self.read_next_line()
     
     def parse_format(self, line):
-        """ Function implemented by subclasses to interpret one line from the log.
+        """ 
+            Function implemented by subclasses to interpret one line from 
+            the log.
         
-            Return None is the line should be ignored (for example it is a comment)
-            Otherwise, return a tuple (timestamp, array of (name, value) ).
+            Return None is the line should be ignored (for example it is 
+            a comment). Otherwise, return a tuple (timestamp, array of 
+            (name, value) ).
         """
         raise ValueError("Function parse_format() not implemented.")
 

@@ -1,9 +1,11 @@
 import numpy
 
 from procgraph  import Block, BadInput
+from procgraph.block_utils import make_sure_dir_exists
 
 from . import tables
 from .tables_cache import tc_open_for_writing, tc_close
+
 
 # TODO: write original order
 
@@ -39,6 +41,8 @@ class HDFwrite(Block):
     Block.config('complevel', 'Compression level (0-9)', 9)
     
     def init(self):
+        make_sure_dir_exists(self.config.file)
+        self.info('Writing to file %r.' % self.config.file)
         self.hf = tc_open_for_writing(self.config.file)
         
         self.group = self.hf.createGroup(self.hf.root, 'procgraph')
@@ -68,10 +72,8 @@ class HDFwrite(Block):
             try:
                 value = numpy.array(value)
             except:
-                raise BadInput(
-                error='I can only log numpy arrays, not %r' % value.__class__,
-                block=self,
-                input_signal=signal)
+                msg = 'I can only log numpy arrays, not %r' % value.__class__
+                raise BadInput(msg, self, signal)
         
         # also check that we didn't already log this instant
         if (signal in self.signal2timestamp) and \
@@ -112,7 +114,7 @@ class HDFwrite(Block):
                       (table_dtype, e)
                 raise BadInput(msg, self, input_signal=signal)
                      
-            print('Created table %r' % table)   
+            self.debug('Created table %r' % table)   
             self.signal2table[signal] = table
         else:
             table = self.signal2table[signal]
@@ -122,16 +124,9 @@ class HDFwrite(Block):
         row[0]['value'][:] = value
         # row[0]['value'] = value  <--- gives memory error
         table.append(row)
-#        
-#        if len(table) % 100 == 0:
-#            print('Signal: %20s  rows %6d' % (signal, len(table)))
+
     
     def finish(self):
         tc_close(self.hf)
-        
-        
-        
-        
-        
-        
+                
         
