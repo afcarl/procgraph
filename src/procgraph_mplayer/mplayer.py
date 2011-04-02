@@ -17,13 +17,13 @@ class MPlayer(Generator):
                           default=True)
     
     Block.output('video', 'RGB stream as numpy array.')
-         
+    
     def init(self): 
         self.file = self.config.file
         
         if not os.path.exists(self.config.file):
-            raise BadConfig('File %r does not exist.' % self.config.file,
-                            self, 'file')
+            msg = 'File %r does not exist.' % self.config.file
+            raise BadConfig(msg, self, 'file')
             
         timestamps_file = self.config.file + '.timestamps'
         if os.path.exists(timestamps_file):
@@ -31,8 +31,20 @@ class MPlayer(Generator):
             self.timestamps = open(timestamps_file)
         else:
             self.timestamps = None
-            self.info('Using fps for timestamps.')
-            
+            self.info('Will use fps for timestamps.')
+        
+        self.mencoder_started = False
+        
+        self.state.timestamp = None            
+        self.state.timestamp = self.get_next_timestamp() 
+        self.state.next_frame = None
+        self.state.finished = False
+        
+#        self.read_next_frame()
+        
+    def open_mencoder(self):
+        self.mencoder_started = True
+        
         # first we identify the video resolution
         args = ('mplayer -identify -vo null -ao null -frames 0'.split() 
                 + [self.file])
@@ -48,7 +60,7 @@ class MPlayer(Generator):
                     pass
                 info[key] = value
             
-        self.debug("Video configuration: %s" % info)
+#        self.debug("Video configuration: %s" % info)
 
         keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS"]
         id_width, id_height, id_fps = keys
@@ -96,27 +108,28 @@ class MPlayer(Generator):
         if not self.timestamps:
             self.delta = 1.0 / self.fps
 
-        self.state.timestamp = None            
-        self.state.timestamp = self.get_next_timestamp() 
-        self.state.next_frame = None
-        self.state.finished = False
-        
         self.stream = open(self.fifo_name, 'r')
         
-        self.read_next_frame()
-        
+
     def get_next_timestamp(self):
         if self.timestamps:
             l = self.timestamps.readline()
-            return float(l)
+            if not l:
+                return 0
+            else:
+                return float(l)
         else:
             if self.state.timestamp is None:
                 return 0
             else:
-                return self.state.timestamp  + self.delta
+                return self.state.timestamp + self.delta
                 
                 
     def update(self):
+        if not self.mencoder_started:
+            self.open_mencoder()
+            self.read_next_frame()
+            
         self.set_output(0,
                         value=self.state.next_frame,
                         timestamp=self.state.timestamp)
@@ -159,7 +172,7 @@ class MPlayer(Generator):
 
 # backported from 2.7
 def check_output(*popenargs, **kwargs):
-    r"""Run command with arguments and return its output as a byte string.
+    """Run command with arguments and return its output as a byte string.
 
     If the exit code was non-zero it raises a CalledProcessError.  The
     CalledProcessError object will have the return code in the returncode
