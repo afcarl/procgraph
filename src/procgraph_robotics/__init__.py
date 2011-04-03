@@ -2,19 +2,19 @@
 
     Some functions specific to robotics applications. 
 
-    Requires: http://github.com/AndreaCensi/snp_geometry
+    Requires: http://github.com/AndreaCensi/geometry
     
 '''
 
 
 procgraph_info = {
     # List of python packages 
-    'requires':  ['snp_geometry']
+    'requires':  ['geometry']
 } 
 
 # Smart dependency resolution
 from procgraph import import_magic
-Pose = import_magic(__name__, 'snp_geometry', 'Pose')
+geometry = import_magic(__name__, 'geometry')
 
 
 from . import pose2velocity
