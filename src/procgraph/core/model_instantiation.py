@@ -543,8 +543,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
                     input_block = defined_signal.block1
                     s.local_input = defined_signal.block1_signal
                     
-                # make up a name    
-                name = "input_%s_for_%s" % (s.local_output, block)
+                # make up a unique name    
+                name = "%s:%s:%s" % (input_block.name, s.local_output, block.name)
                 model.connect(input_block, s.local_input,
                                      block, s.local_output, name)
 
