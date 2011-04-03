@@ -2,6 +2,7 @@ import cPickle as pickle
 
 from procgraph import Block 
 from procgraph.block_utils import make_sure_dir_exists
+from procgraph.core.constants import ETERNITY
 
 
 class Pickle(Block):
@@ -22,6 +23,18 @@ class Pickle(Block):
         self.write(self.input.x, self.config.file)
 
 
+class PickleLoad(Block):
+    ''' Dumps the input as a :py:mod:`pickle` file. '''
+    Block.alias('pickle_load')
+    Block.config('file', 'File to read from.')
+    Block.output('x', 'Object read from file') 
+        
+    def update(self):
+        with open(self.config.file, 'rb') as f:
+            x = pickle.load(f)
+            self.set_output(0, x, timestamp=ETERNITY)
+ 
+ 
 class PickleGroup(Block):
     ''' Dumps the input as a :py:mod:`pickle` file, in the form
         of a dictionary  signal name -> value.    
