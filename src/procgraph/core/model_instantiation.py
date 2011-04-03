@@ -427,8 +427,8 @@ def define_input_signals(input, block, previous_link, previous_block, model):
         # (if we expect something, then we throw an error)
         if previous_link is None:
             if min_expected > 0:
-                msg = ('I expected at least %d input signals' 
-                       ' but the block is not connected to anything.')
+                msg = ('I expected at least %d input signal(s) but the block ' 
+                       'is not connected to anything.' % min_expected)
                 raise SemanticError(msg, block)
             else:
                 # no inputs for this block
