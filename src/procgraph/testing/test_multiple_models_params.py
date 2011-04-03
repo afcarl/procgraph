@@ -9,6 +9,7 @@ from .utils import PGTestCase
 examples_42 = [
 ('''
 --- model master
+# first
 output meaning
 
 |slave my_param=42| ---> |output name=meaning| 
@@ -132,14 +133,17 @@ class ParamsTest(PGTestCase):
             model = model_from_string(model_spec,
                                       config=config, library=library)
             
-            print "Trying with '''%s'''" % model_spec
+            print("Trying with '''%s'''" % model_spec)
             model.init()
-            print "before"
+            print("before")
+            # at least the constant must be propagated
+            assert model.has_more()
+            
             while model.has_more():
-                print "before iteration", model.get_output(0)
+                print("before iteration", model.get_output(0))
                 model.update()
             model.finish()
-            print "end", model.get_output(0)
+            print("end", model.get_output(0))
 
             self.assertEqual(model.get_output(0), 42)
 
