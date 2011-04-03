@@ -3,6 +3,7 @@ import subprocess
 
 from procgraph import Block
 from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
+import math
  
 # TODO: detect an error in Mencoder (perhaps size too large)
 # TODO: cleanup processes after finishing
@@ -72,7 +73,13 @@ class MEncoder(Block):
         # guess the fps if we are not given the config
         if self.config.fps is None:
             delta = self.buffer[-1][0] - self.buffer[0][0]
-            fps = (len(self.buffer) - 1) / delta
+            
+            if delta == 0:
+                timestamps = [x[0] for x in self.buffer]
+                self.debug('Got 0 delta: timestamps: %s' % timestamps)
+                fps = 0
+            else:
+                fps = (len(self.buffer) - 1) / delta
             
             
             # Check for very wrong results
