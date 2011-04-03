@@ -85,8 +85,12 @@ class Sync(Generator):
         for i, name in enumerate(names):
             current_timestamp = self.get_input_timestamp(i)
             current_value = self.get_input (i)
-            if current_timestamp == 0:
-                debug('Ignoring %s because timestamp still 0' % name)
+#            Commenting this; we clarified 0 = eternity; None = no signal yet
+#            if current_timestamp == 0:
+#                debug('Ignoring %s because timestamp still 0' % name)
+#                continue
+            if current_timestamp is None:
+                debug('Ignoring signal %r because timestamp is None.' % name)
                 continue
             
             if  (name in self.state.already_seen and

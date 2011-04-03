@@ -13,7 +13,7 @@
 STRICT_CHECK_OF_DEFINED_IO = False
 
 
-STRICT=True
+STRICT = True
 
 ### For the procgraph_info  dictionary:
 
@@ -40,8 +40,8 @@ COMPULSORY = 'compulsory-param'
 TIMESTAMP = 'timestamp-param'
 
 
-# FIXME: not sure this is used anywhere now
-ETERNITY = 'constant-time'
+# not sure this is used anywhere now
+ETERNITY = 0
 
 ### Environment
 

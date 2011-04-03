@@ -4,12 +4,18 @@ from .block_meta import BlockMeta, BlockMetaSugar
 from .block_config import resolve_config
 
 
+
 class Value:
+    '''
+        timestamp = 0     constant
+        timestamp = None  invalid signal
+    '''
     def __init__(self, value=None, timestamp=None):
         self.value = value
-        if timestamp is None:
-            timestamp = 0
         self.timestamp = timestamp
+#        if timestamp is None:
+#            timestamp = 0
+#        self.timestamp = timestamp
 
 
 class Block(BlockMetaSugar):
@@ -176,6 +182,9 @@ class Block(BlockMetaSugar):
     def from_outside_set_input(self, num_or_id, value, timestamp):
         ''' Sets an input value. This is used from outside, not 
         from the block. (This is overloaded by Model) '''
+        if timestamp is None:
+            msg = 'Setting input %r to %s with None timestamp' % (num_or_id, timestamp)
+            raise Exception(msg)
         input_struct = self.__get_input_struct(num_or_id)
         input_struct.value = value
         input_struct.timestamp = timestamp

@@ -168,6 +168,9 @@ class Model(Generator):
                 at_least_one = True
                 if timestamp is not None:
                     generator_timestamps.append(timestamp)
+                else:
+                    pass
+#                    self.debug('No timestamp for %s' % generator)
         
         if not at_least_one:
             return (False, None)
@@ -233,6 +236,7 @@ class Model(Generator):
 
     def update(self):
         def debug(s):
+#            if self.name == 'log':
             if False:
                 debug_main('Model %s | %s' % (self.model_name, s))
         
@@ -274,8 +278,9 @@ class Model(Generator):
                     return 0
                 
             generators_with_timestamps.sort(key=lambda x:x[1], cmp=cmp)
-            
+#            self.info('Generators: %s ' % generators_with_timestamps)
             block = generators_with_timestamps[0][0]
+#            self.info(' --> chose %s' % block)
         
         if block is None:
             # We finished everything
@@ -300,7 +305,7 @@ class Model(Generator):
         elif block.get_output_signals_timestamps():
             timestamp = max(block.get_output_signals_timestamps())
         else: # for those that don't have input signals
-            timestamp = 0.001
+            timestamp = 0.001 # XXX:
             
         self.stats.add(block=block, cpu=cpu, wall=wall,
                        timestamp=timestamp)
@@ -335,11 +340,17 @@ class Model(Generator):
                             (block.canonicalize_output(this_signal), block)) 
                     raise ModelExecutionError(msg, block)
                 
+                # Ignore if this signal wasn't updated yet
+                if this_timestamp is None: 
+                    continue
+                
                 # Two cases:
                 # - timestamp is updated
                 # NOOOOOOO - this is the first time
                 #  WRONG think of the |wait| block
-                if this_timestamp > old_timestamp: 
+                # ## 2011-04: commenting this check because of |any| 
+                if old_timestamp is None or this_timestamp > old_timestamp: 
+                #if True:
                 # or other.get_input(other_signal) is None:
                     #print "updating input %s of %s with timestamp %s" % \
                     #    (other_signal, other, this_timestamp)
@@ -353,8 +364,7 @@ class Model(Generator):
                         self.blocks_to_update.append(other)
                     
                     # If this is an output port, update the model
-                    if isinstance(other, ModelOutput):
-                        #print "Updating output %s" %  other.signal_name
+                    if isinstance(other, ModelOutput): 
                         self.set_output(other.signal_name,
                                         value, this_timestamp)
                 else:
