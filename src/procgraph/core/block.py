@@ -12,10 +12,7 @@ class Value:
     '''
     def __init__(self, value=None, timestamp=None):
         self.value = value
-        self.timestamp = timestamp
-#        if timestamp is None:
-#            timestamp = 0
-#        self.timestamp = timestamp
+        self.timestamp = timestamp 
 
 
 class Block(BlockMetaSugar):
@@ -155,7 +152,8 @@ class Block(BlockMetaSugar):
         
     def get_state(self, varname):
         ''' Can be called during init() and update() .'''
-        # TODO: add check and exception
+        if not varname in self.__states:
+            raise ValueError('No such state variable %r' % varname)
         return self.__states[varname]
     
     def get_state_vars(self):
@@ -169,8 +167,8 @@ class Block(BlockMetaSugar):
             will default to the maximum of the input signals timestamp. '''
         if timestamp is None:
             if len(self.__input_signals) == 0:
-                # XXX: change exception?
-                msg = '%s: setting %s: timestamp not specified and no inputs' % (self, num_or_id)
+                msg = ('%s: setting %s: timestamp not specified and no inputs' 
+                       % (self, num_or_id))
                 raise Exception(msg)
             
             timestamp = max(self.get_input_signals_timestamps())
@@ -245,7 +243,7 @@ class Block(BlockMetaSugar):
             return num_or_id in self.__input_signal_name2id
         if isinstance(num_or_id, type(0)):
             return num_or_id < len(self.__input_signals)
-        raise ValueError() # XXX: better message
+        raise ValueError('Invalid input name %r' % num_or_id) 
     
     def canonicalize_input(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
@@ -256,7 +254,7 @@ class Block(BlockMetaSugar):
             return num_or_id 
         if isinstance(num_or_id, type(0)):
             return self.__input_signal_names[num_or_id]
-        raise ValueError() # XXX: better message
+        raise ValueError('Invalid input name %r' % num_or_id)
         
     def is_valid_output_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
@@ -268,7 +266,7 @@ class Block(BlockMetaSugar):
             return num_or_id in self.__output_signal_name2id
         if isinstance(num_or_id, type(0)):
             return num_or_id < len(self.__output_signals)
-        raise ValueError() # XXX: better message
+        raise ValueError('Invalid output name %r' % num_or_id)
     
     def canonicalize_output(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
@@ -279,7 +277,7 @@ class Block(BlockMetaSugar):
             return num_or_id 
         if isinstance(num_or_id, type(0)):
             return self.__output_signal_names[num_or_id]
-        raise ValueError() # XXX: better message
+        raise ValueError('Invalid output name %r' % num_or_id)
      
     def get_output_signals_timestamps(self):
         ''' Returns a list of the output values timestamps. '''
