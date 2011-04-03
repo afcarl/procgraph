@@ -6,6 +6,7 @@ from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats
 from .visualization import debug as debug_main, info, warning
 from .constants import STRICT_CHECK_OF_DEFINED_IO
+from procgraph.core.constants import ETERNITY
 
 
 class BlockConnection:
@@ -81,8 +82,7 @@ class Model(Generator):
         self.level = 0
          
     def add_block(self, name, block):
-        '''  Add a block to the model.
-            Returns the block instance. '''
+        '''  Add a block to the model. Returns the block instance. '''
         assert not name in self.name2block, 'Name %r already taken' % name
         
         self.name2block[name] = block
@@ -124,7 +124,7 @@ class Model(Generator):
                 else: 
                     all_outputs = [] 
                     
-                # XXX bug: output_signals -> output_signals
+                # XXX: bug: output_signals -> output_signals
                 self.define_output_signals_new(all_outputs + [block.signal_name])
         
         return block
@@ -157,7 +157,7 @@ class Model(Generator):
         return set(self.name2block_connection.keys())
 
     def next_data_status(self):
-        ''' XXX OK, I'm writing this late and probably it's more 
+        ''' XXX: OK, I'm writing this late and probably it's more 
             complicated than this. '''  
         generator_timestamps = []
         at_least_one = False
@@ -201,25 +201,19 @@ class Model(Generator):
     
     def reset_execution(self):
         self.blocks_to_update = []
-        # FIXME XXX it's late
         # add all the blocks without input to the update list
         for block in self.name2block.values():
-#            self.debug('Considering %s' % block)
             if isinstance(block, Model):
+                # Don't consider generators because has_more() will consider them.
+                # This is mainly for propagating constants.
                 if block.blocks_to_update:
                     self.blocks_to_update.append(block)
                 pass
             elif (not isinstance(block, ModelInput) and
-                not isinstance(block, Generator) and
-                block.num_input_signals() == 0):
+                 not isinstance(block, Generator) and
+                 block.num_input_signals() == 0):
+                # These are the constants blocks.
                 self.blocks_to_update.append(block)
-#                self.debug(' --> adding %s' % block)
-                # XXX: no, without input they should be generators??? maybe
-            else:
-                pass
-#                self.debug(' --> NOT adding %s' % block)
-
-#        self.debug('I need update: %s' % self.blocks_to_update)
 
     
     def init(self):
@@ -236,8 +230,7 @@ class Model(Generator):
 
     def update(self):
         def debug(s):
-#            if self.name == 'log':
-            if False:
+            if False: 
                 debug_main('Model %s | %s' % (self.model_name, s))
         
         # We keep a list of blocks to be updated.
@@ -278,9 +271,7 @@ class Model(Generator):
                     return 0
                 
             generators_with_timestamps.sort(key=lambda x:x[1], cmp=cmp)
-#            self.info('Generators: %s ' % generators_with_timestamps)
             block = generators_with_timestamps[0][0]
-#            self.info(' --> chose %s' % block)
         
         if block is None:
             # We finished everything
@@ -305,7 +296,7 @@ class Model(Generator):
         elif block.get_output_signals_timestamps():
             timestamp = max(block.get_output_signals_timestamps())
         else: # for those that don't have input signals
-            timestamp = 0.001 # XXX:
+            timestamp = ETERNITY
             
         self.stats.add(block=block, cpu=cpu, wall=wall,
                        timestamp=timestamp)
@@ -322,9 +313,9 @@ class Model(Generator):
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
                 other = connection.block2
-                if other is None:
-                    # XXX don't include dummy connection
-                    debug(" ignoring connection %s" % connection)
+                # Don't include dummy connection
+                if other is None: 
+                    debug(" ignoring dummy connection %s" % connection)
                     continue
                 other_signal = connection.block2_signal
                 old_timestamp = other.get_input_timestamp(other_signal)
@@ -333,7 +324,6 @@ class Model(Generator):
                                 
                 value = block.get_output(this_signal)
 
-                # FIXME: make another condition
                 if value is not None and this_timestamp is None:
                     msg = ('Strange, value is not None but the timestamp is 0' 
                           ' for output signal %r of block %s.' % 
@@ -344,17 +334,7 @@ class Model(Generator):
                 if this_timestamp is None: 
                     continue
                 
-                # Two cases:
-                # - timestamp is updated
-                # NOOOOOOO - this is the first time
-                #  WRONG think of the |wait| block
-                # ## 2011-04: commenting this check because of |any| 
-                if old_timestamp is None or this_timestamp > old_timestamp: 
-                #if True:
-                # or other.get_input(other_signal) is None:
-                    #print "updating input %s of %s with timestamp %s" % \
-                    #    (other_signal, other, this_timestamp)
-                    
+                if old_timestamp is None or this_timestamp > old_timestamp:                     
                     debug('  then waking up %s' % other) 
                     
                     other.from_outside_set_input(other_signal, value,
@@ -374,7 +354,6 @@ class Model(Generator):
         # now let's see if we have still work to do
         # this step is important when the model is inside another one
         if self.blocks_to_update:
-            # XXX should I count the generators here?
             return Block.UPDATE_NOT_FINISHED
         else:
             return True
