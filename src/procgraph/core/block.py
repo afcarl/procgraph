@@ -50,6 +50,10 @@ class Block(BlockMetaSugar):
         self.config = ConfigProxy(self) 
     
     
+        # used for debug; hierarchical level
+        self.level = 0
+
+    
     def init(self):
         ''' Initializes the block.  '''
         pass
@@ -160,7 +164,8 @@ class Block(BlockMetaSugar):
         if timestamp is None:
             if len(self.__input_signals) == 0:
                 # XXX: change exception?
-                raise Exception('Timestamp not specified and no inputs')
+                msg = '%s: setting %s: timestamp not specified and no inputs' % (self, num_or_id)
+                raise Exception(msg)
             
             timestamp = max(self.get_input_signals_timestamps())
         
@@ -307,20 +312,23 @@ class Block(BlockMetaSugar):
         return s
     
     
+    def _log_prefix(self):
+        return '%s%s:' % ('>'*self.level, self.name)
+    
     def info(self, s):
         ''' Writes an info message. '''
         from .visualization import info as pg_info
-        pg_info("%s: %s" % (self.name, s))
+        pg_info("%s%s" % (self._log_prefix(), s))
         
     def debug(self, s):
         ''' Writes a debug message. '''
         from .visualization import debug as pg_debug
-        pg_debug("%s: %s" % (self.name, s))
+        pg_debug("%s%s" % (self._log_prefix(), s))
     
     def error(self, s):
         ''' Writes a debug message. '''
         from .visualization import error as pg_error
-        pg_error("%s: %s" % (self.name, s))
+        pg_error("%s%s" % (self._log_prefix(), s))
     
 
 class Generator(Block):

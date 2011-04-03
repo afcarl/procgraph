@@ -77,10 +77,13 @@ class Model(Generator):
         self.stats = ExecutionStats()
     
         self._already_inited = False 
- 
+        
+        self.level = 0
+         
     def add_block(self, name, block):
         '''  Add a block to the model.
             Returns the block instance. '''
+        assert not name in self.name2block, 'Name %r already taken' % name
         
         self.name2block[name] = block
         
@@ -141,7 +144,8 @@ class Model(Generator):
                 public_name):
         ''' Caller should check that the public name is not taken. '''
         assert public_name is not None
-        assert not public_name in self.public_signal_names()
+        assert not public_name in self.public_signal_names(), \
+            "%r is already taken" % public_name
         
         BC = BlockConnection(block1, block1_signal, block2, block2_signal,
                              public_name)
@@ -197,17 +201,29 @@ class Model(Generator):
         # FIXME XXX it's late
         # add all the blocks without input to the update list
         for block in self.name2block.values():
-            if (not isinstance(block, ModelInput) and
+#            self.debug('Considering %s' % block)
+            if isinstance(block, Model):
+                if block.blocks_to_update:
+                    self.blocks_to_update.append(block)
+                pass
+            elif (not isinstance(block, ModelInput) and
+                not isinstance(block, Generator) and
                 block.num_input_signals() == 0):
                 self.blocks_to_update.append(block)
+#                self.debug(' --> adding %s' % block)
                 # XXX: no, without input they should be generators??? maybe
-            if isinstance(block, Model):
-                block.reset_execution()
+            else:
+                pass
+#                self.debug(' --> NOT adding %s' % block)
+
+#        self.debug('I need update: %s' % self.blocks_to_update)
+
     
     def init(self):
         assert not self._already_inited, 'The block has already been init()ed.'
         self._already_inited = True
         for block in self.name2block.values():
+            block.level = self.level + 1
             block.init()
         self.reset_execution()
                         
@@ -275,6 +291,7 @@ class Model(Generator):
         start_wall = time.time()
         
         result = block.update()
+        
         cpu = time.clock() - start_cpu
         wall = time.time() - start_wall
 
@@ -308,8 +325,9 @@ class Model(Generator):
                 old_timestamp = other.get_input_timestamp(other_signal)
                 this_signal = connection.block1_signal
                 this_timestamp = block.get_output_timestamp(this_signal)
+                                
                 value = block.get_output(this_signal)
-                
+
                 # FIXME: make another condition
                 if value is not None and this_timestamp is None:
                     msg = ('Strange, value is not None but the timestamp is 0' 
