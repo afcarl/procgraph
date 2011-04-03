@@ -44,8 +44,8 @@ class HDFread(Generator):
             self.signals = []
             signal_list = filter(lambda x:x, self.config.signals.split(','))
             if not signal_list:
-                raise BadConfig('Bad format: %r.' % self.config.signals,
-                                self, 'signals')
+                msg = 'Bad format: %r.' % self.config.signals
+                raise BadConfig(msg, self, 'signals')
             for s in signal_list:
                 if not s in all_signals:
                     msg = ('Signal %r not present in log (available: %r)' % 
@@ -124,8 +124,8 @@ class HDFread(Generator):
             percentage = index * 100.0 / T
             T = str(T)
             index = str(index).rjust(len(T))
-            self.info('Read %.0f%% (%s/%s) (tracking signal %r).' % 
-                        (percentage, index, T, signal))
+            self.debug('%s read %.0f%% (%s/%s) (tracking signal %r).' % 
+                        (self.config.file, percentage, index, T, signal))
          
     def finish(self):
         tc_close(self.hf)
