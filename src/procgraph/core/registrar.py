@@ -43,8 +43,8 @@ class Library:
         '''
                 
         if not self.exists(block_type):
-            raise ValueError('Asked for generator for %r which does not exist.' % 
-                             block_type)
+            msg = 'Block %r does not exist.' % block_type
+            raise ValueError(msg)
             
         if block_type in self.name2block:
             generator = self.name2block[block_type]
