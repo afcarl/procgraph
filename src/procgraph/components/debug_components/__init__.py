@@ -1,8 +1,8 @@
 ''' Components used for debugging and unit tests. '''
 
-import constant
-import identity
-import info
-import printc
-import gain
-import operations
+from . import constant
+from . import identity
+from . import info
+from . import printc
+from . import gain
+from . import operations
