@@ -2,7 +2,7 @@ from procgraph import Block, BadInput, register_model_spec
 
 from . import geometry
 
-from geometry import SE2_from_xytheta, SE2, linear_angular_from_se2
+g = geometry  
 
 class Pose2velocity(Block):
     ''' Block used by :ref:`block:pose2commands`. '''
@@ -19,16 +19,16 @@ class Pose2velocity(Block):
         if not (len(q) == 2 and len(t) == 2):
             raise BadInput('Bad input received.', self)
          
-        pose1 = SE2_from_xytheta(q[0])
-        pose2 = SE2_from_xytheta(q[1])
+        pose1 = g.SE2_from_xytheta(q[0])
+        pose2 = g.SE2_from_xytheta(q[1])
         delta = t[1] - t[0]
         
         if not delta > 0:
             raise BadInput('Bad timestamp sequence %s' % t, self, 't')
 
-        vel = SE2.velocity_from_points(pose1, pose2, delta)
+        vel = g.SE2.velocity_from_points(pose1, pose2, delta)
         
-        linear, angular = linear_angular_from_se2(vel)
+        linear, angular = g.linear_angular_from_se2(vel)
         
         commands = [linear[0], linear[1], angular]
         self.set_output('commands', commands, timestamp=t[0])

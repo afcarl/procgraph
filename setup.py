@@ -1,4 +1,4 @@
-import os
+import os, sys
 from setuptools import setup, find_packages
 from collections import namedtuple
 
@@ -50,7 +50,8 @@ if missing:
     print('\nI will go ahead and install everything, but you should install the missing \n'
           'packages for maximum functionality. An error will be thrown when you actually \n'
           'try to use the blocks in those packages. \n')
-    raw_input('             Press any key to continue...')  
+    #if os.isatty(0):	    
+#	raw_input('             Press any key to continue...')  
     print('\n\n')
 
 # check we are not forgetting new packages that weren't included in the 
