@@ -6,6 +6,9 @@ class Library:
         
         self.name2block = {}
         
+        # Set of filenames already looked into
+        self.loaded_files = set()
+        
     def exists(self, block_type):
         if block_type in self.name2block:
             return True

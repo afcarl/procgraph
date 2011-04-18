@@ -128,7 +128,13 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         
         # Make sure we use an absolute filename
         f = os.path.realpath(f)
-                
+        
+        if f in library.loaded_files:
+            # Skip if already looked at it
+            continue
+        
+        library.loaded_files.add(f)
+        
         cache = os.path.splitext(f)[0] + '.pgc'
         if (not ignore_cache and 
             os.path.exists(cache) and 
@@ -166,7 +172,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         for parsed_model in models:
             if library.exists(parsed_model.name):
                 prev = library.name2block[parsed_model.name].parsed_model.where
-                msg = ('Found model %r in %r, already in %r. ' % 
+                msg = ('Found model %r in file:\n %r, and already in\n %r. ' % 
                        (parsed_model.name, f, prev.filename))
                 raise SemanticError(msg, parsed_model)
                 
