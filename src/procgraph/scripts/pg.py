@@ -113,24 +113,36 @@ def main():
         sys.exit(-2)
 
 def parse_cmdline_args(args):
-    ''' Parses the command-line arguments.
-        args is returned by optionparser. '''
+    ''' Parses the command-line arguments into a configuration dictionary. '''
     config = {}
-    for arg in args:
+    def found_pair(key, value_string):
+        try:
+            value = int(value_string)
+        except:
+            try:
+                value = float(value_string)
+            except:
+                value = value_string
+            
+        #value = parse_value(value_string)
+        config[key] = value        
+    
+    while args:
+        arg = args.pop(0)
         if '=' in arg:
             key, value_string = arg.split('=')
-            try:
-                value = int(value_string)
-            except:
-                try:
-                    value = float(value_string)
-                except:
-                    value = value_string
-                
-            #value = parse_value(value_string)
-            config[key] = value            
+            found_pair(key, value_string)  
+        elif arg.startswith('--'):
+            key = arg[2:]
+            if not args:
+                msg = 'Argument for %r missing.' % key
+                raise Exception(msg)
+            value_string = args.pop(0)
+            found_pair(key, value_string)
         else:
-            raise Exception('What should I do with "%s"?' % arg)
+            msg = "I don't know how to interpret %r" % arg
+            raise Exception(msg)
+        
     return config
 
 def pg(filename, config,
