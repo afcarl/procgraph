@@ -121,7 +121,10 @@ class HDFwrite(Block):
         
         row = numpy.ndarray(shape=(1,), dtype=table_dtype)
         row[0]['time'] = timestamp
-        row[0]['value'][:] = value
+        if value.size == 1:
+            row[0]['value'] = value
+        else:
+            row[0]['value'][:] = value
         # row[0]['value'] = value  <--- gives memory error
         table.append(row)
 
