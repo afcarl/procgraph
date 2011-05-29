@@ -15,7 +15,6 @@ class Any(Block):
         self.buffer = []
             
     def update(self):
-        values = []
         # DO NOT USE NAMES
         # TODO: check other blocks for this bug
         nsignals = self.num_input_signals()
