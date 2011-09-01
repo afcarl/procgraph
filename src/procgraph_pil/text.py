@@ -200,7 +200,7 @@ def process_text(draw, t):
     elif halign == 'center':
         x -= tw / 2
     else:
-        print('Uknown horizontal-align key %s' % halign)
+        print('Unknown horizontal-align key %s' % halign)
 
     if valign == 'top':
         pass
@@ -209,7 +209,7 @@ def process_text(draw, t):
     elif valign == 'middle':
         y -= th / 2
     else:
-        print('Uknown vertical-align key %s' % valign)
+        print('Unknown vertical-align key %s' % valign)
 
     if bg:
         for a in [ [-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
