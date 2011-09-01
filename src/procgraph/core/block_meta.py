@@ -35,6 +35,9 @@ class BlockOutput:
         self.desc_rest = desc_rest
         self.where = where
 
+    def __repr__(self):
+	return "BlockOutput(%s,%s)" % (self.type, self.name)
+
 def block_alias(name):
     assert isinstance(name, str)
     BlockMeta.aliases.append(name)
@@ -46,7 +49,8 @@ def block_config(name, description=None, default='not-given'):
     desc, desc_rest = split_docstring(description)
     has_default = default != 'not-given'
     if [x for x in BlockMeta.tmp_config if x.variable == name]:
-        raise BlockWriterError('Already described config variable "%s".' % name)
+        cleanup()
+        raise BlockWriterError('Already described config variable %r.' % name)
     BlockMeta.tmp_config.append(BlockConfig(name, has_default, default,
                                             desc, desc_rest, None))
 
@@ -55,8 +59,10 @@ def block_input(name, description=None):
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if [x for x in BlockMeta.tmp_input if x.name == name]:
+        cleanup()
         raise BlockWriterError('Already described input variable "%s".' % name)
     if BlockMeta.tmp_input and BlockMeta.tmp_input[-1].type == VARIABLE:
+        cleanup()
         raise BlockWriterError('Cannot mix variable and fixed input.')
     BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None,
                                           desc, desc_rest, None))
@@ -65,6 +71,7 @@ def block_input_is_variable(description=None, min=None, max=None):
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_input:
+        cleanup()
         raise BlockWriterError('Cannot mix variable and fixed input'
                                ' or variable with variable.')
     BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max,
@@ -75,8 +82,10 @@ def block_output(name, description=None):
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if [x for x in BlockMeta.tmp_output if x.name == name]:
+        cleanup()
         raise BlockWriterError('Already described output variable "%s".' % name)
     if BlockMeta.tmp_output and BlockMeta.tmp_output[-1].type == VARIABLE:
+        cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output.')
     
     BlockMeta.tmp_output.append(BlockOutput(FIXED, name, desc, desc_rest, None))
@@ -85,8 +94,9 @@ def block_output_is_variable(description=None, suffix=None):
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_output:
+        cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output'
-                               ' or variable with variable.')
+			' or variable with variable. (added already: %s)' % (BlockMeta.tmp_output))
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
                                             desc, desc_rest, None))
 
@@ -94,11 +104,21 @@ def block_output_is_defined_at_runtime(description=None):
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_output:
+        cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output'
-                               ' or variable with variable.')
+                               ' or variable with variable. (added already: %s)' % (BlockMeta.tmp_output))
     BlockMeta.tmp_output.append(BlockOutput(DEFINED_AT_RUNTIME, None,
                                             desc, desc_rest, None))
     
+def cleanup():
+    ''' Cleans up temporary data for the meta-sugar, if the construction 
+        is aborted '''
+    BlockMeta.tmp_config = []
+    BlockMeta.tmp_output = []
+    BlockMeta.tmp_input = []
+    BlockMeta.aliases = []
+
+
 class BlockMeta(type):
     aliases = []
     tmp_config = []
