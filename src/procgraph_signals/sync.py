@@ -1,5 +1,6 @@
 from procgraph  import Block, Generator 
 from collections import namedtuple
+from procgraph.core.constants import ETERNITY
 
 
 Sample = namedtuple('Sample', 'timestamp value')
@@ -10,8 +11,8 @@ def oldest(queue):
 def newest(queue):
     return queue[0]
 
-def add_last(queue, object):
-    queue.insert(0, object)
+def add_last(queue, ob):
+    queue.insert(0, ob)
     
 class Sync(Generator):
     ''' 
@@ -74,8 +75,8 @@ class Sync(Generator):
         
     def update(self):
         def debug(s):
-            if False:
-                print 'sync %s %s' % (self.name, s)
+            if False: # XXX: use facilities
+                print('sync %s %s' % (self.name, s))
             
         output = self.get_state('output')
         queues = self.get_state('queues')
@@ -84,7 +85,7 @@ class Sync(Generator):
         # if it is not already present
         for i, name in enumerate(names):
             current_timestamp = self.get_input_timestamp(i)
-            current_value = self.get_input (i)
+            current_value = self.get_input(i)
 #            Commenting this; we clarified 0 = eternity; None = no signal yet
 #            if current_timestamp == 0:
 #                debug('Ignoring %s because timestamp still 0' % name)
@@ -131,7 +132,8 @@ class Sync(Generator):
                 slave_queue = queues[slave]
                 # remove oldest
                 while (len(slave_queue) > 1 and 
-                      oldest(slave_queue).timestamp < master_timestamp):
+                      oldest(slave_queue).timestamp < master_timestamp and
+                      oldest(slave_queue).timestamp != ETERNITY):
                     debug("DROP one from %s" % slave)
                     slave_queue.pop()
                 
@@ -149,10 +151,13 @@ class Sync(Generator):
                     # get the freshest still after the master
                     slave_queue = queues[slave]
                     slave_timestamp, slave_value = slave_queue.pop()
+                    #print('Slave, %s %s ' % (slave, slave_timestamp))
+                    if slave_timestamp == ETERNITY:
+                        slave_queue.append((slave_timestamp, slave_value))
                     ## not true anymore, assert slave_timestamp >= master_timestamp
-                    difference = slave_timestamp - master_timestamp
-                    debug(" - %s timestamp %s diff %s" % 
-                          (slave, slave_timestamp, difference))
+                    #difference = slave_timestamp - master_timestamp
+                    #debug(" - %s timestamp %s diff %s" % 
+                    #      (slave, slave_timestamp, difference))
                     output_values.append(slave_value)
                 output.insert(0, (master_timestamp, output_values))
 
@@ -162,7 +167,8 @@ class Sync(Generator):
         # if we have something to output, do it 
         if output:
             timestamp, values = output.pop()
-            assert timestamp > 0
+            # FIXME: had to remove this for Vehicles simulation 
+            # assert timestamp > 0
             debug("---------------- @ %s" % timestamp)
             for i in range(self.num_output_signals()):
                 self.set_output(i, values[i], timestamp) 

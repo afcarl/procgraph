@@ -2,6 +2,7 @@ import subprocess, os, numpy
 
 from procgraph import Block, BadConfig
 from procgraph.core.visualization import info as info_main, error as error_main 
+from procgraph.core.constants import ETERNITY
 
 def info(s):
     info_main('procgraph_pil/text: %s' % s)
@@ -91,8 +92,11 @@ class Text(Block):
         # Add stats
         macros = {}
         macros['timestamp'] = self.get_input_timestamp(0)
-        macros['time'] = \
-            self.get_input_timestamp(0) - self.state.first_timestamp
+        if self.state.first_timestamp == ETERNITY:
+            macros['time'] = -1
+        else:
+            macros['time'] = \
+                self.get_input_timestamp(0) - self.state.first_timestamp
         macros['frame'] = self.state.frame
         
         rgb = self.input.rgb

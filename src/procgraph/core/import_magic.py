@@ -34,18 +34,18 @@ def import_magic(module_name, required, member=None):
             return mod
         except Exception as e: #@UnusedVariable
             # TODO: show error
-            # print e
+            #debug(e)
             pass
         
     # We could not load anything.
     warn = ('Could not load dependency %r for %r.\n I will try to continue,' 
-           ' but an error might be thrown when %s actually tries to use %s.' % 
+           ' but an error might be thrown when %s actually tries to use %r.' % 
            (required, module_name, module_name, required))
     
     if False: # TODO: think of configuration switch
         debug(warn)
     
-    msg = ('I tried to let you continue, but it seems that module %r really '
+    msg = ('I tried to let you continue, but it seems that module %r really'
            ' needs %r to work. Sorry! ' % (module_name, required))
         
     class warn_and_throw:

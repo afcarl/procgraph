@@ -26,3 +26,5 @@ from . import posterize
 from .blend import blend
 from .copied_from_reprep import posneg, scale
 
+from .reshape_smart import *
+from .solid import *

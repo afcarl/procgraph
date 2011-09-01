@@ -12,6 +12,7 @@ class ImageGrid(Block):
     Block.alias('grid')
     
     Block.config('cols', 'Columns in the grid.', default=None)
+    Block.config('bgcolor', 'Background color.', default=[0, 0, 0])
     
     Block.input_is_variable('Images to arrange in a grid.', min=1)
     Block.output('grid', 'Images arranged in a grid.')
@@ -69,7 +70,9 @@ class ImageGrid(Block):
         assert(canvas_height == row_y[-1] + row_height[-1])
         
         canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
-        
+        for k in range(3):
+            canvas[:, :, k] = self.config.bgcolor[k]
+            
         for i in range(n):
             col = i % cols
             row = (i - i % cols) / cols

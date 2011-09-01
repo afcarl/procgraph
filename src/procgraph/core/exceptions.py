@@ -47,7 +47,10 @@ class BadInput(ModelExecutionError):
         self.block = block
         self.error = error
         self.input_signal = input_signal
-        self.bad_value = block.get_input(input_signal)
+        if block is not None:
+            self.bad_value = block.get_input(input_signal)
+        else:
+            self.bad_value = '??? (block not given)'
     
     def __str__(self):
         if self.block is not None:

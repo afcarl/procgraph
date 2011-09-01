@@ -41,7 +41,7 @@ TIMESTAMP = 'timestamp-param'
 
 
 # not sure this is used anywhere now
-ETERNITY = 0
+ETERNITY = 'eternity'
 
 ### Environment
 

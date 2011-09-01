@@ -29,14 +29,14 @@ class Minus(Block):
         for i in [0, 1]:
             dtype_string = str(inputs[i].dtype)
             if dtype_string in self.config.cases:
-                next = self.config.cases[dtype_string]
+                nexti = self.config.cases[dtype_string]
             
                 if not self.warned:
                     self.info('Warning: promoting signal %r from %r to %r.' % 
                           (self.canonicalize_input(i),
-                           dtype_string, next))
+                           dtype_string, nexti))
                     warned_now = True
-                inputs[i] = inputs[i].astype(next)
+                inputs[i] = inputs[i].astype(nexti)
             
         self.warned = self.warned or warned_now
         

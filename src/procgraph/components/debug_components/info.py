@@ -15,6 +15,7 @@ class Info(Block):
     def init(self):
         self.first = {}
         self.counter = {}
+        
     def update(self):
         # Just copy the input to the output 
         for i in range(self.num_input_signals()):

@@ -40,6 +40,9 @@ usage_long = usage_short + \
     
 
 def main(): 
+#    import contracts
+#    contracts.disable_all()
+    
     parser = OptionParser(usage=usage_long)
 
     additional_modules = []

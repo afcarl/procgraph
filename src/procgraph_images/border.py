@@ -9,7 +9,7 @@ class Border(Block):
     
     Block.input('rgb', 'Input image.')
     Block.output('rgb', 'Image with borders added around.')
-    Block.config('color', 'border color', default=[1, 1, 1])
+    Block.config('color', 'border color (0-1 rgb)', default=[0, 0, 0])
     Block.config('left', 'pixel length for left border', default=0)
     Block.config('right', 'pixel length for right border', default=0)
     Block.config('top', 'pixel length for top border', default=0)
@@ -43,7 +43,7 @@ class Border(Block):
     def pad(self, height, width):
         pad = numpy.zeros((height, width, 3), dtype='uint8')
         for i in range(3):
-            pad[:, :, i] = self.config.color[i]
+            pad[:, :, i] = self.config.color[i]*255
         return pad
     
         
