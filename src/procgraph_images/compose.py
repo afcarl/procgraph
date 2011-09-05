@@ -48,7 +48,7 @@ class Compose(Block):
        
         for signal, position in positions.items():
             if not self.is_valid_input_name(signal):
-                raise Exception('Uknown input "%s" in %s.' % (signal, self))
+                raise Exception('Unknown input "%s" in %s.' % (signal, self))
             rgb = self.get_input(signal)
             # TODO check
             if rgb is not None:

@@ -15,7 +15,7 @@ def ros2python(msg):
 #    if isinstance(msg, String):
 #        return msg.data
 #    else:
-#        print('Uknown type: %s' % msg.__class__)
+#        print('Unknown type: %s' % msg.__class__)
 #        return msg
     
     return msg.data
