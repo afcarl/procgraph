@@ -65,9 +65,9 @@ class MEncoder(Block):
         self.width = self.shape[1]
         self.ndim = len(self.shape)
         if self.ndim == 2:
-            format = 'y8'
+            format = 'y8' #@ReservedAssignment
         else:
-            format = 'rgb24' 
+            format = 'rgb24' #@ReservedAssignment
         
         # guess the fps if we are not given the config
         if self.config.fps is None:

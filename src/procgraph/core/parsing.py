@@ -200,8 +200,8 @@ def create_model_grammar():
                O(quoted('docstring')))
     config.setParseAction(wrap(config_from_tokens))
     
-    input = S('input') + good_name('name') + O(quoted('docstring'))
-    input.setParseAction(wrap(input_from_tokens))
+    input_s = S('input') + good_name('name') + O(quoted('docstring'))
+    input_s.setParseAction(wrap(input_from_tokens))
 
     output = S('output') + good_name('name') + O(quoted('docstring'))
     output.setParseAction(wrap(output_from_tokens))
@@ -212,7 +212,7 @@ def create_model_grammar():
     
     action = (comment | 
               config | 
-              input | 
+              input_s | 
               output | 
               (docs + connection) | 
               (docs + assignment) | 

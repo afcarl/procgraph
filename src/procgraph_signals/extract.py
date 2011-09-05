@@ -25,7 +25,7 @@ class Extract(Block):
         self.output.part = part
          
 @simple_block
-def slice(signal, start=COMPULSORY, end=COMPULSORY):
+def slice(signal, start=COMPULSORY, end=COMPULSORY): #@ReservedAssignment
     ''' Slices a signal by extracting from index ``start`` to index ``end``
         (INCLUSIVE).
         

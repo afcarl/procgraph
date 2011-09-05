@@ -1,8 +1,11 @@
-import subprocess, os, numpy
+from . import ImageDraw, ImageFont
+from .pil_conversions import Image_from_array
+from procgraph import Block, BadConfig, ETERNITY
+from procgraph.core.visualization import info as info_main, error as error_main
+import subprocess
+import os
+import numpy
 
-from procgraph import Block, BadConfig
-from procgraph.core.visualization import info as info_main, error as error_main 
-from procgraph.core.constants import ETERNITY
 
 def info(s):
     info_main('procgraph_pil/text: %s' % s)
@@ -10,8 +13,6 @@ def error(s):
     error_main('procgraph_pil/text: %s' % s)
     
 
-from . import ImageDraw, ImageFont
-from .pil_conversions import Image_from_array
 
 
 class Text(Block):

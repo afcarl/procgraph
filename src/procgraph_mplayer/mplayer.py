@@ -81,7 +81,7 @@ class MPlayer(Generator):
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
 
-        format = "rgb24"
+        format = "rgb24" #@ReservedAssignment
         
         self.temp_dir = tempfile.mkdtemp(prefix='procgraph_fifo_dir')
         self.fifo_name = os.path.join(self.temp_dir, 'mencoder_fifo')

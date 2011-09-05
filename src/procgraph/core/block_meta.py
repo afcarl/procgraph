@@ -16,7 +16,7 @@ class BlockConfig:
                   self.desc, self.desc_rest))
         
 class BlockInput:
-    def __init__(self, type, name, min, max, desc, desc_rest, where):
+    def __init__(self, type, name, min, max, desc, desc_rest, where): #@ReservedAssignment
         self.type = type
         self.name = name
         self.min = min
@@ -28,7 +28,7 @@ class BlockInput:
     # TODO: add repr
         
 class BlockOutput:
-    def __init__(self, type, name, desc, desc_rest, where):
+    def __init__(self, type, name, desc, desc_rest, where): #@ReservedAssignment
         self.type = type
         self.name = name
         self.desc = desc
@@ -36,7 +36,7 @@ class BlockOutput:
         self.where = where
 
     def __repr__(self):
-	return "BlockOutput(%s,%s)" % (self.type, self.name)
+        return "BlockOutput(%s,%s)" % (self.type, self.name)
 
 def block_alias(name):
     assert isinstance(name, str)
@@ -67,7 +67,7 @@ def block_input(name, description=None):
     BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None,
                                           desc, desc_rest, None))
 
-def block_input_is_variable(description=None, min=None, max=None):
+def block_input_is_variable(description=None, min=None, max=None): #@ReservedAssignment
     assert description is None or isinstance(description, str) 
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_input:
@@ -165,31 +165,31 @@ class BlockMeta(type):
 class BlockMetaSugar(object):
     
     @staticmethod
-    def alias(*arg, **dict):
-        block_alias(*arg, **dict)
+    def alias(*arg, **kwargs):
+        block_alias(*arg, **kwargs)
     
     @staticmethod
-    def config(*arg, **dict):
-        block_config(*arg, **dict)
+    def config(*arg, **kwargs):
+        block_config(*arg, **kwargs)
     
     @staticmethod
-    def input(*arg, **dict):
-        block_input(*arg, **dict)
+    def input(*arg, **kwargs): #@ReservedAssignment
+        block_input(*arg, **kwargs)
     
     @staticmethod
-    def output(*arg, **dict):
-        block_output(*arg, **dict)
+    def output(*arg, **kwargs):
+        block_output(*arg, **kwargs)
     
     @staticmethod
-    def output_is_variable(*arg, **dict):
-        block_output_is_variable(*arg, **dict)
+    def output_is_variable(*arg, **kwargs):
+        block_output_is_variable(*arg, **kwargs)
     
     @staticmethod
     def output_is_defined_at_runtime(description=None):
         block_output_is_defined_at_runtime(description)
         
     @staticmethod
-    def input_is_variable(description=None, min=None, max=None):
+    def input_is_variable(description=None, min=None, max=None): #@ReservedAssignment
         ''' Declares that this block can accept a variable number
             of inputs. You can specify minimum and maximum number. '''
         block_input_is_variable(description, min, max)

@@ -4,12 +4,12 @@ import re
 Arg = namedtuple('Arg', 'name type')
 
 class Arg:
-    def __init__(self, desc=None, type=None):
+    def __init__(self, desc=None, type=None): #@ReservedAssignment
         if desc is not None:
             desc = desc.strip()
         self.desc = desc
         if type is not None:
-            type = type.strip()
+            type = type.strip() #@ReservedAssignment
         self.type = type
     def __eq__(self, other):
         return (self.type == other.type and 

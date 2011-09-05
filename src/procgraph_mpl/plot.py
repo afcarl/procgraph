@@ -1,10 +1,7 @@
-import time
-import numpy
-
+from . import pylab, pylab2rgb
 from procgraph import Block, BadInput, BadConfig
-
-from . import pylab
-from .pylab_to_image import pylab2rgb
+import numpy
+import time
 
 
 class Plot(Block):
@@ -97,7 +94,7 @@ class Plot(Block):
         self.lines = {}
         self.lengths = {}
         
-    def plot_one(self, id, x, y, format):
+    def plot_one(self, id, x, y, format): #@ReservedAssignment
         assert isinstance(x, numpy.ndarray)
         assert isinstance(y, numpy.ndarray)
         assert len(x.shape) <= 1
@@ -200,15 +197,15 @@ class Plot(Block):
                 y = y.transpose()
 
             if len(y.shape) == 1:
-                id = self.canonicalize_input(i)
-                self.plot_one(id, x, y, self.config.format)
+                pid = self.canonicalize_input(i)
+                self.plot_one(pid, x, y, self.config.format)
             else:
                 assert(len(y.shape) == 2)
                 num_lines = y.shape[0]
                 for k in range(num_lines):
-                    id = "%s-%d" % (self.canonicalize_input(i), k)
+                    pid = "%s-%d" % (self.canonicalize_input(i), k)
                     yk = y[k, :]
-                    self.plot_one(id, x, yk, self.config.format)
+                    self.plot_one(pid, x, yk, self.config.format)
             # TODO: check that if one has time vector, also others have it
 
         if self.limits is not None:
@@ -233,8 +230,8 @@ class Plot(Block):
                 self.limits[3] = M
             
             # leave some space above and below
-            self.limits[2] *= 1.1
-            self.limits[3] *= 1.1
+            self.limits[2] = self.limits[2] * 1.1
+            self.limits[3] = self.limits[3] * 1.1
                 
             self.axes.axis(self.limits)
             

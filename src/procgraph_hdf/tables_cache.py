@@ -13,11 +13,11 @@ def tc_open_for_reading(filename):
     filename = os.path.realpath(filename)
     
     if filename in OpenFile.open_files:
-        open = OpenFile.open_files[filename] 
-        open.num_references += 1
+        openf = OpenFile.open_files[filename] 
+        openf.num_references += 1
         # print "tc: reused %s r (%s total) " % 
         #   (filename, len(OpenFile.open_files))
-        return open.pytables_handle
+        return openf.pytables_handle
     else: 
         f = tables.openFile(filename, 'r')
         OpenFile.open_files[filename] = OpenFile(f)
@@ -67,10 +67,10 @@ def tc_close(handle):
         assert isinstance(handle, tables.file.File)
         filename = handle.filename
         
-    open = OpenFile.open_files[filename]
-    open.num_references -= 1
+    openf = OpenFile.open_files[filename]
+    openf.num_references -= 1
     
-    if open.num_references == 0:
-        open.pytables_handle.close()
+    if openf.num_references == 0:
+        openf.pytables_handle.close()
         del OpenFile.open_files[filename]
          
