@@ -26,7 +26,7 @@ class Pose2velocity(Block):
         if not delta > 0:
             raise BadInput('Bad timestamp sequence %s' % t, self, 't')
 
-        vel = g.SE2.velocity_from_points(pose1, pose2, delta)
+        x, vel = g.SE2.velocity_from_points(pose1, pose2, delta) #@UnusedVariable
         
         linear, angular = g.linear_angular_from_se2(vel)
         

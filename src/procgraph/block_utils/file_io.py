@@ -1,11 +1,11 @@
 import os
 
-def make_sure_dir_exists(file):
+def make_sure_dir_exists(filename):
     ''' Makes sure that the path to file exists, but creating directories. '''
-    dir = os.path.dirname(file)
+    dirname = os.path.dirname(filename)
     # dir == '' for current dir
-    if dir != '' and not os.path.exists(dir):
-        os.makedirs(dir) 
+    if dirname != '' and not os.path.exists(dirname):
+        os.makedirs(dirname) 
 
 
 def expand(filename):

@@ -1,11 +1,15 @@
 from procgraph import Block, COMPULSORY, simple_block
+import numpy as np
 
-
-# Make it generic?
 class Extract(Block):
     ''' 
     This block extracts some of the components of a vector.
     
+    Example: Extracts the first and third component of x. ::
+    
+        x -> |extract index=[0,2]| -> x_part
+        
+        
     '''
     Block.alias('extract')
     Block.input('vector', 'Any numpy array')
@@ -14,7 +18,7 @@ class Extract(Block):
 
     def update(self):
         index = self.config.index
-        vector = self.input.vector
+        vector = np.array(self.input.vector)
         
         part = vector[index]
         

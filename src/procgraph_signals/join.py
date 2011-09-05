@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 from procgraph import Block 
 
@@ -25,6 +25,8 @@ class Join(Block):
         result = []
         for name in self.get_input_signals_names():
             value = self.get_input(name)
+            # workaround for scalar values
+            value = np.reshape(value, np.size(value))
             size = len(value)
             if value is None:
                 return
@@ -37,6 +39,6 @@ class Join(Block):
             
             result.extend(value)
         
-        self.output[0] = numpy.array(result)
+        self.output[0] = np.array(result)
           
 
