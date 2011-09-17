@@ -387,6 +387,10 @@ def define_output_signals(output, block):
     
     if output_is_defined_at_runtime:
         names = block.get_output_signals()
+        if len(set(names)) != len(names):
+            msg = ('Repeated signal names in %s.' % names)
+            raise SemanticError(msg, block)
+
         block.define_output_signals_new(names)
         return         
                         
@@ -500,7 +504,7 @@ def define_input_signals(input, block, previous_link, previous_block, model): #@
             for s in (previous_link.signals):
                 if s.name is None:
                     s.name = "input_%s_for_%s" % (s.local_output, block)
-
+                
                 model.connect(previous_block, s.local_input,
                                      block, s.local_output, s.name)
         else: 

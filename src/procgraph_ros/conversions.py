@@ -4,7 +4,7 @@
 #except ImportError:
 #    pass
  
-
+import numpy as np
 from procgraph import simple_block
 
 @simple_block
@@ -19,3 +19,9 @@ def ros2python(msg):
 #        return msg
     
     return msg.data
+
+@simple_block
+def ros_scan2python(scan):
+    return np.array(scan.ranges)
+#    print scan.__dict__.keys()
+
