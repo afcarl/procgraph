@@ -5,8 +5,7 @@ from .block import Block, Generator
 from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats
 from .visualization import debug as debug_main, info, warning
-from .constants import STRICT_CHECK_OF_DEFINED_IO
-from procgraph.core.constants import ETERNITY
+from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
 
 
 class BlockConnection:
@@ -258,19 +257,19 @@ class Model(Generator):
                
             # now look for the smallest available timestamp
             # (timestamp can be none)
-            def cmp(timestamp1, timestamp2):
+            def cmpk(timestamp1, timestamp2):
                 if timestamp1 is None:
                     return 1
                 elif timestamp2 is None:
-                    return - 1
+                    return -1
                 elif timestamp1 < timestamp2:
-                    return - 1
+                    return -1
                 elif timestamp2 < timestamp1:
                     return 1
                 else:
                     return 0
                 
-            generators_with_timestamps.sort(key=lambda x:x[1], cmp=cmp)
+            generators_with_timestamps.sort(key=lambda x:x[1], cmp=cmpk)
             block = generators_with_timestamps[0][0]
         
         if block is None:

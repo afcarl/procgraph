@@ -48,7 +48,7 @@ def collect_info(block_type, block_generator):
     
     if isinstance(block_generator, ModelSpec):
         parsed_model = block_generator.parsed_model
-        type = type_model
+        type = type_model #@ReservedAssignment
         implementation = None
         assert isinstance(block_generator.defined_in, str)
         module = get_module_name_with_doc(block_generator.defined_in)
@@ -57,11 +57,11 @@ def collect_info(block_type, block_generator):
         desc, desc_rest = split_docstring(parsed_model.docstring) 
         
         config = parsed_model.config
-        input = parsed_model.input
+        input = parsed_model.input #@ReservedAssignment
         output = parsed_model.output 
         
     elif issubclass(block_generator, Block): 
-        type = type_block
+        type = type_block #@ReservedAssignment
         implementation = block_generator
         
         if block_generator.defined_in:
@@ -80,7 +80,7 @@ def collect_info(block_type, block_generator):
         desc, desc_rest = split_docstring(block_generator.__doc__) 
         
         config = block_generator.config
-        input = block_generator.input
+        input = block_generator.input #@ReservedAssignment
         output = block_generator.output
 
     else: 

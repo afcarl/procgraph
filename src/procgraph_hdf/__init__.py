@@ -8,22 +8,18 @@
     .. _HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format
 
 '''
+from procgraph import import_succesful, import_magic
 
 procgraph_info = {
     # List of python packages 
     'requires':  ['tables']
 } 
 
-
-# Smart dependency importing
-from procgraph import import_magic
 tables = import_magic(__name__, 'tables')
 
-
-from . import hdfwrite
-from . import hdfread
-from . import hdfread_many
-
+from .hdfwrite import * 
+from .hdfread import * 
+from .hdfread_many import * 
 
 from procgraph import pg_add_this_package_models
-pg_add_this_package_models(file=__file__, assign_to=__package__)
+pg_add_this_package_models(__file__, __package__)

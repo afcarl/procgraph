@@ -46,7 +46,8 @@ def make_generic(name, inputs, num_outputs,
         # filled out later
         defined_in = None
                 
-        __doc__ = docstring
+        # XXX: does it work this way?
+        __doc__ = docstring #@ReservedAssignment
         my_operation = operation
 
         for key, value in parameters.items():

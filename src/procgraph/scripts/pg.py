@@ -174,8 +174,9 @@ def pg(filename, config,
         generator = library.get_generator_for_block_type(filename)
         if not isinstance(generator, ModelSpec):
             # XXX nothing given
-            raise SemanticError('The name %r corresponds to a block, not a model. '
-                                'You can only use "pg" with models. ' % filename, None)
+            msg = ('The name %r corresponds to a block, not a model. '
+                   'You can only use "pg" with models. ' % filename)
+            raise SemanticError(msg, None)
             
         if len(generator.input) > 0:
             inputs = ", ".join([x.name.__repr__() for x in generator.input])

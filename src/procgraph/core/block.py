@@ -4,13 +4,14 @@ from .block_meta import BlockMeta, BlockMetaSugar
 from .block_config import resolve_config
 
 
+NOT_READY = None
 
 class Value:
     '''
-        timestamp = 0     constant
-        timestamp = None  invalid signal
+        timestamp = ETERNITY     constant
+        timestamp = NOT_READY = (None)         signal not ready 
     '''
-    def __init__(self, value=None, timestamp=None):
+    def __init__(self, value, timestamp):
         self.value = value
         self.timestamp = timestamp 
 
@@ -114,8 +115,16 @@ class Block(BlockMetaSugar):
 
             self.__input_signal_names.append(str(s))
             self.__input_signal_name2id[str(s)] = i
-            self.__input_signals.append(Value()) 
-             
+            self.__input_signals.append(Value(None, NOT_READY)) 
+           
+    def all_input_signals_ready(self):
+        ''' Returns True if all input signals are ready. '''
+        for value in self.__input_signals:
+            if value.timestamp == NOT_READY:
+                return False
+        return True
+        
+          
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
             msg = ('I expect the parameter to define_output_signals()' + 
@@ -135,7 +144,7 @@ class Block(BlockMetaSugar):
             
             self.__output_signal_names.append(str(s))
             self.__output_signal_name2id[str(s)] = i
-            self.__output_signals.append(Value())
+            self.__output_signals.append(Value(None, NOT_READY))
         
     def get_config(self, conf):
         if not conf in self.__config:
@@ -320,7 +329,7 @@ class Block(BlockMetaSugar):
     
     
     def _log_prefix(self):
-        return '%s%s:' % ('>'*self.level, self.name)
+        return '%s%s:' % ('>' * self.level, self.name)
     
     def info(self, s):
         ''' Writes an info message. '''

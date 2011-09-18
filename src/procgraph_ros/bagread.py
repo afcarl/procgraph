@@ -12,7 +12,6 @@ class BagRead(Generator):
                  '(or if empty) it will be all signals.',
                  default=None)
 
-# TODO: allow setting signals names ('/rousout:debug')
 #   TODO: add advancement display
 #    Block.config('quiet', 'If true, disables advancements status messages.',
 #                 default=False)
@@ -35,13 +34,25 @@ class BagRead(Generator):
         # self.info('Tppics: %s' % topics)    
             
         self.topic2signal = {}
+        signals = []
         for t in topics:
-            # TODO: what if two topics with same name
-            signal = t.split('/')[-1]
-            self.topic2signal[t] = signal
+            self.info(t)
+            if ':' in t:
+                tokens = t.split(':')
+                assert len(tokens) == 2
+                t = tokens[0]
+                signal_name = tokens[1] 
+            else:
+                signal_name = str(t).split('/')[-1]
+            if signal_name in signals:
+                self.error('Warning: repeated name %s' % signal_name)
+                signal_name = ("%s" % t).replace('/', '_')
+                self.error('Using long form %r.' % signal_name)
+            signals.append(signal_name)
+            self.topic2signal[t] = signal_name
 
         topics = self.topic2signal.keys()
-        signals = self.topic2signal.values()
+        
         
         self.info(self.topic2signal)
         

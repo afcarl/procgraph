@@ -1,8 +1,11 @@
-import subprocess, os, numpy
+from . import ImageDraw, ImageFont
+from .pil_conversions import Image_from_array
+from procgraph import Block, BadConfig, ETERNITY
+from procgraph.core.visualization import info as info_main, error as error_main
+import subprocess
+import os
+import numpy
 
-from procgraph import Block, BadConfig
-from procgraph.core.visualization import info as info_main, error as error_main 
-from procgraph.core.constants import ETERNITY
 
 def info(s):
     info_main('procgraph_pil/text: %s' % s)
@@ -10,8 +13,6 @@ def error(s):
     error_main('procgraph_pil/text: %s' % s)
     
 
-from . import ImageDraw, ImageFont
-from .pil_conversions import Image_from_array
 
 
 class Text(Block):
@@ -158,22 +159,22 @@ def find_file(font_name):
     
 fonts = {}
 def get_font(name, size):
-    tuple = (name, size)
-    if not fonts.has_key(tuple):
+    key = (name, size)
+    if not fonts.has_key(key):
         filename = name + '.ttf'
         if not os.path.exists(filename):
             info('Could not find file %r, trying "locate"...' % filename)
             name = find_file(name)
             if name is None:
                 error('Could not find %r anywhere, using default font' % name)
-                fonts[tuple] = ImageFont.load_default()
+                fonts[key] = ImageFont.load_default()
             else:
-                fonts[tuple] = ImageFont.truetype(name, size)
+                fonts[key] = ImageFont.truetype(name, size)
         else:
             info('Using font in file %s' % filename)
-            fonts[tuple] = ImageFont.truetype(filename, size)
+            fonts[key] = ImageFont.truetype(filename, size)
     
-    return fonts[tuple]
+    return fonts[key]
 
 
 def process_text(draw, t):

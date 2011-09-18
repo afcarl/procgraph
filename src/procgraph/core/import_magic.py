@@ -24,6 +24,7 @@ def import_magic(module_name, required, member=None):
     else:
         options = [required]
     
+    errors = ""
     for o in options:
         try:
             mod = __import__(o, fromlist=['dummy'])
@@ -35,6 +36,7 @@ def import_magic(module_name, required, member=None):
         except Exception as e: #@UnusedVariable
             # TODO: show error
             #debug(e)
+            errors += '\n' + str(e)
             pass
         
     # We could not load anything.
@@ -47,7 +49,9 @@ def import_magic(module_name, required, member=None):
     
     msg = ('I tried to let you continue, but it seems that module %r really'
            ' needs %r to work. Sorry! ' % (module_name, required))
-        
+    
+    msg += '\nThe error message was:\n%s' % errors
+    
     class warn_and_throw:
         def __getattr__(self, method_name): #@UnusedVariable
             raise Exception(msg)

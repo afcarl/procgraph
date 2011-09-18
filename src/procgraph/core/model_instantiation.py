@@ -182,17 +182,17 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         # if it is of the form  object.property = value
         if '.' in key:
             # TODO: put this in syntax
-            object, property = key.split('.', 1)
-            if not object in block_properties:
-                block_properties[object] = {}
+            object_, property_ = key.split('.', 1)
+            if not object_ in block_properties:
+                block_properties[object_] = {}
             # else:    
                 # # XXX probably should be better
                 # if not isinstance(properties[object], dict):
                 #     msg = ('Error while processing "%s=%s": I already know'
                 #            ' the key.' % (key, value)) 
                 #     raise SemanticError(msg, element)
-            referenced_blocks.append((object, element))
-            block_properties[object][property] = value # XX or expand?
+            referenced_blocks.append((object_, element))
+            block_properties[object_][property_] = value # XX or expand?
         else:
             properties[key] = expand_value(value, element=element) 
     
@@ -201,9 +201,9 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     
     old_sys_path = list(sys.path)
     if parsed_model.where.filename is not None:
-        dir = os.path.dirname(parsed_model.where.filename)
-        if dir is not None:
-            sys.path.append(dir) 
+        dirname = os.path.dirname(parsed_model.where.filename)
+        if dirname is not None:
+            sys.path.append(dirname) 
     
     try:
         for x in parsed_model.imports:
@@ -387,6 +387,10 @@ def define_output_signals(output, block):
     
     if output_is_defined_at_runtime:
         names = block.get_output_signals()
+        if len(set(names)) != len(names):
+            msg = ('Repeated signal names in %s.' % names)
+            raise SemanticError(msg, block)
+
         block.define_output_signals_new(names)
         return         
                         
@@ -406,7 +410,7 @@ def define_output_signals(output, block):
         block.define_output_signals_new(names)
 
 
-def define_input_signals(input, block, previous_link, previous_block, model):
+def define_input_signals(input, block, previous_link, previous_block, model): #@ReservedAssignment
     # there are two cases: either we define named signals,
     # or we have a generic number of signals
     input_is_arbitrary = len(input) == 1 and input[0].type == VARIABLE 
@@ -500,7 +504,7 @@ def define_input_signals(input, block, previous_link, previous_block, model):
             for s in (previous_link.signals):
                 if s.name is None:
                     s.name = "input_%s_for_%s" % (s.local_output, block)
-
+                
                 model.connect(previous_block, s.local_input,
                                      block, s.local_output, s.name)
         else: 
