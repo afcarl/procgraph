@@ -92,7 +92,6 @@ setup(name='procgraph',
       packages=find_packages(where='src'),
       install_requires=[
         'pyparsing',
-        'numpy', 
         'setproctitle',
         'termcolor'
       ],

@@ -178,11 +178,14 @@ def register_block(block_class, name=None):
         name = block_class.__name__
     default_library.register(name, block_class)
 
-def register_model_spec(model_spec):
-    frm = inspect.stack()[1]
-    mod = inspect.getmodule(frm[0])
-    assert mod is not None
-    defined_in = mod.__name__
+def register_model_spec(model_spec, defined_in=None):
+    if defined_in is None:
+        frm = inspect.stack()[1]
+        mod = inspect.getmodule(frm[0])
+        if mod is None:
+            msg = 'Could not find module name.\nfrm[0]=%r'% frm[0]
+            raise ValueError(msg)
+        defined_in = mod.__name__
     add_models_to_library(default_library, model_spec, defined_in=defined_in)
 
  
