@@ -67,6 +67,8 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
     
 
+version = 1.0
+
 setup(name='procgraph',
       author="Andrea Censi",
       author_email="andrea@cds.caltech.edu",
@@ -87,7 +89,7 @@ setup(name='procgraph',
         'Topic :: Scientific/Engineering'
       ],
       
-      version="0.9.1",
+      version=version,
       package_dir={'':'src'},
       packages=find_packages(where='src'),
       install_requires=[
@@ -95,6 +97,7 @@ setup(name='procgraph',
         'setproctitle',
         'termcolor'
       ],
+      # TODO: add many depedendencies
       tests_require=['nose'],
       entry_points={
          'console_scripts': [
@@ -103,6 +106,7 @@ setup(name='procgraph',
            'pgindex = procgraph.scripts.pgindex:main'
         ]
       },
+      download_url='http://github.com/AndreaCensi/procgraph/tarball/%s' % version,
 )
 
 
