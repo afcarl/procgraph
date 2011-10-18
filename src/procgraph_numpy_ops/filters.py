@@ -88,6 +88,16 @@ def maximum(value, threshold=COMPULSORY):
     assert threshold != COMPULSORY
     return numpy.maximum(value, threshold)
 
+@simple_block
+def norm(value, ord=2):
+    ''' Returns the norm of the vector. '''
+    return numpy.linalg.norm(value, ord)
+
+# XXX: not sure the best thing to do
+@simple_block
+def array(value):
+    ''' Converts the value to a Numpy array. '''
+    return numpy.array(value)
 
 register_simple_block(numpy.mean, 'mean', params={'axis':0},
       doc='Wrapper around :np:data:`numpy.mean`.')
