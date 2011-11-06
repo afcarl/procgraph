@@ -71,7 +71,7 @@ class ImageGrid(Block):
         
         canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
         for k in range(3):
-            canvas[:, :, k] = self.config.bgcolor[k]
+            canvas[:, :, k] = self.config.bgcolor[k] * 255
             
         for i in range(n):
             col = i % cols
