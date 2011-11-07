@@ -3,6 +3,7 @@ import subprocess
 
 from procgraph import Block
 from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
+import os
  
 # TODO: detect an error in Mencoder (perhaps size too large)
 # TODO: cleanup processes after finishing
@@ -99,12 +100,15 @@ class MEncoder(Block):
         self.info('Writing %dx%d %s video stream at %.1f fps to %r.' % 
                   (self.width, self.height, format, fps, self.config.file))
         
+    
+        self.tmp_filename = self.config.file + '.active'
+        
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
                 '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' % 
                 (self.width, self.height, fps, format),
                 '-ovc', 'lavc', '-lavcopts',
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
-                 '-o', self.config.file]
+                 '-o', self.tmp_filename]
         self.debug('command line: %s' % " ".join(args))
                  
         if self.config.quiet:
@@ -116,6 +120,12 @@ class MEncoder(Block):
 
         if self.config.timestamps:
             self.timestamps_file = open(self.config.file + '.timestamps', 'w') 
+
+    def finish(self):
+        if self.process is not None: 
+            if os.path.exists(self.config.file):
+                os.unlink(self.config.file)
+            os.rename(self.tmp_filename, self.config.file)
 
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array
