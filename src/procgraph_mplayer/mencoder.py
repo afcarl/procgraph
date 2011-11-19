@@ -4,6 +4,7 @@ import subprocess
 from procgraph import Block
 from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
 import os
+from procgraph.block_utils.file_io import expand
  
 # TODO: detect an error in Mencoder (perhaps size too large)
 # TODO: cleanup processes after finishing
@@ -95,13 +96,15 @@ class MEncoder(Block):
         vcodec = self.config.vcodec
         vbitrate = self.config.vbitrate
     
-        make_sure_dir_exists(self.config.file)
+        self.filename = expand(self.config.file)
+        self.tmp_filename = self.filename + '.active'
+        
+        make_sure_dir_exists(self.filename)
             
         self.info('Writing %dx%d %s video stream at %.1f fps to %r.' % 
-                  (self.width, self.height, format, fps, self.config.file))
+                  (self.width, self.height, format, fps, self.filename))
         
     
-        self.tmp_filename = self.config.file + '.active'
         
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
                 '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' % 
@@ -119,13 +122,13 @@ class MEncoder(Block):
             self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
 
         if self.config.timestamps:
-            self.timestamps_file = open(self.config.file + '.timestamps', 'w') 
+            self.timestamps_file = open(self.filename + '.timestamps', 'w') 
 
     def finish(self):
         if self.process is not None: 
-            if os.path.exists(self.config.file):
-                os.unlink(self.config.file)
-            os.rename(self.tmp_filename, self.config.file)
+            if os.path.exists(self.filename):
+                os.unlink(self.filename)
+            os.rename(self.tmp_filename, self.filename)
 
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array

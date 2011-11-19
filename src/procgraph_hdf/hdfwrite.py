@@ -5,6 +5,7 @@ from procgraph.block_utils import make_sure_dir_exists
 
 from . import tables
 from .tables_cache import tc_open_for_writing, tc_close
+import os
 
 
 # TODO: write original order
@@ -42,8 +43,9 @@ class HDFwrite(Block):
     
     def init(self):
         make_sure_dir_exists(self.config.file)
-        self.info('Writing to file %r.' % self.config.file)
-        self.hf = tc_open_for_writing(self.config.file)
+        self.tmp_filename = self.config.file + '.active'
+        self.info('Writing to file %r.' % self.tmp_filename)
+        self.hf = tc_open_for_writing(self.tmp_filename)
         
         self.group = self.hf.createGroup(self.hf.root, 'procgraph')
         # TODO: add meta info
@@ -131,5 +133,7 @@ class HDFwrite(Block):
     
     def finish(self):
         tc_close(self.hf)
-                
+        if os.path.exists(self.config.file):
+            os.unlink(self.config.file)
+        os.rename(self.tmp_filename, self.config.file)
         

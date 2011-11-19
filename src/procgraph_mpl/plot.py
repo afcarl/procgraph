@@ -5,7 +5,8 @@ import time
 
 
 class Plot(Block):
-    ''' Plots the inputs using matplotlib. 
+    ''' 
+        Plots the inputs using matplotlib. 
     
         This block accepts an arbitrary number of signals. 
         Each signals is treated independently and plot separately. 
@@ -19,7 +20,7 @@ class Plot(Block):
             In this case, it is interpreted as the y values, 
             and we set  ``x = 1:N``. 
         
-     '''
+    '''
      
     Block.alias('plot')
     

@@ -5,6 +5,7 @@ import numpy
 import tempfile
  
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
+from procgraph.block_utils import expand
  
 class MPlayer(Generator):
     ''' Decodes a video stream. ''' 
@@ -19,13 +20,13 @@ class MPlayer(Generator):
     Block.output('video', 'RGB stream as numpy array.')
     
     def init(self): 
-        self.file = self.config.file
+        self.file = expand(self.config.file)
         
-        if not os.path.exists(self.config.file):
-            msg = 'File %r does not exist.' % self.config.file
+        if not os.path.exists(self.file):
+            msg = 'File %r does not exist.' % self.file
             raise BadConfig(msg, self, 'file')
             
-        timestamps_file = self.config.file + '.timestamps'
+        timestamps_file = self.file + '.timestamps'
         if os.path.exists(timestamps_file):
             self.info('Reading timestamps from %r.' % timestamps_file)
             self.timestamps = open(timestamps_file)
@@ -39,8 +40,7 @@ class MPlayer(Generator):
         self.state.timestamp = self.get_next_timestamp() 
         self.state.next_frame = None
         self.state.finished = False
-        
-#        self.read_next_frame()
+         
         
     def open_mencoder(self):
         self.mencoder_started = True
@@ -62,21 +62,24 @@ class MPlayer(Generator):
             
 #        self.debug("Video configuration: %s" % info)
 
-        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS"]
-        id_width, id_height, id_fps = keys
+        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS", "ID_LENGTH"]
+        id_width, id_height, id_fps, id_length = keys
         for k in keys:
             if not k in info:
-                msg = ('Could not find key %s in properties %s.' % 
+                msg = ('Could not find key %r in properties %s.' % 
                       (k, sorted(info.keys())))
                 raise ModelExecutionError(msg, self)
             
         self.width = info[id_width]
         self.height = info[id_height]
         self.fps = info[id_fps]
+        self.length = info[id_length]
+        self.approx_frames = int(self.length / self.fps)
         
         # TODO: reading non-RGB streams not supported
-        self.info('Reading %dx%d video stream at %.1f fps in %r.' % 
-                   (self.width, self.height, self.fps, self.config.file))
+        self.info('Reading %dx%d video stream at %.1f fps in %r, length %s, frames %d.' % 
+                   (self.width, self.height, self.fps, self.config.file,
+                    self.length, self.approx_frames))
 
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
@@ -172,7 +175,8 @@ class MPlayer(Generator):
 
 # backported from 2.7
 def check_output(*popenargs, **kwargs):
-    """Run command with arguments and return its output as a byte string.
+    """
+    Run command with arguments and return its output as a byte string.
 
     If the exit code was non-zero it raises a CalledProcessError.  The
     CalledProcessError object will have the return code in the returncode

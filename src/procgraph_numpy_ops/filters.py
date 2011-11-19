@@ -89,7 +89,7 @@ def maximum(value, threshold=COMPULSORY):
     return numpy.maximum(value, threshold)
 
 @simple_block
-def norm(value, ord=2):
+def norm(value, ord=2): #@ReservedAssignment
     ''' Returns the norm of the vector. '''
     return numpy.linalg.norm(value, ord)
 

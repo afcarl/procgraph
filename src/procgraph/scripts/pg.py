@@ -151,9 +151,11 @@ def parse_cmdline_args(args):
 def pg(filename, config,
        debug=False, nocache=False, stats=False,
        additional_directories=[], additional_modules=[]):
-    ''' Instantiate and run a model. 
+    ''' 
+        Instantiate and run a model. 
     
-    Instantiate a model (filename can be either a file or a known model. '''
+        Instantiate a model (filename can be either a file or a known model). 
+    '''
     
     for module in additional_modules:
         info('Importing package %r...' % module)

@@ -32,7 +32,7 @@ Components used for debugging and unit tests.
 Package ``procgraph_cv``
 ------------------------------------------------------------
 
-Operations using the OpenCV library.
+Blocks using the OpenCV library.
 
 .. list-table::
    :widths: 30 70
@@ -64,7 +64,11 @@ This is a set of blocks to read and write logs in HDF_ format.
    :widths: 30 70
 
    * - :ref:`hdfread <block:hdfread>`
-     - This block reads a log written with HDFwrite.
+     - This block reads a log written with :ref:`block:hdfwrite`.
+   * - :ref:`hdfread_many <block:hdfread_many>`
+     - This block is a variation on :ref:`block:hdfread` that can concatenate the output of logs stored in multiple HDF files. 
+   * - :ref:`hdfread_many_test <block:hdfread_many_test>`
+     - This is a simple test for :ref:`block:hdfread_many`.
    * - :ref:`hdfread_test <block:hdfread_test>`
      - This is a simple test that reading from HDF files is happening correctly.
    * - :ref:`hdfwrite <block:hdfwrite>`
@@ -93,6 +97,8 @@ Blocks for basic operations on images.
      - Converts a 2D float value to a RGB representation, where red is positive, blue is negative, white is zero.
    * - :ref:`posterize <block:posterize>`
      - Posterizes the given image with the specified number of levels.
+   * - :ref:`reshape2d <block:reshape2d>`
+     - Reshapes x into (?, width) if x is 1D. If width is not given, it is set to be the sqrt(size). 
    * - :ref:`rgb2gray <block:rgb2gray>`
      - Converts a HxWx3 RGB image into a HxW grayscale image by computing the luminance.
    * - :ref:`scale <block:scale>`
@@ -101,6 +107,8 @@ Blocks for basic operations on images.
      - Cuts off the top percentile of the array.
    * - :ref:`skim_top_and_bottom <block:skim_top_and_bottom>`
      - Cuts off the top and bottom percentile of the array.
+   * - :ref:`solid <block:solid>`
+     - |towrite|
 
 
 Package ``procgraph_io_misc``
@@ -117,6 +125,8 @@ Miscellaneous functions to be better organized.
      - Dumps the input as a :py:mod:`pickle` file.
    * - :ref:`pickle_group <block:pickle_group>`
      - Dumps the input as a :py:mod:`pickle` file, in the form of a dictionary  signal name -> value.
+   * - :ref:`pickle_load <block:pickle_load>`
+     - Dumps the input as a :py:mod:`pickle` file.
    * - :ref:`to_file <block:to_file>`
      - Prints the input line by line to a given file.
 
@@ -159,6 +169,8 @@ Various operations wrapping numpy functions.
      - Wrapper around :np:data:`numpy.absolute`.
    * - :ref:`arctan <block:arctan>`
      - Wrapper around :np:data:`numpy.arctan`.
+   * - :ref:`array <block:array>`
+     - Converts the value to a Numpy array.
    * - :ref:`astype <block:astype>`
      - Converts an array using the ``astype`` function.
    * - :ref:`deg2rad <block:deg2rad>`
@@ -183,12 +195,16 @@ Various operations wrapping numpy functions.
      - Wrapper around :np:data:`numpy.mean`.
    * - :ref:`minimum <block:minimum>`
      - Limits the numpy array to the given threshold.
+   * - :ref:`norm <block:norm>`
+     - Returns the norm of the vector.
    * - :ref:`normalize_Linf <block:normalize_Linf>`
      - Normalize a vector such that ``|x|_inf = max(abs(x))= 1``.
    * - :ref:`outer <block:outer>`
      - Outer product of two vectors. 
    * - :ref:`rad2deg <block:rad2deg>`
      - Converts radians to degrees (wrapper around :np:data:`numpy.degrees`.)
+   * - :ref:`real <block:real>`
+     - Wrapper around :np:data:`numpy.real`.
    * - :ref:`select <block:select>`
      - Selects some of the elements of ``x``.
    * - :ref:`sign <block:sign>`
@@ -251,12 +267,16 @@ Blocks performing operations with a dynamic nature.
 .. list-table::
    :widths: 30 70
 
+   * - :ref:`any <block:any>`
+     - Joins the stream of multiple signals onto one output signal.
+   * - :ref:`async <block:async>`
+     - |towrite|
    * - :ref:`derivative <block:derivative>`
      - Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``). See also :ref:`block:derivative2`.
    * - :ref:`derivative2 <block:derivative2>`
      - Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``). See also :ref:`block:derivative`.
    * - :ref:`extract <block:extract>`
-     - This block extracts some of the components of a vector.
+     - This block extracts some of the components of a vector. 
    * - :ref:`forward_difference <block:forward_difference>`
      - Computes ``x[t+1] - x[t-1]`` normalized with timestamp. 
    * - :ref:`fps_data_limit <block:fps_data_limit>`
@@ -636,7 +656,7 @@ Package ``procgraph_cv``
 
 .. rst-class:: procgraph:desc
 
-Operations using the OpenCV library.
+Blocks using the OpenCV library.
 
 .. _`block:gradient`:
 
@@ -809,7 +829,7 @@ You need the pytables_ package to be installed.
 
 Block ``hdfread``
 ------------------------------------------------------------------
-This block reads a log written with HDFwrite.
+This block reads a log written with :ref:`block:hdfwrite`.
 
 
 .. rst-class:: procgraph:config
@@ -819,7 +839,9 @@ Configuration
 
 - ``file``: HDF file to read
 
-- ``signals`` (default: None): Which signals to output (and in what order). Should be a comma-separated list. If you do not specify it  will be all signal in the original order
+- ``signals`` (default: None): Which signals to output (and in what order). Should be a comma-separated list. If you do not specify it  will be all signals (TODO: in the original order).
+
+- ``quiet`` (default: False): If true, disables advancements status messages.
 
 
 .. rst-class:: procgraph:output
@@ -833,6 +855,77 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_hdf/hdfread.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_hdf/hdfread.py>`_. 
+
+
+.. _`block:hdfread_many`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``hdfread_many``
+------------------------------------------------------------------
+This block is a variation on :ref:`block:hdfread` that can concatenate the output of logs stored in multiple HDF files. 
+
+The files are specified using a wildcard: for example, ``dir/*.h5``.
+
+A difference with :ref:`block:hdfread` is that all signals
+must be specified explicitly (:ref:`block:hdfread` can guess); the
+reason is that we want to avoid reading unrelated logs with different
+signals.
+
+We check that all files specified have all required signals.
+
+The logfiles are read in the order compatible with their timestamp.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``files``: HDF files to read; you can use the wildcard ``*``.
+
+- ``signals``: Which signals to output (and in what order). Should be a comma-separated list.
+
+- ``quiet`` (default: False): If true, disables advancements status messages.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- The signals read from the logs. (signals are defined at runtime)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_hdf/hdfread_many.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_hdf/hdfread_many.py>`_. 
+
+
+.. _`block:hdfread_many_test`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``hdfread_many_test``
+------------------------------------------------------------------
+This is a simple test for :ref:`block:hdfread_many`.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``files``: File pattern
+
+- ``signals``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_hdf/models/hdfread_many_test.pg <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_hdf/models/hdfread_many_test.pg>`_. 
 
 
 .. _`block:hdfread_test`:
@@ -989,7 +1082,7 @@ Adds a block around the input image.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``color`` (default: [1, 1, 1]): border color
+- ``color`` (default: [0, 0, 0]): border color (0-1 rgb)
 
 - ``left`` (default: 0): pixel length for left border
 
@@ -1116,6 +1209,8 @@ Configuration
 
 - ``cols`` (default: None): Columns in the grid.
 
+- ``bgcolor`` (default: [0, 0, 0]): Background color.
+
 
 .. rst-class:: procgraph:input
 
@@ -1165,7 +1260,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``value``: The field to represent. (HxW array)
+- ``value``: The field to represent. (array[HxW])
 
 
 .. rst-class:: procgraph:output
@@ -1173,7 +1268,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``posneg``: A RGB image. (HxWx3 uint8)
+- ``posneg``: A RGB image. (array[HxWx3](uint8))
 
 
 .. rst-class:: procgraph:source
@@ -1218,6 +1313,51 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_images/posterize.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/posterize.py>`_. 
+
+
+.. _`block:reshape2d`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``reshape2d``
+------------------------------------------------------------------
+Reshapes x into (?, width) if x is 1D. If width is not given, it is set to be the sqrt(size). 
+
+If x is 2D, it is left alone.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``width`` (default: None): |towrite|
+
+- ``fill_value`` (default: nan): |towrite|
+
+- ``height`` (default: None): |towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/reshape_smart.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/reshape_smart.py>`_. 
 
 
 .. _`block:rgb2gray`:
@@ -1282,7 +1422,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``value``: The field to represent. (HxW array)
+- ``value``: The field to represent. (array[HxW],H>0,W>0)
 
 
 .. rst-class:: procgraph:output
@@ -1290,7 +1430,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``scale``: A RGB image. (HxWx3 uint8)
+- ``scale``: A RGB image. (array[HxWx3](uint8))
 
 
 .. rst-class:: procgraph:source
@@ -1360,7 +1500,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``a``: Any numpy array. (array)
+- ``a``: Any numpy array. (array[x])
 
 
 .. rst-class:: procgraph:output
@@ -1368,12 +1508,47 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: Skimmed version of ``a``. (a)
+- ``0``: Skimmed version of ``a``. (array[x])
 
 
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_images/copied_from_reprep.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/copied_from_reprep.py>`_. 
+
+
+.. _`block:solid`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``solid``
+------------------------------------------------------------------
+|towrite|
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``width``: |towrite|
+
+- ``height``: |towrite|
+
+- ``color``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``rgb``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/solid.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/solid.py>`_. 
 
 
 .. _`module:procgraph_io_misc`:
@@ -1478,6 +1653,37 @@ Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - Any number of pickable signals. (variable number)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_io_misc/pickling.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_io_misc/pickling.py>`_. 
+
+
+.. _`block:pickle_load`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``pickle_load``
+------------------------------------------------------------------
+Dumps the input as a :py:mod:`pickle` file.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: File to read from.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Object read from file
 
 
 .. rst-class:: procgraph:source
@@ -1760,6 +1966,37 @@ Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``0``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
+
+
+.. _`block:array`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``array``
+------------------------------------------------------------------
+Converts the value to a Numpy array.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2187,6 +2424,45 @@ Output
 Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
 
 
+.. _`block:norm`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``norm``
+------------------------------------------------------------------
+Returns the norm of the vector.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``ord`` (default: 2): |towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``value``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
+
+
 .. _`block:normalize_Linf`:
 
 
@@ -2269,6 +2545,37 @@ Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``0``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_numpy_ops/filters.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_numpy_ops/filters.py>`_. 
+
+
+.. _`block:real`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``real``
+------------------------------------------------------------------
+Wrapper around :np:data:`numpy.real`.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``val``: |towrite|
 
 
 .. rst-class:: procgraph:output
@@ -2750,7 +3057,7 @@ Some functions specific to robotics applications.
 
 .. rst-class:: procgraph:desc_rest
 
-Requires: http://github.com/AndreaCensi/snp_geometry
+Requires: http://github.com/AndreaCensi/geometry
 
 .. _`block:laser_display`:
 
@@ -3000,7 +3307,7 @@ Configuration
 Input
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``a``: Any numpy array. (array)
+- ``a``: Any numpy array. (array[x])
 
 
 .. rst-class:: procgraph:output
@@ -3008,7 +3315,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``0``: Skimmed version of ``a``. (a)
+- ``0``: Skimmed version of ``a``. (array[x])
 
 
 .. rst-class:: procgraph:source
@@ -3034,6 +3341,68 @@ Blocks performing operations with a dynamic nature.
 .. rst-class:: procgraph:desc_rest
 
 This library contains blocks that perform operations with time.
+
+.. _`block:any`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``any``
+------------------------------------------------------------------
+Joins the stream of multiple signals onto one output signal.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Signals to be put on the same stream. (variable number: n >= 1)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``stream``: Unified stream.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_signals/any.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_signals/any.py>`_. 
+
+
+.. _`block:async`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``async``
+------------------------------------------------------------------
+|towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Signals to (a)synchronize. The first is the master. (variable number: n >= 2)
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Synchronized signals. (variable number)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_signals/async.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_signals/async.py>`_. 
+
 
 .. _`block:derivative`:
 
@@ -3104,7 +3473,11 @@ Implemented in `/src/procgraph_signals/derivative2.py <https://github.com/Andrea
 
 Block ``extract``
 ------------------------------------------------------------------
-This block extracts some of the components of a vector.
+This block extracts some of the components of a vector. 
+
+Example: Extracts the first and third component of x. ::
+
+    x -> |extract index=[0,2]| -> x_part
 
 
 .. rst-class:: procgraph:config
