@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 from procgraph import simple_block
 
@@ -36,6 +36,6 @@ def resize(value, width=None, height=None):
     
     # TODO: RGBA?
     image = image.resize((width, height))
-    return numpy.asarray(image.convert("RGB"))    
+    return np.asarray(image.convert("RGB"))    
     
     

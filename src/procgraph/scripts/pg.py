@@ -43,8 +43,9 @@ def main():
 #    import contracts
 #    contracts.disable_all()
     
+    # TODO: use LenientOptionParser
     parser = OptionParser(usage=usage_long)
-
+    parser.disable_interspersed_args()
     additional_modules = []
     def load_module(option, opt_str, value, parser): #@UnusedVariable
         additional_modules.append(value)

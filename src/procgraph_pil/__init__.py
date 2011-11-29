@@ -17,3 +17,4 @@ from . import pil_operations
 from . import pil_conversions
 from . import text
 from . import imread
+from . import imwrite

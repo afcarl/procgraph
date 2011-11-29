@@ -2,8 +2,8 @@ from procgraph import Block
 
 class Sieve(Block):
     ''' 
-    This block decimates the data in time by transmitting
-    only one in ``n`` updates.
+        This block decimates the data in time by transmitting
+        only one in ``n`` updates.
     '''
     
     Block.alias('sieve')

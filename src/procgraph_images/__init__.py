@@ -20,7 +20,7 @@ from . import filters
 from . import compose 
 from . import imggrid
 from . import border
-
+from . import images_from_dir
 from . import posterize
 
 from .blend import blend
