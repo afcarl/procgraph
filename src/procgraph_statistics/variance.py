@@ -7,7 +7,7 @@ register_model_spec("""
 ''' Computes the element-wise variance. '''
 input x 'Any numpy array'
 output var_x 'Variance of ``x``.'
-config wait = 100 "Number of samples to wait before declaring the expectation valid."
+config wait = 100 "Number of samples to wait before declaring the value valid."
 
 |input name=x| --> x --> |expectation| --> |wait n=$wait| --> Ex
 
@@ -19,8 +19,8 @@ config wait = 100 "Number of samples to wait before declaring the expectation va
 
 register_model_spec("""
 --- model soft_variance 
-''' Computes the element-wise "soft" variance (expectation of error absolute value) '''
-config wait = 100 "Number of samples to wait before declaring the expectation valid."
+''' Computes the element-wise "soft" variance (exp. of error abs. value) '''
+config wait = 100 "Number of samples to wait before declaring the value valid."
 input x 'Any numpy array'
 output var_x 'Soft variance of ``x``.'
 
@@ -30,4 +30,4 @@ output var_x 'Soft variance of ``x``.'
    
    error -> |abs| --> |expectation| --> |output name=var_x|
     
-""") 
+""")

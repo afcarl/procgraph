@@ -4,6 +4,7 @@ from procgraph import simple_block
 
 # Taken from the numpy cookbook
 
+
 @simple_block
 def smooth1d(x, window_len=11, window='hanning'):
     """
@@ -32,7 +33,8 @@ def smooth1d(x, window_len=11, window='hanning'):
     
     see also: 
     
-    numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
+    numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, 
+    numpy.convolve
     scipy.signal.lfilter
  
     TODO: the window parameter could be the window itself if an 
@@ -40,20 +42,18 @@ def smooth1d(x, window_len=11, window='hanning'):
     """
 
     if x.ndim != 1:
-        raise ValueError, "smooth only accepts 1 dimension arrays."
+        raise ValueError("smooth only accepts 1 dimension arrays.")
 
     if x.size < window_len:
-        raise ValueError, "Input vector needs to be bigger than window size."
-
+        raise ValueError("Input vector needs to be bigger than window size.")
 
     if window_len < 3:
         return x
 
-
     if not window in ['flat', 'hanning', 'hamming', 'bartlett', 'blackman']:
-        raise ValueError("Window %r is not one of 'flat', 'hanning', 'hamming',"
+        raise ValueError(
+                        "Window %r is not one of 'flat', 'hanning', 'hamming',"
                          "'bartlett', 'blackman'." % window)
-
 
     s = numpy.r_[2 * x[0] - x[window_len:1:-1],
                  x,

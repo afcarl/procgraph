@@ -4,6 +4,7 @@ from procgraph import simple_block
 
 from .pil_conversions import Image_from_array
 
+
 @simple_block
 def resize(value, width=None, height=None):
     ''' 
@@ -22,20 +23,20 @@ def resize(value, width=None, height=None):
 
         :return: image: The image as a numpy array.
         :rtype: rgb
-    ''' 
-    
+    '''
+
     image = Image_from_array(value)
-    
+
     if width is None and height is None:
         raise ValueError('You should pass at least one of width and height.')
-    
+
     if width is None and height is not None:
         width = (height * image.size[0]) / image.size[1]
     elif height is None and width is not None:
         height = (width * image.size[1]) / image.size[0]
-    
+
     # TODO: RGBA?
     image = image.resize((width, height))
-    return np.asarray(image.convert("RGB"))    
-    
-    
+    return np.asarray(image.convert("RGB"))
+
+

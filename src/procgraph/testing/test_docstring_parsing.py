@@ -2,7 +2,7 @@
 from ..core.docstring_parsing import DocStringInfo, Arg, \
                                      parse_docstring_annotations
 
-examples = { """ 
+examples = {""" 
         Provides a RGB representation of the values by interpolating the range 
         [min(value),max(value)] into the colorspace [min_color, max_color].
         
@@ -22,30 +22,30 @@ examples = { """
 
         :return: gray
 
-    """ :  DocStringInfo(docstring=
-                         ' \n        Provides a RGB representation of the values by interpolating the range \n'
-                         '        [min(value),max(value)] into the colorspace [min_color, max_color].\n',
+    """: DocStringInfo(docstring=
+ ' \n        Provides a RGB representation of the values by interpolating the range \n'
+ '        [min(value),max(value)] into the colorspace [min_color, max_color].\n',
   params={
         'value': Arg('The field to represent.', 'HxW array'),
         'max_value': Arg('If specified, everything *above* is clipped.', 'float'),
         'min_value': Arg('If specified, everything *below* is clipped.', 'float'),
         'min_color': Arg('Color to give to the minimum values.', None),
   },
-  returns=[ Arg('A RGB image.', "HxWx3 uint8"), Arg('gray', None)] 
-)          
+  returns=[ Arg('A RGB image.', "HxWx3 uint8"), Arg('gray', None)]
+)
 }
 
 
 from .utils import PGTestCase
 
 class DocStringTest(PGTestCase):
-    
+
     def test_parsing(self):
         for string, result in examples.items():
             parsed = parse_docstring_annotations(string)
             # print parsed
             # print result
             self.assertEqual(result, parsed)
-                
-        
-        
+
+
+

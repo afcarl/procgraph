@@ -1,4 +1,4 @@
-from .debug_components import  *
+from .debug_components import *
 
 # TODO: make this list automatically generated
 
@@ -15,4 +15,4 @@ import procgraph_robotics
 import procgraph_signals
 import procgraph_statistics
 
-    
+

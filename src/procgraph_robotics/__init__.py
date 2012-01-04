@@ -9,8 +9,8 @@
 
 procgraph_info = {
     # List of python packages 
-    'requires':  ['geometry']
-} 
+    'requires': ['geometry']
+}
 
 # Smart dependency resolution
 from procgraph import import_magic

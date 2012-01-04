@@ -1,8 +1,8 @@
 ''' Miscellaneous functions to be better organized. '''
 
 procgraph_info = {
-    'requires':  [ ('json', ('simplejson',)) ] # TODO: add cjson?
-} 
+    'requires': [('json', ('simplejson',))] # TODO: add cjson?
+}
 
 
 from procgraph import import_magic

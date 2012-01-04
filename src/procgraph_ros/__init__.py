@@ -11,8 +11,8 @@
 
 procgraph_info = {
     # List of python packages 
-    'requires':  ['ros']
-} 
+    'requires': ['ros']
+}
 
 
 # Smart dependency importing

@@ -2,6 +2,7 @@ import os
 
 from . import tables
 
+
 class OpenFile(object):
     def __init__(self, pytables_handle):
         self.pytables_handle = pytables_handle
@@ -9,21 +10,23 @@ class OpenFile(object):
 
     open_files = {}
 
+
 def tc_open_for_reading(filename):
     filename = os.path.realpath(filename)
-    
+
     if filename in OpenFile.open_files:
-        openf = OpenFile.open_files[filename] 
+        openf = OpenFile.open_files[filename]
         openf.num_references += 1
         # print "tc: reused %s r (%s total) " % 
         #   (filename, len(OpenFile.open_files))
         return openf.pytables_handle
-    else: 
+    else:
         f = tables.openFile(filename, 'r')
         OpenFile.open_files[filename] = OpenFile(f)
         # print "tc: opened %s r (%s total) " % 
         #   (filename, len(OpenFile.open_files))
         return f
+
 
 def tc_open_for_writing(filename):
     ''' Throws exception if it is already open. '''
@@ -32,10 +35,10 @@ def tc_open_for_writing(filename):
     if filename in OpenFile.open_files:
         raise Exception('File "%s" already open, '
                         'cannot open again for writing.' % filename)
-    else: 
+    else:
         f = tables.openFile(filename, 'w')
         OpenFile.open_files[filename] = OpenFile(f)
-        
+
         # print "tc: opened %s w (%s total) " %  
         # (filename, len(OpenFile.open_files))
         return f
@@ -48,15 +51,15 @@ def tc_open_for_appending(filename):
     if filename in OpenFile.open_files:
         raise Exception('File "%s" already open, '
                         'cannot open again for writing.' % filename)
-    else: 
+    else:
         f = tables.openFile(filename, 'r+')
         OpenFile.open_files[filename] = OpenFile(f)
-        
+
         # print "tc: opened %s w (%s total) " % 
         # (filename, len(OpenFile.open_files))
         return f
 
-    
+
 def tc_close(handle):
     ''' Decreases the reference counting and closes the file if
         it is the last one. '''
@@ -66,11 +69,11 @@ def tc_close(handle):
     else:
         assert isinstance(handle, tables.file.File)
         filename = handle.filename
-        
+
     openf = OpenFile.open_files[filename]
     openf.num_references -= 1
-    
+
     if openf.num_references == 0:
         openf.pytables_handle.close()
         del OpenFile.open_files[filename]
-         
+

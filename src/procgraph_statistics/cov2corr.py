@@ -2,6 +2,7 @@ from numpy import multiply, sqrt
 
 from procgraph import simple_block
 
+
 @simple_block
 def cov2corr(covariance, zero_diagonal=True):
     ''' 
@@ -19,10 +20,10 @@ def cov2corr(covariance, zero_diagonal=True):
     sigma = sqrt(covariance.diagonal())
     M = outer(sigma, sigma)
     correlation = covariance / M
-    
+
     if zero_diagonal:
         for i in range(covariance.shape[0]):
             correlation[i, i] = 0
-    
+
     return correlation
- 
+

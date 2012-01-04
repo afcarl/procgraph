@@ -1,10 +1,13 @@
 
+
 class PGException(Exception):
     pass
 
+
 class BlockWriterError(PGException):
-    ''' An error by who wrote the block (e.g.: did not define signals).''' 
+    ''' An error by who wrote the block (e.g.: did not define signals).'''
     pass
+
 
 class ModelWriterError(PGException):
     ''' An error by who wrote the model, can be either Syntax or Semantic '''
@@ -25,20 +28,23 @@ class SemanticError(ModelWriterError):
         s += format_where(self.element)
         return s
 
+
 class PGSyntaxError(ModelWriterError):
     ''' A syntactic error by who wrote the model spec.'''
     def __init__(self, error, where=None):
         self.error = error
         self.where = where
-        
+
     def __str__(self):
         s = self.error
         s += "\n\n" + add_prefix(self.where.__str__(), ' ')
-        return s 
+        return s
+
 
 class ModelExecutionError(PGException):
     ''' Runtime errors, including misuse by the user '''
     pass
+
 
 class BadInput(ModelExecutionError):
     ''' Exception thrown to communicate a problem with one
@@ -51,18 +57,19 @@ class BadInput(ModelExecutionError):
             self.bad_value = block.get_input(input_signal)
         else:
             self.bad_value = '??? (block not given)'
-    
+
     def __str__(self):
         if self.block is not None:
             name = self.block.name
         else:
             name = '(unknown)'
-        
+
         # TODO: add short bad_value
-        s = ("Bad input %r for block %r: %s" % 
+        s = ("Bad input %r for block %r: %s" %
              (self.input_signal, name, self.error))
         s += format_where(self.block)
         return s
+
 
 class BadConfig(ModelExecutionError):
     ''' Exception thrown to communicate a problem with one
@@ -73,18 +80,19 @@ class BadConfig(ModelExecutionError):
         self.error = error
         self.block = block
         self.bad_value = block.config[config]
-        
+
     def __str__(self):
         if self.block is not None:
             name = self.block.name
         else:
             name = '(unknown)'
-        
-        s = ("Bad config %r = %r for block %r: %s" % 
+
+        s = ("Bad config %r = %r for block %r: %s" %
              (self.config, self.bad_value, name, self.error))
         s += format_where(self.block)
         return s
-    
+
+
 # A couple of functions for pretty errors
 def aslist(x):
     if isinstance(x, dict):
@@ -93,19 +101,22 @@ def aslist(x):
         return ", ".join(sorted(x))
     else:
         return "<empty>"
-    
+
+
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
     # TODO: add guess in case of typos
-    return ('Could not find %s %r. I know %s.' % 
+    return ('Could not find %s %r. I know %s.' %
             (what, x, aslist(iterable)))
+
 
 def add_prefix(s, prefix):
     result = ""
     for l in s.split('\n'):
         result += prefix + l + '\n'
     return result
-    
+
+
 def format_where(element_or_block):
     e = element_or_block
     if e is not None:
@@ -115,5 +126,5 @@ def format_where(element_or_block):
             return " (no position given)"
     else:
         return " (no element/block given)"
-    
-    
+
+

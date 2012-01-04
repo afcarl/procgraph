@@ -10,7 +10,7 @@ from .core.block import Block, Generator
 from .core.model_loader import pg_add_this_package_models
 
 from .core.registrar_other import (register_model_spec,
-                                            register_simple_block, simple_block)
+                                    register_simple_block, simple_block)
 
 from .scripts.pg import pg
 

@@ -12,14 +12,14 @@ from procgraph import import_succesful, import_magic
 
 procgraph_info = {
     # List of python packages 
-    'requires':  ['tables']
-} 
+    'requires': ['tables']
+}
 
 tables = import_magic(__name__, 'tables')
 
-from .hdfwrite import * 
-from .hdfread import * 
-from .hdfread_many import * 
+from .hdfwrite import *
+from .hdfread import *
+from .hdfread_many import *
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)

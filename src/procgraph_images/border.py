@@ -3,10 +3,11 @@ import numpy
 from procgraph import Block
 from procgraph.block_utils import check_rgb
 
+
 class Border(Block):
     ''' Adds a block around the input image. '''
     Block.alias('border')
-    
+
     Block.input('rgb', 'Input image.')
     Block.output('rgb', 'Image with borders added around.')
     Block.config('color', 'border color (0-1 rgb)', default=[0, 0, 0])
@@ -14,13 +15,13 @@ class Border(Block):
     Block.config('right', 'pixel length for right border', default=0)
     Block.config('top', 'pixel length for top border', default=0)
     Block.config('bottom', 'pixel length for bottom border', default=0)
- 
+
     def update(self):
         check_rgb(self, 'rgb')
-        
+
         # TODO: check
-        rgb = self.input.rgb 
-        
+        rgb = self.input.rgb
+
         if self.config.left > 0:
             height = rgb.shape[0]
             pad = self.pad(height, self.config.left)
@@ -37,13 +38,13 @@ class Border(Block):
             width = rgb.shape[1]
             pad = self.pad(self.config.bottom, width)
             rgb = numpy.vstack((rgb, pad))
-            
+
         self.output.rgb = rgb
-        
+
     def pad(self, height, width):
         pad = numpy.zeros((height, width, 3), dtype='uint8')
         for i in range(3):
-            pad[:, :, i] = self.config.color[i]*255
+            pad[:, :, i] = self.config.color[i] * 255
         return pad
-    
-        
+
+

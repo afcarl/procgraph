@@ -4,7 +4,8 @@
 
     Note that some of these come from prototypes, and I should get rid of them.
 
-    Also some are configuration parameters which should be settable in some way.
+    Also some are configuration parameters which should be settable in 
+    some way.
     
 '''
 
@@ -18,12 +19,12 @@ STRICT = True
 ### For the procgraph_info  dictionary:
 
 # Variable that should be defined 
-PROCGRAPH_INFO_VARIABLE = 'procgraph_info'  
+PROCGRAPH_INFO_VARIABLE = 'procgraph_info'
 # Which variable holds the dependencies
 REQUIRES = 'requires'
 # Key for the "parsed" version of REQUIRES (used internally)
 REQUIRES_PARSED = 'requires_parsed'
-    
+
 
 ### Types of inputs and outputs
 

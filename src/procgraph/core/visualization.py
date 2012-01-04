@@ -6,9 +6,12 @@ try:
 except:
     sys.stderr.write('procgraph can make use of the package "termcolor". '
                      'Please install it.\n')
-    def termcolor_colored(x, color=None, on_color=None, attrs=None): #@UnusedVariable
+
+    def termcolor_colored(x,
+                    color=None, on_color=None, attrs=None): #@UnusedVariable
         ''' emulation of the termcolor interface '''
         return x
+
 
 def colored(x, color=None, on_color=None, attrs=None):
     colorize = True
@@ -24,27 +27,34 @@ try:
 except:
     sys.stderr.write('procgraph can make use of the package "setproctitle". '
                      'Please install it.\n')
+
     def setproctitle(x):
         ''' emulation of the setproctitle interface '''
         pass
-    
+
 screen_columns = None
+
+
 def get_screen_columns():
     module = sys.modules[__name__]
     if  module.screen_columns is None:
         max_x, max_y = getTerminalSize() #@UnusedVariable
         module.screen_columns = max_x
-        
+
     return module.screen_columns
+
 
 def getTerminalSize():
     '''
     max_x, max_y = getTerminalSize()
     '''
     import os
+
     def ioctl_GWINSZ(fd):
         try:
-            import fcntl, termios, struct
+            import fcntl
+            import termios
+            import struct
             cr = struct.unpack('hh', fcntl.ioctl(fd, termios.TIOCGWINSZ,
         '1234'))
         except:
@@ -70,27 +80,33 @@ def getTerminalSize():
 #    s = '\r' + (' ' *  (get_screen_columns() - 2)) + '\r'
 #    stream.write(s)
 #    pass
-    
+
+
 def warning(string):
     write_message(string, lambda x: 'pg: ' + colored(x, 'magenta'))
-    
+
+
 def error(string):
     write_message(string, lambda x: 'pg: ' + colored(x, 'red'))
-    
+
+
 def user_error(string):
     write_message(string, lambda x: 'pg: ' + colored(x, 'red'))
-    
+
+
 def info(string):
     write_message(string, lambda x: 'pg: ' + colored(x, 'green'))
-    
+
+
 def debug(string):
     write_message(string,
                   lambda x: 'pg: ' + colored(x, 'cyan', attrs=['dark']))
-    
+
+
 def write_message(string, formatting):
     sys.stdout.flush()
     string = str(string)
-    
+
     #clean_console_line(sys.stderr)
     lines = string.split('\n')
     if len(lines) == 1:
@@ -101,11 +117,11 @@ def write_message(string, formatting):
             #    l = '- ' + l
             #else:
             #    l = '  ' + l
-            sys.stderr.write(formatting(l) + '\n')    
-    
-    sys.stderr.flush() 
+            sys.stderr.write(formatting(l) + '\n')
 
-    
+    sys.stderr.flush()
+
+
 def semantic_warning(error, element):
     msg = str(error) + '\n' + str(element.where)
     warning(msg)

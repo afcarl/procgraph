@@ -19,7 +19,8 @@ class BlockConfig:
 
 
 class BlockInput:
-    def __init__(self, type, name, min, max, desc, desc_rest, where): #@ReservedAssignment
+    def __init__(self, type, name, min, max, #@ReservedAssignment
+                 desc, desc_rest, where):
         self.type = type
         self.name = name
         self.min = min
@@ -30,8 +31,10 @@ class BlockInput:
 
     # TODO: add repr
 
+
 class BlockOutput:
-    def __init__(self, type, name, desc, desc_rest, where): #@ReservedAssignment
+    def __init__(self, type, name, #@ReservedAssignment
+                 desc, desc_rest, where):
         self.type = type
         self.name = name
         self.desc = desc
@@ -40,6 +43,7 @@ class BlockOutput:
 
     def __repr__(self):
         return "BlockOutput(%s,%s)" % (self.type, self.name)
+
 
 def block_alias(name):
     assert isinstance(name, str)
@@ -57,6 +61,7 @@ def block_config(name, description=None, default='not-given'):
     BlockMeta.tmp_config.append(BlockConfig(name, has_default, default,
                                             desc, desc_rest, None))
 
+
 def block_input(name, description=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str)
@@ -70,7 +75,9 @@ def block_input(name, description=None):
     BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None,
                                           desc, desc_rest, None))
 
-def block_input_is_variable(description=None, min=None, max=None): #@ReservedAssignment
+
+def block_input_is_variable(description=None,
+                             min=None, max=None): #@ReservedAssignment
     assert description is None or isinstance(description, str)
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_input:
@@ -80,18 +87,22 @@ def block_input_is_variable(description=None, min=None, max=None): #@ReservedAss
     BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max,
                                           desc, desc_rest, None))
 
+
 def block_output(name, description=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str)
     desc, desc_rest = split_docstring(description)
     if [x for x in BlockMeta.tmp_output if x.name == name]:
         cleanup()
-        raise BlockWriterError('Already described output variable "%s".' % name)
+        raise BlockWriterError('Already described output variable "%s".'
+                               % name)
     if BlockMeta.tmp_output and BlockMeta.tmp_output[-1].type == VARIABLE:
         cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output.')
 
-    BlockMeta.tmp_output.append(BlockOutput(FIXED, name, desc, desc_rest, None))
+    BlockMeta.tmp_output.append(BlockOutput(FIXED, name,
+                                             desc, desc_rest, None))
+
 
 def block_output_is_variable(description=None, suffix=None):
     assert description is None or isinstance(description, str)
@@ -99,9 +110,11 @@ def block_output_is_variable(description=None, suffix=None):
     if BlockMeta.tmp_output:
         cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output'
-			' or variable with variable. (added already: %s)' % (BlockMeta.tmp_output))
+                      ' or variable with variable. (added already: %s)' %
+                         (BlockMeta.tmp_output))
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
                                             desc, desc_rest, None))
+
 
 def block_output_is_defined_at_runtime(description=None):
     assert description is None or isinstance(description, str)
@@ -109,9 +122,11 @@ def block_output_is_defined_at_runtime(description=None):
     if BlockMeta.tmp_output:
         cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output'
-                               ' or variable with variable. (added already: %s)' % (BlockMeta.tmp_output))
+                            ' or variable with variable. (added already: %s)'
+                               % (BlockMeta.tmp_output))
     BlockMeta.tmp_output.append(BlockOutput(DEFINED_AT_RUNTIME, None,
                                             desc, desc_rest, None))
+
 
 def cleanup():
     ''' Cleans up temporary data for the meta-sugar, if the construction 
@@ -142,8 +157,12 @@ class BlockMeta(type):
         BlockMeta.tmp_output = []
         BlockMeta.tmp_input = []
 
-        has_variable_input = [x for x in BlockMeta.tmp_input if x.type == VARIABLE]
-        has_variable_output = [x for x in BlockMeta.tmp_output if x.type == VARIABLE]
+        has_variable_input = [x
+                              for x in BlockMeta.tmp_input
+                              if x.type == VARIABLE]
+        has_variable_output = [x
+                               for x in BlockMeta.tmp_output
+                               if x.type == VARIABLE]
 
         if has_variable_output and not has_variable_input:
             raise ModelWriterError('Cannot have variable output without '
@@ -152,7 +171,6 @@ class BlockMeta(type):
         if len(BlockMeta.aliases) > 1:
             raise ModelWriterError("We don't support multiple aliases yet. "
                                    "Tried to set  %r." % BlockMeta.aliases)
-
 
         if BlockMeta.aliases:
             name = BlockMeta.aliases[0]
@@ -192,11 +210,11 @@ class BlockMetaSugar(object):
         block_output_is_defined_at_runtime(description)
 
     @staticmethod
-    def input_is_variable(description=None, min=None, max=None): #@ReservedAssignment
+    def input_is_variable(description=None,
+                          min=None, max=None): #@ReservedAssignment
         ''' Declares that this block can accept a variable number
             of inputs. You can specify minimum and maximum number. '''
         block_input_is_variable(description, min, max)
-
 
 
 # TODO: move this somewhere else
@@ -233,6 +251,7 @@ def trim(docstring):
     return result
 
 # TODO: remove space on the right
+
 
 def split_docstring(s):
     ''' Splits a docstring in a tuple (first, rest). '''

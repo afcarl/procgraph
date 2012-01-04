@@ -1,12 +1,16 @@
 import numpy
 
-from procgraph import Block 
+from procgraph import Block
 from datetime import datetime
 
+
 class Info(Block):
-    ''' Prints more compact information about the inputs than :ref:`block:print`.
+    ''' 
+        Prints more compact information about the inputs 
+        than :ref:`block:print`.
     
-        For numpy arrays it prints their shape and dtype instead of their values. 
+        For numpy arrays it prints their shape and dtype 
+        instead of their values. 
         
     '''
     Block.alias('info')
@@ -15,7 +19,7 @@ class Info(Block):
     def init(self):
         self.first = {}
         self.counter = {}
-        
+
     def update(self):
         # Just copy the input to the output 
         for i in range(self.num_input_signals()):
@@ -30,10 +34,10 @@ class Info(Block):
                 s = "%s %s" % (str(val.shape), str(val.dtype))
             else:
                 s = str(val)
-                
+
             date = datetime.fromtimestamp(ts).isoformat(' ')[:-4]
-            ts = "%.2f" % ts 
-            self.debug('%s (%8.2fs) %12s %5d  %s' % 
+            ts = "%.2f" % ts
+            self.debug('%s (%8.2fs) %12s %5d  %s' %
                        (date, friendly, name, self.counter[i], s))
             self.counter[i] += 1
- 
+

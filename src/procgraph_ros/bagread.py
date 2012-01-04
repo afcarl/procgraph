@@ -1,5 +1,6 @@
 from procgraph import Block, Generator
 
+
 class BagRead(Generator):
     ''' 
         This block reads a bag file (ROS logging format).
@@ -19,20 +20,21 @@ class BagRead(Generator):
     def get_output_signals(self):
         from ros import rosbag #@UnresolvedImport
         self.bag = rosbag.Bag(self.config.file)
-        
+
         if self.config.topics is not None:
             given_topics = self.config.topics.strip()
         else:
             given_topics = None
-        
+
         #self.info('Given: %s' % given_topics)    
         if given_topics:
             topics = given_topics.split(',')
         else:
-            topics = sorted(set([c.topic for c in self.bag._get_connections()]))
-        
+            topics = sorted(set([c.topic
+                                 for c in self.bag._get_connections()]))
+
         # self.info('Tppics: %s' % topics)    
-            
+
         self.topic2signal = {}
         signals = []
         for t in topics:
@@ -41,7 +43,7 @@ class BagRead(Generator):
                 tokens = t.split(':')
                 assert len(tokens) == 2
                 t = tokens[0]
-                signal_name = tokens[1] 
+                signal_name = tokens[1]
             else:
                 signal_name = str(t).split('/')[-1]
             if signal_name in signals:
@@ -52,17 +54,16 @@ class BagRead(Generator):
             self.topic2signal[t] = signal_name
 
         topics = self.topic2signal.keys()
-        
-        
+
         self.info(self.topic2signal)
-        
+
         self.iterator = self.bag.read_messages(topics=topics)
 
         return signals
-        
+
     def init(self):
         self._load_next()
-        
+
     def _load_next(self):
         try:
             topic, msg, timestamp = self.iterator.next()
@@ -73,8 +74,8 @@ class BagRead(Generator):
             self.has_next = True
         except StopIteration:
             self.has_next = False
-        
-    def next_data_status(self): 
+
+    def next_data_status(self):
         if self.has_next:
             return (self.next_signal, self.next_timestamp)
         else:
@@ -83,18 +84,16 @@ class BagRead(Generator):
     def update(self):
         if not self.has_next:
             return # XXX: error here?
-            
+
         self.set_output(self.next_signal,
                         value=self.next_value,
                         timestamp=self.next_timestamp)
-    
-        self._load_next()
-        
 
+        self._load_next()
 #        # write status message if not quiet
 #        if next_signal == self.signals[0] and not self.config.quiet:
 #            self.write_update_message(index, len(table), next_signal)
-        
+
 #    def write_update_message(self, index, T, signal, nintervals=10):
 #        interval = int(numpy.floor(T * 1.0 / nintervals))
 #        if (index > 0 and 
@@ -108,5 +107,5 @@ class BagRead(Generator):
 #         
     def finish(self):
         self.bag.close()
-         
-        
+
+

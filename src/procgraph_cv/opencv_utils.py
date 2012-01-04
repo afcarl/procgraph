@@ -1,18 +1,19 @@
 import numpy
 
 from procgraph import  simple_block
-from procgraph.block_utils  import  check_2d_array 
+from procgraph.block_utils  import  check_2d_array
 
 from . import cv
+
 
 def numpy_to_cv(numpy_array):
     ''' Converts a HxW or HxWx3 numpy array to OpenCV 'image' '''
     dtype2depth = {
-        'uint8':   cv.IPL_DEPTH_8U,
-        'int8':    cv.IPL_DEPTH_8S,
-        'uint16':  cv.IPL_DEPTH_16U,
-        'int16':   cv.IPL_DEPTH_16S,
-        'int32':   cv.IPL_DEPTH_32S,
+        'uint8': cv.IPL_DEPTH_8U,
+        'int8': cv.IPL_DEPTH_8S,
+        'uint16': cv.IPL_DEPTH_16U,
+        'int16': cv.IPL_DEPTH_16S,
+        'int32': cv.IPL_DEPTH_32S,
         'float32': cv.IPL_DEPTH_32F,
         'float64': cv.IPL_DEPTH_64F,
     }
@@ -24,7 +25,7 @@ def numpy_to_cv(numpy_array):
         (height, width, nchannels) = numpy_array.shape
     else:
         raise ValueError('Invalid format shape %s' % str(numpy_array.shape))
-    
+
     im_cv = cv.CreateImage((width, height),
                            dtype2depth[str(numpy_array.dtype)],
                            nchannels)
@@ -54,6 +55,7 @@ def cv_to_numpy(im):
     a.shape = (im.height, im.width, im.nChannels)
     return a
 
+
 @simple_block(num_outputs=2)
 def gradient(grayscale, aperture_size=3):
     """ 
@@ -70,10 +72,10 @@ def gradient(grayscale, aperture_size=3):
         
         :return: gy: Gradient in the *y* direction.
         :rtype: array(HxW,float)
-    """    
-        
+    """
+
     check_2d_array(grayscale, "grayscale")
-    
+
     im = numpy_to_cv(grayscale)
     shape = (im.width, im.height)
     sobel = cv.CreateImage(shape, cv.IPL_DEPTH_32F, 1)
@@ -102,16 +104,16 @@ def smooth(grayscale, gaussian_std=5.0):
         :rtype: array(HxW,float)
         
     """
-    
+
     check_2d_array(grayscale, "grayscale")
     grayscale = grayscale.astype('float32')
-    
+
     im = numpy_to_cv(grayscale)
     shape = (im.width, im.height)
-    smoothed = cv.CreateImage(shape, cv.IPL_DEPTH_32F, 1) 
+    smoothed = cv.CreateImage(shape, cv.IPL_DEPTH_32F, 1)
 
     cv.Smooth(im, smoothed, cv.CV_GAUSSIAN, 0, 0, gaussian_std)
 
-    result_a = cv_to_numpy(smoothed).squeeze() 
+    result_a = cv_to_numpy(smoothed).squeeze()
     return result_a
 

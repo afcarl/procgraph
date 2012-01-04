@@ -3,9 +3,10 @@
 #    from std_msgs.msg import  String
 #except ImportError:
 #    pass
- 
+
 import numpy as np
 from procgraph import simple_block
+
 
 @simple_block
 def ros2python(msg):
@@ -17,8 +18,9 @@ def ros2python(msg):
 #    else:
 #        print('Unknown type: %s' % msg.__class__)
 #        return msg
-    
+
     return msg.data
+
 
 @simple_block
 def ros_scan2python(scan):

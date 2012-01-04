@@ -4,8 +4,8 @@
 
 procgraph_info = {
     # List of python packages 
-    'requires':  [ ('cv', ('cv', 'opencv')) ]
-} 
+    'requires': [('cv', ('cv', 'opencv'))]
+}
 
 
 from procgraph import import_magic
@@ -15,4 +15,4 @@ from procgraph import import_magic
 cv = import_magic(__name__, 'cv')
 
 
-from . import opencv_utils 
+from . import opencv_utils

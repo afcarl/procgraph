@@ -3,9 +3,9 @@
 
 '''
 
-procgraph_info = { 
-    'requires':  ['matplotlib', 'matplotlib.pylab']
-} 
+procgraph_info = {
+    'requires': ['matplotlib', 'matplotlib.pylab']
+}
 
 # Smart dependencies initialization
 from procgraph import import_magic, import_succesful
@@ -16,6 +16,6 @@ if import_succesful(matplotlib):
 
 pylab = import_magic(__name__, 'matplotlib.pylab')
 
-from .pylab_to_image import * 
+from .pylab_to_image import *
 from .plot import *
 

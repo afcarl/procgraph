@@ -2,6 +2,7 @@ import numpy
 
 from procgraph import Block, BadInput, register_model_spec
 
+
 def isiterable(x):
     try:
         iter(x)
@@ -12,14 +13,14 @@ def isiterable(x):
 
 class ForwardDifference12(Block):
     ''' Computes ``x[t+1] - x[t]`` normalized with timestamp. '''
-    
+
     Block.alias('two_step_difference')
-    
+
     Block.input('x12', 'An array with the last 2 values of x.')
     Block.input('t12', 'An array with the last 2 values of the timestamp.')
-    
-    Block.output('x_dot', 'Derivative of x') 
-        
+
+    Block.output('x_dot', 'Derivative of x')
+
     def update(self):
         x = self.input.x12
         t = self.input.t12
@@ -27,9 +28,9 @@ class ForwardDifference12(Block):
             raise BadInput('Expected arrays of 2 elements', self, 'x')
         if not isiterable(t) or len(t) != 2:
             raise BadInput('Expected arrays of 2 elements', self, 't')
-       
+
         delta = t[1] - t[0]
-        
+
         if not delta > 0:
             raise BadInput('Bad timestamp sequence % s' % t, self, 't')
 
@@ -40,8 +41,8 @@ class ForwardDifference12(Block):
             diff = x[1] - x[0]
         time = t[0]
         x_dot = diff / numpy.float32(delta)
-        self.set_output('x_dot', x_dot, timestamp=time)  
- 
+        self.set_output('x_dot', x_dot, timestamp=time)
+
 # TODO: move this to models/
 register_model_spec("""
 --- model derivative2
