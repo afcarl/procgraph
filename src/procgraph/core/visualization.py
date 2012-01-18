@@ -100,7 +100,7 @@ def info(string):
 
 def debug(string):
     write_message(string,
-                  lambda x: 'pg: ' + colored(x, 'cyan', attrs=['dark']))
+                  lambda x: 'pg: ' + colored(x, 'cyan'))#, attrs=['dark']))
 
 
 def write_message(string, formatting):

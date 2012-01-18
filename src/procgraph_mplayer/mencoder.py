@@ -20,11 +20,14 @@ class MEncoder(Block):
     Block.input('image', 'Either a HxWx3 uint8 numpy array representing '
                          'an RGB image, or a HxW representing grayscale. ')
 
-    Block.config('file', 'Output file (AVI format.)')
+    Block.config('file', 'Output file (AVI format)')
     Block.config('fps', 'Framerate of resulting movie. If not specified, '
                         'it will be guessed from data.', default=None)
     Block.config('fps_safe', 'If the frame autodetect gives strange results, '
                              'we use this safe value instead.', default=10)
+
+    Block.config('convert_to_mp4', 'If true, use ffmpeg to convert to '
+                 'web-ready mp4.', default=True)
 
     Block.config('vcodec', 'Codec to use.', default='mpeg4')
     Block.config('vbitrate', 'Bitrate -- default is reasonable.',
@@ -108,6 +111,8 @@ class MEncoder(Block):
                 (self.width, self.height, fps, format),
                 '-ovc', 'lavc', '-lavcopts',
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
+                  # Currently broken :-(
+                  #'-of', 'lavf', '-lavfopts', 'format=mp4',
                  '-o', self.tmp_filename]
         self.debug('command line: %s' % " ".join(args))
 
@@ -127,6 +132,9 @@ class MEncoder(Block):
                 os.unlink(self.filename)
             os.rename(self.tmp_filename, self.filename)
 
+        if self.config.convert_to_mp4:
+            convert_to_mp4(self.filename)
+
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array
         if not image.flags['C_CONTIGUOUS']:
@@ -137,3 +145,49 @@ class MEncoder(Block):
         if self.config.timestamps:
             self.timestamps_file.write('%s\n' % timestamp)
             self.timestamps_file.flush()
+
+
+def convert_to_mp4(filename):
+    """ Creates a web-ready mp4 using ffmpeg """
+
+    basename, ext = os.path.splitext(filename)
+    if ext == 'mp4':
+        raise Exception('Need a file that does not end in .mp4 (%r)' % filename)
+    mp4 = basename + '.mp4'
+
+    # XXX: make random file
+    tmp = basename + '.firstpass.mp4'
+
+    if not os.path.exists(filename):
+        raise Exception("Filename %s does not exist." % filename)
+
+    if (os.path.exists(mp4) and
+        (os.path.getmtime(mp4) > os.path.getmtime(filename))):
+        return
+
+    cmds = ['ffmpeg', '-y', '-i', filename,
+            '-vcodec', 'libx264', '-vpre', 'slow',
+            '-crf', '22', '-threads', '0', tmp]
+
+    print(" ".join(cmds))
+    subprocess.check_call(cmds)
+
+    # TODO: check file exists
+    try:
+        subprocess.check_call(['qt-faststart', tmp, mp4])
+        print('Succesfull call of qt-faststart.')
+    except Exception as e:
+        print("Could not call qt-faststart: %s" % e)
+
+        try:
+            # easy_install qtfaststart
+            subprocess.check_call(['qtfaststart', tmp, mp4])
+            print('Succesfull call of qtfaststart.')
+        except Exception as e:
+            print("Could not call qtfaststart: %s" % e)
+
+            print("The file will not be ready for streaming.")
+            os.rename(tmp, mp4)
+
+    if os.path.exists(tmp):
+        os.unlink(tmp)
