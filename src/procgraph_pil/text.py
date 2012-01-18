@@ -215,7 +215,7 @@ def process_text(draw, t):
         print('Unknown vertical-align key %s' % valign)
 
     if bg:
-        for a in [ [-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
+        for a in [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
                    [-1, +1], [1, 1], [1, -1]]:
             draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
 

@@ -152,7 +152,8 @@ def convert_to_mp4(filename):
 
     basename, ext = os.path.splitext(filename)
     if ext == 'mp4':
-        raise Exception('Need a file that does not end in .mp4 (%r)' % filename)
+        raise Exception('Need a file that does not end in .mp4 (%r)' %
+                        filename)
     mp4 = basename + '.mp4'
 
     # XXX: make random file
