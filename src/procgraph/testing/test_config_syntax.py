@@ -23,15 +23,14 @@ config x4     "documentation"
 
 """
 ]
-          
 
 
 class SyntaxTestMultiple(PGTestCase):
-    
+
     def testBadExamples(self):
         for example in bad_examples:
             self.check_syntax_error(example)
-            
+
     def testExamples(self):
         for example in good_examples:
             self.check_syntax_ok(example)

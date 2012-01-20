@@ -1,8 +1,8 @@
 ''' YAML conversions. '''
 
 procgraph_info = {
-    'requires':  [ 'yaml' ] 
-} 
+    'requires': ['yaml']
+}
 
 
 from procgraph import import_magic

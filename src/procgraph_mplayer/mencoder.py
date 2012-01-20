@@ -1,13 +1,20 @@
+from procgraph import Block
+from procgraph.block_utils import (expand, make_sure_dir_exists,
+    check_rgb_or_grayscale)
 import numpy
+import os
+import shutil
 import subprocess
 
-from procgraph import Block
-from procgraph.block_utils import make_sure_dir_exists, check_rgb_or_grayscale
-import os
-from procgraph.block_utils.file_io import expand
 
 # TODO: detect an error in Mencoder (perhaps size too large)
 # TODO: cleanup processes after finishing
+"""
+sudo apt-get install libavcodec-extra-52 libavdevice-extra-52 
+libavfilter-extra-0 libavformat-extra-52 libavutil-extra-49 
+libpostproc-extra-51 libswscale-extra-0
+
+"""
 
 
 class MEncoder(Block):
@@ -111,10 +118,11 @@ class MEncoder(Block):
                 (self.width, self.height, fps, format),
                 '-ovc', 'lavc', '-lavcopts',
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
-                  # Currently broken :-(
-                  #'-of', 'lavf', '-lavfopts', 'format=mp4',
                  '-o', self.tmp_filename]
         self.debug('command line: %s' % " ".join(args))
+        # Note: mp4 encoding is currently broken :-(
+        # These would be the options to add:
+        #'-of', 'lavf', '-lavfopts', 'format=mp4'
 
         if self.config.quiet:
             self.process = subprocess.Popen(args,
@@ -124,7 +132,8 @@ class MEncoder(Block):
             self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
 
         if self.config.timestamps:
-            self.timestamps_file = open(self.filename + '.timestamps', 'w')
+            self.timestamps_filename = self.filename + '.timestamps'
+            self.timestamps_file = open(self.timestamps_filename, 'w')
 
     def finish(self):
         if self.process is not None:
@@ -132,8 +141,12 @@ class MEncoder(Block):
                 os.unlink(self.filename)
             os.rename(self.tmp_filename, self.filename)
 
-        if self.config.convert_to_mp4:
-            convert_to_mp4(self.filename)
+            if self.config.convert_to_mp4:
+                basename, _ = os.path.splitext(self.filename)
+                mp4 = basename + '.mp4'
+                mp4t = mp4 + '.timestamps'
+                convert_to_mp4(self.filename, mp4)
+                shutil.copy(self.timestamps_filename, mp4t)
 
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array
@@ -147,17 +160,22 @@ class MEncoder(Block):
             self.timestamps_file.flush()
 
 
-def convert_to_mp4(filename):
-    """ Creates a web-ready mp4 using ffmpeg """
+def convert_to_mp4(filename, mp4=None):
+    """ Creates a web-ready mp4 using ffmpeg.
+    
+        need qtquickstart from 
+    """
 
     basename, ext = os.path.splitext(filename)
     if ext == 'mp4':
         raise Exception('Need a file that does not end in .mp4 (%r)' %
                         filename)
-    mp4 = basename + '.mp4'
 
-    # XXX: make random file
-    tmp = basename + '.firstpass.mp4'
+    if mp4 is None:
+        mp4 = basename + '.mp4'
+
+    # need .mp4 at the end otherwise ffmpeg gets confused
+    tmp = basename + '.mp4.firstpass.mp4'
 
     if not os.path.exists(filename):
         raise Exception("Filename %s does not exist." % filename)
@@ -166,28 +184,35 @@ def convert_to_mp4(filename):
         (os.path.getmtime(mp4) > os.path.getmtime(filename))):
         return
 
+    if os.path.exists(tmp):
+        os.unlink(tmp)
+    if os.path.exists(mp4):
+        os.unlink(mp4)
+
     cmds = ['ffmpeg', '-y', '-i', filename,
-            '-vcodec', 'libx264', '-vpre', 'slow',
+            # TODO: detect whether we can use these presets
+            # TODO: make presets configurable
+            '-vcodec', 'libx264',
+            '-vpre', 'libx264-max',
             '-crf', '22', '-threads', '0', tmp]
 
-    print(" ".join(cmds))
+    #print(" ".join(cmds))
     subprocess.check_call(cmds)
 
     # TODO: check file exists
     try:
-        subprocess.check_call(['qt-faststart', tmp, mp4])
-        print('Succesfull call of qt-faststart.')
+        subprocess.check_call(['qtfaststart', tmp, mp4])
+        #print('Succesfull call of qtfaststart.')
     except Exception as e:
-        print("Could not call qt-faststart: %s" % e)
+        print("Could not call qtfaststart: %s" % e)
 
         try:
             # easy_install qtfaststart
-            subprocess.check_call(['qtfaststart', tmp, mp4])
-            print('Succesfull call of qtfaststart.')
+            subprocess.check_call(['qt-faststart', tmp, mp4])
+            #print('Succesfull call of qt-faststart.')
         except Exception as e:
             print("Could not call qtfaststart: %s" % e)
-
-            print("The file will not be ready for streaming.")
+            #print("The file will not be ready for streaming.")
             os.rename(tmp, mp4)
 
     if os.path.exists(tmp):

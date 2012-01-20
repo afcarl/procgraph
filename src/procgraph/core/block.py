@@ -73,21 +73,25 @@ class Block(BlockMetaSugar):
 
     # Used during initialization
     def num_input_signals(self):
-        assert self.are_input_signals_defined(), 'No input defined for %s' % self
+        assert self.are_input_signals_defined(), \
+            'No input defined for %s' % self
         return len(self.__input_signals)
 
     def num_output_signals(self):
-        assert self.are_output_signals_defined(), 'No output defined for %s' % self
+        assert self.are_output_signals_defined(), \
+            'No output defined for %s' % self
         return len(self.__output_signals)
 
     def get_input_signals_names(self):
         ''' Returns the list of names of currently defined input signals. '''
-        assert self.are_input_signals_defined(), 'No input defined for %s' % self
+        assert self.are_input_signals_defined(), \
+            'No input defined for %s' % self
         return list(self.__input_signal_names)
 
     def get_output_signals_names(self):
         ''' Returns the list of names of currently defined output signals. '''
-        assert self.are_output_signals_defined(), 'No output defined for %s' % self
+        assert self.are_output_signals_defined(), \
+            'No output defined for %s' % self
         return list(self.__output_signal_names)
 
     def are_input_signals_defined(self):

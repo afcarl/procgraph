@@ -1,5 +1,6 @@
 from .utils import PGTestCase
 
+
 class TestRenaming(PGTestCase):
     def test_renaming(self):
         ''' Sometimes instancing a block twice will give error because

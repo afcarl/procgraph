@@ -13,7 +13,7 @@ good_examples = [
 --- model slave2
 
 |input name=x| -> |output name=y|
-''' ,
+''',
 '''
 # recursive models
 --- model master
@@ -41,7 +41,7 @@ bad_examples = [
 --- model slave2
 
 |input name=x| -> |slave1| -> |output name=y|
-'''             ,
+''',
 
 '''
 # same name should throw an error
@@ -56,23 +56,21 @@ bad_examples = [
 --- model slave
 
 |input name=x|  -> |output name=y|
-'''             
+'''
 
-                
-                
+
+
 ]
 
 
-
 class SemanticsTest(PGTestCase):
-    
+
     def testExamples(self):
         for example in good_examples:
             model = self.check_semantic_ok(example)
             print model
-            
-    
+
     def testBadExamples(self):
         for example in bad_examples:
             self.check_semantic_error(example)
-                
+

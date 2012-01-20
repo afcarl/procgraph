@@ -3,29 +3,30 @@ import subprocess
 import os
 import numpy
 import tempfile
- 
+
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
 from procgraph.block_utils import expand
- 
+
+
 class MPlayer(Generator):
-    ''' Decodes a video stream. ''' 
+    ''' Decodes a video stream. '''
 
     Block.alias('mplayer')
-    
+
     Block.config('file', 'Input video file. This can be in any format that '
                          '``mplayer`` understands.')
     Block.config('quiet', 'If true, suppress stderr messages from mplayer.',
                           default=True)
-    
+
     Block.output('video', 'RGB stream as numpy array.')
-    
-    def init(self): 
+
+    def init(self):
         self.file = expand(self.config.file)
-        
+
         if not os.path.exists(self.file):
             msg = 'File %r does not exist.' % self.file
             raise BadConfig(msg, self, 'file')
-            
+
         timestamps_file = self.file + '.timestamps'
         if os.path.exists(timestamps_file):
             self.info('Reading timestamps from %r.' % timestamps_file)
@@ -33,51 +34,52 @@ class MPlayer(Generator):
         else:
             self.timestamps = None
             self.info('Will use fps for timestamps.')
-        
+
         self.mencoder_started = False
-        
-        self.state.timestamp = None            
-        self.state.timestamp = self.get_next_timestamp() 
+
+        self.state.timestamp = None
+        self.state.timestamp = self.get_next_timestamp()
         self.state.next_frame = None
         self.state.finished = False
-         
-        
+
     def open_mencoder(self):
         self.mencoder_started = True
-        
+
         # first we identify the video resolution
-        args = ('mplayer -identify -vo null -ao null -frames 0'.split() 
+        args = ('mplayer -identify -vo null -ao null -frames 0'.split()
                 + [self.file])
         output = check_output(args)
-        
+
         info = {}
         for line in output.split('\n'):
             if line.startswith('ID_'):
                 key, value = line.split('=', 1)
                 try: # interpret numbers if possible
                     value = eval(value)
-                except: 
+                except:
                     pass
                 info[key] = value
-            
+
 #        self.debug("Video configuration: %s" % info)
 
-        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT", "ID_VIDEO_FPS", "ID_LENGTH"]
+        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT",
+                "ID_VIDEO_FPS", "ID_LENGTH"]
         id_width, id_height, id_fps, id_length = keys
         for k in keys:
             if not k in info:
-                msg = ('Could not find key %r in properties %s.' % 
+                msg = ('Could not find key %r in properties %s.' %
                       (k, sorted(info.keys())))
                 raise ModelExecutionError(msg, self)
-            
+
         self.width = info[id_width]
         self.height = info[id_height]
         self.fps = info[id_fps]
         self.length = info[id_length]
         self.approx_frames = int(self.length / self.fps)
-        
+
         # TODO: reading non-RGB streams not supported
-        self.info('Reading %dx%d video stream at %.1f fps in %r, length %s, frames %d.' % 
+        self.info('Reading %dx%d video stream at %.1f fps in %r,'
+                  ' length %s, frames %d.' %
                    (self.width, self.height, self.fps, self.config.file,
                     self.length, self.approx_frames))
 
@@ -85,22 +87,22 @@ class MPlayer(Generator):
         self.dtype = 'uint8'
 
         format = "rgb24" #@ReservedAssignment
-        
+
         self.temp_dir = tempfile.mkdtemp(prefix='procgraph_fifo_dir')
         self.fifo_name = os.path.join(self.temp_dir, 'mencoder_fifo')
         os.mkfifo(self.fifo_name)
         args = ['mencoder', self.file, '-ovc', 'raw',
-                '-rawvideo', 'w=%d:h=%d:format=%s' % 
+                '-rawvideo', 'w=%d:h=%d:format=%s' %
                     (self.width, self.height, format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
                 '-nosound',
                 '-o',
-                self.fifo_name 
+                self.fifo_name
                 ]
-        
+
         self.debug("command line: %s" % " ".join(args))
-         
+
         if self.config.quiet:
             self.process = subprocess.Popen(args,
                                             stdout=open('/dev/null'),
@@ -112,7 +114,6 @@ class MPlayer(Generator):
             self.delta = 1.0 / self.fps
 
         self.stream = open(self.fifo_name, 'r')
-        
 
     def get_next_timestamp(self):
         if self.timestamps:
@@ -126,47 +127,44 @@ class MPlayer(Generator):
                 return 0
             else:
                 return self.state.timestamp + self.delta
-                
-                
+
     def update(self):
         if not self.mencoder_started:
             self.open_mencoder()
             self.read_next_frame()
-            
+
         self.set_output(0,
                         value=self.state.next_frame,
                         timestamp=self.state.timestamp)
-        self.state.timestamp = self.get_next_timestamp() 
-    
+        self.state.timestamp = self.get_next_timestamp()
+
         self.state.next_frame = None
         self.read_next_frame()
-        
+
     def read_next_frame(self):
         if self.state.finished:
             return
         if self.state.next_frame is not None:
             return
-        
+
         dtype = numpy.dtype(('uint8', self.shape))
         rgbs = numpy.fromfile(self.stream, dtype=dtype, count=1)
-        
+
         if len(rgbs) == 0:
             self.state.next_frame = None
             self.state.finished = True
         else:
-            self.state.next_frame = rgbs[0, :].squeeze() 
-        
-        
+            self.state.next_frame = rgbs[0, :].squeeze()
+
     def next_data_status(self):
         if self.state.finished:
             return (False, None)
         else:
             return (True, self.state.timestamp)
-        
- 
+
     def finish(self):
         # TODO: make sure process is closed?
-        
+
         if os.path.exists(self.fifo_name):
             os.unlink(self.fifo_name)
         if os.path.exists(self.temp_dir):
