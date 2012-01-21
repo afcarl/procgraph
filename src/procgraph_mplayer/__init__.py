@@ -1,4 +1,5 @@
 ''' Blocks for encoding/decoding video based on MPlayer. '''
 
-from .mencoder import *  
-from .mplayer import * 
+from .mp4conversion import *
+from .mencoder import *
+from .mplayer import *
