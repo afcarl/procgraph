@@ -107,7 +107,9 @@ class MEncoder(Block):
         vbitrate = self.config.vbitrate
 
         self.filename = expand(self.config.file)
-        self.tmp_filename = self.filename + '.active'
+        basename, ext = os.path.splitext(self.filename)
+        self.tmp_filename = '%s.active.avi' % basename
+        self.convert_to_mp4 = ext in ['.mp4', '.MP4']
 
         make_sure_dir_exists(self.filename)
 
@@ -128,7 +130,7 @@ class MEncoder(Block):
         if self.config.quiet:
             self.process = subprocess.Popen(args,
                 stdin=subprocess.PIPE, stdout=open('/dev/null'),
-                                       stderr=open('/dev/null'),)
+                                       stderr=open('/dev/null'))
         else:
             self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
 
@@ -140,14 +142,19 @@ class MEncoder(Block):
         if self.process is not None:
             if os.path.exists(self.filename):
                 os.unlink(self.filename)
-            os.rename(self.tmp_filename, self.filename)
 
-            if self.config.convert_to_mp4:
-                basename, _ = os.path.splitext(self.filename)
-                mp4 = basename + '.mp4'
-                mp4t = mp4 + '.timestamps'
-                convert_to_mp4(self.filename, mp4)
-                shutil.copy(self.timestamps_filename, mp4t)
+            if self.convert_to_mp4:
+                self.info('Converting %s to %s.' % (self.tmp_filename,
+                                                    self.filename))
+                convert_to_mp4(self.tmp_filename, self.filename)
+            else:
+                self.info('Renaming %s to %s.' % (self.tmp_filename,
+                                                  self.filename))
+                os.rename(self.tmp_filename, self.filename)
+#                
+#                if self.config.timestamps:
+#                    mp4t = mp4 + '.timestamps'
+#                    shutil.copy(self.timestamps_filename, mp4t)
 
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array
