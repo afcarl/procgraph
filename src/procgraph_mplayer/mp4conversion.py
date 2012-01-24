@@ -36,7 +36,7 @@ def convert_to_mp4(filename, mp4=None):
             # TODO: make presets configurable
             '-vcodec', 'libx264',
             '-vpre', 'libx264-max',
-            '-crf', '22', '-threads', '0', tmp]
+            '-crf', '22', '-threads', '1', tmp]
 
     #print(" ".join(cmds))
     subprocess.check_call(cmds)

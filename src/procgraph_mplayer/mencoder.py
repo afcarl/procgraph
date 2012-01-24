@@ -4,7 +4,6 @@ from procgraph.block_utils import (expand, make_sure_dir_exists,
     check_rgb_or_grayscale)
 import numpy
 import os
-import shutil
 import subprocess
 
 
@@ -34,8 +33,8 @@ class MEncoder(Block):
     Block.config('fps_safe', 'If the frame autodetect gives strange results, '
                              'we use this safe value instead.', default=10)
 
-    Block.config('convert_to_mp4', 'If true, use ffmpeg to convert to '
-                 'web-ready mp4.', default=True)
+#    Block.config('convert_to_mp4', 'If true, use ffmpeg to convert to '
+#                 'web-ready mp4.', default=True)
 
     Block.config('vcodec', 'Codec to use.', default='mpeg4')
     Block.config('vbitrate', 'Bitrate -- default is reasonable.',
@@ -147,6 +146,9 @@ class MEncoder(Block):
                 self.info('Converting %s to %s.' % (self.tmp_filename,
                                                     self.filename))
                 convert_to_mp4(self.tmp_filename, self.filename)
+
+                if os.path.exists(self.tmp_filename):
+                    os.unlink(self.tmp_filename)
             else:
                 self.info('Renaming %s to %s.' % (self.tmp_filename,
                                                   self.filename))
