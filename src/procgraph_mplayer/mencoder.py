@@ -27,7 +27,7 @@ class MEncoder(Block):
     Block.input('image', 'Either a HxWx3 uint8 numpy array representing '
                          'an RGB image, or a HxW representing grayscale. ')
 
-    Block.config('file', 'Output file (AVI format)')
+    Block.config('file', 'Output file (AVI/MP4 format)')
     Block.config('fps', 'Framerate of resulting movie. If not specified, '
                         'it will be guessed from data.', default=None)
     Block.config('fps_safe', 'If the frame autodetect gives strange results, '
@@ -120,9 +120,11 @@ class MEncoder(Block):
                 (self.width, self.height, fps, format),
                 '-ovc', 'lavc', '-lavcopts',
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
+                 #'-v', "0", # verbosity level (1 prints stats \r)
                  '-o', self.tmp_filename]
         self.debug('command line: %s' % " ".join(args))
-        # Note: mp4 encoding is currently broken :-(
+        # Note: mp4 encoding is currently broken in mencoder :-(
+        #       so we have to use ffmpeg as a second step.
         # These would be the options to add:
         #'-of', 'lavf', '-lavfopts', 'format=mp4'
 
@@ -153,10 +155,6 @@ class MEncoder(Block):
                 self.info('Renaming %s to %s.' % (self.tmp_filename,
                                                   self.filename))
                 os.rename(self.tmp_filename, self.filename)
-#                
-#                if self.config.timestamps:
-#                    mp4t = mp4 + '.timestamps'
-#                    shutil.copy(self.timestamps_filename, mp4t)
 
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array
