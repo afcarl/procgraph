@@ -122,7 +122,7 @@ class MEncoder(Block):
                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
                  #'-v', "0", # verbosity level (1 prints stats \r)
                  '-o', self.tmp_filename]
-        self.debug('command line: %s' % " ".join(args))
+        self.debug('$ %s' % " ".join(args))
         # Note: mp4 encoding is currently broken in mencoder :-(
         #       so we have to use ffmpeg as a second step.
         # These would be the options to add:
@@ -145,16 +145,15 @@ class MEncoder(Block):
                 os.unlink(self.filename)
 
             if self.convert_to_mp4:
-                self.info('Converting %s to %s.' % (self.tmp_filename,
+                self.debug('Converting %s to %s' % (self.tmp_filename,
                                                     self.filename))
                 convert_to_mp4(self.tmp_filename, self.filename)
 
                 if os.path.exists(self.tmp_filename):
                     os.unlink(self.tmp_filename)
             else:
-                self.info('Renaming %s to %s.' % (self.tmp_filename,
-                                                  self.filename))
                 os.rename(self.tmp_filename, self.filename)
+            self.info('Finished %s' % (self.filename))
 
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array

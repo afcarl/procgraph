@@ -2,7 +2,7 @@ import os
 import subprocess
 
 
-def convert_to_mp4(filename, mp4=None):
+def convert_to_mp4(filename, mp4=None, quiet=True):
     """ Creates a web-ready mp4 using ffmpeg.
     
         need qtquickstart from 
@@ -41,11 +41,22 @@ def convert_to_mp4(filename, mp4=None):
              tmp]
 
     #print(" ".join(cmds))
-    subprocess.check_call(cmds)
+    try:
+        if quiet:
+            subprocess.check_call(cmds, stdout=open('/dev/null'),
+                                  stderr=open('/dev/null'))
+        else:
+            subprocess.check_call(cmds)
+    except:
+        # TODO: print contents of stderr/stdout
+        raise
 
     # TODO: check file exists
     try:
-        subprocess.check_call(['qtfaststart', tmp, mp4])
+        subprocess.check_call(['qtfaststart', tmp, mp4],
+                              stdout=open('/dev/null'),
+                              stderr=open('/dev/null'))
+        # TODO: capture output
         #print('Succesfull call of qtfaststart.')
     except Exception as e:
         print("Could not call qtfaststart: %s" % e)
