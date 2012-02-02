@@ -18,6 +18,9 @@ class SemanticError(ModelWriterError):
     ''' A semantic error by who wrote the model spec.
        (and, as a platypus case, when wrong config is passed.'''
     def __init__(self, error, element=None):
+        # http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO
+        Exception.__init__(self, error, element)
+
         self.error = error
         if element is not None:
             assert hasattr(element, 'where')
@@ -32,6 +35,9 @@ class SemanticError(ModelWriterError):
 class PGSyntaxError(ModelWriterError):
     ''' A syntactic error by who wrote the model spec.'''
     def __init__(self, error, where=None):
+        # http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO
+        Exception.__init__(self, error, where)
+
         self.error = error
         self.where = where
 
@@ -50,6 +56,9 @@ class BadInput(ModelExecutionError):
     ''' Exception thrown to communicate a problem with one
         of the inputs to the block. '''
     def __init__(self, error, block, input_signal):
+        # http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO
+        Exception.__init__(self, error, block, input_signal)
+
         self.block = block
         self.error = error
         self.input_signal = input_signal
@@ -76,6 +85,8 @@ class BadConfig(ModelExecutionError):
         of the configuration values passed to the block. '''
 
     def __init__(self, error, block, config):
+        Exception.__init__(self, error, block, config)
+
         self.config = config
         self.error = error
         self.block = block

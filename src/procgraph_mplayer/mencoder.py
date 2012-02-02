@@ -155,6 +155,23 @@ class MEncoder(Block):
                 os.rename(self.tmp_filename, self.filename)
             self.info('Finished %s' % (self.filename))
 
+    def __del__(self):
+        # Try to cleanup as well as possible
+        if (not 'process' in self.__dict__) or self.process is None:
+            return
+
+        self.process.stdin.close()
+        try:
+            self.process.terminate()
+            self.process.wait()
+        except (OSError, AttributeError):
+            # Exception AttributeError: AttributeError("'NoneType' object 
+            # has no attribute 'SIGTERM'",) 
+            # in <bound method RangefinderUniform.__del__ 
+            # of RangefinderUniform> ignored
+            # http://stackoverflow.com/questions/2572172/
+            pass
+
     def write_value(self, timestamp, image):
         # very important! make sure we are using a reasonable array
         if not image.flags['C_CONTIGUOUS']:

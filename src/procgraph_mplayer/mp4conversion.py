@@ -41,6 +41,7 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
              tmp]
 
     #print(" ".join(cmds))
+    # TODO: should cleanup by itself if interrupted
     try:
         if quiet:
             subprocess.check_call(cmds, stdout=open('/dev/null'),

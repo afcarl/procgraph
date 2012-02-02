@@ -9,6 +9,7 @@ from .parsing import parse_model, ParsedModel
 from .exceptions import SemanticError
 from .registrar import default_library, Library
 from .constants import PATH_ENV_VAR
+from .. import deny_pgc_cache
 
 
 class ModelSpec(object):
@@ -92,6 +93,8 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     is associated to -- this is only used for the documentation generation.
     
     TODO: add global cache in user directory.
+    
+    Honors global deny_pgc_cache to disable all caches.
      
     '''
 
@@ -135,6 +138,11 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         library.loaded_files.add(f)
 
         cache = os.path.splitext(f)[0] + '.pgc'
+
+        if deny_pgc_cache:
+            # global switch
+            ignore_cache = True
+
         if (not ignore_cache and
             os.path.exists(cache) and
             os.path.getmtime(cache) > os.path.getmtime(f)):

@@ -1,7 +1,10 @@
 ''' ProcGraph: what you would get if simulink was written in python 
     and was actually useful for dealing with log data. '''
 
-__version__ = '1.0'
+__version__ = '1.1'
+
+# If true, does not allow .pgc caches
+deny_pgc_cache = True
 
 from .core.exceptions import *
 
@@ -17,5 +20,6 @@ from .scripts.pg import pg
 from .core.import_magic import import_magic, import_succesful
 
 from .core.constants import *
+
 
 
