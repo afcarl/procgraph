@@ -45,7 +45,7 @@ u = 1
 """,
 # I don't think we use it anymore
 # in case, readd:
-#   # parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair)
+# # parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair)
 # " |generic in=0,out=2|  ",
 " |generic in=0 out=2|  ",
 # assignment with object
@@ -55,19 +55,19 @@ g1.in = 2
 # quoted strings
 """
 g1.in = "ciao"
-""" ,
+""",
 """
 g1.in = 'ciao'
-""" ,
+""",
 # Triple quotes
 """
 g1.in = '''ciao
 come va'''
-""" ,
+""",
 '''
 g1.in = """ciao
 come va"""
-''' ,
+''',
 
 """
 g1.in = "ci\\"a/o"
@@ -77,7 +77,6 @@ g1.in = "ci\\"a/o"
 
 
 ]
-
 
 
 bad_examples = [
@@ -98,13 +97,12 @@ bad_examples = [
 ]
 
 
-
 class SyntaxTest(PGTestCase):
-    
+
     def testBadExamples(self):
         for example in bad_examples:
             self.check_syntax_error(example)
-                        
+
     def testExamples(self):
         for example in good_examples:
             self.check_syntax_ok(example)
