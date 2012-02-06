@@ -75,32 +75,34 @@ def getTerminalSize():
             cr = (25, 80)
     return int(cr[1]), int(cr[0])
 
-#    
-#def clean_console_line(stream):
-#    s = '\r' + (' ' *  (get_screen_columns() - 2)) + '\r'
-#    stream.write(s)
-#    pass
+
+# These should be kwargs to 
+#    colored(s, color=None, on_color=None, attrs=None
+color_warning = dict(color='yellow')
+color_error = dict(color='red')
+color_user_error = dict(color='red')
+color_info = dict(color='green')
+color_debug = dict(color='magenta')
 
 
 def warning(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, 'magenta'))
+    write_message(string, lambda x: 'pg: ' + colored(x, **color_warning))
 
 
 def error(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, 'red'))
+    write_message(string, lambda x: 'pg: ' + colored(x, **color_error))
 
 
 def user_error(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, 'red'))
+    write_message(string, lambda x: 'pg: ' + colored(x, **color_user_error))
 
 
 def info(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, 'green'))
+    write_message(string, lambda x: 'pg: ' + colored(x, **color_info))
 
 
 def debug(string):
-    write_message(string,
-                  lambda x: 'pg: ' + colored(x, 'cyan'))#, attrs=['dark']))
+    write_message(string, lambda x: 'pg: ' + colored(x, **color_debug))
 
 
 def write_message(string, formatting):

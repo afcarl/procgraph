@@ -47,6 +47,7 @@ class MEncoder(Block):
     def init(self):
         self.process = None
         self.buffer = []
+        self.image_shape = None # Shape of image being encoded
 
     def update(self):
         check_rgb_or_grayscale(self, 0)
@@ -173,6 +174,13 @@ class MEncoder(Block):
             pass
 
     def write_value(self, timestamp, image):
+        if self.image_shape is None:
+            self.image_shape = image.shape
+
+        if self.image_shape != image.shape:
+            msg = ('The image has changed shape, from %s to %s.' %
+                   (self.image_shape, image.shape))
+            raise Exception(msg) # TODO: badinput
         # very important! make sure we are using a reasonable array
         if not image.flags['C_CONTIGUOUS']:
             image = numpy.ascontiguousarray(image)

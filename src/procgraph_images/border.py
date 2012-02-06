@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 
 from procgraph import Block
 from procgraph.block_utils import check_rgb
@@ -19,32 +19,45 @@ class Border(Block):
     def update(self):
         check_rgb(self, 'rgb')
 
-        # TODO: check
-        rgb = self.input.rgb
+        # TODO: check color 
+        self.output.rgb = image_border(self.input.rgb,
+                           left=self.config.left,
+                           right=self.config.right,
+                           top=self.config.top,
+                           bottom=self.config.bottom,
+                           color=self.config.color)
 
-        if self.config.left > 0:
-            height = rgb.shape[0]
-            pad = self.pad(height, self.config.left)
-            rgb = numpy.hstack((pad, rgb))
-        if self.config.right > 0:
-            height = rgb.shape[0]
-            pad = self.pad(height, self.config.right)
-            rgb = numpy.hstack((rgb, pad))
-        if self.config.top > 0:
-            width = rgb.shape[1]
-            pad = self.pad(self.config.top, width)
-            rgb = numpy.vstack((pad, rgb))
-        if self.config.bottom > 0:
-            width = rgb.shape[1]
-            pad = self.pad(self.config.bottom, width)
-            rgb = numpy.vstack((rgb, pad))
 
-        self.output.rgb = rgb
+def rgb_pad(height, width, color):
+    pad = np.zeros((height, width, 3), dtype='uint8')
+    for i in range(3):
+        pad[:, :, i] = color[i] * 255
+    return pad
 
-    def pad(self, height, width):
-        pad = numpy.zeros((height, width, 3), dtype='uint8')
-        for i in range(3):
-            pad[:, :, i] = self.config.color[i] * 255
-        return pad
+
+def image_border(rgb, left=0, right=0, top=0, bottom=0, color=[1, 1, 1]):
+
+    if left > 0:
+        # note: do this every time because it changes throughout
+        height, width = rgb.shape[0:2]
+        pad = rgb_pad(height, left, color)
+        rgb = np.hstack((pad, rgb))
+
+    if right > 0:
+        height, width = rgb.shape[0:2]
+        pad = rgb_pad(height, right, color)
+        rgb = np.hstack((rgb, pad))
+
+    if top > 0:
+        height, width = rgb.shape[0:2]
+        pad = rgb_pad(top, width, color)
+        rgb = np.vstack((pad, rgb))
+
+    if bottom > 0:
+        height, width = rgb.shape[0:2]
+        pad = rgb_pad(bottom, width, color)
+        rgb = np.vstack((rgb, pad))
+
+    return rgb
 
 

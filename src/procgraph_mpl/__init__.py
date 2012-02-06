@@ -19,3 +19,4 @@ pylab = import_magic(__name__, 'matplotlib.pylab')
 from .pylab_to_image import *
 from .plot import *
 
+# TODO: plot should fail for no inputs

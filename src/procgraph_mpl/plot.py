@@ -2,6 +2,8 @@ from . import pylab, pylab2rgb
 from procgraph import Block, BadInput, BadConfig
 import numpy
 import time
+from procgraph_images import image_pad
+from numpy.ma.testutils import assert_equal
 
 
 class Plot(Block):
@@ -251,7 +253,22 @@ class Plot(Block):
         plotting = time.clock() - start
 
         start = time.clock()
-        pixel_data = pylab2rgb(transparent=self.config.transparent)
+#        tight = True
+        tight = False
+        pixel_data = pylab2rgb(transparent=self.config.transparent,
+                               tight=tight)
+
+        shape = pixel_data.shape[0:2]
+        shape_expected = (self.config.height, self.config.width)
+        if shape != shape_expected:
+            msg = ('pylab2rgb() returned size %s instead of %s.' %
+                (shape, shape_expected))
+            msg += ' I will pad the image with white.'
+            self.warning(msg)
+            pixel_data = image_pad(pixel_data, shape_expected,
+                                   bgcolor=[1, 1, 1])
+            assert_equal(pixel_data.shape[0:2], shape_expected)
+
         reading = time.clock() - start
 
         if False:

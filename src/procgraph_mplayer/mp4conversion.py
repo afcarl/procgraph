@@ -35,7 +35,10 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
             # TODO: detect whether we can use these presets
             # TODO: make presets configurable
             '-vcodec', 'libx264',
-            '-vpre', 'libx264-max',
+            '-vpre',
+            #'libx264-max',
+            'libx264-default',
+#            '-vpre', 'libx264-min',
             '-crf', '22',
             # '-threads', '1', # limit to one thread
              tmp]

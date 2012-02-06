@@ -338,6 +338,11 @@ class Block(BlockMetaSugar):
         from .visualization import info as pg_info
         pg_info("%s%s" % (self._log_prefix(), s))
 
+    def warning(self, s):
+        ''' Writes an info message. '''
+        from .visualization import warning as pg_warning
+        pg_warning("%s%s" % (self._log_prefix(), s))
+
     def debug(self, s):
         ''' Writes a debug message. '''
         from .visualization import debug as pg_debug

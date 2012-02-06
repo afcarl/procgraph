@@ -15,14 +15,16 @@
         |input| -> |rgb2gray| -> |gray2rgb| -> |output| 
 
 '''
- 
-from . import filters 
-from . import compose 
+
+from . import filters
+from . import compose
 from . import imggrid
 from . import border
 from . import images_from_dir
 from . import posterize
 
+from .border import image_border
+from .pad import image_pad
 from .blend import blend
 from .copied_from_reprep import posneg, scale
 

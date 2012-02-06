@@ -6,6 +6,7 @@ import tempfile
 
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
 from procgraph.block_utils import expand
+import math
 
 
 class MPlayer(Generator):
@@ -60,7 +61,7 @@ class MPlayer(Generator):
                     pass
                 info[key] = value
 
-#        self.debug("Video configuration: %s" % info)
+        self.debug("Video configuration: %s" % info)
 
         keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT",
                 "ID_VIDEO_FPS", "ID_LENGTH"]
@@ -71,17 +72,23 @@ class MPlayer(Generator):
                       (k, sorted(info.keys())))
                 raise ModelExecutionError(msg, self)
 
+        if id_length == 0:
+            msg = 'I could not find find the length of this movie.'
+            msg += (' I ran:\n\t%s\n and this is the output:\n' %
+                   (" ".join(args), output))
+            self.info(msg) # XXX: use warning
+
         self.width = info[id_width]
         self.height = info[id_height]
         self.fps = info[id_fps]
         self.length = info[id_length]
-        self.approx_frames = int(self.length / self.fps)
+        self.approx_frames = int(math.ceil(self.length * self.fps))
 
         # TODO: reading non-RGB streams not supported
-        self.info('Reading %dx%d video stream at %.1f fps in %r,'
-                  ' length %s, frames %d.' %
-                   (self.width, self.height, self.fps, self.config.file,
-                    self.length, self.approx_frames))
+        self.info('Reading %dx%d @ %.1f fps '
+                  ' (length %ss, approx %d frames), from %r.' %
+                   (self.width, self.height, self.fps,
+                    self.length, self.approx_frames, self.config.file,))
 
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'

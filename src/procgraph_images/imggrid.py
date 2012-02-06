@@ -8,15 +8,15 @@ from .compose import place_at   # XXX:
 
 class ImageGrid(Block):
     ''' A block that creates a larger image by arranging them in a grid. '''
-    
+
     Block.alias('grid')
-    
+
     Block.config('cols', 'Columns in the grid.', default=None)
     Block.config('bgcolor', 'Background color.', default=[0, 0, 0])
-    
+
     Block.input_is_variable('Images to arrange in a grid.', min=1)
     Block.output('grid', 'Images arranged in a grid.')
-        
+
     def update(self):
         n = self.num_input_signals()
         for i in range(n):
@@ -24,20 +24,20 @@ class ImageGrid(Block):
                 # we only go if everything is ready
                 return
             check_rgb_or_grayscale(self, i)
-            
+
         cols = self.config.cols
-        
+
         if cols is None:
             cols = int(ceil(sqrt(n)))
-            
+
         if not isinstance(cols, int):
             raise BadConfig('Expected an integer.', self, 'cols')
-            
+
         rows = int(ceil(n * 1.0 / cols))
-        
+
         assert cols > 0 and rows > 0
         assert n <= cols * rows
-        
+
         # find width and height for the grid 
         col_width = zeros(cols, dtype='int32')
         row_height = zeros(rows, dtype='int32')
@@ -53,26 +53,26 @@ class ImageGrid(Block):
 
             col_width[col] = max(width, col_width[col])
             row_height[row] = max(height, row_height[row])
-        
+
         canvas_width = sum(col_width)
         canvas_height = sum(row_height)
-             
+
         # find position for each col and row
         col_x = zeros(cols, dtype='int32')
         for col in range(1, cols):
             col_x[col] = col_x[col - 1] + col_width[col - 1]
-        
+
         assert(canvas_width == col_x[-1] + col_width[-1])
-        
+
         row_y = zeros(rows, dtype='int32')
         for row in range(1, rows):
             row_y[row] = row_y[row - 1] + row_height[row - 1]
         assert(canvas_height == row_y[-1] + row_height[-1])
-        
+
         canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
         for k in range(3):
             canvas[:, :, k] = self.config.bgcolor[k] * 255
-            
+
         for i in range(n):
             col = i % cols
             row = (i - i % cols) / cols
@@ -81,9 +81,10 @@ class ImageGrid(Block):
             image = self.get_input(i)
             x = col_x[col]
             y = row_y[row]
+            # TODO: align here
             place_at(canvas, image, x, y)
-            
+
         self.set_output(0, canvas)
 
- 
-            
+
+

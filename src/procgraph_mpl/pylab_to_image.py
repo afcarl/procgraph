@@ -14,7 +14,8 @@ def pylab2rgb(transparent=False, tight=False):
     imgdata = StringIO()
 
     if tight:
-        pylab.savefig(imgdata, format='png', bbox_inches='tight', pad_inches=0)
+        pylab.savefig(imgdata, format='png',
+                      bbox_inches='tight', pad_inches=0)
     else:
         pylab.savefig(imgdata, format='png')
 
