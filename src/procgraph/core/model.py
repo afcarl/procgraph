@@ -6,6 +6,8 @@ from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats
 from .visualization import debug as debug_main, info, warning
 from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
+from ..utils import indent
+from procgraph.core.model_stats import write_stats
 
 
 class BlockConnection:
@@ -38,7 +40,19 @@ class BlockConnection:
 
 
 class Model(Generator):
-    ''' A Model is a block and a generator. '''
+    ''' 
+        A Model is a block and a generator. 
+    
+    
+        cleanup() and finish(): "cleanup" is the emergency clean up.
+        It is called after finish().
+        
+        Order in which init(), update(), cleanup() can be called:
+        - init(), update(), ..., update(), finish(), cleanup() 
+        - init(), finish(), cleanup()
+        - init(), cleanup()
+        
+    '''
 
     def __init__(self, name, model_name):
         ''' Name is the personal name of this instance.
@@ -225,6 +239,22 @@ class Model(Generator):
         for block in self.name2block.values():
             block.finish()
 
+    def cleanup(self):
+        ''' We try hard to call cleanup() on all the blocks. '''
+        blocks_failed = []
+        msg = ""
+        for block in self.name2block.values():
+            try:
+                block.cleanup()
+            except Exception as e:
+                msg += ('Cleanup for %s failed:\n%s\n' %
+                        (block, indent(e, '> ')))
+                blocks_failed.append(block)
+        if blocks_failed:
+            s = ('Cleanup for %d blocks failed.\n%s' %
+                 (len(blocks_failed), msg))
+            raise Exception(s) #XXX: which other exception?
+
     def update(self):
         def debug(s):
             if False:
@@ -384,4 +414,19 @@ class Model(Generator):
         for name, conn in self.name2block_connection.items():
             info("- %s: %s" % (name, conn))
 
+    def print_stats(self):
+        """ Prints statistics for the leaves of the hierarchy. """
+        all_samples = self.collect_stats_leaves()
+        write_stats(all_samples)
 
+    def collect_stats_leaves(self):
+        """ Collects the stats from the leaves. """
+        all_samples = []
+        for block in self.name2block.values():
+            if isinstance(block, Model):
+                all_samples.extend(block.collect_stats_leaves())
+
+        leaves = [v for (b, v) in self.stats.samples.items()
+                  if not isinstance(b, Model)]
+        all_samples.extend(leaves)
+        return all_samples

@@ -61,15 +61,18 @@ class Block(BlockMetaSugar):
         ''' Initializes the block.  '''
         pass
 
-    UPDATE_NOT_FINISHED = 'update-not-finished'
-
     def update(self):
-        ''' Performs the block function.
-        Use set_state() for temporary storage. '''
+        ''' Performs the block function. '''
         pass
 
     def finish(self):
         pass
+
+    def cleanup(self):
+        pass
+
+    # TODO: move away
+    UPDATE_NOT_FINISHED = 'update-not-finished'
 
     # Used during initialization
     def num_input_signals(self):

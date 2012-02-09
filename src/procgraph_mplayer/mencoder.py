@@ -33,9 +33,6 @@ class MEncoder(Block):
     Block.config('fps_safe', 'If the frame autodetect gives strange results, '
                              'we use this safe value instead.', default=10)
 
-#    Block.config('convert_to_mp4', 'If true, use ffmpeg to convert to '
-#                 'web-ready mp4.', default=True)
-
     Block.config('vcodec', 'Codec to use.', default='mpeg4')
     Block.config('vbitrate', 'Bitrate -- default is reasonable.',
                              default=2000000)
@@ -107,7 +104,12 @@ class MEncoder(Block):
         vbitrate = self.config.vbitrate
 
         self.filename = expand(self.config.file)
+        if os.path.exists(self.filename):
+            self.info('Removing previous version of %s.' % self.filename)
+            os.unlink(self.filename)
+
         basename, ext = os.path.splitext(self.filename)
+
         self.tmp_filename = '%s.active.avi' % basename
         self.convert_to_mp4 = ext in ['.mp4', '.MP4']
 
@@ -130,33 +132,40 @@ class MEncoder(Block):
         #'-of', 'lavf', '-lavfopts', 'format=mp4'
 
         if self.config.quiet:
+            # XXX /dev/null not portable
             self.process = subprocess.Popen(args,
                 stdin=subprocess.PIPE, stdout=open('/dev/null'),
                                        stderr=open('/dev/null'))
         else:
-            self.process = subprocess.Popen(args=args, stdin=subprocess.PIPE)
+            self.process = subprocess.Popen(args=args,
+                                            stdin=subprocess.PIPE)
 
         if self.config.timestamps:
             self.timestamps_filename = self.filename + '.timestamps'
             self.timestamps_file = open(self.timestamps_filename, 'w')
 
     def finish(self):
-        if self.process is not None:
-            if os.path.exists(self.filename):
-                os.unlink(self.filename)
+        if self.convert_to_mp4:
+            # self.debug('Converting %s to %s' % 
+            #            (self.tmp_filename, self.filename))
+            convert_to_mp4(self.tmp_filename, self.filename)
 
-            if self.convert_to_mp4:
-                self.debug('Converting %s to %s' % (self.tmp_filename,
-                                                    self.filename))
-                convert_to_mp4(self.tmp_filename, self.filename)
+            if os.path.exists(self.tmp_filename):
+                os.unlink(self.tmp_filename)
+        else:
+            os.rename(self.tmp_filename, self.filename)
 
-                if os.path.exists(self.tmp_filename):
-                    os.unlink(self.tmp_filename)
-            else:
-                os.rename(self.tmp_filename, self.filename)
-            self.info('Finished %s' % (self.filename))
+        self.info('Finished %s' % (self.filename))
 
-    def __del__(self):
+    def cleanup(self):
+        # TODO: remove timestamps
+        if 'tmp_filename' in self.__dict__:
+            if os.path.exists(self.tmp_filename):
+                os.unlink(self.tmp_filename)
+
+        self.cleanup_mencoder()
+
+    def cleanup_mencoder(self):
         # Try to cleanup as well as possible
         if (not 'process' in self.__dict__) or self.process is None:
             return

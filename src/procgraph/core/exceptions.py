@@ -28,7 +28,8 @@ class SemanticError(ModelWriterError):
 
     def __str__(self):
         s = self.error
-        s += format_where(self.element)
+        if self.element is not None:
+            s += format_where(self.element)
         return s
 
 

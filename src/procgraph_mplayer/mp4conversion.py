@@ -10,8 +10,8 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
 
     basename, ext = os.path.splitext(filename)
     if ext == 'mp4':
-        raise Exception('Need a file that does not end in .mp4 (%r)' %
-                        filename)
+        msg = 'Need a file that does not end in .mp4 (%r)' % filename
+        raise ValueError(msg)
 
     if mp4 is None:
         mp4 = basename + '.mp4'
@@ -20,11 +20,11 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
     tmp = basename + '.mp4.firstpass.mp4'
 
     if not os.path.exists(filename):
-        raise Exception("Filename %s does not exist." % filename)
+        raise ValueError("File does not exist: %s" % filename)
 
-    if (os.path.exists(mp4) and
-        (os.path.getmtime(mp4) > os.path.getmtime(filename))):
-        return
+#    if (os.path.exists(mp4) and
+#        (os.path.getmtime(mp4) > os.path.getmtime(filename))):
+#        return
 
     if os.path.exists(tmp):
         os.unlink(tmp)
@@ -48,10 +48,12 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
     try:
         if quiet:
             subprocess.check_call(cmds, stdout=open('/dev/null'),
-                                  stderr=open('/dev/null'))
+                                        stderr=open('/dev/null'))
         else:
             subprocess.check_call(cmds)
     except:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
         # TODO: print contents of stderr/stdout
         raise
 

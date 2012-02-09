@@ -86,7 +86,7 @@ def main():
     #if options.debug:
     #    print "Configuration: %s" % config
     if not args:
-        print usage_short
+        print(usage_short)
         sys.exit(-1)
 
     filename = args.pop(0)
@@ -184,9 +184,10 @@ def pg(filename, config,
             raise SemanticError(msg, None)
 
         if len(generator.input) > 0:
-            inputs = ", ".join([x.name.__repr__() for x in generator.input])
-            msg = ('The model %r has %d input(s) (%s). "pg" can only execute  '
-                  'models without inputs.' %
+            inputs = ", ".join([x.name.__repr__()
+                                for x in generator.input])
+            msg = ('The model %r has %d input(s) (%s). "pg" can only '
+                   'execute models without inputs.' %
                   (filename, len(generator.input), inputs))
             # XXX nothing given
             raise SemanticError(msg, generator.input[0])
@@ -207,8 +208,8 @@ def pg(filename, config,
                 filename = filename_pg
             else:
                 # TODO: add where for command line
-                raise SemanticError('Unknown model or file %r.' % filename,
-                                    None) #XXX
+                msg = 'Unknown model or file %r.' % filename
+                raise SemanticError(msg, None) #XXX
 
         # Make sure we use absolute pathnames so that we know the exact 
         # directory
@@ -221,16 +222,80 @@ def pg(filename, config,
         model.summary()
         return
 
+    # This is the main loop; unimpressive?
+
     count = 0
-    model.init()
-    while model.has_more():
-        model.update()
+    try:
+        model.init()
 
-        if stats:
-            count += 1
-            if count % 500 == 0:
-                model.stats.print_info()
+        while model.has_more():
+            model.update()
 
-    # XXX: should it know by itself?
-    model.finish()
+            if stats:
+                if count % 50 == 0:
+                    model.print_stats()
+                    #debug_memory()
 
+                count += 1
+
+        #info('Execution of %s finished quietly.' % model)
+        model.finish()
+
+    except KeyboardInterrupt:
+        error('Execution of %s interrupted by user.' % model)
+        error('I will attempt clean-up.')
+        raise
+    except Exception as e:
+        error('Execution of %s failed: %s' % (model, e))
+        error('I will attempt clean-up.')
+        raise
+    finally:
+        #info('Cleaning up.')
+        model.cleanup()
+
+
+def debug_memory():
+    pass
+#
+##
+###                    debug_leak()
+###                def debug_leak():
+##                    gc.collect()
+##                    # model.stats.print_info() TODO: bugged
+###                    print('-' * 50)
+###                    objgraph.show_most_common_types(limit=30)
+##                    objgraph.show_growth(limit=None)
+##                    x = objgraph.get_leaking_objects()
+##                    print('Len of get_leaking_objects: %s' % len(x))
+###                    if xold is None:
+###                        xold = x
+###                    else:
+###                        newx = [a for a in x if not a in xold]
+###                        xold = x
+###                        print('Len of addition: %s' % len(newx))
+####                        if len(newx) < 10:
+###                        if True:
+###                            for i in newx:
+###                                def shortit(a):
+###                                    s = str(a)
+###                                    if len(s) > 50:
+###                                        s = s[:50]
+###                                    return s
+####                                print('- id %s t %s val %r' %
+####                                       (id(i), type(i), shortit(i)))
+###
+###                                if isinstance(i, dict) and 'servoing_poses' in i:
+###                                    ref = gc.get_referrers(i)
+###                                    print(' ref: %s' % len(ref))
+###                                    for rref in ref:
+###                                        print(' ref: %s %s' % (type(rref),
+###                                                               shortit(rref)))
+###                                        try:
+###                                            print(inspect.getframeinfo(rref))
+###                                        except:
+###                                            pass
+##
+##
+###                    print('objgraph.get_leaking_objects(): %s' %
+###                          objgraph.get_leaking_objects())
+###                    print('garbage: %s' % gc.garbage)

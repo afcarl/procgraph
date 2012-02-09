@@ -84,7 +84,7 @@ color_user_error = dict(color='red')
 color_info = dict(color='green')
 color_debug = dict(color='magenta')
 
-
+# TODO: use logging
 def warning(string):
     write_message(string, lambda x: 'pg: ' + colored(x, **color_warning))
 

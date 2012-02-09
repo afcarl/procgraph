@@ -65,62 +65,71 @@ class ExecutionStats:
         s.last_timestamp = timestamp
 
     def print_info(self):
-        samples = self.samples.values()
+        samples = list(self.samples.values())
+        write_stats(samples)
 
-        # get the block that executed fewest times and use it as a baseline
-        baseline = min(samples, key=lambda s: s.num)
 
-        # update percentage
-        total_cpu = sum([s.mean_cpu * s.num for s in samples])
-        total_wall = sum([s.mean_wall * s.num for s in samples])
-        total_times = sum([s.num for s in samples])
-        for s in samples:
-            s.perc_cpu = s.mean_cpu * s.num / total_cpu
-            s.perc_wall = s.mean_wall * s.num / total_wall
-            s.perc_times = s.num * 1.0 / total_times
-            s.baseline_fraction = s.num * 1.0 / baseline.num
+def write_stats(samples):
+    for s in samples:
+        assert isinstance(s, Statistics)
 
-        # sort by percentage
-        alls = sorted(list[self.samples.values()],
-                      key=lambda x: (-x.perc_wall))
-        min_perc = 3
-        print('--- Statistics (ignoring < %d) baseline: %s %d iterations' %
-              (min_perc, baseline.block, baseline.num))
-        for s in alls:
-            perc_cpu = ceil(s.perc_cpu * 100)
-            perc_wall = ceil(s.perc_wall * 100)
-            if (s != baseline and
-                 (perc_cpu < min_perc) and
-                 (perc_wall < min_perc)):
-                continue
-            perc_times = ceil(s.perc_times * 100)
+    # get the block that executed fewest times and use it as a baseline
+    baseline = min(samples, key=lambda s: s.num)
 
-            # jitter_cpu = ceil(100 * (sqrt(s.var_cpu) * 2 / s.mean_cpu))
-            # jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))
+    # update percentage
+    total_cpu = sum([s.mean_cpu * s.num for s in samples])
+    total_wall = sum([s.mean_wall * s.num for s in samples])
+    total_times = sum([s.num for s in samples])
+    for s in samples:
+        s.perc_cpu = s.mean_cpu * s.num / total_cpu
+        s.perc_wall = s.mean_wall * s.num / total_wall
+        s.perc_times = s.num * 1.0 / total_times
+        s.baseline_fraction = s.num * 1.0 / baseline.num
 
-            if s.mean_cpu < 0.7 * s.mean_wall:
-                comment = ' I/O '
-            else:
-                comment = '     '
-            #print ''.join([
-            #'- cpu: %dms (+-%d%%) %02d%% of total; ' % 
-            # (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
-            #'wall: %dms (+-%d%%) %02d%% of total; ' % 
-            #(1000 * s.mean_wall, jitter_wall, perc_wall),
-            #'exec: %02d%% of total' % perc_times])
+    # sort by percentage
+    alls = sorted(list(samples), key=lambda x: (-x.perc_wall))
+    min_perc = 3
+    print('--- Statistics (ignoring < %d%%) baseline: %d iterations of %s' %
+          (min_perc, baseline.num, baseline.block))
+    for s in alls:
+        perc_cpu = ceil(s.perc_cpu * 100)
+        perc_wall = ceil(s.perc_wall * 100)
+        if (s != baseline and
+             (perc_cpu < min_perc) and
+             (perc_wall < min_perc)):
+            continue
+        perc_times = ceil(s.perc_times * 100)
 
-            if s.mean_delta > 0:
-                fps = 1 / s.mean_delta
-                stats = 'update %3.1f fps' % fps
-            else:
-                stats = ' ' * len('update %4d fps' % 0)
+        # jitter_cpu = ceil(100 * (sqrt(s.var_cpu) * 2 / s.mean_cpu))
+        # jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))
 
-            print(''.join([
-                '- cpu: %4dms %2d%%; ' % (1000 * s.mean_cpu, perc_cpu),
-                'wall: %4dms %2d%%; ' % (1000 * s.mean_wall, perc_wall),
-                'exec: %2d%% %3.1fx %s; %s  ' % (perc_times,
-                                                 s.baseline_fraction,
-                                                          stats, comment),
-                                                          str(s.block)]))
+        if s.mean_cpu < 0.7 * s.mean_wall:
+            comment = 'IO '
+        else:
+            comment = '   '
+        #print ''.join([
+        #'- cpu: %dms (+-%d%%) %02d%% of total; ' % 
+        # (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
+        #'wall: %dms (+-%d%%) %02d%% of total; ' % 
+        #(1000 * s.mean_wall, jitter_wall, perc_wall),
+        #'exec: %02d%% of total' % perc_times])
+
+        if s.mean_delta > 0:
+            fps = 1.0 / s.mean_delta
+            stats = '%3.1f fps' % fps
+        else:
+            stats = ' ' * len('%3.1f fps' % 0)
+
+        name = str(s.block)
+        if len(name) > 35:
+            name = name[:35]
+        print(''.join([
+            ' cpu %4dms %2d%%| ' % (1000 * s.mean_cpu, perc_cpu),
+            'wall %4dms %2d%%| ' % (1000 * s.mean_wall, perc_wall),
+            'exec %2d%% %3d (%3.1fx) %s| %s ' % (perc_times,
+                                             s.num,
+                                             s.baseline_fraction,
+                                                      stats, comment),
+                                                      name]))
 
 
