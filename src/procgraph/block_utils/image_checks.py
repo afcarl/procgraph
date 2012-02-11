@@ -48,9 +48,11 @@ def assert_gray_image(image, name=None):
 
 def check_rgb_or_grayscale(block, input): #@ReservedAssignment
     ''' Checks that the selected input is either a grayscale or RGB image.
-        That is, a numpy array of uint8 either H x W or H x W x 3. 
+        That is, a numpy array of uint8 either H x W,  H x W x 3,
+        or HxWx4. 
         Raises BadInput if it is not. 
     '''
+    # TODO: write this better
     image = block.get_input(input)
     if not isinstance(image, numpy.ndarray):
         raise BadInput('Expected RGB or grayscale, this is not even a ' \
@@ -60,7 +62,8 @@ def check_rgb_or_grayscale(block, input): #@ReservedAssignment
                             (str(image.shape), image.dtype), block, input)
     shape = image.shape
     if len(shape) == 3:
-        if shape[2] != 3:
+        depth = shape[2]
+        if not depth in [3, 4]:
             raise BadInput('Bad shape for image: %s' % str(shape),
                            block, input)
     elif len(shape) == 2:

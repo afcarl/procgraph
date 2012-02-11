@@ -7,7 +7,7 @@ from .model_stats import ExecutionStats
 from .visualization import debug as debug_main, info, warning
 from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
 from ..utils import indent
-from procgraph.core.model_stats import write_stats
+from .model_stats import write_stats
 
 
 class BlockConnection:

@@ -151,17 +151,18 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             except Exception as e:
                 debug('Cannot unpickle file %r: %s' % (cache, e))
                 # XXX repeated code 
-                debug("Parsing %r." % os.path.relpath(f))
+                #debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
 
                 models = parse_model(model_spec, filename=f)
 
         else:
-            debug("Parsing %r." % os.path.relpath(f))
+            #debug("Parsing %r." % os.path.relpath(f))
             model_spec = open(f).read()
             models = parse_model(model_spec, filename=f)
 
         try:
+            # TODO: make it parallel
             with open(cache, 'w') as f:
                 pickle.dump(models, f)
         except Exception as e:

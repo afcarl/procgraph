@@ -18,6 +18,8 @@ class MPlayer(Generator):
                          '``mplayer`` understands.')
     Block.config('quiet', 'If true, suppress stderr messages from mplayer.',
                           default=True)
+    Block.config('stats', 'If true, writes some statistics about the '
+                          'remaining time.')
 
     Block.output('video', 'RGB stream as numpy array.')
 
@@ -42,6 +44,8 @@ class MPlayer(Generator):
         self.state.timestamp = self.get_next_timestamp()
         self.state.next_frame = None
         self.state.finished = False
+
+        self.num_frames_read = 0
 
     def open_mencoder(self):
         self.mencoder_started = True
@@ -112,8 +116,8 @@ class MPlayer(Generator):
 
         if self.config.quiet:
             self.process = subprocess.Popen(args,
-                                            stdout=open('/dev/null'),
-                                            stderr=open('/dev/null'),)
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE)
         else:
             self.process = subprocess.Popen(args)
 
@@ -147,6 +151,18 @@ class MPlayer(Generator):
 
         self.state.next_frame = None
         self.read_next_frame()
+
+        if self.config.stats:
+            self.num_frames_read += 1
+            if self.num_frames_read % 100 == 0:
+                self.print_stats()
+
+    def print_stats(self):
+        percentage = 100.0 * self.num_frames_read / self.approx_frames
+        short_filename = self.file # XXX
+        self.info('%6d/%d frames (%4.1f%%) of %s' %
+                  (self.num_frames_read, self.approx_frames, percentage,
+                   short_filename))
 
     def read_next_frame(self):
         if self.state.finished:

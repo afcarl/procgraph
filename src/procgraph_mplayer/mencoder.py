@@ -2,19 +2,19 @@ from . import convert_to_mp4
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
     check_rgb_or_grayscale)
+from procgraph.utils import indent
 import numpy
 import os
 import subprocess
+from procgraph_mplayer.scripts.crop_video import video_crop
 
 
-# TODO: detect an error in Mencoder (perhaps size too large)
-# TODO: cleanup processes after finishing
-"""
-sudo apt-get install libavcodec-extra-52 libavdevice-extra-52 
-libavfilter-extra-0 libavformat-extra-52 libavutil-extra-49 
-libpostproc-extra-51 libswscale-extra-0
-
-"""
+#"""
+#sudo apt-get install libavcodec-extra-52 libavdevice-extra-52 
+#libavfilter-extra-0 libavformat-extra-52 libavutil-extra-49 
+#libpostproc-extra-51 libswscale-extra-0
+#
+#"""
 
 
 class MEncoder(Block):
@@ -40,6 +40,9 @@ class MEncoder(Block):
                  default=True)
     Block.config('timestamps', "If True, also writes <file>.timestamps that"
         " includes a line with the timestamp for each frame", default=True)
+
+    Block.config('crop', "If true, the video will be "
+                 "post-processed and cropped", default=False)
 
     def init(self):
         self.process = None
@@ -75,10 +78,22 @@ class MEncoder(Block):
         self.height = self.shape[0]
         self.width = self.shape[1]
         self.ndim = len(self.shape)
+
+        # Format for mencoder's rawvideo "format" option
         if self.ndim == 2:
             format = 'y8' #@ReservedAssignment
         else:
-            format = 'rgb24' #@ReservedAssignment
+            if self.shape[2] == 3:
+                format = 'rgb24' #@ReservedAssignment
+            elif self.shape[2] == 4:
+                # Note: did not try this yet
+                format = 'rgba' #@ReservedAssignment
+                msg = 'I detected that you are trying to write a transparent'
+                msg += 'video. This does not work well yet (and besides,'
+                msg += 'it is not supported in many applications, like '
+                msg += 'Keynote. Anyway, the plan is to use mencoder '
+                msg += 'to write a .AVI with codec "png".'
+                self.error(msg)
 
         # guess the fps if we are not given the config
         if self.config.fps is None:
@@ -108,9 +123,9 @@ class MEncoder(Block):
             self.info('Removing previous version of %s.' % self.filename)
             os.unlink(self.filename)
 
-        basename, ext = os.path.splitext(self.filename)
+        _, ext = os.path.splitext(self.filename)
 
-        self.tmp_filename = '%s.active.avi' % basename
+        self.tmp_filename = '%s-active.avi' % self.filename
         self.convert_to_mp4 = ext in ['.mp4', '.MP4']
 
         make_sure_dir_exists(self.filename)
@@ -118,13 +133,20 @@ class MEncoder(Block):
         self.info('Writing %dx%d %s video stream at %.1f fps to %r.' %
                   (self.width, self.height, format, fps, self.filename))
 
+        if format == 'rgba':
+            ovc = ['-ovc', 'lavc', '-lavcopts',
+                  'vcodec=png']
+        else:
+            ovc = ['-ovc', 'lavc', '-lavcopts',
+                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate)]
+
+        out = ['-o', self.tmp_filename]
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
                 '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' %
-                (self.width, self.height, fps, format),
-                '-ovc', 'lavc', '-lavcopts',
-                 'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate),
-                 #'-v', "0", # verbosity level (1 prints stats \r)
-                 '-o', self.tmp_filename]
+                (self.width, self.height, fps, format)] + ovc + out
+
+                #'-v', "0", # verbosity level (1 prints stats \r)
+
         self.debug('$ %s' % " ".join(args))
         # Note: mp4 encoding is currently broken in mencoder :-(
         #       so we have to use ffmpeg as a second step.
@@ -134,8 +156,8 @@ class MEncoder(Block):
         if self.config.quiet:
             # XXX /dev/null not portable
             self.process = subprocess.Popen(args,
-                stdin=subprocess.PIPE, stdout=open('/dev/null'),
-                                       stderr=open('/dev/null'))
+                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
         else:
             self.process = subprocess.Popen(args=args,
                                             stdin=subprocess.PIPE)
@@ -146,8 +168,8 @@ class MEncoder(Block):
 
     def finish(self):
         if self.convert_to_mp4:
-            # self.debug('Converting %s to %s' % 
-            #            (self.tmp_filename, self.filename))
+            self.debug('Converting %s to %s' %
+                        (self.tmp_filename, self.filename))
             convert_to_mp4(self.tmp_filename, self.filename)
 
             if os.path.exists(self.tmp_filename):
@@ -156,6 +178,14 @@ class MEncoder(Block):
             os.rename(self.tmp_filename, self.filename)
 
         self.info('Finished %s' % (self.filename))
+
+        # TODO: skip mp4
+        if self.config.crop:
+            base, ext = os.path.splitext(self.filename)
+            cropped = '%s-crop%s' % (base, ext)
+            video_crop(self.filename, cropped)
+            os.unlink(self.filename)
+            os.rename(cropped, self.filename)
 
     def cleanup(self):
         # TODO: remove timestamps
@@ -193,8 +223,16 @@ class MEncoder(Block):
         # very important! make sure we are using a reasonable array
         if not image.flags['C_CONTIGUOUS']:
             image = numpy.ascontiguousarray(image)
-        self.process.stdin.write(image.data)
-        self.process.stdin.flush()
+
+        try:
+            self.process.stdin.write(image.data)
+            self.process.stdin.flush()
+        except IOError as e: # broken pipe
+            msg = 'Could not write data to mencoder: %s.' % e
+            self.error(msg)
+            msg += '\n' + indent(self.process.stdout.read(), 'stdout> ')
+            msg += '\n' + indent(self.process.stderr.read(), 'stderr> ')
+            raise Exception(msg)
 
         if self.config.timestamps:
             self.timestamps_file.write('%s\n' % timestamp)

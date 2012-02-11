@@ -20,7 +20,7 @@ problems = set()
 for module, info in index['packages'].items():
     for requirement, options in info['requires'].items():
         if not any([is_package_available(op) for op in options]):
-            print("For package %r, dependency %r cannot be satisfied." % 
+            print("For package %r, dependency %r cannot be satisfied." %
 				  (module, requirement))
             missing[requirement] = options
             # XXX: this is slightly incorrect if different packages want
@@ -39,14 +39,14 @@ if missing:
     	else:
     		o = ''
         print(' - %-20s  %s' % (requirement, o))
-        
+
     print('\nThese missing requirements could make the following packages '
 		  'not work properly:\n')
-    
+
     for p in problems:
         desc = index['packages'][p]['desc']
         print(' - %-20s  (%s)' % (p, desc))
-        
+
     print('\nI will go ahead and install everything, but you should install the missing \n'
           'packages for maximum functionality. An error will be thrown when you actually \n'
           'try to use the blocks in those packages. \n')
@@ -65,7 +65,7 @@ for p in packages:
 
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
-    
+
 
 version = 1.0
 
@@ -73,13 +73,13 @@ setup(name='procgraph',
       author="Andrea Censi",
       author_email="andrea@cds.caltech.edu",
       url='http://andreacensi.github.com/procgraph/',
-      
-      description = 'ProcGraph ("processing graph") is a Python library '
+
+      description='ProcGraph ("processing graph") is a Python library '
                     'for rapid prototyping of processing pipelines for '
                     'logged and realtime data.',
-      long_description = read('README.txt'),
-      keywords = "",
-      license = "LGPL",
+      long_description=read('README.txt'),
+      keywords="",
+      license="LGPL",
 
       classifiers=[
         'Development Status :: 4 - Beta',
@@ -88,7 +88,7 @@ setup(name='procgraph',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
         'Topic :: Scientific/Engineering'
       ],
-      
+
       version=version,
       package_dir={'':'src'},
       packages=find_packages(where='src'),
@@ -103,10 +103,14 @@ setup(name='procgraph',
          'console_scripts': [
            'pg = procgraph.scripts.pg:main',
            'pgdoc = procgraph.scripts.pgdoc:main',
-           'pgindex = procgraph.scripts.pgindex:main'
+           'pgindex = procgraph.scripts.pgindex:main',
+           # some other utils
+           'pg-video-crop = procgraph_mplayer.scripts.crop_video:main',
+           'pg-video-join = procgraph_mplayer.scripts.join_video:main',
         ]
       },
-      download_url='http://github.com/AndreaCensi/procgraph/tarball/%s' % version,
+      download_url=('http://github.com/AndreaCensi/procgraph/tarball/%s'
+				  	% version),
 )
 
 

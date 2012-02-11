@@ -41,8 +41,6 @@ usage_long = usage_short + \
 
 
 def main():
-#    import contracts
-#    contracts.disable_all()
 
     # TODO: use LenientOptionParser
     parser = OptionParser(usage=usage_long)
@@ -250,8 +248,10 @@ def pg(filename, config,
         error('I will attempt clean-up.')
         raise
     finally:
-        #info('Cleaning up.')
+        #info('Cleaning up.')    
         model.cleanup()
+
+    return model
 
 
 def debug_memory():
