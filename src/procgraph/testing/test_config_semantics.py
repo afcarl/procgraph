@@ -14,7 +14,27 @@ config  a      "well documented param"
 config  b = 3  "well documented param"
 
 |verify x=$a y=$b|
-''', {'a': 3})
+''', {'a': 3}),
+# Now using the dict syntax with "."
+('''
+--- model master
+|verify y=2|
+''', {'verify.x': 2}),
+# Now using the dict syntax without "."
+('''
+--- model master
+|verify y=2|
+''', {'verify': {'x': 2}}),
+# Same thing, but with module name
+('''
+--- model master
+|v:verify y=2|
+''', {'v.x': 2}),
+# Now using the dict syntax without "."
+('''
+--- model master
+|v:verify y=2|
+''', {'v': {'x': 2}}),
 ]
 
 bad_examples = [
@@ -40,7 +60,15 @@ b=2
 config  a      "well documented param"
 
 a=2
+''', {}),
+
+('''
+--- model master
+""" Cannot have a config variable with the same name as a block """
+config  a      "well documented param"
+|a:verify x=$a y=$a|
 ''', {})
+
 
 ]
 

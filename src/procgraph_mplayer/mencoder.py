@@ -1,4 +1,5 @@
 from . import convert_to_mp4
+from .scripts.crop_video import video_crop
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
     check_rgb_or_grayscale)
@@ -6,7 +7,6 @@ from procgraph.utils import indent
 import numpy
 import os
 import subprocess
-from procgraph_mplayer.scripts.crop_video import video_crop
 
 
 #"""
@@ -45,6 +45,7 @@ class MEncoder(Block):
                  "post-processed and cropped", default=False)
 
     def init(self):
+#        self.inited = False
         self.process = None
         self.buffer = []
         self.image_shape = None # Shape of image being encoded
@@ -147,7 +148,7 @@ class MEncoder(Block):
 
                 #'-v', "0", # verbosity level (1 prints stats \r)
 
-        self.debug('$ %s' % " ".join(args))
+        #self.debug('$ %s' % " ".join(args))
         # Note: mp4 encoding is currently broken in mencoder :-(
         #       so we have to use ffmpeg as a second step.
         # These would be the options to add:
@@ -167,6 +168,10 @@ class MEncoder(Block):
             self.timestamps_file = open(self.timestamps_filename, 'w')
 
     def finish(self):
+        if self.process is None:
+            self.error('Finish() before starting to encode.')
+            return
+
         if self.convert_to_mp4:
             self.debug('Converting %s to %s' %
                         (self.tmp_filename, self.filename))
