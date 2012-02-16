@@ -5,6 +5,8 @@ import time
 from procgraph_images import image_pad
 from numpy.ma.testutils import assert_equal
 
+from .fanciness import fancy_styles
+
 
 class Plot(Block):
     ''' 
@@ -53,6 +55,12 @@ class Plot(Block):
                  'If true, outputs a RGBA image instead of RGB.',
                  default=False)
 
+    Block.config('tight', 'Uses "tight" option for creating png.',
+                 default=False,)
+    Block.config('fancy_styles',
+                 'A list of fancy styles to apply (%s).' % fancy_styles.keys(),
+                 default=[])
+
     Block.input_is_variable('Data to plot.')
 
     Block.output('rgb', 'Resulting image.')
@@ -67,6 +75,7 @@ class Plot(Block):
         width = self.config.width
         height = self.config.height
 
+        # TODO: remove from here
         pylab.rc('xtick', labelsize=8)
         pylab.rc('ytick', labelsize=8)
 
@@ -102,6 +111,16 @@ class Plot(Block):
 
         self.lines = {}
         self.lengths = {}
+
+    def apply_styles(self, pylab):
+        # TODO: check type
+        for style in self.config.fancy_styles:
+            if not style in fancy_styles:
+                error = ('Cannot find style %r in %s' %
+                         (style, fancy_styles.keys()))
+                raise  BadConfig(error, self, 'style')
+            function = fancy_styles[style]
+            function(pylab)
 
     def plot_one(self, id, x, y, format): #@ReservedAssignment
         assert isinstance(x, numpy.ndarray)
@@ -148,6 +167,8 @@ class Plot(Block):
             self.init_figure()
 
         pylab.figure(self.figure.number)
+
+        self.apply_styles(pylab)
 
         for i in range(self.num_input_signals()):
             value = self.input[i]
@@ -250,14 +271,23 @@ class Plot(Block):
                     labelspacing=0.03, borderpad=0, handletextpad=0.03,
                     borderaxespad=1)
 
+        # http://matplotlib.sourceforge.net/users/tight_layout_guide.html
+        try:
+            pylab.tight_layout()
+        except:
+            msg = ('Could not call tight_layout(); available only on '
+                   'Matplotlib >=1.1')
+            self.warning(msg)
+
         plotting = time.clock() - start
 
         start = time.clock()
-#        tight = True
-        tight = False
+        # There is a bug that makes the image smaller than desired
+        # if tight is True 
         pixel_data = pylab2rgb(transparent=self.config.transparent,
-                               tight=tight)
+                               tight=self.config.tight)
 
+        # So we check and compensate
         shape = pixel_data.shape[0:2]
         shape_expected = (self.config.height, self.config.width)
         if shape != shape_expected:

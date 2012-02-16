@@ -18,9 +18,18 @@ import subprocess
 
 
 class MEncoder(Block):
-    ''' Encodes a video stream using ``mencoder``.
+    ''' 
+        Encodes a video stream using ``mencoder``.
     
-    Note that allowed codec and bitrate depend on your version of mencoder.
+        Note that allowed codec and bitrate depend on 
+        your version of mencoder.
+        
+        MP4 output: currently it works by creating a .AVI with mencoder
+        and then converting to MP4 using ffmpeg (MP4 support for mencoder
+        is currently --- Feb'12 --- broken).
+        
+        RGBA videos: not working fully. For now it outputs .AVI with 
+        mencoder and encoded using png. 
     '''
     Block.alias('mencoder')
 
@@ -92,8 +101,10 @@ class MEncoder(Block):
                 msg = 'I detected that you are trying to write a transparent'
                 msg += 'video. This does not work well yet (and besides,'
                 msg += 'it is not supported in many applications, like '
-                msg += 'Keynote. Anyway, the plan is to use mencoder '
-                msg += 'to write a .AVI with codec "png".'
+                msg += 'Keynote). Anyway, the plan is to use mencoder '
+                msg += 'to write a .AVI with codec "png". This will fail '
+                msg += 'for now, but perhaps in the future it will be '
+                msg += '.better'
                 self.error(msg)
 
         # guess the fps if we are not given the config
@@ -135,8 +146,7 @@ class MEncoder(Block):
                   (self.width, self.height, format, fps, self.filename))
 
         if format == 'rgba':
-            ovc = ['-ovc', 'lavc', '-lavcopts',
-                  'vcodec=png']
+            ovc = ['-ovc', 'lavc', '-lavcopts', 'vcodec=png']
         else:
             ovc = ['-ovc', 'lavc', '-lavcopts',
                   'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate)]
