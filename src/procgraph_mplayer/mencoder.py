@@ -1,12 +1,15 @@
 from . import convert_to_mp4
 from .scripts.crop_video import video_crop
+from contextlib import contextmanager
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
     check_rgb_or_grayscale)
-from procgraph.utils import indent
+from procgraph.utils import friendly_path
 import numpy
 import os
 import subprocess
+import tempfile
+import signal
 
 
 #"""
@@ -132,7 +135,8 @@ class MEncoder(Block):
 
         self.filename = expand(self.config.file)
         if os.path.exists(self.filename):
-            self.info('Removing previous version of %s.' % self.filename)
+            self.info('Removing previous version of %s.' %
+                      friendly_path(self.filename))
             os.unlink(self.filename)
 
         _, ext = os.path.splitext(self.filename)
@@ -143,7 +147,8 @@ class MEncoder(Block):
         make_sure_dir_exists(self.filename)
 
         self.info('Writing %dx%d %s video stream at %.1f fps to %r.' %
-                  (self.width, self.height, format, fps, self.filename))
+                  (self.width, self.height, format, fps,
+                   friendly_path(self.filename)))
 
         if format == 'rgba':
             ovc = ['-ovc', 'lavc', '-lavcopts', 'vcodec=png']
@@ -164,11 +169,20 @@ class MEncoder(Block):
         # These would be the options to add:
         #'-of', 'lavf', '-lavfopts', 'format=mp4'
 
-        if self.config.quiet:
+        self.tmp_stdout = tempfile.TemporaryFile()
+        self.tmp_stderr = tempfile.TemporaryFile()
+
+
+        quiet = self.config.quiet
+        if quiet:
             # XXX /dev/null not portable
+#            self.debug('stderr: %s' % self.tmp_stderr)
+#            self.debug('stdout: %s' % self.tmp_stdout)
+            # TODO: write error
             self.process = subprocess.Popen(args,
-                stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE)
+                                            preexec_fn=ignore_sigint,
+                stdin=subprocess.PIPE, stdout=self.tmp_stdout.fileno(),
+                                       stderr=self.tmp_stderr.fileno())
         else:
             self.process = subprocess.Popen(args=args,
                                             stdin=subprocess.PIPE)
@@ -184,7 +198,8 @@ class MEncoder(Block):
 
         if self.convert_to_mp4:
             self.debug('Converting %s to %s' %
-                        (self.tmp_filename, self.filename))
+                        (friendly_path(self.tmp_filename),
+                         friendly_path(self.filename)))
             convert_to_mp4(self.tmp_filename, self.filename)
 
             if os.path.exists(self.tmp_filename):
@@ -192,7 +207,7 @@ class MEncoder(Block):
         else:
             os.rename(self.tmp_filename, self.filename)
 
-        self.info('Finished %s' % (self.filename))
+        self.info('Finished %s' % friendly_path(self.filename))
 
         # TODO: skip mp4
         if self.config.crop:
@@ -216,9 +231,17 @@ class MEncoder(Block):
             return
 
         self.process.stdin.close()
+
         try:
-            self.process.terminate()
-            self.process.wait()
+            if False:
+                with timeout(5):
+                    self.process.terminate()
+                    self.process.wait()
+            else:
+                self.process.terminate()
+                self.process.wait()
+        except Timeout as e:
+            self.error(e)
         except (OSError, AttributeError):
             # Exception AttributeError: AttributeError("'NoneType' object 
             # has no attribute 'SIGTERM'",) 
@@ -226,6 +249,7 @@ class MEncoder(Block):
             # of RangefinderUniform> ignored
             # http://stackoverflow.com/questions/2572172/
             pass
+#            self.error('Error while cleanup: %s' % e)
 
     def write_value(self, timestamp, image):
         if self.image_shape is None:
@@ -235,18 +259,25 @@ class MEncoder(Block):
             msg = ('The image has changed shape, from %s to %s.' %
                    (self.image_shape, image.shape))
             raise Exception(msg) # TODO: badinput
+
         # very important! make sure we are using a reasonable array
         if not image.flags['C_CONTIGUOUS']:
-            image = numpy.ascontiguousarray(image)
+            image = numpy.ascontiguousarray(image) #@UndefinedVariable
 
         try:
-            self.process.stdin.write(image.data)
-            self.process.stdin.flush()
-        except IOError as e: # broken pipe
+            if False:
+                with timeout(5):
+                    self.process.stdin.write(image.data)
+                    self.process.stdin.flush()
+            else:
+                self.process.stdin.write(image.data)
+                self.process.stdin.flush()
+        except (Exception, KeyboardInterrupt) as e:
+        # IOError = broken pipe
             msg = 'Could not write data to mencoder: %s.' % e
-            self.error(msg)
-            msg += '\n' + indent(self.process.stdout.read(), 'stdout> ')
-            msg += '\n' + indent(self.process.stderr.read(), 'stderr> ')
+#            self.error(msg)
+#            msg += '\n' + indent(self.process.stdout.read(), 'stdout> ')
+#            msg += '\n' + indent(self.process.stderr.read(), 'stderr> ')
             raise Exception(msg)
 
         if self.config.timestamps:
@@ -254,3 +285,24 @@ class MEncoder(Block):
             self.timestamps_file.flush()
 
 
+class Timeout(Exception):
+    pass
+
+
+@contextmanager
+def timeout(delta=5):
+
+    def handler(signum, frame):
+        raise Timeout("operation took more than %s seconds" % delta)
+
+    # Set the signal handler and a 5-second alarm
+    signal.signal(signal.SIGALRM, handler)
+    signal.alarm(delta)
+    try:
+        yield
+    finally:
+        signal.alarm(0)
+
+
+def ignore_sigint():
+            signal.signal(signal.SIGINT, signal.SIG_IGN)

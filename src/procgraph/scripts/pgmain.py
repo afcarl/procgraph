@@ -7,6 +7,7 @@ from ..core.visualization import error, info
 from optparse import OptionParser
 import os
 import sys
+import traceback
 
 
 usage_short = \
@@ -240,7 +241,8 @@ def pg(filename, config,
         model.finish()
 
     except KeyboardInterrupt:
-        error('Execution of %s interrupted by user.' % model)
+        where = traceback.format_exc()
+        error('Execution of %s interrupted by user at %s:' % (model, where))
         error('I will attempt clean-up.')
         raise
     except Exception as e:

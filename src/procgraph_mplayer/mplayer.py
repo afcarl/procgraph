@@ -6,6 +6,7 @@ import tempfile
 
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
 from procgraph.block_utils import expand
+from procgraph.utils import friendly_path
 import math
 
 
@@ -65,7 +66,7 @@ class MPlayer(Generator):
                     pass
                 info[key] = value
 
-        self.debug("Video configuration: %s" % info)
+        #self.debug("Video configuration: %s" % info)
 
         keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT",
                 "ID_VIDEO_FPS", "ID_LENGTH"]
@@ -90,9 +91,10 @@ class MPlayer(Generator):
 
         # TODO: reading non-RGB streams not supported
         self.info('Reading %dx%d @ %.1f fps '
-                  ' (length %ss, approx %d frames), from %r.' %
+                  ' (length %ss, approx %d frames), from %s.' %
                    (self.width, self.height, self.fps,
-                    self.length, self.approx_frames, self.config.file,))
+                    self.length, self.approx_frames,
+                    friendly_path(self.config.file)))
 
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
@@ -112,7 +114,7 @@ class MPlayer(Generator):
                 self.fifo_name
                 ]
 
-        self.debug("command line: %s" % " ".join(args))
+        #self.debug("command line: %s" % " ".join(args))
 
         if self.config.quiet:
             self.process = subprocess.Popen(args,
@@ -159,10 +161,9 @@ class MPlayer(Generator):
 
     def print_stats(self):
         percentage = 100.0 * self.num_frames_read / self.approx_frames
-        short_filename = self.file # XXX
         self.info('%6d/%d frames (%4.1f%%) of %s' %
                   (self.num_frames_read, self.approx_frames, percentage,
-                   short_filename))
+                   friendly_path(self.file)))
 
     def read_next_frame(self):
         if self.state.finished:

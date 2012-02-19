@@ -1,5 +1,5 @@
 import os
-import subprocess
+from procgraph.utils.calling_ext_program import system_cmd_result, CmdException
 
 
 def convert_to_mp4(filename, mp4=None, quiet=True):
@@ -43,38 +43,39 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
             # '-threads', '1', # limit to one thread
              tmp]
 
-    #print(" ".join(cmds))
-    # TODO: should cleanup by itself if interrupted
     try:
-        if quiet:
-            subprocess.check_call(cmds, stdout=open('/dev/null'),
-                                        stderr=open('/dev/null'))
-        else:
-            subprocess.check_call(cmds)
-    except:
+        system_cmd_result('.', cmds,
+                  display_stdout=not quiet,
+                  display_stderr=not quiet,
+                  raise_on_error=True,
+                  capture_keyboard_interrupt=False)
+    except CmdException as e:
         if os.path.exists(tmp):
             os.unlink(tmp)
-        # TODO: print contents of stderr/stdout
         raise
 
     # TODO: check file exists
-    try:
-        subprocess.check_call(['qtfaststart', tmp, mp4],
-                              stdout=open('/dev/null'),
-                              stderr=open('/dev/null'))
-        # TODO: capture output
-        #print('Succesfull call of qtfaststart.')
-    except Exception as e:
-        print("Could not call qtfaststart: %s" % e)
 
+    system_cmd_result
+    names = ['qtfaststart', 'qt-faststart']
+    errors = []
+    for name in names:
+        cmd = [name, tmp, mp4]
         try:
-            # easy_install qtfaststart
-            subprocess.check_call(['qt-faststart', tmp, mp4])
-            #print('Succesfull call of qt-faststart.')
-        except Exception as e:
-            print("Could not call qtfaststart: %s" % e)
-            #print("The file will not be ready for streaming.")
-            os.rename(tmp, mp4)
+            system_cmd_result('.', cmd,
+                      display_stdout=False,
+                      display_stderr=False,
+                      raise_on_error=True,
+                      capture_keyboard_interrupt=False)
+            break
+        except CmdException as e:
+            errors.append(e)
+
+    else:
+        msg = ('Could not call either of %s. '
+               'The file will not be ready for streaming.\n%s' %
+               (names, errors))
+        os.rename(tmp, mp4)
 
     if os.path.exists(tmp):
         os.unlink(tmp)
