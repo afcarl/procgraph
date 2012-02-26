@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_signals.any &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_signals.any</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_signals.any</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span>
+
+
+<div class="viewcode-block" id="Any"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.any.Any">[docs]</a><span class="k">class</span> <span class="nc">Any</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Joins the stream of multiple signals onto one output signal.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;any&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input_is_variable</span><span class="p">(</span><span class="s">&#39;Signals to be put on the same stream.&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;stream&#39;</span><span class="p">,</span> <span class="s">&#39;Unified stream.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Any.init"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.any.Any.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_ts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="Any.update"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.any.Any.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># DO NOT USE NAMES</span>
+        <span class="c"># TODO: check other blocks for this bug</span>
+        <span class="n">nsignals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_input_signals</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nsignals</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">ts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_ts</span> <span class="ow">or</span> <span class="n">ts</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_ts</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ts</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_ts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span>
+
+<span class="c">#        t = [x[0] for x in self.buffer]</span>
+<span class="c">#        self.debug(&#39; after1: %s&#39; % t)</span>
+<span class="c">#                </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c">#        t = [x[0] for x in self.buffer]</span>
+<span class="c">#        self.debug(&#39; sort: %s&#39; % t)</span>
+
+        <span class="c"># Make sure we saw every signal before outputing one</span>
+<span class="c">#        if len(self.last_ts) == nsignals:</span>
+        <span class="c"># FIXME: bug we will send one sample of the last stream</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">:</span>
+            <span class="n">ts</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">ts</span><span class="p">)</span>
+
+<span class="c">#        t = [x[0] for x in self.buffer]</span>
+<span class="c">#        self.debug(&#39; after2: %s&#39; % t)</span>
+
+<span class="c">#        self.debug(&#39;Got %s, chose %s&#39; % (),</span>
+<span class="c">#                                                timestamp))</span>
+<span class="c">#          </span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

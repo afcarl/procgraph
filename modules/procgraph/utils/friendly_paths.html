@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.utils.friendly_paths &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.utils.friendly_paths</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.utils.friendly_paths</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Utilities for writing compact file paths.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;1.0&#39;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c"># TODO: cache the results?</span>
+
+
+<div class="viewcode-block" id="friendly_path"><a class="viewcode-back" href="../../../api/procgraph.utils.html#procgraph.utils.friendly_paths.friendly_path">[docs]</a><span class="k">def</span> <span class="nf">friendly_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">use_environment</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">        Gets a friendly representation of the given path,</span>
+<span class="sd">        using relative paths or environment variables</span>
+<span class="sd">        (if use_environment = True).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="n">path</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()))</span>
+
+    <span class="n">rules</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;~&#39;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s">&#39;~&#39;</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">use_environment</span><span class="p">:</span>
+        <span class="n">envs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
+        <span class="c"># remove unwanted </span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">envs</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="s">&#39;PWD&#39;</span> <span class="ow">in</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">envs</span><span class="p">[</span><span class="n">e</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">envs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                <span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&#39;$</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+
+    <span class="c"># apply longest first</span>
+    <span class="n">rules</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">replace_variables</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">rules</span><span class="p">)</span>
+
+    <span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="n">weight_doubledot</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="k">def</span> <span class="nf">score</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="c"># penalize &#39;..&#39; a lot</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;..&#39;</span><span class="p">,</span> <span class="s">&#39;*&#39;</span> <span class="o">*</span> <span class="n">weight_doubledot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+    <span class="n">options</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="bp">False</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Options for </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">original</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;- </span><span class="si">%4d</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">score</span><span class="p">(</span><span class="n">o</span><span class="p">),</span> <span class="n">o</span><span class="p">))</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c"># print(&#39;Converted %s  =&gt; %s&#39; % (original, result))</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+
+</div>
+<div class="viewcode-block" id="replace_variables"><a class="viewcode-back" href="../../../api/procgraph.utils.html#procgraph.utils.friendly_paths.replace_variables">[docs]</a><span class="k">def</span> <span class="nf">replace_variables</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">rules</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="c"># print(&quot;  applied %s =&gt; %s&quot; % (v, k))</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">path</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

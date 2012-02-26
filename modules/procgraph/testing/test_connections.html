@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.testing.test_connections &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.testing.test_connections</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.testing.test_connections</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">..core.exceptions</span> <span class="kn">import</span> <span class="n">SemanticError</span>
+<span class="kn">from</span> <span class="nn">..core.model_loader</span> <span class="kn">import</span> <span class="n">model_from_string</span> <span class="c"># XXX:</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">PGTestCase</span>
+
+<span class="n">good_examples2</span> <span class="o">=</span> <span class="p">[</span>
+<span class="sd">&quot;&quot;&quot; |constant value=2| -&gt; [0] res &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Multiple inputs</span>
+<span class="sd">|constant value=12| -&gt; a</span>
+<span class="sd">|constant value=13| -&gt; b</span>
+<span class="sd">a, b -&gt; |+| -&gt; c  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Multiple inputs / anonymous</span>
+<span class="sd">|constant value=12| -&gt; a -&gt; |gain k=3| -&gt; c</span>
+<span class="sd">|constant value=13| -&gt; |gain k=-1| -&gt; d</span>
+<span class="sd"> c, d -&gt; |+| -&gt; result         &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Referring to outputs using numbers  </span>
+<span class="sd">|constant value=12| -&gt; [0]a  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Referring to input/outputs using numbers  </span>
+<span class="sd">|constant value=12| -&gt; [0]a[0] -&gt; |gain k=1|  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # A block by itself should be fine  </span>
+<span class="sd">|generic_in0_out0|  </span>
+<span class="sd">|generic_in0_out2|  &quot;&quot;&quot;</span><span class="p">,</span>
+ 
+<span class="sd">&quot;&quot;&quot; # Trying some named connections (1)  </span>
+<span class="sd">|generic_in0_out1| -&gt; |generic_in1_out0|  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Trying some named connections (1)</span>
+<span class="sd"># Should be the same  </span>
+<span class="sd">|generic_in0_out1| -&gt; x</span>
+<span class="sd">x -&gt; |generic_in1_out0|  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot;# Should be the same  as well</span>
+<span class="sd">|c1:constant value=1| -&gt; |g1:generic_in1_out1|</span>
+<span class="sd">g1.0 -&gt; |g2:generic_in1_out0|  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot;# Should be the same  as well</span>
+<span class="sd">|g1:generic_in0_out1|</span>
+<span class="sd">g1.0 -&gt; |g2:generic_in1_out0|  &quot;&quot;&quot;</span> 
+
+<span class="p">]</span>
+
+<span class="n">bad_examples2</span> <span class="o">=</span> <span class="p">[</span>
+<span class="sd">&quot;&quot;&quot; # Bad number of outputs  </span>
+<span class="sd">|constant value=12| -&gt; a, b  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Bad output name  </span>
+<span class="sd">|constant value=12| -&gt; [inexistent]a  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Bad output number  </span>
+<span class="sd">|constant value=12| -&gt; [1]a  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # inexistent input</span>
+<span class="sd">invalid -&gt; |gain k=2|            &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # input to something with no input</span>
+<span class="sd">|constant value=12| -&gt; a</span>
+<span class="sd">a -&gt; |constant value=12|   &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # wrong number of inputs</span>
+<span class="sd">|constant value=12| -&gt; a</span>
+<span class="sd">|constant value=12| -&gt; b</span>
+<span class="sd">a, b -&gt; |gain k=1|              &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Cannot use output if terminating  </span>
+<span class="sd">|constant value=12| -&gt; [0]a[0]  &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # Incompatible signals (anonymous) </span>
+<span class="sd">|constant value=12| -&gt; |generic in=2 out=1| -&gt; y &quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot; # We don&#39;t want to connect blocks with no signals  </span>
+<span class="sd">|generic in=0 out=0| -&gt; |generic in=0 out=2|  &quot;&quot;&quot;</span><span class="p">,</span>
+ 
+<span class="sd">&quot;&quot;&quot; # It cannot be without input if one is needed   </span>
+<span class="sd">|generic in=1 out=0|  &quot;&quot;&quot;</span><span class="p">,</span>
+ 
+<span class="sd">&quot;&quot;&quot; # Double definition   </span>
+<span class="sd">|generic_in0_out1| -&gt; a  </span>
+<span class="sd">|generic_in0_out1| -&gt; a&quot;&quot;&quot;</span><span class="p">,</span>
+
+
+<span class="sd">&quot;&quot;&quot; # Oops, definition is left dangling...   </span>
+<span class="sd">|generic_in0_out1| -&gt; a  </span>
+<span class="sd">|generic_in0_out1| -&gt; a</span>
+<span class="sd">g1.in = 2</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="SemanticsTest"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_connections.SemanticsTest">[docs]</a><span class="k">class</span> <span class="nc">SemanticsTest</span><span class="p">(</span><span class="n">PGTestCase</span><span class="p">):</span>
+    
+<div class="viewcode-block" id="SemanticsTest.testBadExamples"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_connections.SemanticsTest.testBadExamples">[docs]</a>    <span class="k">def</span> <span class="nf">testBadExamples</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">bad_examples2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_semantic_error</span><span class="p">(</span><span class="n">example</span><span class="p">)</span> 
+            </div>
+<div class="viewcode-block" id="SemanticsTest.testExamples"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_connections.SemanticsTest.testExamples">[docs]</a>    <span class="k">def</span> <span class="nf">testExamples</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">good_examples2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_semantic_ok</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+
+     </div></div>
+<div class="viewcode-block" id="ParamsTest"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_connections.ParamsTest">[docs]</a><span class="k">class</span> <span class="nc">ParamsTest</span><span class="p">(</span><span class="n">PGTestCase</span><span class="p">):</span>
+    
+<div class="viewcode-block" id="ParamsTest.test1"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_connections.ParamsTest.test1">[docs]</a>    <span class="k">def</span> <span class="nf">test1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Checking that we signal unused parameters. &#39;&#39;&#39;</span>
+
+        <span class="n">model_desc</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">           |input name=x| -&gt; |g1:gain| -&gt; |output name=y|</span>
+<span class="s">        &quot;&quot;&quot;</span>
+        <span class="c"># g2.gain is unused</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertRaises</span><span class="p">(</span><span class="n">SemanticError</span><span class="p">,</span> <span class="n">model_from_string</span><span class="p">,</span>
+                          <span class="n">model_desc</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;g2.k&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">})</span>
+       
+
+    </div></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

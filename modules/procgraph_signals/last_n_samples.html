@@ -1,0 +1,155 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_signals.last_n_samples &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_signals.last_n_samples</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_signals.last_n_samples</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span>
+
+
+<div class="viewcode-block" id="HistoryN"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.last_n_samples.HistoryN">[docs]</a><span class="k">class</span> <span class="nc">HistoryN</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">    This block collects the last N samples of a signals,</span>
+<span class="sd">    and outputs two signals ``x`` and ``t``. </span>
+<span class="sd">    See also :ref:`block:historyt` and :ref:`block:history`.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;last_n_samples&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;n&#39;</span><span class="p">,</span> <span class="s">&#39;Number of samples to retain.&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;Any data&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span> <span class="s">&#39;Sequence of values.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;t&#39;</span><span class="p">,</span> <span class="s">&#39;Sequence of timestamps.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HistoryN.init"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.last_n_samples.HistoryN.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="HistoryN.update"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.last_n_samples.HistoryN.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">t</span>
+
+        <span class="n">x</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span></div></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

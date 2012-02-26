@@ -1,0 +1,164 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.block_config &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.block_config</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.block_config</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.block_meta</span> <span class="kn">import</span> <span class="n">BlockConfig</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">aslist</span><span class="p">,</span> <span class="n">SemanticError</span>
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">semantic_warning</span>
+
+
+<div class="viewcode-block" id="resolve_config"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_config.resolve_config">[docs]</a><span class="k">def</span> <span class="nf">resolve_config</span><span class="p">(</span><span class="n">list_of_config</span><span class="p">,</span> <span class="n">given_config</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">STRICT</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Checks that the configuration passed is coherent with the definition.</span>
+<span class="sd">        Returns a dictionary with the values to use.</span>
+<span class="sd">    </span>
+<span class="sd">        If STRICT is True, throws an error if we pass some configuration</span>
+<span class="sd">        that was not properly defined in list_of_config.</span>
+<span class="sd">    </span>
+<span class="sd">        list_of_config: list of BlockConfig instances</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">list_of_config</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">BlockConfig</span><span class="p">)</span>
+
+    <span class="c"># First we get the names of the required config variables.</span>
+    <span class="n">defined_variables</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">variable</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">list_of_config</span><span class="p">])</span>
+    <span class="n">required_variables</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">variable</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">list_of_config</span>
+                              <span class="k">if</span> <span class="ow">not</span> <span class="n">x</span><span class="o">.</span><span class="n">has_default</span><span class="p">])</span>
+    <span class="n">passed_variables</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">given_config</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">required_not_passed</span> <span class="o">=</span> <span class="n">required_variables</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">passed_variables</span><span class="p">)</span>
+    <span class="n">passed_not_defined</span> <span class="o">=</span> <span class="n">passed_variables</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">defined_variables</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">required_not_passed</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Some required config (</span><span class="si">%r</span><span class="s">) was not passed.&#39;</span> <span class="o">%</span>
+                <span class="n">aslist</span><span class="p">(</span><span class="n">required_not_passed</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">passed_not_defined</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;We were passed some config variable(s) (</span><span class="si">%r</span><span class="s">) which was not &#39;</span>
+               <span class="s">&#39;defined formally &#39;</span>
+               <span class="s">&#39;as a config variable.</span><span class="se">\n</span><span class="s">The defined ones are: </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+               <span class="p">(</span><span class="n">aslist</span><span class="p">(</span><span class="n">passed_not_defined</span><span class="p">),</span> <span class="n">aslist</span><span class="p">(</span><span class="n">defined_variables</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">STRICT</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">semantic_warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">list_of_config</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">has_default</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">default</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">given_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

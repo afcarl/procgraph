@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_signals.derivative2 &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_signals.derivative2</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_signals.derivative2</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">BadInput</span><span class="p">,</span> <span class="n">register_model_spec</span>
+
+
+<div class="viewcode-block" id="isiterable"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.derivative2.isiterable">[docs]</a><span class="k">def</span> <span class="nf">isiterable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="nb">iter</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<div class="viewcode-block" id="ForwardDifference12"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.derivative2.ForwardDifference12">[docs]</a><span class="k">class</span> <span class="nc">ForwardDifference12</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Computes ``x[t+1] - x[t]`` normalized with timestamp. &#39;&#39;&#39;</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;two_step_difference&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;x12&#39;</span><span class="p">,</span> <span class="s">&#39;An array with the last 2 values of x.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;t12&#39;</span><span class="p">,</span> <span class="s">&#39;An array with the last 2 values of the timestamp.&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;x_dot&#39;</span><span class="p">,</span> <span class="s">&#39;Derivative of x&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ForwardDifference12.update"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.derivative2.ForwardDifference12.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">x12</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">t12</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isiterable</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="s">&#39;Expected arrays of 2 elements&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;x&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isiterable</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="s">&#39;Expected arrays of 2 elements&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="s">&#39;Bad timestamp sequence </span><span class="si">% s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)</span>
+
+        <span class="c"># if this is a sequence of bytes, let&#39;s promove them to floats</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">):</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">x_dot</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="n">numpy</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s">&#39;x_dot&#39;</span><span class="p">,</span> <span class="n">x_dot</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+
+<span class="c"># TODO: move this to models/</span></div></div>
+<span class="n">register_model_spec</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">--- model derivative2</span>
+<span class="s">&#39;&#39;&#39; Computes the derivative of a quantity with 2 taps (``x[t+1] - x[t]``).</span>
+<span class="s">    See also :ref:`block:derivative`.       &#39;&#39;&#39;</span>
+<span class="s">input x &quot;quantity to derive&quot;</span>
+<span class="s">output x_dot &quot;approximate derivative&quot;</span>
+
+<span class="s">|input name=x| --&gt; |last_n_samples n=2| --&gt; x,t</span>
+
+<span class="s">   x, t --&gt; |two_step_difference| --&gt; |output name=x_dot|</span>
+<span class="s">    </span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

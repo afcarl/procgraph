@@ -1,0 +1,720 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>testing Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>testing Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="testing-package">
+<h1>testing Package<a class="headerlink" href="#testing-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">testing</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph.testing"></span><p>Unit tests for ProcGraph core.</p>
+</div>
+<div class="section" id="module-procgraph.testing.test_block_meta">
+<span id="test-block-meta-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_block_meta</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_block_meta" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_block_meta.SyntaxTestMultiple">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">SyntaxTestMultiple</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#SyntaxTestMultiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.SyntaxTestMultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_block_meta.SyntaxTestMultiple.test_ok">
+<tt class="descname">test_ok</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#SyntaxTestMultiple.test_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.SyntaxTestMultiple.test_ok" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_block_meta.SyntaxTestMultiple.test_same_name_mistake">
+<tt class="descname">test_same_name_mistake</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#SyntaxTestMultiple.test_same_name_mistake"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.SyntaxTestMultiple.test_same_name_mistake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test that we detect when a input, output, config name
+is repeated.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_block_meta.SyntaxTestMultiple.test_variable_inputs">
+<tt class="descname">test_variable_inputs</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#SyntaxTestMultiple.test_variable_inputs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.SyntaxTestMultiple.test_variable_inputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_1">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_1</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_2">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_2</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_3">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_3</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_4">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_4</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_5">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_5</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_5"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_5" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_6">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_6</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_6"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_6" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.bad_mixing_7">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">bad_mixing_7</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#bad_mixing_7"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.bad_mixing_7" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.good_mixing_1">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">good_mixing_1</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#good_mixing_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.good_mixing_1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.good_mixing_2">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">good_mixing_2</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#good_mixing_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.good_mixing_2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.good_mixing_3">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">good_mixing_3</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#good_mixing_3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.good_mixing_3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.same_name_mistake_config">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">same_name_mistake_config</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#same_name_mistake_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.same_name_mistake_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.same_name_mistake_input">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">same_name_mistake_input</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#same_name_mistake_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.same_name_mistake_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.test_block_meta.same_name_mistake_output">
+<tt class="descclassname">procgraph.testing.test_block_meta.</tt><tt class="descname">same_name_mistake_output</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_block_meta.html#same_name_mistake_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_block_meta.same_name_mistake_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_config_semantics">
+<span id="test-config-semantics-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_config_semantics</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_config_semantics" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_config_semantics.SemanticsTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_config_semantics.</tt><tt class="descname">SemanticsTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_semantics.html#SemanticsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_semantics.SemanticsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_config_semantics.SemanticsTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_semantics.html#SemanticsTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_semantics.SemanticsTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_config_semantics.SemanticsTest.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_semantics.html#SemanticsTest.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_semantics.SemanticsTest.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_config_semantics.SemanticsTest.testNewExamples">
+<tt class="descname">testNewExamples</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_semantics.html#SemanticsTest.testNewExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_semantics.SemanticsTest.testNewExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_config_syntax">
+<span id="test-config-syntax-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_config_syntax</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_config_syntax" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_config_syntax.SyntaxTestMultiple">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_config_syntax.</tt><tt class="descname">SyntaxTestMultiple</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_syntax.html#SyntaxTestMultiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_syntax.SyntaxTestMultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_config_syntax.SyntaxTestMultiple.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_syntax.html#SyntaxTestMultiple.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_syntax.SyntaxTestMultiple.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_config_syntax.SyntaxTestMultiple.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_config_syntax.html#SyntaxTestMultiple.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_config_syntax.SyntaxTestMultiple.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_connections">
+<span id="test-connections-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_connections</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_connections" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_connections.ParamsTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_connections.</tt><tt class="descname">ParamsTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_connections.html#ParamsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_connections.ParamsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_connections.ParamsTest.test1">
+<tt class="descname">test1</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_connections.html#ParamsTest.test1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_connections.ParamsTest.test1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checking that we signal unused parameters.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.testing.test_connections.SemanticsTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_connections.</tt><tt class="descname">SemanticsTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_connections.html#SemanticsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_connections.SemanticsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_connections.SemanticsTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_connections.html#SemanticsTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_connections.SemanticsTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_connections.SemanticsTest.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_connections.html#SemanticsTest.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_connections.SemanticsTest.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_delayed_init">
+<span id="test-delayed-init-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_delayed_init</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_delayed_init" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_delayed_init.DelayedTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_delayed_init.</tt><tt class="descname">DelayedTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_delayed_init.html#DelayedTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_delayed_init.DelayedTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_delayed_init.DelayedTest.test_delayed">
+<tt class="descname">test_delayed</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_delayed_init.html#DelayedTest.test_delayed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_delayed_init.DelayedTest.test_delayed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_docstring_parsing">
+<span id="test-docstring-parsing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_docstring_parsing</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_docstring_parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_docstring_parsing.DocStringTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_docstring_parsing.</tt><tt class="descname">DocStringTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_docstring_parsing.html#DocStringTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_docstring_parsing.DocStringTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_docstring_parsing.DocStringTest.test_parsing">
+<tt class="descname">test_parsing</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_docstring_parsing.html#DocStringTest.test_parsing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_docstring_parsing.DocStringTest.test_parsing" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_dynamicblocks_exec">
+<span id="test-dynamicblocks-exec-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_dynamicblocks_exec</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_dynamicblocks_exec" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_dynamicblocks_exec.DynamicBlocksTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_dynamicblocks_exec.</tt><tt class="descname">DynamicBlocksTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_dynamicblocks_exec.html#DynamicBlocksTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_dynamicblocks_exec.DynamicBlocksTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_dynamicblocks_exec.DynamicBlocksTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_dynamicblocks_exec.html#DynamicBlocksTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_dynamicblocks_exec.DynamicBlocksTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_dynamicblocks_exec.DynamicBlocksTest.testGoodExamples">
+<tt class="descname">testGoodExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_dynamicblocks_exec.html#DynamicBlocksTest.testGoodExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_dynamicblocks_exec.DynamicBlocksTest.testGoodExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_dynamicblocks_parsing">
+<span id="test-dynamicblocks-parsing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_dynamicblocks_parsing</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_dynamicblocks_parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_dynamicblocks_parsing.SyntaxTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_dynamicblocks_parsing.</tt><tt class="descname">SyntaxTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_dynamicblocks_parsing.html#SyntaxTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_dynamicblocks_parsing.SyntaxTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_dynamicblocks_parsing.SyntaxTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_dynamicblocks_parsing.html#SyntaxTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_dynamicblocks_parsing.SyntaxTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_dynamicblocks_parsing.SyntaxTest.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_dynamicblocks_parsing.html#SyntaxTest.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_dynamicblocks_parsing.SyntaxTest.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_import_syntax">
+<span id="test-import-syntax-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_import_syntax</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_import_syntax" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_import_syntax.SyntaxTestImport">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_import_syntax.</tt><tt class="descname">SyntaxTestImport</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_import_syntax.html#SyntaxTestImport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_import_syntax.SyntaxTestImport" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_import_syntax.SyntaxTestImport.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_import_syntax.html#SyntaxTestImport.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_import_syntax.SyntaxTestImport.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_import_syntax.SyntaxTestImport.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_import_syntax.html#SyntaxTestImport.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_import_syntax.SyntaxTestImport.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_inputoutput_syntax">
+<span id="test-inputoutput-syntax-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_inputoutput_syntax</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_inputoutput_syntax" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_inputoutput_syntax.SyntaxTestMultiple">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_inputoutput_syntax.</tt><tt class="descname">SyntaxTestMultiple</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_inputoutput_syntax.html#SyntaxTestMultiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_inputoutput_syntax.SyntaxTestMultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_inputoutput_syntax.SyntaxTestMultiple.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_inputoutput_syntax.html#SyntaxTestMultiple.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_inputoutput_syntax.SyntaxTestMultiple.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_inputoutput_syntax.SyntaxTestMultiple.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_inputoutput_syntax.html#SyntaxTestMultiple.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_inputoutput_syntax.SyntaxTestMultiple.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_line_continutations">
+<span id="test-line-continutations-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_line_continutations</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_line_continutations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_line_continutations.TestLineContinuations">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_line_continutations.</tt><tt class="descname">TestLineContinuations</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_line_continutations.html#TestLineContinuations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_line_continutations.TestLineContinuations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_line_continutations.TestLineContinuations.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_line_continutations.html#TestLineContinuations.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_line_continutations.TestLineContinuations.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_line_continutations.TestLineContinuations.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_line_continutations.html#TestLineContinuations.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_line_continutations.TestLineContinuations.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_model_input">
+<span id="test-model-input-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_model_input</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_model_input" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_model_input.PipelineTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_model_input.</tt><tt class="descname">PipelineTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_model_input.html#PipelineTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_model_input.PipelineTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_model_input.PipelineTest.test_pipeline">
+<tt class="descname">test_pipeline</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_model_input.html#PipelineTest.test_pipeline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_model_input.PipelineTest.test_pipeline" title="Permalink to this definition">¶</a></dt>
+<dd><p>All graphs equivalent (multiply by a gain), but interconnections
+change.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_model_input.PipelineTest.try_one">
+<tt class="descname">try_one</tt><big>(</big><em>model_desc</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_model_input.html#PipelineTest.try_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_model_input.PipelineTest.try_one" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_multiple_models">
+<span id="test-multiple-models-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_multiple_models</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_multiple_models" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_multiple_models.SemanticsTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_multiple_models.</tt><tt class="descname">SemanticsTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_models.html#SemanticsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_models.SemanticsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_multiple_models.SemanticsTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_models.html#SemanticsTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_models.SemanticsTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_multiple_models.SemanticsTest.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_models.html#SemanticsTest.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_models.SemanticsTest.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_multiple_models_params">
+<span id="test-multiple-models-params-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_multiple_models_params</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_multiple_models_params" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_multiple_models_params.ParamsTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_multiple_models_params.</tt><tt class="descname">ParamsTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_models_params.html#ParamsTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_models_params.ParamsTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_multiple_models_params.ParamsTest.test1">
+<tt class="descname">test1</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_models_params.html#ParamsTest.test1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_models_params.ParamsTest.test1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_multiple_parsing">
+<span id="test-multiple-parsing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_multiple_parsing</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_multiple_parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_multiple_parsing.SyntaxTestMultiple">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_multiple_parsing.</tt><tt class="descname">SyntaxTestMultiple</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_parsing.html#SyntaxTestMultiple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_parsing.SyntaxTestMultiple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_multiple_parsing.SyntaxTestMultiple.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_parsing.html#SyntaxTestMultiple.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_parsing.SyntaxTestMultiple.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_multiple_parsing.SyntaxTestMultiple.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_multiple_parsing.html#SyntaxTestMultiple.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_multiple_parsing.SyntaxTestMultiple.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_nested">
+<span id="test-nested-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_nested</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_nested" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_nested.SyntaxTest2">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_nested.</tt><tt class="descname">SyntaxTest2</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_nested.html#SyntaxTest2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_nested.SyntaxTest2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_nested.SyntaxTest2.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_nested.html#SyntaxTest2.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_nested.SyntaxTest2.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_nested.SyntaxTest2.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_nested.html#SyntaxTest2.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_nested.SyntaxTest2.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_parsing">
+<span id="test-parsing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_parsing</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_parsing.SyntaxTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_parsing.</tt><tt class="descname">SyntaxTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_parsing.html#SyntaxTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_parsing.SyntaxTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_parsing.SyntaxTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_parsing.html#SyntaxTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_parsing.SyntaxTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_parsing.SyntaxTest.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_parsing.html#SyntaxTest.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_parsing.SyntaxTest.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_renaming">
+<span id="test-renaming-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_renaming</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_renaming" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_renaming.TestRenaming">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_renaming.</tt><tt class="descname">TestRenaming</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_renaming.html#TestRenaming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_renaming.TestRenaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_renaming.TestRenaming.test_renaming">
+<tt class="descname">test_renaming</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_renaming.html#TestRenaming.test_renaming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_renaming.TestRenaming.test_renaming" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sometimes instancing a block twice will give error because
+we overwrote the parsed spec.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_signal_naming">
+<span id="test-signal-naming-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_signal_naming</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_signal_naming" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_signal_naming.NamingTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_signal_naming.</tt><tt class="descname">NamingTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_signal_naming.html#NamingTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_signal_naming.NamingTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_signal_naming.NamingTest.test_correct_naming">
+<tt class="descname">test_correct_naming</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_signal_naming.html#NamingTest.test_correct_naming"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_signal_naming.NamingTest.test_correct_naming" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_signal_naming.NamingTest.try_one">
+<tt class="descname">try_one</tt><big>(</big><em>example</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_signal_naming.html#NamingTest.try_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_signal_naming.NamingTest.try_one" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_some_exceptions">
+<span id="test-some-exceptions-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_some_exceptions</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_some_exceptions" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-procgraph.testing.test_substitution">
+<span id="test-substitution-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_substitution</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_substitution" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_substitution.SubstitutionTest">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_substitution.</tt><tt class="descname">SubstitutionTest</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_substitution.html#SubstitutionTest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_substitution.SubstitutionTest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_substitution.SubstitutionTest.testBadExamples">
+<tt class="descname">testBadExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_substitution.html#SubstitutionTest.testBadExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_substitution.SubstitutionTest.testBadExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_substitution.SubstitutionTest.testGoodExamples">
+<tt class="descname">testGoodExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_substitution.html#SubstitutionTest.testGoodExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_substitution.SubstitutionTest.testGoodExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.test_values">
+<span id="test-values-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">test_values</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.test_values" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.test_values.SyntaxTest2">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.test_values.</tt><tt class="descname">SyntaxTest2</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_values.html#SyntaxTest2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_values.SyntaxTest2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.test_values.SyntaxTest2.testExamples">
+<tt class="descname">testExamples</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_values.html#SyntaxTest2.testExamples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_values.SyntaxTest2.testExamples" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_values.SyntaxTest2.test_numbers">
+<tt class="descname">test_numbers</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_values.html#SyntaxTest2.test_numbers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_values.SyntaxTest2.test_numbers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_values.SyntaxTest2.test_numbers2">
+<tt class="descname">test_numbers2</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_values.html#SyntaxTest2.test_numbers2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_values.SyntaxTest2.test_numbers2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_values.SyntaxTest2.test_numbers3">
+<tt class="descname">test_numbers3</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_values.html#SyntaxTest2.test_numbers3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_values.SyntaxTest2.test_numbers3" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.test_values.SyntaxTest2.test_numbers4">
+<tt class="descname">test_numbers4</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/test_values.html#SyntaxTest2.test_numbers4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.test_values.SyntaxTest2.test_numbers4" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.testing.utils">
+<span id="utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> Module<a class="headerlink" href="#module-procgraph.testing.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.testing.utils.PGTestCase">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.utils.</tt><tt class="descname">PGTestCase</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></tt></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.testing.utils.PGTestCase.check_execution_throws">
+<tt class="descname">check_execution_throws</tt><big>(</big><em>possible_errors</em>, <em>model_spec</em>, <em>config={}</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase.check_execution_throws"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase.check_execution_throws" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the model execution throws the specific error
+semantic error. Returns the exception if it is thrown.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.utils.PGTestCase.check_semantic_error">
+<tt class="descname">check_semantic_error</tt><big>(</big><em>model_spec</em>, <em>config={}</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase.check_semantic_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase.check_semantic_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the given string parses ok 
+but gives a semantic error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.utils.PGTestCase.check_semantic_ok">
+<tt class="descname">check_semantic_ok</tt><big>(</big><em>model_spec</em>, <em>config={}</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase.check_semantic_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase.check_semantic_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the given string can parse OK and we can create a model.
+Note that a syntax error is translated into a test Error, 
+not a failure.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.utils.PGTestCase.check_syntax_error">
+<tt class="descname">check_syntax_error</tt><big>(</big><em>model_spec</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase.check_syntax_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase.check_syntax_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the given string parsing gives a syntax error.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.utils.PGTestCase.check_syntax_ok">
+<tt class="descname">check_syntax_ok</tt><big>(</big><em>model_spec</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase.check_syntax_ok"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase.check_syntax_ok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tests that the given string can parse OK. 
+Returns parsed models.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.utils.PGTestCase.write_fancy">
+<tt class="descname">write_fancy</tt><big>(</big><em>model_spec</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#PGTestCase.write_fancy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.PGTestCase.write_fancy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.testing.utils.VerifyBlock">
+<em class="property">class </em><tt class="descclassname">procgraph.testing.utils.</tt><tt class="descname">VerifyBlock</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#VerifyBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.VerifyBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This debug block verifies that config.x == config.y 
+and throws an exception if that&#8217;s not the case.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.testing.utils.VerifyBlock.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('x',False,'not-given',None,None), BlockConfig('y',False,'not-given',None,None)]</em><a class="headerlink" href="#procgraph.testing.utils.VerifyBlock.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.testing.utils.VerifyBlock.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.testing.utils'</em><a class="headerlink" href="#procgraph.testing.utils.VerifyBlock.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.testing.utils.VerifyBlock.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#VerifyBlock.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.VerifyBlock.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.testing.utils.VerifyBlock.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.testing.utils.VerifyBlock.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.testing.utils.VerifyBlock.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.testing.utils.VerifyBlock.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.testing.utils.define_generic">
+<tt class="descclassname">procgraph.testing.utils.</tt><tt class="descname">define_generic</tt><big>(</big><em>nin</em>, <em>nout</em><big>)</big><a class="reference internal" href="../modules/procgraph/testing/utils.html#define_generic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.testing.utils.define_generic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

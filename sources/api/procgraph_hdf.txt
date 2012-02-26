@@ -1,0 +1,43 @@
+procgraph_hdf Package
+=====================
+
+:mod:`procgraph_hdf` Package
+----------------------------
+
+.. automodule:: procgraph_hdf
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`hdfread` Module
+---------------------
+
+.. automodule:: procgraph_hdf.hdfread
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`hdfread_many` Module
+--------------------------
+
+.. automodule:: procgraph_hdf.hdfread_many
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`hdfwrite` Module
+----------------------
+
+.. automodule:: procgraph_hdf.hdfwrite
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`tables_cache` Module
+--------------------------
+
+.. automodule:: procgraph_hdf.tables_cache
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

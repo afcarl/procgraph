@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.testing.test_multiple_models_params &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.testing.test_multiple_models_params</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.testing.test_multiple_models_params</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph.core.registrar</span> <span class="kn">import</span> <span class="n">default_library</span><span class="p">,</span> <span class="n">Library</span>
+<span class="kn">from</span> <span class="nn">procgraph.core.model_loader</span> <span class="kn">import</span> <span class="n">model_from_string</span>
+
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">PGTestCase</span>
+
+<span class="c"># All of these models, when interpreted,</span>
+<span class="c"># have an output that equals 42</span>
+
+<span class="n">examples_42</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">--- model master</span>
+<span class="s"># first</span>
+<span class="s">output meaning</span>
+
+<span class="s">|slave my_param=42| ---&gt; |output name=meaning| </span>
+
+<span class="s">--- model slave</span>
+<span class="s">config my_param</span>
+<span class="s">output c</span>
+
+<span class="s">|c1:constant| --&gt; |output name=c|</span>
+
+<span class="s">c1.value = $my_param</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+
+<span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">--- model master</span>
+<span class="s">output meaning</span>
+
+<span class="s">|slave my_param=$my_param2| ---&gt; |output name=meaning| </span>
+
+<span class="s">my_param2 = 42</span>
+
+<span class="s">--- model slave</span>
+<span class="s">config my_param</span>
+<span class="s">output c</span>
+
+<span class="s">|c1:constant| --&gt; |output name=c|</span>
+
+<span class="s">c1.value = $my_param</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+<span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">--- model master </span>
+<span class="s">output meaning</span>
+
+<span class="s">|s1:slave| ---&gt; |output name=meaning| </span>
+
+<span class="s">s1.my_param = 42</span>
+
+<span class="s">--- model slave</span>
+<span class="s">config my_param</span>
+<span class="s">output c</span>
+
+<span class="s">|c1:constant| --&gt; |output name=c|</span>
+
+<span class="s">c1.value = $my_param</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+<span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">--- model master</span>
+<span class="s">my_param2 = 42</span>
+<span class="s">output meaning</span>
+
+<span class="s">|s1:slave| ---&gt; |output name=meaning| </span>
+
+<span class="s">s1.my_param = $my_param2</span>
+
+<span class="s">--- model slave</span>
+<span class="s">config my_param</span>
+<span class="s">output c</span>
+
+<span class="s">|c1:constant| --&gt; |output name=c|</span>
+
+<span class="s">c1.value = $my_param</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{}),</span>
+<span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">--- model master </span>
+<span class="s">config my_param2</span>
+<span class="s">output meaning</span>
+
+<span class="s">|s1:slave| ---&gt; |output name=meaning| </span>
+
+<span class="s">s1.my_param = $my_param2</span>
+
+<span class="s">--- model slave</span>
+<span class="s">config my_param</span>
+<span class="s">output c</span>
+<span class="s">|c1:constant| --&gt; |output name=c|</span>
+
+<span class="s">c1.value = $my_param</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;my_param2&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">}),</span>
+<span class="p">(</span><span class="s">&#39;&#39;&#39; # Default naming</span>
+<span class="s">--- model master </span>
+<span class="s">output meaning</span>
+
+<span class="s">|slave| ---&gt; |output name=meaning| </span>
+
+<span class="s">--- model slave</span>
+<span class="s">config my_param</span>
+<span class="s">output c</span>
+
+<span class="s">|constant| --&gt; |output name=c|</span>
+
+<span class="s">constant.value = $my_param</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;slave.my_param&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">}),</span>
+<span class="p">(</span><span class="s">&#39;&#39;&#39; # Default naming -- recursive.</span>
+<span class="s">--- model master </span>
+<span class="s">output meaning</span>
+
+<span class="s">|slave| ---&gt; |output name=meaning| </span>
+
+<span class="s">--- model slave</span>
+<span class="s">output c</span>
+
+<span class="s">|constant| --&gt; |output name=c| </span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;slave.constant.value&#39;</span><span class="p">:</span> <span class="mi">42</span><span class="p">})</span>
+
+<span class="p">]</span>
+ 
+
+<div class="viewcode-block" id="ParamsTest"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_multiple_models_params.ParamsTest">[docs]</a><span class="k">class</span> <span class="nc">ParamsTest</span><span class="p">(</span><span class="n">PGTestCase</span><span class="p">):</span>
+    
+<div class="viewcode-block" id="ParamsTest.test1"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_multiple_models_params.ParamsTest.test1">[docs]</a>    <span class="k">def</span> <span class="nf">test1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">model_spec</span><span class="p">,</span> <span class="n">config</span> <span class="ow">in</span> <span class="n">examples_42</span><span class="p">:</span>
+            <span class="c"># don&#39;t pollute the main library with the block definitions</span>
+            <span class="n">library</span> <span class="o">=</span> <span class="n">Library</span><span class="p">(</span><span class="n">default_library</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">model_from_string</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span>
+                                      <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">)</span>
+            
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Trying with &#39;&#39;&#39;</span><span class="si">%s</span><span class="s">&#39;&#39;&#39;&quot;</span> <span class="o">%</span> <span class="n">model_spec</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;before&quot;</span><span class="p">)</span>
+            <span class="c"># at least the constant must be propagated</span>
+            <span class="k">assert</span> <span class="n">model</span><span class="o">.</span><span class="n">has_more</span><span class="p">()</span>
+            
+            <span class="k">while</span> <span class="n">model</span><span class="o">.</span><span class="n">has_more</span><span class="p">():</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&quot;before iteration&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;end&quot;</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="mi">42</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

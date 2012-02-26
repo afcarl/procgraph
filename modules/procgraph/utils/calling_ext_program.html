@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.utils.calling_ext_program &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.utils.calling_ext_program</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.utils.calling_ext_program</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph.utils</span> <span class="kn">import</span> <span class="n">indent</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;system_cmd_result&#39;</span><span class="p">,</span> <span class="s">&#39;CmdResult&#39;</span><span class="p">,</span> <span class="s">&#39;CmdException&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="CmdResult"><a class="viewcode-back" href="../../../api/procgraph.utils.html#procgraph.utils.calling_ext_program.CmdResult">[docs]</a><span class="k">class</span> <span class="nc">CmdResult</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cwd</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">rets</span><span class="p">,</span> <span class="n">interrupted</span><span class="p">,</span> <span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cwd</span> <span class="o">=</span> <span class="n">cwd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rets</span> <span class="o">=</span> <span class="n">rets</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">stdout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">stderr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span> <span class="o">=</span> <span class="n">interrupted</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The command: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span>
+               <span class="s">&#39;     in dir: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cmd</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cwd</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interrupted</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;Was interrupted by the user</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;returned: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ret</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rets</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">indent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rets</span><span class="p">,</span> <span class="s">&#39;error&gt;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">indent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="s">&#39;stdout&gt;&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">indent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#39;stderr&gt;&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">msg</span>
+
+</div>
+<div class="viewcode-block" id="CmdException"><a class="viewcode-back" href="../../../api/procgraph.utils.html#procgraph.utils.calling_ext_program.CmdException">[docs]</a><span class="k">class</span> <span class="nc">CmdException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd_result</span><span class="p">):</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cmd_result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">cmd_result</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="system_cmd_result"><a class="viewcode-back" href="../../../api/procgraph.utils.html#procgraph.utils.calling_ext_program.system_cmd_result">[docs]</a><span class="k">def</span> <span class="nf">system_cmd_result</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span>
+                      <span class="n">display_stdout</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                      <span class="n">display_stderr</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                      <span class="n">raise_on_error</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                      <span class="n">capture_keyboard_interrupt</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Returns the structure CmdResult; raises CmdException.</span>
+<span class="sd">        Also OSError are captured.</span>
+<span class="sd">        KeyboardInterrupt is passed through unless specified</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">tmp_stdout</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+    <span class="n">tmp_stderr</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">rets</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">interrupted</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">stdout</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="n">display_stdout</span> <span class="k">else</span> <span class="n">tmp_stdout</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+        <span class="n">stderr</span> <span class="o">=</span> <span class="bp">None</span> <span class="k">if</span> <span class="n">display_stderr</span> <span class="k">else</span> <span class="n">tmp_stderr</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
+                <span class="n">cmd2args</span><span class="p">(</span><span class="n">cmd</span><span class="p">),</span>
+                <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
+                <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span>
+                <span class="n">stderr</span><span class="o">=</span><span class="n">stderr</span><span class="p">,</span>
+                <span class="n">cwd</span><span class="o">=</span><span class="n">cwd</span><span class="p">)</span>
+
+        <span class="n">p</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">returncode</span>
+        <span class="n">rets</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">interrupted</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">interrupted</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">interrupted</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="mi">200</span>
+        <span class="n">rets</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="c"># remember to go back</span>
+    <span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">lseek</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">CmdResult</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span> <span class="n">ret</span><span class="p">,</span> <span class="n">rets</span><span class="p">,</span> <span class="n">interrupted</span><span class="p">,</span>
+                    <span class="n">stdout</span><span class="o">=</span><span class="n">read_all</span><span class="p">(</span><span class="n">tmp_stdout</span><span class="p">),</span>
+                    <span class="n">stderr</span><span class="o">=</span><span class="n">read_all</span><span class="p">(</span><span class="n">tmp_stderr</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">raise_on_error</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">ret</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CmdException</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+</div>
+<span class="k">def</span> <span class="nf">cmd2args</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; if s is a list, leave it like that; otherwise split()&#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">s</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span> <span class="k">assert</span> <span class="bp">False</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">cwd</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">cmd</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;No command given.&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">display</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">system_cmd_result</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">cmd</span><span class="p">,</span>
+                          <span class="n">display_stdout</span><span class="o">=</span><span class="n">display</span><span class="p">,</span>
+                          <span class="n">display_stderr</span><span class="o">=</span><span class="n">display</span><span class="p">,</span>
+                          <span class="n">raise_on_error</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Succeed: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">res</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">CmdException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Exception: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

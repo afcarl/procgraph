@@ -1,0 +1,11 @@
+scripts Package
+===============
+
+:mod:`crop_video` Module
+------------------------
+
+.. automodule:: procgraph_mplayer.scripts.crop_video
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

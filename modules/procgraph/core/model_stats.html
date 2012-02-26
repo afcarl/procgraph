@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.model_stats &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.model_stats</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.model_stats</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
+
+
+<div class="viewcode-block" id="Statistics"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_stats.Statistics">[docs]</a><span class="k">class</span> <span class="nc">Statistics</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_cpu</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var_cpu</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_wall</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var_wall</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perc_cpu</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perc_wall</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perc_times</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">baseline_fraction</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_timestamp</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_delta</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delta_num</span> <span class="o">=</span> <span class="mi">0</span>
+
+</div>
+<div class="viewcode-block" id="ExecutionStats"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_stats.ExecutionStats">[docs]</a><span class="k">class</span> <span class="nc">ExecutionStats</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samples</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="ExecutionStats.add"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_stats.ExecutionStats.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">cpu</span><span class="p">,</span> <span class="n">wall</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">):</span>
+        <span class="c"># weird wall/cpu behavior when suspending the process</span>
+        <span class="k">if</span> <span class="n">wall</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">wall</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">cpu</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cpu</span> <span class="o">=</span> <span class="n">wall</span>
+
+        <span class="k">if</span> <span class="n">cpu</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cpu</span> <span class="o">=</span> <span class="mf">0.0001</span>
+        <span class="k">if</span> <span class="n">wall</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">wall</span> <span class="o">=</span> <span class="mf">0.0001</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="n">block</span><span class="p">]</span> <span class="o">=</span> <span class="n">Statistics</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="p">[</span><span class="n">block</span><span class="p">]</span>
+
+        <span class="c"># TODO: set parameter</span>
+        <span class="n">WINDOW</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">num</span><span class="p">,</span> <span class="n">WINDOW</span><span class="p">)</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">cpu</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">var_cpu</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">var_cpu</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="p">(</span><span class="n">cpu</span> <span class="o">-</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">wall</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">var_wall</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">var_wall</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="p">(</span><span class="n">wall</span> <span class="o">-</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="nb">float</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">last_timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">timestamp</span> <span class="o">-</span> <span class="n">s</span><span class="o">.</span><span class="n">last_timestamp</span>
+                <span class="c"># when the block is a model, it could be called multiple times</span>
+                <span class="k">if</span> <span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">N</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">delta_num</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">mean_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">mean_delta</span> <span class="o">*</span> <span class="n">N</span> <span class="o">+</span> <span class="n">delta</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">delta_num</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="c"># print &quot;%s %d mean %d&quot; % </span>
+                    <span class="c"># (s.block, delta * 1000, 1000 * s.mean_delta)</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">last_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span>
+</div>
+<div class="viewcode-block" id="ExecutionStats.print_info"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_stats.ExecutionStats.print_info">[docs]</a>    <span class="k">def</span> <span class="nf">print_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">samples</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="n">write_stats</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="write_stats"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_stats.write_stats">[docs]</a><span class="k">def</span> <span class="nf">write_stats</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">Statistics</span><span class="p">)</span>
+
+    <span class="c"># get the block that executed fewest times and use it as a baseline</span>
+    <span class="n">baseline</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span><span class="p">)</span>
+
+    <span class="c"># update percentage</span>
+    <span class="n">total_cpu</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
+    <span class="n">total_wall</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
+    <span class="n">total_times</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">:</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">perc_cpu</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="o">/</span> <span class="n">total_cpu</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">perc_wall</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="o">/</span> <span class="n">total_wall</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">perc_times</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">total_times</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">baseline_fraction</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">num</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">baseline</span><span class="o">.</span><span class="n">num</span>
+
+    <span class="c"># sort by percentage</span>
+    <span class="n">alls</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">.</span><span class="n">perc_wall</span><span class="p">))</span>
+    <span class="n">min_perc</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;--- Statistics (ignoring &lt; </span><span class="si">%d%%</span><span class="s">) baseline: </span><span class="si">%d</span><span class="s"> iterations of </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+          <span class="p">(</span><span class="n">min_perc</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">num</span><span class="p">,</span> <span class="n">baseline</span><span class="o">.</span><span class="n">block</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">alls</span><span class="p">:</span>
+        <span class="n">perc_cpu</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">perc_cpu</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="n">perc_wall</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">perc_wall</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">s</span> <span class="o">!=</span> <span class="n">baseline</span> <span class="ow">and</span>
+             <span class="p">(</span><span class="n">perc_cpu</span> <span class="o">&lt;</span> <span class="n">min_perc</span><span class="p">)</span> <span class="ow">and</span>
+             <span class="p">(</span><span class="n">perc_wall</span> <span class="o">&lt;</span> <span class="n">min_perc</span><span class="p">)):</span>
+            <span class="k">continue</span>
+        <span class="n">perc_times</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">perc_times</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+
+        <span class="c"># jitter_cpu = ceil(100 * (sqrt(s.var_cpu) * 2 / s.mean_cpu))</span>
+        <span class="c"># jitter_wall = ceil(100 * (sqrt(s.var_wall) * 2 / s.mean_wall))</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span> <span class="o">&lt;</span> <span class="mf">0.7</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span><span class="p">:</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="s">&#39;IO &#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">comment</span> <span class="o">=</span> <span class="s">&#39;   &#39;</span>
+        <span class="c">#print &#39;&#39;.join([</span>
+        <span class="c">#&#39;- cpu: %dms (+-%d%%) %02d%% of total; &#39; % </span>
+        <span class="c"># (1000 * s.mean_cpu, jitter_cpu, perc_cpu),</span>
+        <span class="c">#&#39;wall: %dms (+-%d%%) %02d%% of total; &#39; % </span>
+        <span class="c">#(1000 * s.mean_wall, jitter_wall, perc_wall),</span>
+        <span class="c">#&#39;exec: %02d%% of total&#39; % perc_times])</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_delta</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%3.1f</span><span class="s"> fps&#39;</span> <span class="o">%</span> <span class="n">fps</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stats</span> <span class="o">=</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%3.1f</span><span class="s"> fps&#39;</span> <span class="o">%</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">35</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="mi">35</span><span class="p">]</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span>
+            <span class="s">&#39; cpu </span><span class="si">%4d</span><span class="s">ms </span><span class="si">%2d%%</span><span class="s">| &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_cpu</span><span class="p">,</span> <span class="n">perc_cpu</span><span class="p">),</span>
+            <span class="s">&#39;wall </span><span class="si">%4d</span><span class="s">ms </span><span class="si">%2d%%</span><span class="s">| &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1000</span> <span class="o">*</span> <span class="n">s</span><span class="o">.</span><span class="n">mean_wall</span><span class="p">,</span> <span class="n">perc_wall</span><span class="p">),</span>
+            <span class="s">&#39;exec </span><span class="si">%2d%%</span><span class="s"> </span><span class="si">%3d</span><span class="s"> (</span><span class="si">%3.1f</span><span class="s">x) </span><span class="si">%s</span><span class="s">| </span><span class="si">%s</span><span class="s"> &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">perc_times</span><span class="p">,</span>
+                                             <span class="n">s</span><span class="o">.</span><span class="n">num</span><span class="p">,</span>
+                                             <span class="n">s</span><span class="o">.</span><span class="n">baseline_fraction</span><span class="p">,</span>
+                                                      <span class="n">stats</span><span class="p">,</span> <span class="n">comment</span><span class="p">),</span>
+                                                      <span class="n">name</span><span class="p">]))</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

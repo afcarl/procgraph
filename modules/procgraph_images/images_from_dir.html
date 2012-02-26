@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_images.images_from_dir &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_images.images_from_dir</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_images.images_from_dir</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">conf_tools</span> <span class="kn">import</span> <span class="n">BadConfig</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">Block</span>
+<span class="kn">from</span> <span class="nn">procgraph.block_utils</span> <span class="kn">import</span> <span class="n">expand</span>
+<span class="kn">from</span> <span class="nn">procgraph.block_utils.natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+
+<div class="viewcode-block" id="FilesFromDir"><a class="viewcode-back" href="../../api/procgraph_images.html#procgraph_images.images_from_dir.FilesFromDir">[docs]</a><span class="k">class</span> <span class="nc">FilesFromDir</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This block reads the filenames from a directory according</span>
+<span class="sd">        to a given regexp. </span>
+<span class="sd">        </span>
+<span class="sd">        For now the timestamp starts from 0 and it is fixed.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;files_from_dir&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;dir&#39;</span><span class="p">,</span> <span class="s">&#39;Directory containing the image files.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;regexp&#39;</span><span class="p">,</span> <span class="s">&#39;Regular expression for images.&#39;</span><span class="p">,</span>
+                 <span class="n">default</span><span class="o">=</span><span class="s">&#39;(\w+)_(\d+)\.jpg&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;fps&#39;</span><span class="p">,</span> <span class="s">&#39;Fixed frame per second.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;filename&#39;</span><span class="p">,</span> <span class="s">&#39;Image filename&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FilesFromDir.init"><a class="viewcode-back" href="../../api/procgraph_images.html#procgraph_images.images_from_dir.FilesFromDir.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dir</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">expand</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;Not existent directory </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">dirname</span><span class="p">,</span>
+                            <span class="s">&#39;dir&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;The file </span><span class="si">%r</span><span class="s"> is not a directory.&#39;</span> <span class="o">%</span> <span class="n">dirname</span><span class="p">,</span>
+                            <span class="s">&#39;dir&#39;</span><span class="p">)</span>
+
+        <span class="n">regexp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">regexp</span>
+
+        <span class="c"># TODO: use proper logging</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Reading </span><span class="si">%r</span><span class="s"> from </span><span class="si">%r</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">dirname</span><span class="p">))</span>
+        <span class="n">all_files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+        <span class="n">selected</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">all_files</span>
+                    <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regexp</span><span class="p">,</span> <span class="n">f</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Selected </span><span class="si">%d</span><span class="s">/</span><span class="si">%d</span><span class="s"> files.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">selected</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_files</span><span class="p">)))</span>
+
+        <span class="n">fps</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fps</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fps</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;Invalid fps value </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">fps</span><span class="p">,</span> <span class="s">&#39;fps&#39;</span><span class="p">)</span>
+        <span class="c"># tuples (timestamp, filename)</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span> <span class="o">/</span> <span class="n">fps</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">natsorted</span><span class="p">(</span><span class="n">selected</span><span class="p">))]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">frames</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No frames found in dir </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">dirname</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">frames</span> <span class="o">=</span> <span class="n">frames</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">next_frame</span> <span class="o">=</span> <span class="mi">0</span>
+</div>
+<div class="viewcode-block" id="FilesFromDir.next_data_status"><a class="viewcode-back" href="../../api/procgraph_images.html#procgraph_images.images_from_dir.FilesFromDir.next_data_status">[docs]</a>    <span class="k">def</span> <span class="nf">next_data_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">next_frame</span>
+        <span class="k">if</span> <span class="n">k</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">frames</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">frames</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="FilesFromDir.update"><a class="viewcode-back" href="../../api/procgraph_images.html#procgraph_images.images_from_dir.FilesFromDir.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">frames</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">frames</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">next_frame</span>
+
+        <span class="k">assert</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)</span>
+
+        <span class="n">timestamp</span><span class="p">,</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">frames</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">next_frame</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">next_frame</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

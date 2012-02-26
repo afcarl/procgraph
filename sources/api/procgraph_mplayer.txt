@@ -1,0 +1,42 @@
+procgraph_mplayer Package
+=========================
+
+:mod:`procgraph_mplayer` Package
+--------------------------------
+
+.. automodule:: procgraph_mplayer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`mencoder` Module
+----------------------
+
+.. automodule:: procgraph_mplayer.mencoder
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`mp4conversion` Module
+---------------------------
+
+.. automodule:: procgraph_mplayer.mp4conversion
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`mplayer` Module
+---------------------
+
+.. automodule:: procgraph_mplayer.mplayer
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    procgraph_mplayer.scripts
+

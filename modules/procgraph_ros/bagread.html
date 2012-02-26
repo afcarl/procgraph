@@ -1,0 +1,223 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_ros.bagread &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_ros.bagread</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_ros.bagread</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Generator</span>
+
+
+<div class="viewcode-block" id="BagRead"><a class="viewcode-back" href="../../api/procgraph_ros.html#procgraph_ros.bagread.BagRead">[docs]</a><span class="k">class</span> <span class="nc">BagRead</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This block reads a bag file (ROS logging format).</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;bagread&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output_is_defined_at_runtime</span><span class="p">(</span><span class="s">&#39;The signals read from the log.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">,</span> <span class="s">&#39;Bag file to read&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;topics&#39;</span><span class="p">,</span> <span class="s">&#39;Which signals to output (and in what order). &#39;</span>
+                 <span class="s">&#39;Should be a comma-separated list. If you do not specify it &#39;</span>
+                 <span class="s">&#39;(or if empty) it will be all signals.&#39;</span><span class="p">,</span>
+                 <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="c">#   TODO: add advancement display</span>
+<span class="c">#    Block.config(&#39;quiet&#39;, &#39;If true, disables advancements status messages.&#39;,</span>
+<span class="c">#                 default=False)</span>
+<span class="c">#                 </span>
+<div class="viewcode-block" id="BagRead.get_output_signals"><a class="viewcode-back" href="../../api/procgraph_ros.html#procgraph_ros.bagread.BagRead.get_output_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_output_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">ros</span> <span class="kn">import</span> <span class="n">rosbag</span> <span class="c">#@UnresolvedImport</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bag</span> <span class="o">=</span> <span class="n">rosbag</span><span class="o">.</span><span class="n">Bag</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">topics</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">given_topics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">topics</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">given_topics</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c">#self.info(&#39;Given: %s&#39; % given_topics)    </span>
+        <span class="k">if</span> <span class="n">given_topics</span><span class="p">:</span>
+            <span class="n">topics</span> <span class="o">=</span> <span class="n">given_topics</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">topics</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">topic</span>
+                                 <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bag</span><span class="o">.</span><span class="n">_get_connections</span><span class="p">()]))</span>
+
+        <span class="c"># self.info(&#39;Tppics: %s&#39; % topics)    </span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">topic2signal</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">signals</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">topics</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">t</span><span class="p">:</span>
+                <span class="n">tokens</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">signal_name</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">signal_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">signal_name</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Warning: repeated name </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">signal_name</span><span class="p">)</span>
+                <span class="n">signal_name</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Using long form </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">signal_name</span><span class="p">)</span>
+            <span class="n">signals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">signal_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">topic2signal</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">signal_name</span>
+
+        <span class="n">topics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic2signal</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topic2signal</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">iterator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bag</span><span class="o">.</span><span class="n">read_messages</span><span class="p">(</span><span class="n">topics</span><span class="o">=</span><span class="n">topics</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">signals</span>
+</div>
+<div class="viewcode-block" id="BagRead.init"><a class="viewcode-back" href="../../api/procgraph_ros.html#procgraph_ros.bagread.BagRead.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_next</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">_load_next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">topic</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_timestamp</span> <span class="o">=</span> <span class="n">timestamp</span><span class="o">.</span><span class="n">to_sec</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_value</span> <span class="o">=</span> <span class="n">msg</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_topic</span> <span class="o">=</span> <span class="n">topic</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">next_signal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic2signal</span><span class="p">[</span><span class="n">topic</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span> <span class="o">=</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="BagRead.next_data_status"><a class="viewcode-back" href="../../api/procgraph_ros.html#procgraph_ros.bagread.BagRead.next_data_status">[docs]</a>    <span class="k">def</span> <span class="nf">next_data_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_signal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_timestamp</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="BagRead.update"><a class="viewcode-back" href="../../api/procgraph_ros.html#procgraph_ros.bagread.BagRead.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_next</span><span class="p">:</span>
+            <span class="k">return</span> <span class="c"># XXX: error here?</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">next_signal</span><span class="p">,</span>
+                        <span class="n">value</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">next_value</span><span class="p">,</span>
+                        <span class="n">timestamp</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">next_timestamp</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_load_next</span><span class="p">()</span>
+<span class="c">#        # write status message if not quiet</span>
+<span class="c">#        if next_signal == self.signals[0] and not self.config.quiet:</span>
+<span class="c">#            self.write_update_message(index, len(table), next_signal)</span>
+
+<span class="c">#    def write_update_message(self, index, T, signal, nintervals=10):</span>
+<span class="c">#        interval = int(numpy.floor(T * 1.0 / nintervals))</span>
+<span class="c">#        if (index &gt; 0 and </span>
+<span class="c">#            index != interval * (nintervals) and </span>
+<span class="c">#            index % interval == 0): </span>
+<span class="c">#            percentage = index * 100.0 / T</span>
+<span class="c">#            T = str(T)</span>
+<span class="c">#            index = str(index).rjust(len(T))</span>
+<span class="c">#            self.debug(&#39;%s read %.0f%% (%s/%s) (tracking signal %r).&#39; % </span>
+<span class="c">#                        (self.config.file, percentage, index, T, signal))</span>
+<span class="c">#         </span></div>
+<div class="viewcode-block" id="BagRead.finish"><a class="viewcode-back" href="../../api/procgraph_ros.html#procgraph_ros.bagread.BagRead.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bag</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

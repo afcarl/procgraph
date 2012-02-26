@@ -1,0 +1,1346 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>core Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>core Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="core-package">
+<h1>core Package<a class="headerlink" href="#core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-procgraph.core.block">
+<span id="block-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">block</span></tt> Module<a class="headerlink" href="#module-procgraph.core.block" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.block.Block">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block.</tt><tt class="descname">Block</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block_meta.BlockMetaSugar" title="procgraph.core.block_meta.BlockMetaSugar"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block_meta.BlockMetaSugar</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.core.block.Block.UPDATE_NOT_FINISHED">
+<tt class="descname">UPDATE_NOT_FINISHED</tt><em class="property"> = 'update-not-finished'</em><a class="headerlink" href="#procgraph.core.block.Block.UPDATE_NOT_FINISHED" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.all_input_signals_ready">
+<tt class="descname">all_input_signals_ready</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.all_input_signals_ready"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.all_input_signals_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if all input signals are ready.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.are_input_signals_defined">
+<tt class="descname">are_input_signals_defined</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.are_input_signals_defined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.are_input_signals_defined" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.are_output_signals_defined">
+<tt class="descname">are_output_signals_defined</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.are_output_signals_defined"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.are_output_signals_defined" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.canonicalize_input">
+<tt class="descname">canonicalize_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.canonicalize_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.canonicalize_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the signal spec (either string or id) to string
+(useful because more user-friendly).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.canonicalize_output">
+<tt class="descname">canonicalize_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.canonicalize_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.canonicalize_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the signal spec (either string or id) to string
+(useful because more user-friendly).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.cleanup">
+<tt class="descname">cleanup</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.debug">
+<tt class="descname">debug</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.debug" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a debug message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.define_input_signals_new">
+<tt class="descname">define_input_signals_new</tt><big>(</big><em>signals</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.define_input_signals_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.define_input_signals_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.define_output_signals_new">
+<tt class="descname">define_output_signals_new</tt><big>(</big><em>signals</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.define_output_signals_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.define_output_signals_new" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.error">
+<tt class="descname">error</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes a debug message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.from_outside_set_input">
+<tt class="descname">from_outside_set_input</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.from_outside_set_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.from_outside_set_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an input value. This is used from outside, not 
+from the block. (This is overloaded by Model)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_config">
+<tt class="descname">get_config</tt><big>(</big><em>conf</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input">
+<tt class="descname">get_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of an input signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_signals_names">
+<tt class="descname">get_input_signals_names</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_input_signals_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of names of currently defined input signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_signals_timestamps">
+<tt class="descname">get_input_signals_timestamps</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_input_signals_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the input signals timestamps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_signals_values">
+<tt class="descname">get_input_signals_values</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_input_signals_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_signals_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the input signals values.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_input_timestamp">
+<tt class="descname">get_input_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_input_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_input_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timestamp of an input signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_io_repr">
+<tt class="descname">get_io_repr</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_io_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_io_repr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a representation of io ports for this block.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output">
+<tt class="descname">get_output</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value of an output signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output_signals_names">
+<tt class="descname">get_output_signals_names</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_output_signals_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_signals_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of names of currently defined output signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output_signals_timestamps">
+<tt class="descname">get_output_signals_timestamps</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_output_signals_timestamps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_signals_timestamps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the output values timestamps.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_output_timestamp">
+<tt class="descname">get_output_timestamp</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_output_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_output_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the timestamp of an output signal.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_state">
+<tt class="descname">get_state</tt><big>(</big><em>varname</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be called during init() and update() .</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.get_state_vars">
+<tt class="descname">get_state_vars</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.get_state_vars"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.get_state_vars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of the names for the state variables.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.info">
+<tt class="descname">info</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an info message.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes the block.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.is_valid_input_name">
+<tt class="descname">is_valid_input_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.is_valid_input_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.is_valid_input_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that num_or_id (string or int) is a valid handle
+for one of the signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.is_valid_output_name">
+<tt class="descname">is_valid_output_name</tt><big>(</big><em>num_or_id</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.is_valid_output_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.is_valid_output_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that num_or_id (string or int) is a valid handle
+for one of the signals.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.num_input_signals">
+<tt class="descname">num_input_signals</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.num_input_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.num_input_signals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.num_output_signals">
+<tt class="descname">num_output_signals</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.num_output_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.num_output_signals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.set_output">
+<tt class="descname">set_output</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.set_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.set_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets an output value. If timestamp is omitted, it
+will default to the maximum of the input signals timestamp.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.set_state">
+<tt class="descname">set_state</tt><big>(</big><em>varname</em>, <em>value</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.set_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.set_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Can be called during init() and update().</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs the block function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.block.Block.warning">
+<tt class="descname">warning</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Block.warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Block.warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an info message.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block.Generator">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block.</tt><tt class="descname">Generator</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Generator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.core.block.Generator.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Generator.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Generator.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is complicated but necessary. Do you have another value?</p>
+<ul class="simple">
+<li>Yes, and it will be of this timestamp. (I can see it from the log)</li>
+<li>No, this generator has finished.</li>
+<li>Yes, but this is realtime and it does not depend on me.
+For example, I&#8217;m waiting for the next sensor data. 
+Ask me later.</li>
+</ul>
+<p>In those cases, we return</p>
+<blockquote>
+<div><p>(True, timestamp)</p>
+<p>(False, None)</p>
+<p>(True, None)</p>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block.Value">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block.</tt><tt class="descname">Value</tt><big>(</big><em>value</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block.html#Value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block.Value" title="Permalink to this definition">¶</a></dt>
+<dd><p>timestamp = ETERNITY     constant
+timestamp = NOT_READY = (None)         signal not ready</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.block_config">
+<span id="block-config-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">block_config</span></tt> Module<a class="headerlink" href="#module-procgraph.core.block_config" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.core.block_config.resolve_config">
+<tt class="descclassname">procgraph.core.block_config.</tt><tt class="descname">resolve_config</tt><big>(</big><em>list_of_config</em>, <em>given_config</em>, <em>block</em>, <em>STRICT=True</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_config.html#resolve_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_config.resolve_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the configuration passed is coherent with the definition.
+Returns a dictionary with the values to use.</p>
+<p>If STRICT is True, throws an error if we pass some configuration
+that was not properly defined in list_of_config.</p>
+<p>list_of_config: list of BlockConfig instances</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.block_meta">
+<span id="block-meta-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">block_meta</span></tt> Module<a class="headerlink" href="#module-procgraph.core.block_meta" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.block_meta.BlockConfig">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">BlockConfig</tt><big>(</big><em>variable</em>, <em>has_default</em>, <em>default</em>, <em>desc</em>, <em>desc_rest</em>, <em>where=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockConfig" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_meta.BlockInput">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">BlockInput</tt><big>(</big><em>type</em>, <em>name</em>, <em>min</em>, <em>max</em>, <em>desc</em>, <em>desc_rest</em>, <em>where</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockInput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_meta.BlockMeta">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">BlockMeta</tt><big>(</big><em>clsname</em>, <em>bases</em>, <em>clsdict</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">type</span></tt></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.core.block_meta.BlockMeta.aliases">
+<tt class="descname">aliases</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.block_meta.BlockMeta.aliases" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.block_meta.BlockMeta.tmp_config">
+<tt class="descname">tmp_config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.block_meta.BlockMeta.tmp_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.block_meta.BlockMeta.tmp_input">
+<tt class="descname">tmp_input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.block_meta.BlockMeta.tmp_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.block_meta.BlockMeta.tmp_output">
+<tt class="descname">tmp_output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.block_meta.BlockMeta.tmp_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_meta.BlockMetaSugar">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">BlockMetaSugar</tt><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.alias">
+<em class="property">static </em><tt class="descname">alias</tt><big>(</big><em>*arg</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.alias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.config">
+<em class="property">static </em><tt class="descname">config</tt><big>(</big><em>*arg</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.input">
+<em class="property">static </em><tt class="descname">input</tt><big>(</big><em>*arg</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.input_is_variable">
+<em class="property">static </em><tt class="descname">input_is_variable</tt><big>(</big><em>description=None</em>, <em>min=None</em>, <em>max=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.input_is_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.input_is_variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declares that this block can accept a variable number
+of inputs. You can specify minimum and maximum number.</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.output">
+<em class="property">static </em><tt class="descname">output</tt><big>(</big><em>*arg</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.output_is_defined_at_runtime">
+<em class="property">static </em><tt class="descname">output_is_defined_at_runtime</tt><big>(</big><em>description=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.output_is_defined_at_runtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.output_is_defined_at_runtime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.block_meta.BlockMetaSugar.output_is_variable">
+<em class="property">static </em><tt class="descname">output_is_variable</tt><big>(</big><em>*arg</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockMetaSugar.output_is_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockMetaSugar.output_is_variable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_meta.BlockOutput">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">BlockOutput</tt><big>(</big><em>type</em>, <em>name</em>, <em>desc</em>, <em>desc_rest</em>, <em>where</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#BlockOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.BlockOutput" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_alias">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_alias</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_alias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_config">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_config</tt><big>(</big><em>name</em>, <em>description=None</em>, <em>default='not-given'</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_input">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_input</tt><big>(</big><em>name</em>, <em>description=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_input_is_variable">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_input_is_variable</tt><big>(</big><em>description=None</em>, <em>min=None</em>, <em>max=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_input_is_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_input_is_variable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_output">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_output</tt><big>(</big><em>name</em>, <em>description=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_output_is_defined_at_runtime">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_output_is_defined_at_runtime</tt><big>(</big><em>description=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_output_is_defined_at_runtime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_output_is_defined_at_runtime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.block_output_is_variable">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">block_output_is_variable</tt><big>(</big><em>description=None</em>, <em>suffix=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#block_output_is_variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.block_output_is_variable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.cleanup">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">cleanup</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleans up temporary data for the meta-sugar, if the construction 
+is aborted</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.split_docstring">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">split_docstring</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#split_docstring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.split_docstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Splits a docstring in a tuple (first, rest).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.block_meta.trim">
+<tt class="descclassname">procgraph.core.block_meta.</tt><tt class="descname">trim</tt><big>(</big><em>docstring</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_meta.html#trim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_meta.trim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.block_sugar">
+<span id="block-sugar-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">block_sugar</span></tt> Module<a class="headerlink" href="#module-procgraph.core.block_sugar" title="Permalink to this headline">¶</a></h2>
+<p>These are three proxies for accessing input, output, and state.</p>
+<p>These allow to write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">gain</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>instead of::</dt>
+<dd>self.set_output(&#8216;y&#8217;, self.get_input(&#8216;x&#8217;) * self.get_config(&#8216;gain&#8217;))</dd>
+</dl>
+<dl class="class">
+<dt id="procgraph.core.block_sugar.ConfigProxy">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_sugar.</tt><tt class="descname">ConfigProxy</tt><big>(</big><em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_sugar.html#ConfigProxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_sugar.ConfigProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block_sugar.Proxy" title="procgraph.core.block_sugar.Proxy"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block_sugar.Proxy</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_sugar.InputProxy">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_sugar.</tt><tt class="descname">InputProxy</tt><big>(</big><em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_sugar.html#InputProxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_sugar.InputProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block_sugar.Proxy" title="procgraph.core.block_sugar.Proxy"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block_sugar.Proxy</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_sugar.OutputProxy">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_sugar.</tt><tt class="descname">OutputProxy</tt><big>(</big><em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_sugar.html#OutputProxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_sugar.OutputProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block_sugar.Proxy" title="procgraph.core.block_sugar.Proxy"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block_sugar.Proxy</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_sugar.Proxy">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_sugar.</tt><tt class="descname">Proxy</tt><big>(</big><em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_sugar.html#Proxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_sugar.Proxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.block_sugar.StateProxy">
+<em class="property">class </em><tt class="descclassname">procgraph.core.block_sugar.</tt><tt class="descname">StateProxy</tt><big>(</big><em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/block_sugar.html#StateProxy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.block_sugar.StateProxy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block_sugar.Proxy" title="procgraph.core.block_sugar.Proxy"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block_sugar.Proxy</span></tt></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.constants">
+<span id="constants-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">constants</span></tt> Module<a class="headerlink" href="#module-procgraph.core.constants" title="Permalink to this headline">¶</a></h2>
+<p>All the arbitrary constants used by ProcGraph.</p>
+<p>Note that some of these come from prototypes, and I should get rid of them.</p>
+<p>Also some are configuration parameters which should be settable in 
+some way.</p>
+</div>
+<div class="section" id="module-procgraph.core.docstring_parsing">
+<span id="docstring-parsing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">docstring_parsing</span></tt> Module<a class="headerlink" href="#module-procgraph.core.docstring_parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.docstring_parsing.Arg">
+<em class="property">class </em><tt class="descclassname">procgraph.core.docstring_parsing.</tt><tt class="descname">Arg</tt><big>(</big><em>desc=None</em>, <em>type=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/docstring_parsing.html#Arg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.docstring_parsing.Arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.docstring_parsing.DocStringInfo">
+<em class="property">class </em><tt class="descclassname">procgraph.core.docstring_parsing.</tt><tt class="descname">DocStringInfo</tt><big>(</big><em>docstring=None</em>, <em>params={}</em>, <em>returns=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../modules/procgraph/core/docstring_parsing.html#DocStringInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.docstring_parsing.DocStringInfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.docstring_parsing.parse_annotations">
+<tt class="descclassname">procgraph.core.docstring_parsing.</tt><tt class="descname">parse_annotations</tt><big>(</big><em>docstring</em>, <em>keys</em>, <em>empty=False</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/docstring_parsing.html#parse_annotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.docstring_parsing.parse_annotations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns docstring_without, dictionary.
+If empty specified, will look for empty statements, and give integers
+for names.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.docstring_parsing.parse_docstring_annotations">
+<tt class="descclassname">procgraph.core.docstring_parsing.</tt><tt class="descname">parse_docstring_annotations</tt><big>(</big><em>docstring</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/docstring_parsing.html#parse_docstring_annotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.docstring_parsing.parse_docstring_annotations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.exceptions">
+<span id="exceptions-module"></span><h2><a class="reference external" href="http://docs.python.org/library/exceptions.html#exceptions" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">exceptions</span></tt></a> Module<a class="headerlink" href="#module-procgraph.core.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="procgraph.core.exceptions.BadConfig">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">BadConfig</tt><big>(</big><em>error</em>, <em>block</em>, <em>config</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#BadConfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.BadConfig" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.ModelExecutionError" title="procgraph.core.exceptions.ModelExecutionError"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.ModelExecutionError</span></tt></a></p>
+<p>Exception thrown to communicate a problem with one
+of the configuration values passed to the block.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.BadInput">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">BadInput</tt><big>(</big><em>error</em>, <em>block</em>, <em>input_signal</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#BadInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.BadInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.ModelExecutionError" title="procgraph.core.exceptions.ModelExecutionError"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.ModelExecutionError</span></tt></a></p>
+<p>Exception thrown to communicate a problem with one
+of the inputs to the block.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.BlockWriterError">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">BlockWriterError</tt><a class="reference internal" href="../modules/procgraph/core/exceptions.html#BlockWriterError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.BlockWriterError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.PGException" title="procgraph.core.exceptions.PGException"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.PGException</span></tt></a></p>
+<p>An error by who wrote the block (e.g.: did not define signals).</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.ModelExecutionError">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">ModelExecutionError</tt><a class="reference internal" href="../modules/procgraph/core/exceptions.html#ModelExecutionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.ModelExecutionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.PGException" title="procgraph.core.exceptions.PGException"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.PGException</span></tt></a></p>
+<p>Runtime errors, including misuse by the user</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.ModelWriterError">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">ModelWriterError</tt><a class="reference internal" href="../modules/procgraph/core/exceptions.html#ModelWriterError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.ModelWriterError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.PGException" title="procgraph.core.exceptions.PGException"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.PGException</span></tt></a></p>
+<p>An error by who wrote the model, can be either Syntax or Semantic</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.PGException">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">PGException</tt><a class="reference internal" href="../modules/procgraph/core/exceptions.html#PGException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.PGException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.PGSyntaxError">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">PGSyntaxError</tt><big>(</big><em>error</em>, <em>where=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#PGSyntaxError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.PGSyntaxError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.ModelWriterError" title="procgraph.core.exceptions.ModelWriterError"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.ModelWriterError</span></tt></a></p>
+<p>A syntactic error by who wrote the model spec.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.core.exceptions.SemanticError">
+<em class="property">exception </em><tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">SemanticError</tt><big>(</big><em>error</em>, <em>element=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#SemanticError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.SemanticError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.exceptions.ModelWriterError" title="procgraph.core.exceptions.ModelWriterError"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.exceptions.ModelWriterError</span></tt></a></p>
+<p>A semantic error by who wrote the model spec.
+(and, as a platypus case, when wrong config is passed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.exceptions.add_prefix">
+<tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">add_prefix</tt><big>(</big><em>s</em>, <em>prefix</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#add_prefix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.add_prefix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.exceptions.aslist">
+<tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">aslist</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#aslist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.aslist" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.exceptions.format_where">
+<tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">format_where</tt><big>(</big><em>element_or_block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#format_where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.format_where" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.exceptions.x_not_found">
+<tt class="descclassname">procgraph.core.exceptions.</tt><tt class="descname">x_not_found</tt><big>(</big><em>what</em>, <em>x</em>, <em>iterable</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/exceptions.html#x_not_found"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.exceptions.x_not_found" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for creating pretty error messages.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.import_magic">
+<span id="import-magic-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">import_magic</span></tt> Module<a class="headerlink" href="#module-procgraph.core.import_magic" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.core.import_magic.get_module_info">
+<tt class="descclassname">procgraph.core.import_magic.</tt><tt class="descname">get_module_info</tt><big>(</big><em>module_name</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/import_magic.html#get_module_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.import_magic.get_module_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.import_magic.import_magic">
+<tt class="descclassname">procgraph.core.import_magic.</tt><tt class="descname">import_magic</tt><big>(</big><em>module_name</em>, <em>required</em>, <em>member=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/import_magic.html#import_magic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.import_magic.import_magic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Equivalent to &#8220;from required import member&#8221; or &#8220;import required&#8221;.
+Check that it was succesfull with import_succesful().</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.import_magic.import_succesful">
+<tt class="descclassname">procgraph.core.import_magic.</tt><tt class="descname">import_succesful</tt><big>(</big><em>m</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/import_magic.html#import_succesful"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.import_magic.import_succesful" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.model">
+<span id="model-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">model</span></tt> Module<a class="headerlink" href="#module-procgraph.core.model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.model.BlockConnection">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model.</tt><tt class="descname">BlockConnection</tt><big>(</big><em>block1</em>, <em>block1_signal</em>, <em>block2</em>, <em>block2_signal</em>, <em>public_name=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#BlockConnection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.BlockConnection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.model.Model">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model.</tt><tt class="descname">Model</tt><big>(</big><em>name</em>, <em>model_name</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p>A Model is a block and a generator.</p>
+<p>cleanup() and finish(): &#8220;cleanup&#8221; is the emergency clean up.
+It is called after finish().</p>
+<p>Order in which init(), update(), cleanup() can be called:
+- init(), update(), ..., update(), finish(), cleanup() 
+- init(), finish(), cleanup()
+- init(), cleanup()</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.core.model.Model.add_block">
+<tt class="descname">add_block</tt><big>(</big><em>name</em>, <em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.add_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.add_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a block to the model. Returns the block instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.cleanup">
+<tt class="descname">cleanup</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd><p>We try hard to call cleanup() on all the blocks.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.collect_stats_leaves">
+<tt class="descname">collect_stats_leaves</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.collect_stats_leaves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.collect_stats_leaves" title="Permalink to this definition">¶</a></dt>
+<dd><p>Collects the stats from the leaves.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model.Model.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.model.Model.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.connect">
+<tt class="descname">connect</tt><big>(</big><em>block1</em>, <em>block1_signal</em>, <em>block2</em>, <em>block2_signal</em>, <em>public_name</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.connect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.connect" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caller should check that the public name is not taken.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model.Model.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.core.model'</em><a class="headerlink" href="#procgraph.core.model.Model.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.from_outside_set_input">
+<tt class="descname">from_outside_set_input</tt><big>(</big><em>num_or_id</em>, <em>value</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.from_outside_set_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.from_outside_set_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.has_more">
+<tt class="descname">has_more</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.has_more"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.has_more" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns true if there are blocks with pending updates,
+or there is at least one generator that has not ended.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model.Model.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.model.Model.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>XXX: OK, I&#8217;m writing this late and probably it&#8217;s more 
+complicated than this.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model.Model.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.model.Model.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.print_stats">
+<tt class="descname">print_stats</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.print_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.print_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints statistics for the leaves of the hierarchy.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.public_signal_names">
+<tt class="descname">public_signal_names</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.public_signal_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.public_signal_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the set of public signal names.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.reset_execution">
+<tt class="descname">reset_execution</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.reset_execution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.reset_execution" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.summary">
+<tt class="descname">summary</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.summary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.summary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model.Model.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model.html#Model.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model.Model.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.model_instantiation">
+<span id="model-instantiation-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">model_instantiation</span></tt> Module<a class="headerlink" href="#module-procgraph.core.model_instantiation" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.check_link_compatibility_input">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">check_link_compatibility_input</tt><big>(</big><em>previous_block</em>, <em>previous_link</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#check_link_compatibility_input"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.check_link_compatibility_input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.check_link_compatibility_output">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">check_link_compatibility_output</tt><big>(</big><em>block</em>, <em>previous_link</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#check_link_compatibility_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.check_link_compatibility_output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.create_from_parsing_results">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">create_from_parsing_results</tt><big>(</big><em>parsed_model</em>, <em>name=None</em>, <em>config={}</em>, <em>library=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#create_from_parsing_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.create_from_parsing_results" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.define_input_signals">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">define_input_signals</tt><big>(</big><em>input</em>, <em>block</em>, <em>previous_link</em>, <em>previous_block</em>, <em>model</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#define_input_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.define_input_signals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.define_output_signals">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">define_output_signals</tt><big>(</big><em>output</em>, <em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#define_output_signals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.define_output_signals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.expand_references_in_string">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">expand_references_in_string</tt><big>(</big><em>s</em>, <em>function</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#expand_references_in_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.expand_references_in_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands references of the kind ${var} in the string s.
+<a href="#id1"><span class="problematic" id="id2">``</span></a>function``(var) translates from var -&gt; value</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_instantiation.fill_anonymous_link">
+<tt class="descclassname">procgraph.core.model_instantiation.</tt><tt class="descname">fill_anonymous_link</tt><big>(</big><em>previous_block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_instantiation.html#fill_anonymous_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_instantiation.fill_anonymous_link" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.model_io">
+<span id="model-io-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">model_io</span></tt> Module<a class="headerlink" href="#module-procgraph.core.model_io" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.model_io.ModelInput">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model_io.</tt><tt class="descname">ModelInput</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_io.html#ModelInput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_io.ModelInput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This represents one input to the model.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelInput.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('name',False,'not-given','Input signal name.','')]</em><a class="headerlink" href="#procgraph.core.model_io.ModelInput.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelInput.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.core.model_io'</em><a class="headerlink" href="#procgraph.core.model_io.ModelInput.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model_io.ModelInput.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_io.html#ModelInput.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_io.ModelInput.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelInput.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.model_io.ModelInput.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelInput.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,dummy)]</em><a class="headerlink" href="#procgraph.core.model_io.ModelInput.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model_io.ModelInput.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_io.html#ModelInput.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_io.ModelInput.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.model_io.ModelOutput">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model_io.</tt><tt class="descname">ModelOutput</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_io.html#ModelOutput"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_io.ModelOutput" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This represents one output to the model.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelOutput.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('name',False,'not-given','Output signal name','')]</em><a class="headerlink" href="#procgraph.core.model_io.ModelOutput.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelOutput.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.core.model_io'</em><a class="headerlink" href="#procgraph.core.model_io.ModelOutput.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model_io.ModelOutput.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_io.html#ModelOutput.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_io.ModelOutput.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelOutput.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x12de9e0&gt;]</em><a class="headerlink" href="#procgraph.core.model_io.ModelOutput.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.model_io.ModelOutput.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.core.model_io.ModelOutput.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model_io.ModelOutput.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_io.html#ModelOutput.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_io.ModelOutput.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.model_loader">
+<span id="model-loader-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">model_loader</span></tt> Module<a class="headerlink" href="#module-procgraph.core.model_loader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.model_loader.ModelSpec">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model_loader.</tt><tt class="descname">ModelSpec</tt><big>(</big><em>parsed_model</em>, <em>defined_in</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_loader.html#ModelSpec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_loader.ModelSpec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Class used to register as a block type</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_loader.add_models_to_library">
+<tt class="descclassname">procgraph.core.model_loader.</tt><tt class="descname">add_models_to_library</tt><big>(</big><em>library</em>, <em>string</em>, <em>name=None</em>, <em>filename=None</em>, <em>defined_in=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_loader.html#add_models_to_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_loader.add_models_to_library" title="Permalink to this definition">¶</a></dt>
+<dd><p>defined_in: module NAME (to display in documentation)
+(Compulsory!)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_loader.model_from_string">
+<tt class="descclassname">procgraph.core.model_loader.</tt><tt class="descname">model_from_string</tt><big>(</big><em>model_spec</em>, <em>name=None</em>, <em>config=None</em>, <em>library=None</em>, <em>filename=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_loader.html#model_from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_loader.model_from_string" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instances a model from a specification. Optional
+attributes can be passed. Returns a Model object.</p>
+<p>Additional models in the spec (after the first) are automatically
+added to the library (defined_in = calling module).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_loader.pg_add_parsed_model_to_library">
+<tt class="descclassname">procgraph.core.model_loader.</tt><tt class="descname">pg_add_parsed_model_to_library</tt><big>(</big><em>parsed_model</em>, <em>library</em>, <em>defined_in</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_loader.html#pg_add_parsed_model_to_library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_loader.pg_add_parsed_model_to_library" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_loader.pg_add_this_package_models">
+<tt class="descclassname">procgraph.core.model_loader.</tt><tt class="descname">pg_add_this_package_models</tt><big>(</big><em>filename</em>, <em>assign_to</em>, <em>subdir='models'</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_loader.html#pg_add_this_package_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_loader.pg_add_this_package_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the models for this package.
+Shortcut to put into the module <tt class="docutils literal"><span class="pre">__init__.py</span></tt>.
+Call with filename = __file__, assign_to= __package__.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pg_add_this_package_models</span><span class="p">(</span><span class="n">filename__file__</span><span class="p">,</span> <span class="n">assign_to</span><span class="o">=</span><span class="n">__package__</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_loader.pg_look_for_models">
+<tt class="descclassname">procgraph.core.model_loader.</tt><tt class="descname">pg_look_for_models</tt><big>(</big><em>library</em>, <em>additional_paths=None</em>, <em>ignore_env=False</em>, <em>ignore_cache=False</em>, <em>assign_to_module=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_loader.html#pg_look_for_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_loader.pg_look_for_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Call this function at the beginning of the executions.
+It scans the disk for model definitions, and register
+them as available block types. 
+Other than the paths that are passed by argument,
+it looks into the ones in the PROCGRAPH_PATH environment
+variable (colon separated list of paths), unless ignore_env is True.</p>
+<p>assign_to_module is a string that gives the nominal module the model
+is associated to &#8211; this is only used for the documentation generation.</p>
+<p>TODO: add global cache in user directory.</p>
+<p>Honors global deny_pgc_cache to disable all caches.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.model_stats">
+<span id="model-stats-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">model_stats</span></tt> Module<a class="headerlink" href="#module-procgraph.core.model_stats" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.model_stats.ExecutionStats">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model_stats.</tt><tt class="descname">ExecutionStats</tt><a class="reference internal" href="../modules/procgraph/core/model_stats.html#ExecutionStats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_stats.ExecutionStats" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.core.model_stats.ExecutionStats.add">
+<tt class="descname">add</tt><big>(</big><em>block</em>, <em>cpu</em>, <em>wall</em>, <em>timestamp</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_stats.html#ExecutionStats.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_stats.ExecutionStats.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.model_stats.ExecutionStats.print_info">
+<tt class="descname">print_info</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_stats.html#ExecutionStats.print_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_stats.ExecutionStats.print_info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.model_stats.Statistics">
+<em class="property">class </em><tt class="descclassname">procgraph.core.model_stats.</tt><tt class="descname">Statistics</tt><big>(</big><em>block</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_stats.html#Statistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_stats.Statistics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.model_stats.write_stats">
+<tt class="descclassname">procgraph.core.model_stats.</tt><tt class="descname">write_stats</tt><big>(</big><em>samples</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/model_stats.html#write_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.model_stats.write_stats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.parsing">
+<span id="parsing-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">parsing</span></tt> Module<a class="headerlink" href="#module-procgraph.core.parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.core.parsing.code_pickler">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">code_pickler</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#code_pickler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.code_pickler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.code_unpickler">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">code_unpickler</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#code_unpickler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.code_unpickler" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.convert_int">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">convert_int</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#convert_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.convert_int" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.create_model_grammar">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">create_model_grammar</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#create_model_grammar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.create_model_grammar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.eval_array">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">eval_array</tt><big>(</big><em>s</em>, <em>loc</em>, <em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#eval_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.eval_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.eval_dictionary">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">eval_dictionary</tt><big>(</big><em>s</em>, <em>loc</em>, <em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#eval_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.eval_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.parse_model">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">parse_model</tt><big>(</big><em>string</em>, <em>filename=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#parse_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.parse_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of ParsedModel</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing.parse_value">
+<tt class="descclassname">procgraph.core.parsing.</tt><tt class="descname">parse_value</tt><big>(</big><em>string</em>, <em>filename=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing.html#parse_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing.parse_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is useful for debugging</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.parsing_elements">
+<span id="parsing-elements-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">parsing_elements</span></tt> Module<a class="headerlink" href="#module-procgraph.core.parsing_elements" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.Connection">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">Connection</tt><big>(</big><em>elements</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.Connection.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#Connection.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.Connection.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ImportStatement">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ImportStatement</tt><big>(</big><em>package</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ImportStatement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ImportStatement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ImportStatement.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ImportStatement.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ImportStatement.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ParsedAssignment">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ParsedAssignment</tt><big>(</big><em>key</em>, <em>value</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedAssignment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedAssignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ParsedAssignment.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedAssignment.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedAssignment.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ParsedBlock">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ParsedBlock</tt><big>(</big><em>name</em>, <em>operation</em>, <em>config</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ParsedBlock.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedBlock.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedBlock.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ParsedElement">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ParsedElement</tt><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedElement" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ParsedModel">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ParsedModel</tt><big>(</big><em>name</em>, <em>docstring</em>, <em>elements</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ParsedModel.from_anonymous_model">
+<em class="property">static </em><tt class="descname">from_anonymous_model</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedModel.from_anonymous_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedModel.from_anonymous_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ParsedModel.from_named_model">
+<em class="property">static </em><tt class="descname">from_named_model</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedModel.from_named_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedModel.from_named_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.core.parsing_elements.ParsedModel.static_filename">
+<tt class="descname">static_filename</tt><em class="property"> = '/home/andrea/scm/bentobox-boot11env/src/procgraph/src/procgraph_statistics/covariance.pyc'</em><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedModel.static_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ParsedSignal">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ParsedSignal</tt><big>(</big><em>name</em>, <em>block_name</em>, <em>local_input</em>, <em>local_output</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedSignal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedSignal" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p>Note that the convention is tricky:</p>
+<div class="highlight-python"><pre>--&gt; [local_input] name [local_output] --&gt;</pre>
+</div>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ParsedSignal.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedSignal.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedSignal.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.ParsedSignalList">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">ParsedSignalList</tt><big>(</big><em>signals</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedSignalList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedSignalList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.ParsedSignalList.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#ParsedSignalList.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.ParsedSignalList.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.VariableReference">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">VariableReference</tt><big>(</big><em>variable</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#VariableReference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.VariableReference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#procgraph.core.parsing_elements.ParsedElement" title="procgraph.core.parsing_elements.ParsedElement"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.parsing_elements.ParsedElement</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="staticmethod">
+<dt id="procgraph.core.parsing_elements.VariableReference.from_tokens">
+<em class="property">static </em><tt class="descname">from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#VariableReference.from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.VariableReference.from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.core.parsing_elements.Where">
+<em class="property">class </em><tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">Where</tt><big>(</big><em>filename</em>, <em>string</em>, <em>character=None</em>, <em>line=None</em>, <em>column=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#Where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.Where" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object of this class represents a place in a file.</p>
+<p>All parsed elements contain a reference to a <a class="reference internal" href="#procgraph.core.parsing_elements.Where" title="procgraph.core.parsing_elements.Where"><tt class="xref py py-class docutils literal"><span class="pre">Where</span></tt></a> object
+so that we can output pretty error messages.</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.core.parsing_elements.Where.print_where">
+<tt class="descname">print_where</tt><big>(</big><em>s=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w' at 0x2b2a3de291e0&gt;</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#Where.print_where"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.Where.print_where" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing_elements.config_from_tokens">
+<tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">config_from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#config_from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.config_from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing_elements.input_from_tokens">
+<tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">input_from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#input_from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.input_from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.parsing_elements.output_from_tokens">
+<tt class="descclassname">procgraph.core.parsing_elements.</tt><tt class="descname">output_from_tokens</tt><big>(</big><em>tokens</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/parsing_elements.html#output_from_tokens"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.parsing_elements.output_from_tokens" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.registrar">
+<span id="registrar-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">registrar</span></tt> Module<a class="headerlink" href="#module-procgraph.core.registrar" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.core.registrar.Library">
+<em class="property">class </em><tt class="descclassname">procgraph.core.registrar.</tt><tt class="descname">Library</tt><big>(</big><em>parent=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar.html#Library"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar.Library" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.core.registrar.Library.exists">
+<tt class="descname">exists</tt><big>(</big><em>block_type</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar.html#Library.exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar.Library.exists" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.registrar.Library.get_generator_for_block_type">
+<tt class="descname">get_generator_for_block_type</tt><big>(</big><em>block_type</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar.html#Library.get_generator_for_block_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar.Library.get_generator_for_block_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the generator object for the block type.</p>
+<p>A generator can instance using:</p>
+<blockquote>
+<div>generator(name, config, library)</div></blockquote>
+<p>and it can provide (before instancing) the properties:</p>
+<blockquote>
+<div>generator.config
+generator.input
+generator.output</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.registrar.Library.get_known_blocks">
+<tt class="descname">get_known_blocks</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar.html#Library.get_known_blocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar.Library.get_known_blocks" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.registrar.Library.instance">
+<tt class="descname">instance</tt><big>(</big><em>block_type</em>, <em>name</em>, <em>config</em>, <em>library=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar.html#Library.instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar.Library.instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.core.registrar.Library.register">
+<tt class="descname">register</tt><big>(</big><em>block_type</em>, <em>generator</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar.html#Library.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar.Library.register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.registrar_other">
+<span id="registrar-other-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">registrar_other</span></tt> Module<a class="headerlink" href="#module-procgraph.core.registrar_other" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.core.registrar_other.make_generic">
+<tt class="descclassname">procgraph.core.registrar_other.</tt><tt class="descname">make_generic</tt><big>(</big><em>name</em>, <em>inputs</em>, <em>num_outputs</em>, <em>operation</em>, <em>params={}</em>, <em>docs=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar_other.html#make_generic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar_other.make_generic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.registrar_other.register_block">
+<tt class="descclassname">procgraph.core.registrar_other.</tt><tt class="descname">register_block</tt><big>(</big><em>block_class</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar_other.html#register_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar_other.register_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.registrar_other.register_model_spec">
+<tt class="descclassname">procgraph.core.registrar_other.</tt><tt class="descname">register_model_spec</tt><big>(</big><em>model_spec</em>, <em>defined_in=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar_other.html#register_model_spec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar_other.register_model_spec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.registrar_other.register_simple_block">
+<tt class="descclassname">procgraph.core.registrar_other.</tt><tt class="descname">register_simple_block</tt><big>(</big><em>function</em>, <em>name=None</em>, <em>num_inputs=1</em>, <em>num_outputs=1</em>, <em>params={}</em>, <em>doc=None</em>, <em>defined_in=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar_other.html#register_simple_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar_other.register_simple_block" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.registrar_other.simple_block">
+<tt class="descclassname">procgraph.core.registrar_other.</tt><tt class="descname">simple_block</tt><big>(</big><em>alias=None</em>, <em>num_outputs=1</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/registrar_other.html#simple_block"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.registrar_other.simple_block" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for turning functions into simple blocks.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.core.visualization">
+<span id="visualization-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">visualization</span></tt> Module<a class="headerlink" href="#module-procgraph.core.visualization" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.core.visualization.colored">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">colored</tt><big>(</big><em>x</em>, <em>color=None</em>, <em>on_color=None</em>, <em>attrs=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#colored"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.colored" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.debug">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">debug</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#debug"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.debug" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.error">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">error</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.getTerminalSize">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">getTerminalSize</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#getTerminalSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.getTerminalSize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.get_screen_columns">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">get_screen_columns</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#get_screen_columns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.get_screen_columns" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.info">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">info</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.semantic_warning">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">semantic_warning</tt><big>(</big><em>error</em>, <em>element</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#semantic_warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.semantic_warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.user_error">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">user_error</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#user_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.user_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.warning">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">warning</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#warning"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.warning" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.core.visualization.write_message">
+<tt class="descclassname">procgraph.core.visualization.</tt><tt class="descname">write_message</tt><big>(</big><em>string</em>, <em>formatting</em><big>)</big><a class="reference internal" href="../modules/procgraph/core/visualization.html#write_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.core.visualization.write_message" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,336 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_pil.text &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_pil.text</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_pil.text</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ImageDraw</span><span class="p">,</span> <span class="n">ImageFont</span>
+<span class="kn">from</span> <span class="nn">.pil_conversions</span> <span class="kn">import</span> <span class="n">Image_from_array</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">BadConfig</span><span class="p">,</span> <span class="n">ETERNITY</span>
+<span class="kn">from</span> <span class="nn">procgraph.core.visualization</span> <span class="kn">import</span> <span class="n">info</span> <span class="k">as</span> <span class="n">info_main</span><span class="p">,</span> <span class="n">error</span> <span class="k">as</span> <span class="n">error_main</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="info"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.info">[docs]</a><span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">info_main</span><span class="p">(</span><span class="s">&#39;procgraph_pil/text: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">s</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="error"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.error">[docs]</a><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="n">error_main</span><span class="p">(</span><span class="s">&#39;procgraph_pil/text: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">s</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Text"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.Text">[docs]</a><span class="k">class</span> <span class="nc">Text</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; This block provides text overlays over an image. </span>
+<span class="sd">    </span>
+<span class="sd">    This block is very powerful, but the configuration is a bit complicated.</span>
+<span class="sd">    </span>
+<span class="sd">    You should provide a list of dictionary in the configuration variable </span>
+<span class="sd">    ``texts``. Each dictionary in the list describes how and where to write</span>
+<span class="sd">    one piece of text.</span>
+<span class="sd">     </span>
+<span class="sd">    An example of valid configuration is the following: ::</span>
+<span class="sd">    </span>
+<span class="sd">        text.texts = [{string: &quot;raw image&quot;, position: [10,30], halign: left, </span>
+<span class="sd">                      color: black, bg: white }]</span>
+<span class="sd">    </span>
+<span class="sd">    The meaning of the fields is as follow:</span>
+<span class="sd">    </span>
+<span class="sd">    ``string``</span>
+<span class="sd">      Text to display. See the section below about keyword expansion.</span>
+<span class="sd">      </span>
+<span class="sd">    ``position``</span>
+<span class="sd">      Array of two integers giving the position of the text in the image</span>
+<span class="sd">      </span>
+<span class="sd">    ``color``</span>
+<span class="sd">      Text color. It can be a keyword color or an hexadecimal string </span>
+<span class="sd">      (``white`` or ``#ffffff``).</span>
+<span class="sd">      </span>
+<span class="sd">    ``bg``</span>
+<span class="sd">      background color</span>
+<span class="sd">    </span>
+<span class="sd">    ``halign``</span>
+<span class="sd">      Horizontal alignment. </span>
+<span class="sd">      Choose between ``left`` (default), ``center``, ``right``.</span>
+<span class="sd">      </span>
+<span class="sd">    ``valign``</span>
+<span class="sd">      Vertical alignment. </span>
+<span class="sd">      Choose between ``top`` (default), ``middle``, ``center``.</span>
+<span class="sd">    </span>
+<span class="sd">    ``size``</span>
+<span class="sd">      Font size in pixels</span>
+<span class="sd">      </span>
+<span class="sd">    ``font``</span>
+<span class="sd">      Font family. Must be a ttf file (``Arial.ttf``)</span>
+
+<span class="sd">    **Expansion**: Also we expand macros in the text using ``format()``. </span>
+<span class="sd">    The available keywords are:</span>
+<span class="sd">    </span>
+<span class="sd">    ``frame``</span>
+<span class="sd">      number of frames since the beginning</span>
+<span class="sd">       </span>
+<span class="sd">    ``time``</span>
+<span class="sd">      seconds since the beginning of the log</span>
+
+<span class="sd">    ``timestamp``</span>
+<span class="sd">      absolute timestamp</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;text&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;texts&#39;</span><span class="p">,</span> <span class="s">&#39;Text specification (see block description).&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;rgb&#39;</span><span class="p">,</span> <span class="s">&#39;Input image.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;rgb&#39;</span><span class="p">,</span> <span class="s">&#39;Output image with overlaid text.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Text.init"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.Text.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">first_timestamp</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="Text.update"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.Text.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c"># TODO: add check</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">first_timestamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">first_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">frame</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="c"># Add stats</span>
+        <span class="n">macros</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">macros</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">first_timestamp</span> <span class="o">==</span> <span class="n">ETERNITY</span><span class="p">:</span>
+            <span class="n">macros</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">macros</span><span class="p">[</span><span class="s">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">first_timestamp</span>
+        <span class="n">macros</span><span class="p">[</span><span class="s">&#39;frame&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">frame</span>
+
+        <span class="n">rgb</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">rgb</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">Image_from_array</span><span class="p">(</span><span class="n">rgb</span><span class="p">)</span>
+        <span class="n">draw</span> <span class="o">=</span> <span class="n">ImageDraw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">im</span><span class="p">)</span>
+
+        <span class="c"># {string: &quot;raw image&quot;, position: [10,30], halign: left, </span>
+        <span class="c"># color: black, bg: white  }</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">texts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="s">&#39;Expected list&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;texts&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">texts</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;string&#39;</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="s">&#39;Missing field &quot;string&quot; in text spec </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> \
+                                <span class="n">text</span><span class="o">.</span><span class="n">__repr__</span><span class="p">(),</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;texts&#39;</span><span class="p">)</span>
+            <span class="n">text</span><span class="p">[</span><span class="s">&#39;string&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="s">&#39;string&#39;</span><span class="p">],</span> <span class="n">macros</span><span class="p">)</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">text</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;middle&#39;</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;middle&#39;</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="n">process_text</span><span class="p">(</span><span class="n">draw</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s">&quot;RGB&quot;</span><span class="p">)</span>
+        <span class="n">pixel_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">rgb</span> <span class="o">=</span> <span class="n">pixel_data</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Text.replace"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.Text.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">macros</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Expand macros in the text. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">macros</span><span class="p">)</span>
+
+
+<span class="c"># cache of fonts</span></div></div>
+<div class="viewcode-block" id="find_file"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.find_file">[docs]</a><span class="k">def</span> <span class="nf">find_file</span><span class="p">(</span><span class="n">font_name</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c">#pattern = &#39;*%s*.ttf&#39; % font_name</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.ttf&#39;</span> <span class="o">%</span> <span class="n">font_name</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">([</span><span class="s">&#39;locate&#39;</span><span class="p">,</span> <span class="n">pattern</span><span class="p">],</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">options</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">f</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">error</span><span class="p">(</span><span class="s">&#39;Cannot find a file matching the pattern </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">pattern</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">guess</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">info</span><span class="p">(</span><span class="s">&#39;Found </span><span class="si">%d</span><span class="s"> matches for </span><span class="si">%s</span><span class="s">, using  &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span> <span class="o">%</span>
+             <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">options</span><span class="p">),</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">guess</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">guess</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">error</span><span class="p">(</span><span class="s">&#39;Cannot run &quot;locate&quot;: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<span class="n">fonts</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+<div class="viewcode-block" id="get_font"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.get_font">[docs]</a><span class="k">def</span> <span class="nf">get_font</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">fonts</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">name</span> <span class="o">+</span> <span class="s">&#39;.ttf&#39;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">info</span><span class="p">(</span><span class="s">&#39;Could not find file </span><span class="si">%r</span><span class="s">, trying &quot;locate&quot;...&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">error</span><span class="p">(</span><span class="s">&#39;Could not find </span><span class="si">%r</span><span class="s"> anywhere, using default font&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+                <span class="n">fonts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fonts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">info</span><span class="p">(</span><span class="s">&#39;Using font in file </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="n">fonts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">fonts</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="process_text"><a class="viewcode-back" href="../../api/procgraph_pil.html#procgraph_pil.text.process_text">[docs]</a><span class="k">def</span> <span class="nf">process_text</span><span class="p">(</span><span class="n">draw</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">]</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="s">&#39;string&#39;</span><span class="p">]</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;color&#39;</span><span class="p">,</span> <span class="s">&#39;#aaaaaa&#39;</span><span class="p">)</span>
+    <span class="n">bg</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;bg&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;size&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="n">fontname</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;font&#39;</span><span class="p">,</span> <span class="s">&#39;Arial&#39;</span><span class="p">)</span>
+    <span class="n">font</span> <span class="o">=</span> <span class="n">get_font</span><span class="p">(</span><span class="n">fontname</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+    <span class="n">tw</span><span class="p">,</span> <span class="n">th</span> <span class="o">=</span> <span class="n">font</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">halign</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;halign&#39;</span><span class="p">,</span> <span class="s">&#39;left&#39;</span><span class="p">)</span>
+    <span class="n">valign</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;valign&#39;</span><span class="p">,</span> <span class="s">&#39;top&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">halign</span> <span class="o">==</span> <span class="s">&#39;left&#39;</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">halign</span> <span class="o">==</span> <span class="s">&#39;right&#39;</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">-=</span> <span class="n">tw</span>
+    <span class="k">elif</span> <span class="n">halign</span> <span class="o">==</span> <span class="s">&#39;center&#39;</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">-=</span> <span class="n">tw</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Unknown horizontal-align key </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">halign</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">valign</span> <span class="o">==</span> <span class="s">&#39;top&#39;</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">valign</span> <span class="o">==</span> <span class="s">&#39;bottom&#39;</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">-=</span> <span class="n">th</span>
+    <span class="k">elif</span> <span class="n">valign</span> <span class="o">==</span> <span class="s">&#39;middle&#39;</span><span class="p">:</span>
+        <span class="n">y</span> <span class="o">-=</span> <span class="n">th</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Unknown vertical-align key </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">valign</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">bg</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                   <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
+            <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">([</span><span class="n">x</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">string</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">bg</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">],</span> <span class="n">string</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

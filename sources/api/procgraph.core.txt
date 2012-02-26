@@ -1,0 +1,147 @@
+core Package
+============
+
+:mod:`block` Module
+-------------------
+
+.. automodule:: procgraph.core.block
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`block_config` Module
+--------------------------
+
+.. automodule:: procgraph.core.block_config
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`block_meta` Module
+------------------------
+
+.. automodule:: procgraph.core.block_meta
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`block_sugar` Module
+-------------------------
+
+.. automodule:: procgraph.core.block_sugar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`constants` Module
+-----------------------
+
+.. automodule:: procgraph.core.constants
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`docstring_parsing` Module
+-------------------------------
+
+.. automodule:: procgraph.core.docstring_parsing
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`exceptions` Module
+------------------------
+
+.. automodule:: procgraph.core.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`import_magic` Module
+--------------------------
+
+.. automodule:: procgraph.core.import_magic
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`model` Module
+-------------------
+
+.. automodule:: procgraph.core.model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`model_instantiation` Module
+---------------------------------
+
+.. automodule:: procgraph.core.model_instantiation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`model_io` Module
+----------------------
+
+.. automodule:: procgraph.core.model_io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`model_loader` Module
+--------------------------
+
+.. automodule:: procgraph.core.model_loader
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`model_stats` Module
+-------------------------
+
+.. automodule:: procgraph.core.model_stats
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`parsing` Module
+---------------------
+
+.. automodule:: procgraph.core.parsing
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`parsing_elements` Module
+------------------------------
+
+.. automodule:: procgraph.core.parsing_elements
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`registrar` Module
+-----------------------
+
+.. automodule:: procgraph.core.registrar
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`registrar_other` Module
+-----------------------------
+
+.. automodule:: procgraph.core.registrar_other
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`visualization` Module
+---------------------------
+
+.. automodule:: procgraph.core.visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

@@ -1,0 +1,215 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.import_magic &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.import_magic</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.import_magic</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">debug</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">PROCGRAPH_INFO_VARIABLE</span><span class="p">,</span> <span class="n">REQUIRES</span><span class="p">,</span> <span class="n">REQUIRES_PARSED</span>
+
+
+<div class="viewcode-block" id="import_magic"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.import_magic.import_magic">[docs]</a><span class="k">def</span> <span class="nf">import_magic</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">required</span><span class="p">,</span> <span class="n">member</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Equivalent to &quot;from required import member&quot; or &quot;import required&quot;.</span>
+<span class="sd">        Check that it was succesfull with import_succesful(). </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">info_structure</span> <span class="o">=</span> <span class="n">get_module_info</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
+    <span class="c"># Check that it was mentioned in the structure</span>
+    <span class="n">required_base</span> <span class="o">=</span> <span class="n">required</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">required_base</span> <span class="ow">in</span> <span class="n">info_structure</span><span class="p">[</span><span class="n">REQUIRES_PARSED</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Please specify that you need </span><span class="si">%r</span><span class="s"> as a dependency &#39;</span>
+                        <span class="s">&#39;in the field </span><span class="si">%r</span><span class="s"> of the </span><span class="si">%r</span><span class="s"> structure in module </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">required_base</span><span class="p">,</span> <span class="n">REQUIRES</span><span class="p">,</span> <span class="n">PROCGRAPH_INFO_VARIABLE</span><span class="p">,</span>
+                         <span class="n">module_name</span><span class="p">))</span>
+
+    <span class="c"># FIXME: there&#39;s a bug in here, should find which base was selected</span>
+    <span class="k">if</span> <span class="n">required</span> <span class="o">==</span> <span class="n">required_base</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">info_structure</span><span class="p">[</span><span class="n">REQUIRES_PARSED</span><span class="p">][</span><span class="n">required</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">[</span><span class="n">required</span><span class="p">]</span>
+
+    <span class="n">errors</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">mod</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;dummy&#39;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">member</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">mod</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No member </span><span class="si">%r</span><span class="s"> in </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">member</span><span class="p">,</span> <span class="n">o</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">mod</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">member</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">mod</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> <span class="c">#@UnusedVariable</span>
+            <span class="c"># TODO: show error</span>
+            <span class="c">#debug(e)</span>
+            <span class="n">errors</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">pass</span>
+
+    <span class="c"># We could not load anything.</span>
+    <span class="n">warn</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Could not load dependency </span><span class="si">%r</span><span class="s"> for </span><span class="si">%r</span><span class="s">.</span><span class="se">\n</span><span class="s"> I will try to continue,&#39;</span>
+           <span class="s">&#39; but an error might be thrown when </span><span class="si">%s</span><span class="s"> actually tries to use </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span>
+           <span class="p">(</span><span class="n">required</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">required</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="bp">False</span><span class="p">:</span> <span class="c"># TODO: think of configuration switch</span>
+        <span class="n">debug</span><span class="p">(</span><span class="n">warn</span><span class="p">)</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;I tried to let you continue, but it seems that module </span><span class="si">%r</span><span class="s"> really&#39;</span>
+           <span class="s">&#39; needs </span><span class="si">%r</span><span class="s"> to work. Sorry! &#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">required</span><span class="p">))</span>
+
+    <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">The error message was:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">errors</span>
+
+    <span class="k">class</span> <span class="nc">warn_and_throw</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">warn_and_throw</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="get_module_info"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.import_magic.get_module_info">[docs]</a><span class="k">def</span> <span class="nf">get_module_info</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
+    <span class="c"># TODO: better Exception?</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Please pass  __package__ as argument (got: </span><span class="si">%r</span><span class="s">).&#39;</span>
+                        <span class="o">%</span> <span class="n">module_name</span><span class="p">)</span>
+
+    <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">PROCGRAPH_INFO_VARIABLE</span> <span class="ow">in</span> <span class="n">module</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Please define the structure </span><span class="si">%r</span><span class="s"> for module </span><span class="si">%r</span><span class="s">. &#39;</span>
+                        <span class="o">%</span> <span class="p">(</span><span class="n">PROCGRAPH_INFO_VARIABLE</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
+
+    <span class="n">info</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="n">PROCGRAPH_INFO_VARIABLE</span><span class="p">]</span>
+
+    <span class="sd">&#39;&#39;&#39; Returns dict   name -&gt; list of possible modules &#39;&#39;&#39;</span>
+    <span class="n">parsed</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">REQUIRES</span> <span class="ow">in</span> <span class="n">info</span><span class="p">:</span>
+        <span class="c">#raise Exception(&#39;Please define a field %r in dict %s.%s.&#39; % </span>
+        <span class="c">#                (REQUIRES, module_name, PROCGRAPH_INFO_VARIABLE))</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">requires</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="n">REQUIRES</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">requires</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="c"># normal</span>
+                <span class="n">parsed</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># TODO: check iterable</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">options</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="c"># TODO: check options &gt; 0</span>
+                <span class="n">parsed</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">options</span>
+
+    <span class="n">info</span><span class="p">[</span><span class="n">REQUIRES_PARSED</span><span class="p">]</span> <span class="o">=</span> <span class="n">parsed</span>
+
+    <span class="k">return</span> <span class="n">info</span>
+
+</div>
+<div class="viewcode-block" id="import_succesful"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.import_magic.import_succesful">[docs]</a><span class="k">def</span> <span class="nf">import_succesful</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">ModuleType</span><span class="p">)</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.parsing_elements &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.parsing_elements</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.parsing_elements</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">pyparsing</span> <span class="kn">import</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">col</span>
+
+<span class="kn">from</span> <span class="nn">.block_meta</span> <span class="kn">import</span> <span class="n">split_docstring</span><span class="p">,</span> <span class="n">BlockInput</span><span class="p">,</span> <span class="n">BlockOutput</span><span class="p">,</span> <span class="n">BlockConfig</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">SemanticError</span><span class="p">,</span> <span class="n">x_not_found</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">FIXED</span>
+
+
+<div class="viewcode-block" id="Where"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.Where">[docs]</a><span class="k">class</span> <span class="nc">Where</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39; An object of this class represents a place in a file. </span>
+<span class="sd">    </span>
+<span class="sd">    All parsed elements contain a reference to a :py:class:`Where` object</span>
+<span class="sd">    so that we can output pretty error messages.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span>
+                 <span class="n">character</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="n">string</span>
+        <span class="k">if</span> <span class="n">character</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="n">line</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">column</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">character</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">line</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">column</span> <span class="ow">is</span> <span class="bp">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">character</span> <span class="o">=</span> <span class="n">character</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">=</span> <span class="n">lineno</span><span class="p">(</span><span class="n">character</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">=</span> <span class="n">col</span><span class="p">(</span><span class="n">character</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;In file </span><span class="si">%s</span><span class="s">:</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">-</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#39;line </span><span class="si">%2d</span><span class="s"> &gt;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">):</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="p">(</span><span class="s">&quot;</span><span class="si">%s%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pattern</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="n">fill</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="n">fill</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">space</span> <span class="o">+</span> <span class="s">&#39;^</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">space</span> <span class="o">+</span> <span class="s">&#39;|</span><span class="se">\n</span><span class="s">&#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">space</span> <span class="o">+</span> <span class="s">&#39;here or nearby&#39;</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+<div class="viewcode-block" id="Where.print_where"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.Where.print_where">[docs]</a>    <span class="k">def</span> <span class="nf">print_where</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+        <span class="c"># XXX: repeated code</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s">&#39;    &#39;</span>
+        <span class="n">write</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">write</span><span class="p">(</span><span class="s">&#39;In file </span><span class="si">%s</span><span class="s">:</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">context</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span> <span class="o">-</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="s">&#39;line </span><span class="si">%2d</span><span class="s"> &gt;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">):</span>
+            <span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pattern</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+        <span class="n">fill</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pattern</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">space</span> <span class="o">=</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="n">fill</span> <span class="o">+</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">write</span><span class="p">(</span><span class="n">space</span> <span class="o">+</span> <span class="s">&#39;^</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">write</span><span class="p">(</span><span class="n">space</span> <span class="o">+</span> <span class="s">&#39;|</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">write</span><span class="p">(</span><span class="n">space</span> <span class="o">+</span> <span class="s">&#39;here or nearby&#39;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ParsedElement"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedElement">[docs]</a><span class="k">class</span> <span class="nc">ParsedElement</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="ParsedSignalList"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedSignalList">[docs]</a><span class="k">class</span> <span class="nc">ParsedSignalList</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signals</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signals</span> <span class="o">=</span> <span class="n">signals</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Signals</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ParsedSignalList.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedSignalList.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ParsedSignalList</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">tokens</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="ImportStatement"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ImportStatement">[docs]</a><span class="k">class</span> <span class="nc">ImportStatement</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">package</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">package</span> <span class="o">=</span> <span class="n">package</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;import(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">package</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ImportStatement.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ImportStatement.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">package</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tokens</span><span class="o">.</span><span class="n">asList</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">ImportStatement</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ParsedSignal"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedSignal">[docs]</a><span class="k">class</span> <span class="nc">ParsedSignal</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Note that the convention is tricky: :: </span>
+<span class="sd">    </span>
+<span class="sd">             --&gt; [local_input] name [local_output] --&gt;</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">local_input</span><span class="p">,</span> <span class="n">local_output</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block_name</span> <span class="o">=</span> <span class="n">block_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_input</span> <span class="o">=</span> <span class="n">local_input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_output</span> <span class="o">=</span> <span class="n">local_output</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Signal(&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s">&quot;[</span><span class="si">%s</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_input</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">block_name</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s">&quot;[</span><span class="si">%s</span><span class="s">]&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_output</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;)&#39;</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ParsedSignal.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedSignal.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">block_name</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;block_name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">local_input</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;local_input&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">local_output</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;local_output&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ParsedSignal</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">local_input</span><span class="p">,</span> <span class="n">local_output</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ParsedBlock"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedBlock">[docs]</a><span class="k">class</span> <span class="nc">ParsedBlock</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">operation</span> <span class="o">=</span> <span class="n">operation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;Block(op=</span><span class="si">%s</span><span class="s">,name=</span><span class="si">%s</span><span class="s">,config=</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">operation</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">))</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ParsedBlock.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedBlock.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">blocktype</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="s">&#39;blocktype&#39;</span><span class="p">]</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;config&#39;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ParsedBlock</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">blocktype</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="ParsedAssignment"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedAssignment">[docs]</a><span class="k">class</span> <span class="nc">ParsedAssignment</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">key</span> <span class="o">=</span> <span class="n">key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Assignment(</span><span class="si">%s</span><span class="s">=</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ParsedAssignment.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedAssignment.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ParsedAssignment</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">],</span> <span class="n">tokens</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+
+</div></div>
+<div class="viewcode-block" id="config_from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.config_from_tokens">[docs]</a><span class="k">def</span> <span class="nf">config_from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="n">variable</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;variable&#39;</span><span class="p">)</span>
+    <span class="n">has_default</span> <span class="o">=</span> <span class="s">&#39;default&#39;</span> <span class="ow">in</span> <span class="n">tokens</span>
+    <span class="n">default</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">docstring</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BlockConfig</span><span class="p">(</span><span class="n">variable</span><span class="p">,</span> <span class="n">has_default</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="output_from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.output_from_tokens">[docs]</a><span class="k">def</span> <span class="nf">output_from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">docstring</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">BlockOutput</span><span class="p">(</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="input_from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.input_from_tokens">[docs]</a><span class="k">def</span> <span class="nf">input_from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+    <span class="n">docstring</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BlockInput</span><span class="p">(</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;Connection(</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">elements</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="Connection.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.Connection.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Connection</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="VariableReference"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.VariableReference">[docs]</a><span class="k">class</span> <span class="nc">VariableReference</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="o">=</span> <span class="n">variable</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;ref:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">variable</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="VariableReference.from_tokens"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.VariableReference.from_tokens">[docs]</a>    <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">VariableReference</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="s">&#39;variable&#39;</span><span class="p">])</span>
+
+</div></div>
+<div class="viewcode-block" id="ParsedModel"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedModel">[docs]</a><span class="k">class</span> <span class="nc">ParsedModel</span><span class="p">(</span><span class="n">ParsedElement</span><span class="p">):</span>
+    <span class="c"># temporary storage while parsing</span>
+    <span class="n">static_filename</span> <span class="o">=</span> <span class="s">&#39;not set&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">docstring</span><span class="p">,</span> <span class="n">elements</span><span class="p">):</span>
+        <span class="n">ParsedElement</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">docstring</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">docstring</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">docstring</span> <span class="o">=</span> <span class="n">docstring</span>
+
+        <span class="n">select</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">T</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">elements</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">T</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">connections</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">Connection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">BlockConfig</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">BlockOutput</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">BlockInput</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imports</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">ImportStatement</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">ParsedAssignment</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">elements</span> <span class="o">=</span> <span class="n">elements</span>
+
+        <span class="c"># look for other input/output models</span>
+        <span class="k">def</span> <span class="nf">look_for_blocks</span><span class="p">(</span><span class="n">condition</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">connection</span><span class="o">.</span><span class="n">elements</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">condition</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
+                        <span class="k">yield</span> <span class="n">element</span>
+
+        <span class="n">input_blocks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">look_for_blocks</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ParsedBlock</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&#39;input&#39;</span><span class="p">))</span>
+        <span class="n">output_blocks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">look_for_blocks</span><span class="p">(</span>
+            <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ParsedBlock</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">operation</span> <span class="o">==</span> <span class="s">&#39;output&#39;</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">input_blocks</span><span class="p">:</span>
+            <span class="n">inputs_defined</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">]</span>
+            <span class="n">input_name</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">input_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># if a name is specified, check if some input</span>
+                <span class="c"># were specified formally</span>
+                <span class="c"># if some inputs were specified, it should be there</span>
+                <span class="c"># (we don&#39;t mix the two cases)</span>
+                <span class="k">if</span> <span class="n">inputs_defined</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">input_name</span> <span class="ow">in</span> <span class="n">inputs_defined</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="n">x_not_found</span><span class="p">(</span><span class="s">&#39;input&#39;</span><span class="p">,</span> <span class="n">input_name</span><span class="p">,</span> <span class="n">inputs_defined</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c"># good! this was already specified</span>
+                        <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># we have a name, and no input was specified,</span>
+                    <span class="c"># so we add it (with warning)</span>
+                    <span class="n">bi</span> <span class="o">=</span> <span class="n">BlockInput</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">input_name</span><span class="p">,</span>
+                                <span class="nb">min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                <span class="n">desc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">desc_rest</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bi</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># we don&#39;t have a name</span>
+
+                <span class="c"># if no input was defined then add it</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">inputs_defined</span><span class="p">:</span>
+                    <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;in</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+                    <span class="n">bi</span> <span class="o">=</span> <span class="n">BlockInput</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span>
+                                <span class="nb">min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                <span class="n">desc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">desc_rest</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+                    <span class="c"># TODO add warning</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bi</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># if exactly 1 input is specified, use that</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs_defined</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c"># otherwise fail</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;This input block did not specify a name, and &#39;</span>
+                               <span class="s">&#39;I do not know which input it refers to.&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">output_blocks</span><span class="p">:</span>
+            <span class="n">outputs_defined</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">]</span>
+            <span class="n">output_name</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># if a name is specified, check if some output</span>
+                <span class="c"># were specified formally</span>
+                <span class="c"># if some outputs were specified, it should be there</span>
+                <span class="k">if</span> <span class="n">outputs_defined</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">output_name</span> <span class="ow">in</span> <span class="n">outputs_defined</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="n">x_not_found</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="n">output_name</span><span class="p">,</span>
+                                          <span class="n">outputs_defined</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c"># good! this was already specified</span>
+                        <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># we have a name, and no output was specified,</span>
+                    <span class="c"># so we add it (with warning)</span>
+                    <span class="n">bo</span> <span class="o">=</span> <span class="n">BlockOutput</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">output_name</span><span class="p">,</span>
+                                <span class="n">desc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">desc_rest</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+                    <span class="c"># TODO add warning</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bo</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># we don&#39;t have a name</span>
+
+                <span class="c"># if no output was defined then add it</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">outputs_defined</span><span class="p">:</span>
+                    <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;out</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+                    <span class="n">bo</span> <span class="o">=</span> <span class="n">BlockOutput</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span>
+                                <span class="n">desc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">desc_rest</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">block</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bo</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># if exactly 1 output is specified, use that</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs_defined</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c"># otherwise fail</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;This output block did not specify a name, and &#39;</span>
+                               <span class="s">&#39;I do not know which output it refers to.&#39;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Model </span><span class="si">%r</span><span class="s">: </span><span class="si">%d</span><span class="s"> elements</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elements</span><span class="p">))</span>
+
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s">&#39;config parameters&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">),</span>
+
+            <span class="p">(</span><span class="s">&#39;input signals&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;output signals&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;import statements&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imports</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;assignments&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">assignments</span><span class="p">),</span>
+            <span class="p">(</span><span class="s">&#39;blocks connections&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">connections</span><span class="p">),</span>
+        <span class="p">]</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;- No </span><span class="si">%s</span><span class="s">.</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">part</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;- </span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="s">:</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">),</span> <span class="n">part</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">elements</span><span class="p">:</span>
+                    <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;  * </span><span class="si">%r</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ParsedModel.from_named_model"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedModel.from_named_model">[docs]</a>    <span class="k">def</span> <span class="nf">from_named_model</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="s">&#39;model_name&#39;</span><span class="p">]</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="s">&#39;content&#39;</span><span class="p">])</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ParsedModel</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">docstring</span><span class="p">,</span> <span class="n">elements</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="ParsedModel.from_anonymous_model"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing_elements.ParsedModel.from_anonymous_model">[docs]</a>    <span class="k">def</span> <span class="nf">from_anonymous_model</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+        <span class="n">elements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ParsedModel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">docstring</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">elements</span><span class="o">=</span><span class="n">elements</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

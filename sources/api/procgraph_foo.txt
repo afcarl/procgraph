@@ -1,0 +1,51 @@
+procgraph_foo Package
+=====================
+
+:mod:`procgraph_foo` Package
+----------------------------
+
+.. automodule:: procgraph_foo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`block_dynamic_example` Module
+-----------------------------------
+
+.. automodule:: procgraph_foo.block_dynamic_example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`block_multi_example` Module
+---------------------------------
+
+.. automodule:: procgraph_foo.block_multi_example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`example0_simplest_block` Module
+-------------------------------------
+
+.. automodule:: procgraph_foo.example0_simplest_block
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`generator_example` Module
+-------------------------------
+
+.. automodule:: procgraph_foo.generator_example
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`simple_blocks` Module
+---------------------------
+
+.. automodule:: procgraph_foo.simple_blocks
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

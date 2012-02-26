@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_mplayer Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_mplayer Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-mplayer-package">
+<h1>procgraph_mplayer Package<a class="headerlink" href="#procgraph-mplayer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_mplayer" title="procgraph_mplayer"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_mplayer</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_mplayer"></span><p>Blocks for encoding/decoding video based on MPlayer.</p>
+</div>
+<div class="section" id="module-procgraph_mplayer.mencoder">
+<span id="mencoder-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">mencoder</span></tt> Module<a class="headerlink" href="#module-procgraph_mplayer.mencoder" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_mplayer.mencoder.MEncoder">
+<em class="property">class </em><tt class="descclassname">procgraph_mplayer.mencoder.</tt><tt class="descname">MEncoder</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Encodes a video stream using <tt class="docutils literal"><span class="pre">mencoder</span></tt>.</p>
+<p>Note that allowed codec and bitrate depend on 
+your version of mencoder.</p>
+<p>MP4 output: currently it works by creating a .AVI with mencoder
+and then converting to MP4 using ffmpeg (MP4 support for mencoder
+is currently &#8212; Feb&#8216;12 &#8212; broken).</p>
+<p>RGBA videos: not working fully. For now it outputs .AVI with 
+mencoder and encoded using png.</p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.cleanup">
+<tt class="descname">cleanup</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.cleanup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.cleanup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.cleanup_mencoder">
+<tt class="descname">cleanup_mencoder</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.cleanup_mencoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.cleanup_mencoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mencoder.MEncoder.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','Output file (AVI/MP4 format)',''), BlockConfig('fps',True,None,'Framerate of resulting movie. If not specified, it will be guessed from data.',''), BlockConfig('fps_safe',True,10,'If the frame autodetect gives strange results, we use this safe value instead.',''), BlockConfig('vcodec',True,'mpeg4','Codec to use.',''), BlockConfig('vbitrate',True,2000000,'Bitrate -- default is reasonable.',''), BlockConfig('quiet',True,True,&quot;If True, suppress mencoder's messages&quot;,''), BlockConfig('timestamps',True,True,'If True, also writes &lt;file&gt;.timestamps that includes a line with the timestamp for each frame',''), BlockConfig('crop',True,False,'If true, the video will be post-processed and cropped','')]</em><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mencoder.MEncoder.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_mplayer.mencoder'</em><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mencoder.MEncoder.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x4409680&gt;]</em><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mencoder.MEncoder.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.try_initialization">
+<tt class="descname">try_initialization</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.try_initialization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.try_initialization" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mencoder.MEncoder.write_value">
+<tt class="descname">write_value</tt><big>(</big><em>timestamp</em>, <em>image</em><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#MEncoder.write_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.MEncoder.write_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph_mplayer.mencoder.Timeout">
+<em class="property">exception </em><tt class="descclassname">procgraph_mplayer.mencoder.</tt><tt class="descname">Timeout</tt><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#Timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.Timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_mplayer.mencoder.ignore_sigint">
+<tt class="descclassname">procgraph_mplayer.mencoder.</tt><tt class="descname">ignore_sigint</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#ignore_sigint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.ignore_sigint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_mplayer.mencoder.timeout">
+<tt class="descclassname">procgraph_mplayer.mencoder.</tt><tt class="descname">timeout</tt><big>(</big><em>*args</em>, <em>**kwds</em><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mencoder.html#timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mencoder.timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_mplayer.mp4conversion">
+<span id="mp4conversion-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">mp4conversion</span></tt> Module<a class="headerlink" href="#module-procgraph_mplayer.mp4conversion" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_mplayer.mp4conversion.convert_to_mp4">
+<tt class="descclassname">procgraph_mplayer.mp4conversion.</tt><tt class="descname">convert_to_mp4</tt><big>(</big><em>filename</em>, <em>mp4=None</em>, <em>quiet=True</em><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mp4conversion.html#convert_to_mp4"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mp4conversion.convert_to_mp4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a web-ready mp4 using ffmpeg.</p>
+<p>need qtquickstart from</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_mplayer.mplayer">
+<span id="mplayer-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">mplayer</span></tt> Module<a class="headerlink" href="#module-procgraph_mplayer.mplayer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_mplayer.mplayer.MPlayer">
+<em class="property">class </em><tt class="descclassname">procgraph_mplayer.mplayer.</tt><tt class="descname">MPlayer</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p>Decodes a video stream.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_mplayer.mplayer.MPlayer.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','Input video file. This can be in any format that ``mplayer`` understands.',''), BlockConfig('quiet',True,True,'If true, suppress stderr messages from mplayer.',''), BlockConfig('stats',False,'not-given','If true, writes some statistics about the remaining time.','')]</em><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mplayer.MPlayer.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_mplayer.mplayer'</em><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.get_next_timestamp">
+<tt class="descname">get_next_timestamp</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.get_next_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.get_next_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mplayer.MPlayer.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.open_mencoder">
+<tt class="descname">open_mencoder</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.open_mencoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.open_mencoder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mplayer.mplayer.MPlayer.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,video)]</em><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.print_stats">
+<tt class="descname">print_stats</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.print_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.print_stats" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.read_next_frame">
+<tt class="descname">read_next_frame</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.read_next_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.read_next_frame" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mplayer.mplayer.MPlayer.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#MPlayer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.MPlayer.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_mplayer.mplayer.check_output">
+<tt class="descclassname">procgraph_mplayer.mplayer.</tt><tt class="descname">check_output</tt><big>(</big><em>*popenargs</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../modules/procgraph_mplayer/mplayer.html#check_output"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mplayer.mplayer.check_output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run command with arguments and return its output as a byte string.</p>
+<blockquote>
+<div><p>If the exit code was non-zero it raises a CalledProcessError.  The
+CalledProcessError object will have the return code in the returncode
+attribute and output in the output attribute.</p>
+<p>The arguments are the same as for the Popen constructor.  Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">check_output</span><span class="p">([</span><span class="s">&quot;ls&quot;</span><span class="p">,</span> <span class="s">&quot;-l&quot;</span><span class="p">,</span> <span class="s">&quot;/dev/null&quot;</span><span class="p">])</span>
+<span class="go">&#39;crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>&#8216;</p>
+<blockquote>
+<div><p>The stdout argument is not allowed as it is used internally.
+To capture standard error in the result, use stderr=STDOUT.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">check_output</span><span class="p">([</span><span class="s">&quot;/bin/sh&quot;</span><span class="p">,</span> <span class="s">&quot;-c&quot;</span><span class="p">,</span>
+<span class="gp">... </span>              <span class="s">&quot;ls -l non_existent_file ; exit 0&quot;</span><span class="p">],</span>
+<span class="gp">... </span>             <span class="n">stderr</span><span class="o">=</span><span class="n">STDOUT</span><span class="p">)</span>
+<span class="go">&#39;ls: non_existent_file: No such file or directory</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>&#8216;</p>
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="procgraph_mplayer.scripts.html">scripts Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="procgraph_mplayer.scripts.html#module-procgraph_mplayer.scripts.crop_video"><tt class="docutils literal"><span class="pre">crop_video</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

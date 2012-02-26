@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_numpy_ops Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_numpy_ops Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-numpy-ops-package">
+<h1>procgraph_numpy_ops Package<a class="headerlink" href="#procgraph-numpy-ops-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_numpy_ops" title="procgraph_numpy_ops"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_numpy_ops</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_numpy_ops"></span><p>Various operations wrapping numpy functions.</p>
+</div>
+<div class="section" id="module-procgraph_numpy_ops.filters">
+<span id="filters-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">filters</span></tt> Module<a class="headerlink" href="#module-procgraph_numpy_ops.filters" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.array">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">array</tt><big>(</big><em>value</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the value to a Numpy array.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.astype">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">astype</tt><big>(</big><em>a</em>, <em>dtype='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#astype"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.astype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an array using the <tt class="docutils literal"><span class="pre">astype</span></tt> function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> (<a class="reference external" href="http://docs.python.org/library/array.html#array" title="(in Python v2.7)"><em>array</em></a>) &#8211; Numpy array</li>
+<li><strong>dtype</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#string" title="(in Python v2.7)"><em>string</em></a>) &#8211; The new dtype.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">typed: The Numpy array with the new type.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.maximum">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">maximum</tt><big>(</big><em>value</em>, <em>threshold='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#maximum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.maximum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limits the numpy array to the given threshold.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.minimum">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">minimum</tt><big>(</big><em>value</em>, <em>threshold='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#minimum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.minimum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limits the numpy array to the given threshold.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> &#8211; Any numpy array.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Array of same shape.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.norm">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">norm</tt><big>(</big><em>value</em>, <em>ord=2</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#norm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.norm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the norm of the vector.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.normalize_Linf">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">normalize_Linf</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#normalize_Linf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.normalize_Linf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Normalize a vector such that <tt class="docutils literal"><span class="pre">|x|_inf</span> <span class="pre">=</span> <span class="pre">max(abs(x))=</span> <span class="pre">1</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> &#8211; Any numpy array.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">normalized: The same array normalized.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.outer">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">outer</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#outer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.outer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Outer product of two vectors.</p>
+<p>This is a wrapper around <tt class="xref py py-func docutils literal"><span class="pre">numpy.multiply.outer()</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> &#8211; First vector.</li>
+<li><strong>b</strong> &#8211; Second vector.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">outer: Outer product of the two vectors.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.select">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">select</tt><big>(</big><em>x</em>, <em>every='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.select" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects some of the elements of <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; Numpy array that can be flatly addressed.</li>
+<li><strong>every</strong> &#8211; How many to jump (every=2 takes only the even elements).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">decimated: The decimated output.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_numpy_ops.filters.take">
+<tt class="descclassname">procgraph_numpy_ops.filters.</tt><tt class="descname">take</tt><big>(</big><em>a</em>, <em>axis=0</em>, <em>indices='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/filters.html#take"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.filters.take" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_numpy_ops.gradient1d">
+<span id="gradient1d-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gradient1d</span></tt> Module<a class="headerlink" href="#module-procgraph_numpy_ops.gradient1d" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_numpy_ops.gradient1d.gradient1d">
+<tt class="descclassname">procgraph_numpy_ops.gradient1d.</tt><tt class="descname">gradient1d</tt><big>(</big><em>a</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/gradient1d.html#gradient1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.gradient1d.gradient1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the gradient of a 1D array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>a</strong> (<em>array(N),N&gt;3</em>) &#8211; Numpy array</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">typed: The gradient of the array.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_numpy_ops.gradient1d_test">
+<span id="gradient1d-test-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gradient1d_test</span></tt> Module<a class="headerlink" href="#module-procgraph_numpy_ops.gradient1d_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_numpy_ops.gradient1d_test.TestGradient">
+<em class="property">class </em><tt class="descclassname">procgraph_numpy_ops.gradient1d_test.</tt><tt class="descname">TestGradient</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/gradient1d_test.html#TestGradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.gradient1d_test.TestGradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">unittest.case.TestCase</span></tt></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph_numpy_ops.gradient1d_test.TestGradient.testInvalid">
+<tt class="descname">testInvalid</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/gradient1d_test.html#TestGradient.testInvalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.gradient1d_test.TestGradient.testInvalid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_numpy_ops.gradient1d_test.TestGradient.testSimply">
+<tt class="descname">testSimply</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/gradient1d_test.html#TestGradient.testSimply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.gradient1d_test.TestGradient.testSimply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_numpy_ops.smooth1d">
+<span id="smooth1d-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">smooth1d</span></tt> Module<a class="headerlink" href="#module-procgraph_numpy_ops.smooth1d" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_numpy_ops.smooth1d.smooth1d">
+<tt class="descclassname">procgraph_numpy_ops.smooth1d.</tt><tt class="descname">smooth1d</tt><big>(</big><em>x</em>, <em>window_len=11</em>, <em>window='hanning'</em><big>)</big><a class="reference internal" href="../modules/procgraph_numpy_ops/smooth1d.html#smooth1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_numpy_ops.smooth1d.smooth1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smooth the data using a window with requested size.</p>
+<p>This method is based on the convolution of a scaled window with the signal.
+The signal is prepared by introducing reflected copies of the signal 
+(with the window size) in both ends so that transient parts are minimized
+in the begining and end part of the output signal.</p>
+<p><tt class="docutils literal"><span class="pre">window</span></tt> must be one of  &#8216;flat&#8217;, &#8216;hanning&#8217;, &#8216;hamming&#8217;, &#8216;bartlett&#8217;, 
+&#8216;blackman&#8217;.
+A flat window will produce a moving average smoothing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; the input signal</li>
+<li><strong>window_len</strong> &#8211; the dimension of the smoothing window;  an odd integer</li>
+<li><strong>window</strong> &#8211; the type of window from</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">smoothed: the smoothed signal</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span><span class="o">=</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">x</span><span class="o">=</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="n">randn</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="o">*</span><span class="mf">0.1</span>
+<span class="n">y</span><span class="o">=</span><span class="n">smooth</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>see also:</p>
+<p>numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, 
+numpy.convolve
+scipy.signal.lfilter</p>
+<dl class="docutils">
+<dt>TODO: the window parameter could be the window itself if an </dt>
+<dd>array instead of a string</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

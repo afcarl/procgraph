@@ -1,0 +1,438 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_mplayer.mencoder &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_mplayer.mencoder</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_mplayer.mencoder</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">convert_to_mp4</span>
+<span class="kn">from</span> <span class="nn">.scripts.crop_video</span> <span class="kn">import</span> <span class="n">video_crop</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span>
+<span class="kn">from</span> <span class="nn">procgraph.block_utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">expand</span><span class="p">,</span> <span class="n">make_sure_dir_exists</span><span class="p">,</span>
+    <span class="n">check_rgb_or_grayscale</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">procgraph.utils</span> <span class="kn">import</span> <span class="n">friendly_path</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">from</span> <span class="nn">procgraph.utils.strings</span> <span class="kn">import</span> <span class="n">indent</span>
+
+
+<span class="c">#&quot;&quot;&quot;</span>
+<span class="c">#sudo apt-get install libavcodec-extra-52 libavdevice-extra-52 </span>
+<span class="c">#libavfilter-extra-0 libavformat-extra-52 libavutil-extra-49 </span>
+<span class="c">#libpostproc-extra-51 libswscale-extra-0</span>
+<span class="c">#</span>
+<span class="c">#&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="MEncoder"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder">[docs]</a><span class="k">class</span> <span class="nc">MEncoder</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        Encodes a video stream using ``mencoder``.</span>
+<span class="sd">    </span>
+<span class="sd">        Note that allowed codec and bitrate depend on </span>
+<span class="sd">        your version of mencoder.</span>
+<span class="sd">        </span>
+<span class="sd">        MP4 output: currently it works by creating a .AVI with mencoder</span>
+<span class="sd">        and then converting to MP4 using ffmpeg (MP4 support for mencoder</span>
+<span class="sd">        is currently --- Feb&#39;12 --- broken).</span>
+<span class="sd">        </span>
+<span class="sd">        RGBA videos: not working fully. For now it outputs .AVI with </span>
+<span class="sd">        mencoder and encoded using png. </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;mencoder&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;image&#39;</span><span class="p">,</span> <span class="s">&#39;Either a HxWx3 uint8 numpy array representing &#39;</span>
+                         <span class="s">&#39;an RGB image, or a HxW representing grayscale. &#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">,</span> <span class="s">&#39;Output file (AVI/MP4 format)&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;fps&#39;</span><span class="p">,</span> <span class="s">&#39;Framerate of resulting movie. If not specified, &#39;</span>
+                        <span class="s">&#39;it will be guessed from data.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;fps_safe&#39;</span><span class="p">,</span> <span class="s">&#39;If the frame autodetect gives strange results, &#39;</span>
+                             <span class="s">&#39;we use this safe value instead.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;vcodec&#39;</span><span class="p">,</span> <span class="s">&#39;Codec to use.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;mpeg4&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;vbitrate&#39;</span><span class="p">,</span> <span class="s">&#39;Bitrate -- default is reasonable.&#39;</span><span class="p">,</span>
+                             <span class="n">default</span><span class="o">=</span><span class="mi">2000000</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;quiet&#39;</span><span class="p">,</span> <span class="s">&quot;If True, suppress mencoder&#39;s messages&quot;</span><span class="p">,</span>
+                 <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;timestamps&#39;</span><span class="p">,</span> <span class="s">&quot;If True, also writes &lt;file&gt;.timestamps that&quot;</span>
+        <span class="s">&quot; includes a line with the timestamp for each frame&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;crop&#39;</span><span class="p">,</span> <span class="s">&quot;If true, the video will be &quot;</span>
+                 <span class="s">&quot;post-processed and cropped&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MEncoder.init"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="c">#        self.inited = False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_shape</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># Shape of image being encoded</span>
+</div>
+<div class="viewcode-block" id="MEncoder.update"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">check_rgb_or_grayscale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c"># Put image in a buffer -- we don&#39;t use it right away</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">image</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">try_initialization</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># initialization was succesful</span>
+            <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">:</span>
+                <span class="n">timestamp</span><span class="p">,</span> <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">write_value</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">image</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MEncoder.try_initialization"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.try_initialization">[docs]</a>    <span class="k">def</span> <span class="nf">try_initialization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># If we don&#39;t have at least two frames, continue</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c"># Get height and width from first image</span>
+        <span class="n">first_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">first_image</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">&gt;</span> <span class="mi">8192</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span> <span class="o">&gt;</span> <span class="mi">8192</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Mencoder cannot support movies this big (</span><span class="si">%s</span><span class="s">x</span><span class="si">%s</span><span class="s">)&#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ndim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+        <span class="c"># Format for mencoder&#39;s rawvideo &quot;format&quot; option</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">format</span> <span class="o">=</span> <span class="s">&#39;y8&#39;</span> <span class="c">#@ReservedAssignment</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="n">format</span> <span class="o">=</span> <span class="s">&#39;rgb24&#39;</span> <span class="c">#@ReservedAssignment</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="c"># Note: did not try this yet</span>
+                <span class="n">format</span> <span class="o">=</span> <span class="s">&#39;rgba&#39;</span> <span class="c">#@ReservedAssignment</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;I detected that you are trying to write a transparent&#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;video. This does not work well yet (and besides,&#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;it is not supported in many applications, like &#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;Keynote). Anyway, the plan is to use mencoder &#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;to write a .AVI with codec &quot;png&quot;. This will fail &#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;for now, but perhaps in the future it will be &#39;</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;.better&#39;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="c"># guess the fps if we are not given the config</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fps</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">timestamps</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Got 0 delta: timestamps: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">timestamps</span><span class="p">)</span>
+                <span class="n">fps</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">fps</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buffer</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">delta</span>
+
+            <span class="c"># Check for very wrong results</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">3</span> <span class="o">&lt;</span> <span class="n">fps</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Detected fps is </span><span class="si">%.2f</span><span class="s">; this seems strange to me,&#39;</span>
+                           <span class="s">&#39; so I will use the safe choice fps = </span><span class="si">%.2f</span><span class="s">.&#39;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">fps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fps_safe</span><span class="p">))</span>
+                <span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fps_safe</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fps</span>
+
+        <span class="n">vcodec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">vcodec</span>
+        <span class="n">vbitrate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">vbitrate</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">expand</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Removing previous version of </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                      <span class="n">friendly_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">-active.avi&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_mp4</span> <span class="o">=</span> <span class="n">ext</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;.mp4&#39;</span><span class="p">,</span> <span class="s">&#39;.MP4&#39;</span><span class="p">]</span>
+
+        <span class="n">make_sure_dir_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Writing </span><span class="si">%d</span><span class="s">x</span><span class="si">%d</span><span class="s"> </span><span class="si">%s</span><span class="s"> video stream at </span><span class="si">%.1f</span><span class="s"> fps to </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span>
+                  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">format</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span>
+                   <span class="n">friendly_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)))</span>
+
+        <span class="k">if</span> <span class="n">format</span> <span class="o">==</span> <span class="s">&#39;rgba&#39;</span><span class="p">:</span>
+            <span class="n">ovc</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-ovc&#39;</span><span class="p">,</span> <span class="s">&#39;lavc&#39;</span><span class="p">,</span> <span class="s">&#39;-lavcopts&#39;</span><span class="p">,</span> <span class="s">&#39;vcodec=png&#39;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ovc</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-ovc&#39;</span><span class="p">,</span> <span class="s">&#39;lavc&#39;</span><span class="p">,</span> <span class="s">&#39;-lavcopts&#39;</span><span class="p">,</span>
+                  <span class="s">&#39;vcodec=</span><span class="si">%s</span><span class="s">:vbitrate=</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">vcodec</span><span class="p">,</span> <span class="n">vbitrate</span><span class="p">)]</span>
+
+        <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;-o&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">]</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;mencoder&#39;</span><span class="p">,</span> <span class="s">&#39;/dev/stdin&#39;</span><span class="p">,</span> <span class="s">&#39;-demuxer&#39;</span><span class="p">,</span> <span class="s">&#39;rawvideo&#39;</span><span class="p">,</span>
+                <span class="s">&#39;-rawvideo&#39;</span><span class="p">,</span> <span class="s">&#39;w=</span><span class="si">%d</span><span class="s">:h=</span><span class="si">%d</span><span class="s">:fps=</span><span class="si">%f</span><span class="s">:format=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">,</span> <span class="n">fps</span><span class="p">,</span> <span class="n">format</span><span class="p">)]</span> <span class="o">+</span> <span class="n">ovc</span> <span class="o">+</span> <span class="n">out</span>
+
+                <span class="c">#&#39;-v&#39;, &quot;0&quot;, # verbosity level (1 prints stats \r)</span>
+
+        <span class="c">#self.debug(&#39;$ %s&#39; % &quot; &quot;.join(args))</span>
+        <span class="c"># Note: mp4 encoding is currently broken in mencoder :-(</span>
+        <span class="c">#       so we have to use ffmpeg as a second step.</span>
+        <span class="c"># These would be the options to add:</span>
+        <span class="c">#&#39;-of&#39;, &#39;lavf&#39;, &#39;-lavfopts&#39;, &#39;format=mp4&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp_stdout</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp_stderr</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+
+        <span class="n">quiet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">quiet</span>
+        <span class="k">if</span> <span class="n">quiet</span><span class="p">:</span>
+            <span class="c"># XXX /dev/null not portable</span>
+<span class="c">#            self.debug(&#39;stderr: %s&#39; % self.tmp_stderr)</span>
+<span class="c">#            self.debug(&#39;stdout: %s&#39; % self.tmp_stdout)</span>
+            <span class="c"># TODO: write error</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="p">,</span>
+                                            <span class="n">preexec_fn</span><span class="o">=</span><span class="n">ignore_sigint</span><span class="p">,</span>
+                <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_stdout</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span>
+                                       <span class="n">stderr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_stderr</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span><span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span>
+                                            <span class="n">stdin</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">timestamps</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&#39;.timestamps&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timestamps_filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MEncoder.finish"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Finish() before starting to encode.&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">convert_to_mp4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Converting </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">friendly_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">),</span>
+                         <span class="n">friendly_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)))</span>
+            <span class="n">convert_to_mp4</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Finished </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">friendly_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+
+        <span class="c"># TODO: skip mp4</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">crop</span><span class="p">:</span>
+            <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">cropped</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">-crop</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+            <span class="n">video_crop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">cropped</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">cropped</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MEncoder.cleanup"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># TODO: remove timestamps</span>
+        <span class="k">if</span> <span class="s">&#39;tmp_filename&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cleanup_mencoder</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MEncoder.cleanup_mencoder"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.cleanup_mencoder">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup_mencoder</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Try to cleanup as well as possible</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="s">&#39;process&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">Timeout</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">OSError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="c"># Exception AttributeError: AttributeError(&quot;&#39;NoneType&#39; object </span>
+            <span class="c"># has no attribute &#39;SIGTERM&#39;&quot;,) </span>
+            <span class="c"># in &lt;bound method RangefinderUniform.__del__ </span>
+            <span class="c"># of RangefinderUniform&gt; ignored</span>
+            <span class="c"># http://stackoverflow.com/questions/2572172/</span>
+            <span class="k">pass</span>
+<span class="c">#            self.error(&#39;Error while cleanup: %s&#39; % e)</span>
+</div>
+<div class="viewcode-block" id="MEncoder.write_value"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.MEncoder.write_value">[docs]</a>    <span class="k">def</span> <span class="nf">write_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">image</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_shape</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image_shape</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_shape</span> <span class="o">!=</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The image has changed shape, from </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                   <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image_shape</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="c"># TODO: badinput</span>
+
+        <span class="c"># very important! make sure we are using a reasonable array</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">image</span><span class="o">.</span><span class="n">flags</span><span class="p">[</span><span class="s">&#39;C_CONTIGUOUS&#39;</span><span class="p">]:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="c">#@UndefinedVariable</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">timeout</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">stdin</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">Exception</span><span class="p">,</span> <span class="ne">KeyboardInterrupt</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c"># IOError = broken pipe</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not write data to mencoder: </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">e</span>
+<span class="c">#            self.error(msg)</span>
+<span class="c">#            msg += &#39;\n&#39; + indent(self.process.stdout.read(), &#39;stdout&gt; &#39;)</span>
+<span class="c">#            msg += &#39;\n&#39; + indent(self.process.stderr.read(), &#39;stderr&gt; &#39;)</span>
+
+            <span class="k">def</span> <span class="nf">read_all</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">lseek</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+            <span class="n">stderr</span> <span class="o">=</span> <span class="n">read_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_stderr</span><span class="p">)</span>
+            <span class="n">stdout</span> <span class="o">=</span> <span class="n">read_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_stdout</span><span class="p">)</span>
+
+            <span class="n">msg</span> <span class="o">+=</span> <span class="n">indent</span><span class="p">(</span><span class="s">&#39;stdout&gt;&#39;</span><span class="p">,</span> <span class="n">stderr</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">+=</span> <span class="n">indent</span><span class="p">(</span><span class="s">&#39;stderr&gt;&#39;</span><span class="p">,</span> <span class="n">stdout</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">timestamps</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">timestamp</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timestamps_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="Timeout"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.Timeout">[docs]</a><span class="k">class</span> <span class="nc">Timeout</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="timeout"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.timeout">[docs]</a><span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">Timeout</span><span class="p">(</span><span class="s">&quot;operation took more than </span><span class="si">%s</span><span class="s"> seconds&quot;</span> <span class="o">%</span> <span class="n">delta</span><span class="p">)</span>
+
+    <span class="c"># Set the signal handler and a 5-second alarm</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="ignore_sigint"><a class="viewcode-back" href="../../api/procgraph_mplayer.html#procgraph_mplayer.mencoder.ignore_sigint">[docs]</a><span class="k">def</span> <span class="nf">ignore_sigint</span><span class="p">():</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_IGN</span><span class="p">)</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

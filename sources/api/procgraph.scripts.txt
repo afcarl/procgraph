@@ -1,0 +1,35 @@
+scripts Package
+===============
+
+:mod:`scripts` Package
+----------------------
+
+.. automodule:: procgraph.scripts
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pgdoc` Module
+-------------------
+
+.. automodule:: procgraph.scripts.pgdoc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pgindex` Module
+---------------------
+
+.. automodule:: procgraph.scripts.pgindex
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pgmain` Module
+--------------------
+
+.. automodule:: procgraph.scripts.pgmain
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.registrar_other &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.registrar_other</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.registrar_other</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">types</span>
+
+<span class="kn">from</span> <span class="nn">.block</span> <span class="kn">import</span> <span class="n">Block</span>
+<span class="kn">from</span> <span class="nn">.registrar</span> <span class="kn">import</span> <span class="n">default_library</span>
+<span class="kn">from</span> <span class="nn">.model_loader</span> <span class="kn">import</span> <span class="n">add_models_to_library</span>
+
+<span class="kn">from</span> <span class="nn">.docstring_parsing</span> <span class="kn">import</span> <span class="n">parse_docstring_annotations</span><span class="p">,</span> <span class="n">DocStringInfo</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">COMPULSORY</span><span class="p">,</span> <span class="n">TIMESTAMP</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">BadConfig</span><span class="p">,</span> <span class="n">BadInput</span>
+
+
+<div class="viewcode-block" id="make_generic"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.registrar_other.make_generic">[docs]</a><span class="k">def</span> <span class="nf">make_generic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">,</span>
+                 <span class="n">operation</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{},</span> <span class="n">docs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># make a copy</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">docs</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="n">operation</span><span class="o">.</span><span class="n">__doc__</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">docstring</span> <span class="o">=</span> <span class="n">docs</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">docstring</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">annotations</span> <span class="o">=</span> <span class="n">parse_docstring_annotations</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+            <span class="n">docstring</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">docstring</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">annotations</span> <span class="o">=</span> <span class="n">DocStringInfo</span><span class="p">(</span><span class="n">docstring</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c">#print(&#39;Malformed annotation for %r: %s&#39; % (operation, e))</span>
+        <span class="c">#print docstring</span>
+        <span class="k">raise</span>
+
+    <span class="k">def</span> <span class="nf">get_param_annotation</span><span class="p">(</span><span class="n">key</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">annotations</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+            <span class="n">arg</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">desc</span>
+            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">description</span> <span class="o">+=</span> <span class="s">&#39; (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">arg</span><span class="o">.</span><span class="n">type</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">description</span>
+
+    <span class="k">class</span> <span class="nc">GenericOperation</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+        <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="c"># filled out later</span>
+        <span class="n">defined_in</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># XXX: does it work this way?</span>
+        <span class="n">__doc__</span> <span class="o">=</span> <span class="n">docstring</span> <span class="c">#@ReservedAssignment</span>
+        <span class="n">my_operation</span> <span class="o">=</span> <span class="n">operation</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">parameters</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">get_param_annotation</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="n">TIMESTAMP</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">value</span> <span class="o">==</span> <span class="n">COMPULSORY</span><span class="p">:</span>
+                    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">input_signal</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="n">get_param_annotation</span><span class="p">(</span><span class="n">input_signal</span><span class="p">)</span>
+            <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="n">input_signal</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_outputs</span><span class="p">):</span>
+            <span class="n">output_name</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">annotations</span><span class="o">.</span><span class="n">returns</span><span class="p">):</span>
+                <span class="n">arg</span> <span class="o">=</span> <span class="n">annotations</span><span class="o">.</span><span class="n">returns</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">desc</span>
+                <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">description</span> <span class="o">+=</span> <span class="s">&#39; (</span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span> <span class="n">arg</span><span class="o">.</span><span class="n">type</span>
+                <span class="n">tokens</span> <span class="o">=</span> <span class="n">description</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">output_name</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">description</span> <span class="o">=</span> <span class="n">tokens</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="c"># TODO: check good name</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="n">output_name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">input_signal</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">:</span>
+                <span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="n">input_signal</span><span class="p">))</span>
+
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">==</span> <span class="n">TIMESTAMP</span><span class="p">:</span>
+                    <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_timestamps</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">operation</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="c"># Functions can throw BadInput and BadConfig, but we have to fill</span>
+            <span class="c"># in the block reference for them.</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">BadInput</span><span class="p">,</span> <span class="n">BadConfig</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">e</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="bp">self</span>
+                <span class="k">raise</span>
+
+            <span class="k">if</span> <span class="n">num_outputs</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_outputs</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">GenericOperation</span>
+
+
+<span class="c"># TODO: add num_inputs, so that we can get rid of COMPULSORY. </span></div>
+<div class="viewcode-block" id="simple_block"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.registrar_other.simple_block">[docs]</a><span class="k">def</span> <span class="nf">simple_block</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Decorator for turning functions into simple blocks. &#39;&#39;&#39;</span>
+
+    <span class="c"># OK, this is black magic. You are not expected to understand this.</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="ow">is</span> <span class="n">types</span><span class="o">.</span><span class="n">FunctionType</span><span class="p">:</span>
+        <span class="n">frm</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">frm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">defined_in</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">__name__</span>
+
+        <span class="n">function</span> <span class="o">=</span> <span class="n">alias</span>
+        <span class="n">alias</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">num_outputs</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="c"># print &quot;Registering %s: %s (no params) &quot; % (defined_in, function)</span>
+        <span class="n">register_simple_block</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">alias</span><span class="p">,</span> <span class="n">num_outputs</span><span class="o">=</span><span class="n">num_outputs</span><span class="p">,</span>
+                              <span class="n">defined_in</span><span class="o">=</span><span class="n">defined_in</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">function</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+            <span class="n">frm</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">mod</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">frm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">defined_in</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">__name__</span>
+
+            <span class="c">#print(&quot;Registering %s: %s (with params %s %s)&quot; % </span>
+            <span class="c">#      (defined_in, function, alias, num_outputs))</span>
+            <span class="n">register_simple_block</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">alias</span><span class="p">,</span>
+                                  <span class="n">num_outputs</span><span class="o">=</span><span class="n">num_outputs</span><span class="p">,</span>
+                                  <span class="n">defined_in</span><span class="o">=</span><span class="n">defined_in</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">function</span>
+        <span class="k">return</span> <span class="n">wrap</span>
+
+</div>
+<div class="viewcode-block" id="register_simple_block"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.registrar_other.register_simple_block">[docs]</a><span class="k">def</span> <span class="nf">register_simple_block</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">num_inputs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">num_outputs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                          <span class="n">params</span><span class="o">=</span><span class="p">{},</span> <span class="n">doc</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">defined_in</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="c"># Get a module to which we can associate this block</span>
+    <span class="k">if</span> <span class="n">defined_in</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">frm</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">frm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">defined_in</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">__name__</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">args</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">defaults</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getargspec</span><span class="p">(</span><span class="n">function</span><span class="p">)</span>
+        <span class="c"># TODO: use varwk for variable signals</span>
+        <span class="n">num_defaults</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">defaults</span><span class="p">)</span> <span class="k">if</span> <span class="n">defaults</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="n">num_no_argument</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">-</span> <span class="n">num_defaults</span>
+        <span class="n">args_no_argument</span> <span class="o">=</span> <span class="n">args</span><span class="p">[:</span><span class="n">num_no_argument</span><span class="p">]</span>
+        <span class="n">args_with_default</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="n">num_no_argument</span><span class="p">:]</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">args_with_default</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">defaults</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_defaults</span><span class="p">)])</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">args_no_argument</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span> <span class="c">#@UnusedVariable</span>
+        <span class="c"># TODO: add switch to show this</span>
+        <span class="c"># print &quot;Does not work with %s: %s &quot; % (function, e)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">params</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_inputs</span><span class="p">)]</span>
+
+    <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">__name__</span>
+
+    <span class="n">block</span> <span class="o">=</span> <span class="n">make_generic</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">num_outputs</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span>
+                         <span class="n">params</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">docs</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
+
+    <span class="n">block</span><span class="o">.</span><span class="n">defined_in</span> <span class="o">=</span> <span class="n">defined_in</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">defined_in</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="register_block"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.registrar_other.register_block">[docs]</a><span class="k">def</span> <span class="nf">register_block</span><span class="p">(</span><span class="n">block_class</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">block_class</span><span class="o">.</span><span class="n">__name__</span>
+    <span class="n">default_library</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">block_class</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="register_model_spec"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.registrar_other.register_model_spec">[docs]</a><span class="k">def</span> <span class="nf">register_model_spec</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="n">defined_in</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">defined_in</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">frm</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">frm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">mod</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not find module name.</span><span class="se">\n</span><span class="s">frm[0]=</span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">frm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">defined_in</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">__name__</span>
+    <span class="n">add_models_to_library</span><span class="p">(</span><span class="n">default_library</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">,</span> <span class="n">defined_in</span><span class="o">=</span><span class="n">defined_in</span><span class="p">)</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,994 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_signals Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_signals Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-signals-package">
+<h1>procgraph_signals Package<a class="headerlink" href="#procgraph-signals-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_signals" title="procgraph_signals"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_signals</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_signals"></span><p>Blocks performing operations with a dynamic nature.</p>
+<p>This library contains blocks that perform operations with time.</p>
+</div>
+<div class="section" id="module-procgraph_signals.any">
+<span id="any-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">any</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.any" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.any.Any">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.any.</tt><tt class="descname">Any</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/any.html#Any"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.any.Any" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Joins the stream of multiple signals onto one output signal.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.any.Any.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.any.Any.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.any.Any.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.any'</em><a class="headerlink" href="#procgraph_signals.any.Any.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.any.Any.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/any.html#Any.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.any.Any.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.any.Any.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x4797e18&gt;]</em><a class="headerlink" href="#procgraph_signals.any.Any.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.any.Any.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,stream)]</em><a class="headerlink" href="#procgraph_signals.any.Any.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.any.Any.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/any.html#Any.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.any.Any.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.async">
+<span id="async-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">async</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.async" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.async.ASync">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.async.</tt><tt class="descname">ASync</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/async.html#ASync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.async.ASync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.async.ASync.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.async.ASync.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.async.ASync.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.async'</em><a class="headerlink" href="#procgraph_signals.async.ASync.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.async.ASync.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/async.html#ASync.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.async.ASync.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.async.ASync.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x460fe60&gt;]</em><a class="headerlink" href="#procgraph_signals.async.ASync.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.async.ASync.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(variable-signal,None)]</em><a class="headerlink" href="#procgraph_signals.async.ASync.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.async.ASync.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/async.html#ASync.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.async.ASync.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.derivative">
+<span id="derivative-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">derivative</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.derivative" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.derivative.ForwardDifference">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.derivative.</tt><tt class="descname">ForwardDifference</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/derivative.html#ForwardDifference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.derivative.ForwardDifference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t-1]</span></tt> normalized with timestamp.</p>
+<p>You want to attach this to <a class="reference internal" href="../library.html#block-last-n-samples"><em>Block last_n_samples</em></a>.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.derivative.ForwardDifference.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.derivative.ForwardDifference.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.derivative.ForwardDifference.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.derivative'</em><a class="headerlink" href="#procgraph_signals.derivative.ForwardDifference.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.derivative.ForwardDifference.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x48bdfc8&gt;, &lt;procgraph.core.block_meta.BlockInput instance at 0x48be050&gt;]</em><a class="headerlink" href="#procgraph_signals.derivative.ForwardDifference.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.derivative.ForwardDifference.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,x_dot)]</em><a class="headerlink" href="#procgraph_signals.derivative.ForwardDifference.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.derivative.ForwardDifference.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/derivative.html#ForwardDifference.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.derivative.ForwardDifference.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_signals.derivative.isiterable">
+<tt class="descclassname">procgraph_signals.derivative.</tt><tt class="descname">isiterable</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/derivative.html#isiterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.derivative.isiterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that an object is iterable.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.derivative2">
+<span id="derivative2-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">derivative2</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.derivative2" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.derivative2.ForwardDifference12">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.derivative2.</tt><tt class="descname">ForwardDifference12</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/derivative2.html#ForwardDifference12"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.derivative2.ForwardDifference12" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Computes <tt class="docutils literal"><span class="pre">x[t+1]</span> <span class="pre">-</span> <span class="pre">x[t]</span></tt> normalized with timestamp.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.derivative2.ForwardDifference12.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.derivative2.ForwardDifference12.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.derivative2.ForwardDifference12.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.derivative2'</em><a class="headerlink" href="#procgraph_signals.derivative2.ForwardDifference12.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.derivative2.ForwardDifference12.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x43f5320&gt;, &lt;procgraph.core.block_meta.BlockInput instance at 0x43f57e8&gt;]</em><a class="headerlink" href="#procgraph_signals.derivative2.ForwardDifference12.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.derivative2.ForwardDifference12.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,x_dot)]</em><a class="headerlink" href="#procgraph_signals.derivative2.ForwardDifference12.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.derivative2.ForwardDifference12.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/derivative2.html#ForwardDifference12.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.derivative2.ForwardDifference12.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_signals.derivative2.isiterable">
+<tt class="descclassname">procgraph_signals.derivative2.</tt><tt class="descname">isiterable</tt><big>(</big><em>x</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/derivative2.html#isiterable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.derivative2.isiterable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.extract">
+<span id="extract-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">extract</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.extract" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.extract.Extract">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.extract.</tt><tt class="descname">Extract</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/extract.html#Extract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.extract.Extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block extracts some of the components of a vector.</p>
+<p>Example: Extracts the first and third component of x.</p>
+<div class="highlight-python"><pre>x -&gt; |extract index=[0,2]| -&gt; x_part</pre>
+</div>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.extract.Extract.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('index',False,'not-given','Index (or indices) to extract.','')]</em><a class="headerlink" href="#procgraph_signals.extract.Extract.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.extract.Extract.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.extract'</em><a class="headerlink" href="#procgraph_signals.extract.Extract.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.extract.Extract.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47971b8&gt;]</em><a class="headerlink" href="#procgraph_signals.extract.Extract.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.extract.Extract.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,part)]</em><a class="headerlink" href="#procgraph_signals.extract.Extract.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.extract.Extract.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/extract.html#Extract.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.extract.Extract.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_signals.extract.slice">
+<tt class="descclassname">procgraph_signals.extract.</tt><tt class="descname">slice</tt><big>(</big><em>signal</em>, <em>start='compulsory-param'</em>, <em>end='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/extract.html#slice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.extract.slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slices a signal by extracting from index <tt class="docutils literal"><span class="pre">start</span></tt> to index <tt class="docutils literal"><span class="pre">end</span></tt>
+(INCLUSIVE).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>signal</strong> &#8211; Any 1d numpy array</li>
+<li><strong>start</strong> &#8211; Slice start.</li>
+<li><strong>end</strong> &#8211; Slice end (inclusive).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sliced: The sliced signal.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.fps_data_limit">
+<span id="fps-data-limit-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fps_data_limit</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.fps_data_limit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.fps_data_limit.</tt><tt class="descname">FPSDataLimit</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_data_limit.html#FPSDataLimit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block limits the output update to a certain framerate.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('fps',False,'not-given','Maximum framerate.','')]</em><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.fps_data_limit'</em><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_data_limit.html#FPSDataLimit.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a3b00&gt;]</em><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(variable-signal,None)]</em><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.fps_data_limit.FPSDataLimit.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_data_limit.html#FPSDataLimit.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_data_limit.FPSDataLimit.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.fps_limit">
+<span id="fps-limit-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fps_limit</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.fps_limit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.fps_limit.FPSLimit">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.fps_limit.</tt><tt class="descname">FPSLimit</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_limit.html#FPSLimit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block limits the output update to a certain <em>realtime</em> framerate.</p>
+<p>Note that this uses realtime wall clock time &#8211; not the data time!
+This is mean for real-time applications, such as visualization.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.fps_limit.FPSLimit.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('fps',False,'not-given','Realtime fps limit.','')]</em><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_limit.FPSLimit.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.fps_limit'</em><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.fps_limit.FPSLimit.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_limit.html#FPSLimit.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_limit.FPSLimit.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x4797710&gt;]</em><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_limit.FPSLimit.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(variable-signal,None)]</em><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.fps_limit.FPSLimit.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_limit.html#FPSLimit.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_limit.FPSLimit.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.fps_print">
+<span id="fps-print-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fps_print</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.fps_print" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.fps_print.FPSPrint">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.fps_print.</tt><tt class="descname">FPSPrint</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_print.html#FPSPrint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Prints the fps count for the input signals.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.fps_print.FPSPrint.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_print.FPSPrint.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.fps_print'</em><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.fps_print.FPSPrint.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_print.html#FPSPrint.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_print.FPSPrint.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a3098&gt;]</em><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.fps_print.FPSPrint.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.fps_print.FPSPrint.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/fps_print.html#FPSPrint.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.fps_print.FPSPrint.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.history">
+<span id="history-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">history</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.history" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.history.History">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.history.</tt><tt class="descname">History</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/history.html#History"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.history.History" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block collects the history of a quantity,
+and outputs two signals <tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">t</span></tt>. 
+See also <a class="reference internal" href="../library.html#block-historyt"><em>Block historyt</em></a> and <a class="reference internal" href="../library.html#block-last-n-samples"><em>Block last_n_samples</em></a>.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.history.History.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('interval',True,10,'Length of the interval to record.','')]</em><a class="headerlink" href="#procgraph_signals.history.History.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.history.History.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.history'</em><a class="headerlink" href="#procgraph_signals.history.History.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.history.History.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/history.html#History.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.history.History.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.history.History.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a3b48&gt;]</em><a class="headerlink" href="#procgraph_signals.history.History.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.history.History.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,x), BlockOutput(fixed-signal,t)]</em><a class="headerlink" href="#procgraph_signals.history.History.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.history.History.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/history.html#History.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.history.History.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.historyt">
+<span id="historyt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">historyt</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.historyt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.historyt.HistoryT">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.historyt.</tt><tt class="descname">HistoryT</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/historyt.html#HistoryT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.historyt.HistoryT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block collects the signals samples of a signals,
+and outputs <em>one</em> signal containing a tuple  <tt class="docutils literal"><span class="pre">(t,x)</span></tt>. 
+See also <a class="reference internal" href="../library.html#block-last-n-samples"><em>Block last_n_samples</em></a> and <a class="reference internal" href="../library.html#block-history"><em>Block history</em></a>.</p>
+<p>If <tt class="docutils literal"><span class="pre">natural</span></tt> is true, it uses the time from the beginning of the log.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.historyt.HistoryT.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('interval',True,10,'Length of interval (seconds).',''), BlockConfig('natural',True,True,'If true, set 0 to be timestamp of the log beginning. This allows to have prettier graphs','')]</em><a class="headerlink" href="#procgraph_signals.historyt.HistoryT.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.historyt.HistoryT.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.historyt'</em><a class="headerlink" href="#procgraph_signals.historyt.HistoryT.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.historyt.HistoryT.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/historyt.html#HistoryT.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.historyt.HistoryT.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.historyt.HistoryT.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a3710&gt;]</em><a class="headerlink" href="#procgraph_signals.historyt.HistoryT.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.historyt.HistoryT.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,history)]</em><a class="headerlink" href="#procgraph_signals.historyt.HistoryT.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.historyt.HistoryT.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/historyt.html#HistoryT.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.historyt.HistoryT.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.join">
+<span id="join-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">join</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.join" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.join.Join">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.join.</tt><tt class="descname">Join</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/join.html#Join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.join.Join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block joins multiple signals into one.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.join.Join.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.join.Join.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.join.Join.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.join'</em><a class="headerlink" href="#procgraph_signals.join.Join.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.join.Join.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/join.html#Join.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.join.Join.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.join.Join.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47975a8&gt;]</em><a class="headerlink" href="#procgraph_signals.join.Join.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.join.Join.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,joined)]</em><a class="headerlink" href="#procgraph_signals.join.Join.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.join.Join.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/join.html#Join.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.join.Join.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.last_n_samples">
+<span id="last-n-samples-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">last_n_samples</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.last_n_samples" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.last_n_samples.HistoryN">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.last_n_samples.</tt><tt class="descname">HistoryN</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/last_n_samples.html#HistoryN"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block collects the last N samples of a signals,
+and outputs two signals <tt class="docutils literal"><span class="pre">x</span></tt> and <tt class="docutils literal"><span class="pre">t</span></tt>. 
+See also <a class="reference internal" href="../library.html#block-historyt"><em>Block historyt</em></a> and <a class="reference internal" href="../library.html#block-history"><em>Block history</em></a>.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.last_n_samples.HistoryN.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('n',False,'not-given','Number of samples to retain.','')]</em><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.last_n_samples.HistoryN.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.last_n_samples'</em><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.last_n_samples.HistoryN.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/last_n_samples.html#HistoryN.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.last_n_samples.HistoryN.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x4797170&gt;]</em><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.last_n_samples.HistoryN.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,x), BlockOutput(fixed-signal,t)]</em><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.last_n_samples.HistoryN.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/last_n_samples.html#HistoryN.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.last_n_samples.HistoryN.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.low_pass">
+<span id="low-pass-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">low_pass</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.low_pass" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.low_pass.LowPass">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.low_pass.</tt><tt class="descname">LowPass</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/low_pass.html#LowPass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.low_pass.LowPass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Implements simple low-pass filtering.</p>
+<p>Formula used:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">u</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">y</span><span class="p">[</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.low_pass.LowPass.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('alpha',False,'not-given','Innovation rate','')]</em><a class="headerlink" href="#procgraph_signals.low_pass.LowPass.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.low_pass.LowPass.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.low_pass'</em><a class="headerlink" href="#procgraph_signals.low_pass.LowPass.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.low_pass.LowPass.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/low_pass.html#LowPass.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.low_pass.LowPass.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.low_pass.LowPass.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x4797320&gt;]</em><a class="headerlink" href="#procgraph_signals.low_pass.LowPass.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.low_pass.LowPass.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,lowpass)]</em><a class="headerlink" href="#procgraph_signals.low_pass.LowPass.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.low_pass.LowPass.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/low_pass.html#LowPass.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.low_pass.LowPass.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.make_tuple">
+<span id="make-tuple-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">make_tuple</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.make_tuple" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.make_tuple.MakeTuple">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.make_tuple.</tt><tt class="descname">MakeTuple</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/make_tuple.html#MakeTuple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.make_tuple.MakeTuple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Creates a tuple out of the input signals values.</p>
+<p>Often used for plotting two signals as (x,y); see <a class="reference internal" href="../library.html#block-plot"><em>Block plot</em></a>.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.make_tuple.MakeTuple.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.make_tuple.MakeTuple.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.make_tuple.MakeTuple.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.make_tuple'</em><a class="headerlink" href="#procgraph_signals.make_tuple.MakeTuple.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.make_tuple.MakeTuple.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x479e248&gt;]</em><a class="headerlink" href="#procgraph_signals.make_tuple.MakeTuple.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.make_tuple.MakeTuple.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,tuple)]</em><a class="headerlink" href="#procgraph_signals.make_tuple.MakeTuple.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.make_tuple.MakeTuple.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/make_tuple.html#MakeTuple.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.make_tuple.MakeTuple.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.sieve">
+<span id="sieve-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sieve</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.sieve" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.sieve.Sieve">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.sieve.</tt><tt class="descname">Sieve</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sieve.html#Sieve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sieve.Sieve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block decimates the data in time by transmitting
+only one in <tt class="docutils literal"><span class="pre">n</span></tt> updates.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.sieve.Sieve.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('n',False,'not-given','Decimation level; ``n = 3`` means transmit one in three.','')]</em><a class="headerlink" href="#procgraph_signals.sieve.Sieve.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sieve.Sieve.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.sieve'</em><a class="headerlink" href="#procgraph_signals.sieve.Sieve.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sieve.Sieve.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sieve.html#Sieve.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sieve.Sieve.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sieve.Sieve.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a3248&gt;]</em><a class="headerlink" href="#procgraph_signals.sieve.Sieve.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sieve.Sieve.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,decimated)]</em><a class="headerlink" href="#procgraph_signals.sieve.Sieve.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sieve.Sieve.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sieve.html#Sieve.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sieve.Sieve.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.sync">
+<span id="sync-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sync</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.sync" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.sync.Sample">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.sync.</tt><tt class="descname">Sample</tt><a class="headerlink" href="#procgraph_signals.sync.Sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.sync.Sample.timestamp">
+<tt class="descname">timestamp</tt><a class="headerlink" href="#procgraph_signals.sync.Sample.timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync.Sample.value">
+<tt class="descname">value</tt><a class="headerlink" href="#procgraph_signals.sync.Sample.value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph_signals.sync.Sync">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.sync.</tt><tt class="descname">Sync</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#Sync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.Sync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p>This block synchronizes a set of streams to the first stream (the master).</p>
+<p>The first signal is called the &#8220;master&#8221; signal.
+The other (N-1) are slaves.</p>
+<p>We guarantee that:</p>
+<ul class="simple">
+<li>if the slaves are faster than the master,
+then we output exactly the same.</li>
+</ul>
+<p>Example diagrams:</p>
+<div class="highlight-python"><pre>Master  *  *  *   *   *
+Slave   ++++++++++++++++
+
+Master  *  *  *   *   *
+output? v  v  x   v  
+Slave   +    +      +   
+output? v    v      v</pre>
+</div>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.sync.Sync.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.sync.Sync.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync.Sync.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.sync'</em><a class="headerlink" href="#procgraph_signals.sync.Sync.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync.Sync.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#Sync.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.Sync.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync.Sync.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a35f0&gt;]</em><a class="headerlink" href="#procgraph_signals.sync.Sync.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync.Sync.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#Sync.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.Sync.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync.Sync.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(variable-signal,None)]</em><a class="headerlink" href="#procgraph_signals.sync.Sync.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync.Sync.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#Sync.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.Sync.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_signals.sync.add_last">
+<tt class="descclassname">procgraph_signals.sync.</tt><tt class="descname">add_last</tt><big>(</big><em>queue</em>, <em>ob</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#add_last"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.add_last" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_signals.sync.newest">
+<tt class="descclassname">procgraph_signals.sync.</tt><tt class="descname">newest</tt><big>(</big><em>queue</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#newest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.newest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_signals.sync.oldest">
+<tt class="descclassname">procgraph_signals.sync.</tt><tt class="descname">oldest</tt><big>(</big><em>queue</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync.html#oldest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync.oldest" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.sync_test">
+<span id="sync-test-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">sync_test</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.sync_test" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.sync_test.CheckSync">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.sync_test.</tt><tt class="descname">CheckSync</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#CheckSync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.CheckSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.CheckSync.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.sync_test.CheckSync.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.CheckSync.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.sync_test'</em><a class="headerlink" href="#procgraph_signals.sync_test.CheckSync.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.CheckSync.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.sync_test.CheckSync.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.CheckSync.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,value)]</em><a class="headerlink" href="#procgraph_signals.sync_test.CheckSync.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync_test.CheckSync.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#CheckSync.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.CheckSync.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph_signals.sync_test.LogSim">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.sync_test.</tt><tt class="descname">LogSim</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#LogSim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.LogSim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.LogSim.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.LogSim.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.sync_test'</em><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync_test.LogSim.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#LogSim.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.LogSim.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync_test.LogSim.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#LogSim.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.sync_test.LogSim.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,stream)]</em><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.sync_test.LogSim.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#LogSim.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.LogSim.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph_signals.sync_test.TestSync">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.sync_test.</tt><tt class="descname">TestSync</tt><big>(</big><em>methodName='runTest'</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#TestSync"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.TestSync" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.testing.html#procgraph.testing.utils.PGTestCase" title="procgraph.testing.utils.PGTestCase"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.testing.utils.PGTestCase</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph_signals.sync_test.TestSync.not_working">
+<tt class="descname">not_working</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/sync_test.html#TestSync.not_working"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.sync_test.TestSync.not_working" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_signals.wait">
+<span id="wait-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">wait</span></tt> Module<a class="headerlink" href="#module-procgraph_signals.wait" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_signals.wait.Wait">
+<em class="property">class </em><tt class="descclassname">procgraph_signals.wait.</tt><tt class="descname">Wait</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_signals/wait.html#Wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.wait.Wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block waits a given number of updates before transmitting the 
+output signal.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_signals.wait.Wait.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('n',False,'not-given','Number of updates to wait at the beginning.','')]</em><a class="headerlink" href="#procgraph_signals.wait.Wait.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.wait.Wait.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_signals.wait'</em><a class="headerlink" href="#procgraph_signals.wait.Wait.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.wait.Wait.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/wait.html#Wait.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.wait.Wait.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.wait.Wait.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x47a3c20&gt;]</em><a class="headerlink" href="#procgraph_signals.wait.Wait.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_signals.wait.Wait.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(variable-signal,None)]</em><a class="headerlink" href="#procgraph_signals.wait.Wait.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_signals.wait.Wait.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_signals/wait.html#Wait.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_signals.wait.Wait.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

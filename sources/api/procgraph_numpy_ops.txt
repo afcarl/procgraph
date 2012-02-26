@@ -1,0 +1,43 @@
+procgraph_numpy_ops Package
+===========================
+
+:mod:`procgraph_numpy_ops` Package
+----------------------------------
+
+.. automodule:: procgraph_numpy_ops
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`filters` Module
+---------------------
+
+.. automodule:: procgraph_numpy_ops.filters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`gradient1d` Module
+------------------------
+
+.. automodule:: procgraph_numpy_ops.gradient1d
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`gradient1d_test` Module
+-----------------------------
+
+.. automodule:: procgraph_numpy_ops.gradient1d_test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`smooth1d` Module
+----------------------
+
+.. automodule:: procgraph_numpy_ops.smooth1d
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

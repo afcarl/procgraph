@@ -1,0 +1,186 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_foo.example0_simplest_block &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_foo.example0_simplest_block</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_foo.example0_simplest_block</h1><div class="highlight"><pre>
+<span class="c"># In the simplest case, you only need to import &quot;Block&quot; from procgraph.</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span>
+
+
+<div class="viewcode-block" id="BlockSimpleExample"><a class="viewcode-back" href="../../api/procgraph_foo.html#procgraph_foo.example0_simplest_block.BlockSimpleExample">[docs]</a><span class="k">class</span> <span class="nc">BlockSimpleExample</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; This is a documented example of the simplest block possible.</span>
+<span class="sd">    </span>
+<span class="sd">        This docstring will be included in the generated documentation.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="c"># Define a name for the block using `Block.alias`.</span>
+    <span class="c"># If not given, the class name (&#39;BlockExample&#39;) will be used.</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;block_example&#39;</span><span class="p">)</span>
+
+    <span class="c"># Define the inputs for the blocks using `Block.input`.</span>
+    <span class="c"># It takes two parameters: name of the signal, and a docstring.</span>
+    <span class="c"># ProcGraph will generate wonderful documentation for you, and lets</span>
+    <span class="c"># you write documentation for what you are doing at almost every step: </span>
+    <span class="c"># take every chance to document things.</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;baz&#39;</span><span class="p">,</span> <span class="s">&#39;Measured baz in the particle accelerator.&#39;</span><span class="p">)</span>
+
+    <span class="c"># This block has one output as well.</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;baz_compensated&#39;</span><span class="p">,</span>
+                 <span class="s">&#39;Compensated baz value according to calibration.&#39;</span><span class="p">)</span>
+
+    <span class="c"># Now define the configuration for the block.</span>
+    <span class="c"># Pass the optional &#39;default&#39; argument to define a default for the</span>
+    <span class="c"># parameter.</span>
+    <span class="c"># Without the default, the user *must* pass the configuration parameter.</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;bias&#39;</span><span class="p">,</span> <span class="s">&#39;Bias for the accelerator.&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># Now let&#39;s write the logic for the block.</span>
+
+    <span class="c"># Very important! Do not use __init__ for initialization. Use init().</span>
+    <span class="c"># ProcGraph does a lot behind the scenes to let you have a streamlined</span>
+    <span class="c"># experiences, but sometimes there is a price to pay. </span>
+    <span class="c"># </span>
+    <span class="c"># def __init__(self):</span>
+    <span class="c">#     ...</span>
+    <span class="c">#</span>
+    <span class="c"># Initialize the block in the init() function.</span>
+<div class="viewcode-block" id="BlockSimpleExample.init"><a class="viewcode-back" href="../../api/procgraph_foo.html#procgraph_foo.example0_simplest_block.BlockSimpleExample.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># For this example, we have nothing to do here.</span>
+        <span class="k">pass</span>
+
+    <span class="c"># You will write the main logic in the update() function.</span>
+    <span class="c"># It is called whenever the input signals are updated.</span>
+    <span class="c"># In update() you do your computations, and update the value </span>
+    <span class="c"># of the output signals.</span></div>
+<div class="viewcode-block" id="BlockSimpleExample.update"><a class="viewcode-back" href="../../api/procgraph_foo.html#procgraph_foo.example0_simplest_block.BlockSimpleExample.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># You can access the value of the configuration parameters</span>
+        <span class="c"># using  `self.config.&lt;parameter name&gt;`</span>
+        <span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">bias</span>
+
+        <span class="c"># You read the input signals using `self.input.&lt;signal name&gt;`: </span>
+        <span class="n">baz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">baz</span>
+
+        <span class="n">baz_compensated</span> <span class="o">=</span> <span class="n">baz</span> <span class="o">+</span> <span class="n">bias</span>
+
+        <span class="c"># Finally, you set the output using `self.output.&lt;signal name&gt; = ...`.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">baz_compensated</span> <span class="o">=</span> <span class="n">baz_compensated</span>
+        <span class="c"># You&#39;re done: ProcGraph will propagate this value to the other blocks </span>
+        <span class="c"># connected...</span>
+
+        <span class="c"># Note that for stateless computations such as this, creating a Block</span>
+        <span class="c"># class is likely overkill -- use register_simple_block() with an </span>
+        <span class="c"># instantaneous function instead -- see next example. </span>
+
+    <span class="c"># Finish is called at the end of the execution.</span></div>
+<div class="viewcode-block" id="BlockSimpleExample.finish"><a class="viewcode-back" href="../../api/procgraph_foo.html#procgraph_foo.example0_simplest_block.BlockSimpleExample.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># For this example, we have nothing to do here.</span>
+        <span class="k">pass</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

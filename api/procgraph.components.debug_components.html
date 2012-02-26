@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>debug_components Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>debug_components Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="debug-components-package">
+<h1>debug_components Package<a class="headerlink" href="#debug-components-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">debug_components</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph.components.debug_components"></span><p>Components used for debugging and unit tests.</p>
+</div>
+<div class="section" id="module-procgraph.components.debug_components.clock">
+<span id="clock-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">clock</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.clock" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.clock.Clock">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.clock.</tt><tt class="descname">Clock</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/clock.html#Clock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.clock.Clock.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('interval',True,1,'Delta between ticks.','')]</em><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.clock.Clock.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.clock'</em><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.clock.Clock.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/clock.html#Clock.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.clock.Clock.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.clock.Clock.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/clock.html#Clock.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.clock.Clock.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,clock)]</em><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.clock.Clock.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/clock.html#Clock.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.clock.Clock.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.components.debug_components.constant">
+<span id="constant-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">constant</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.constant" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.constant.Constant">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.constant.</tt><tt class="descname">Constant</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/constant.html#Constant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.constant.Constant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Output a numerical constant that never changes.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>|constant value=42| -&gt; ...</pre>
+</div>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.constant.Constant.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('value',False,'not-given','Constant value to output.','')]</em><a class="headerlink" href="#procgraph.components.debug_components.constant.Constant.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.constant.Constant.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.constant'</em><a class="headerlink" href="#procgraph.components.debug_components.constant.Constant.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.constant.Constant.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.constant.Constant.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.constant.Constant.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,constant)]</em><a class="headerlink" href="#procgraph.components.debug_components.constant.Constant.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.constant.Constant.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/constant.html#Constant.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.constant.Constant.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.components.debug_components.gain">
+<span id="gain-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">gain</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.gain" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.gain.Gain">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.gain.</tt><tt class="descname">Gain</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/gain.html#Gain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.gain.Gain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>A simple example of a gain block.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.gain.Gain.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('k',False,'not-given','Multiplicative gain','')]</em><a class="headerlink" href="#procgraph.components.debug_components.gain.Gain.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.gain.Gain.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.gain'</em><a class="headerlink" href="#procgraph.components.debug_components.gain.Gain.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.gain.Gain.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x37b4f80&gt;]</em><a class="headerlink" href="#procgraph.components.debug_components.gain.Gain.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.gain.Gain.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,out)]</em><a class="headerlink" href="#procgraph.components.debug_components.gain.Gain.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.gain.Gain.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/gain.html#Gain.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.gain.Gain.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.components.debug_components.identity">
+<span id="identity-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">identity</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.identity" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.identity.Identity">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.identity.</tt><tt class="descname">Identity</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/identity.html#Identity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.identity.Identity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block outputs the inputs, unchanged.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.identity.Identity.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.identity.Identity.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.identity.Identity.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.identity'</em><a class="headerlink" href="#procgraph.components.debug_components.identity.Identity.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.identity.Identity.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x37bdfc8&gt;]</em><a class="headerlink" href="#procgraph.components.debug_components.identity.Identity.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.identity.Identity.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(variable-signal,None)]</em><a class="headerlink" href="#procgraph.components.debug_components.identity.Identity.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.identity.Identity.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/identity.html#Identity.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.identity.Identity.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.components.debug_components.info">
+<span id="info-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">info</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.info" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.info.Info">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.info.</tt><tt class="descname">Info</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/info.html#Info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.info.Info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Prints more compact information about the inputs 
+than <a class="reference internal" href="../library.html#block-print"><em>Block print</em></a>.</p>
+<p>For numpy arrays it prints their shape and dtype 
+instead of their values.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.info.Info.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.info.Info.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.info.Info.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.info'</em><a class="headerlink" href="#procgraph.components.debug_components.info.Info.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.info.Info.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/info.html#Info.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.info.Info.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.info.Info.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x37a31b8&gt;]</em><a class="headerlink" href="#procgraph.components.debug_components.info.Info.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.info.Info.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.info.Info.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.info.Info.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/info.html#Info.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.info.Info.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.components.debug_components.operations">
+<span id="operations-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">operations</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.operations" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.operations.Minus">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.operations.</tt><tt class="descname">Minus</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/operations.html#Minus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Implements the difference of two signals, taking care of overflows.</p>
+<p>Because that is rarely the semantics you want to give them.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.operations.Minus.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('safe',True,None,'Whether to use safe promotions. If not specified, we will do it but warn once.',''), BlockConfig('cases',True,{'uint16': 'int32', 'uint8': 'int16', 'uint32': 'int64'},'Promotion rules','')]</em><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.operations.Minus.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.operations'</em><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.operations.Minus.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/operations.html#Minus.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.operations.Minus.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x37b4fc8&gt;, &lt;procgraph.core.block_meta.BlockInput instance at 0x37b47e8&gt;]</em><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.operations.Minus.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,x_minus_y)]</em><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.operations.Minus.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/operations.html#Minus.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.operations.Minus.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.components.debug_components.operations.plus">
+<tt class="descclassname">procgraph.components.debug_components.operations.</tt><tt class="descname">plus</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/operations.html#plus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.operations.plus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sum of two signals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; First signal.</li>
+<li><strong>y</strong> &#8211; Second signal.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">sum: Sum of the two signals.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.components.debug_components.operations.product">
+<tt class="descclassname">procgraph.components.debug_components.operations.</tt><tt class="descname">product</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/operations.html#product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.operations.product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Product of two signals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; First signal.</li>
+<li><strong>y</strong> &#8211; Second signal.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">product: Product of the two signals.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.components.debug_components.operations.ratio">
+<tt class="descclassname">procgraph.components.debug_components.operations.</tt><tt class="descname">ratio</tt><big>(</big><em>x</em>, <em>y</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/operations.html#ratio"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.operations.ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ratio of two signals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> &#8211; First signal.</li>
+<li><strong>y</strong> &#8211; Second signal.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">ratio: First signal divided by the second.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.components.debug_components.printc">
+<span id="printc-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">printc</span></tt> Module<a class="headerlink" href="#module-procgraph.components.debug_components.printc" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.components.debug_components.printc.Print">
+<em class="property">class </em><tt class="descclassname">procgraph.components.debug_components.printc.</tt><tt class="descname">Print</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/printc.html#Print"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.printc.Print" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Print a representation of the input values along with 
+their timestamp.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.printc.Print.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.printc.Print.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.printc.Print.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.components.debug_components.printc'</em><a class="headerlink" href="#procgraph.components.debug_components.printc.Print.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.printc.Print.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x37d90e0&gt;]</em><a class="headerlink" href="#procgraph.components.debug_components.printc.Print.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.components.debug_components.printc.Print.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.components.debug_components.printc.Print.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.components.debug_components.printc.Print.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/components/debug_components/printc.html#Print.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.components.debug_components.printc.Print.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,35 @@
+procgraph_ros Package
+=====================
+
+:mod:`procgraph_ros` Package
+----------------------------
+
+.. automodule:: procgraph_ros
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`bagread` Module
+---------------------
+
+.. automodule:: procgraph_ros.bagread
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`bagwrite` Module
+----------------------
+
+.. automodule:: procgraph_ros.bagwrite
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`conversions` Module
+-------------------------
+
+.. automodule:: procgraph_ros.conversions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

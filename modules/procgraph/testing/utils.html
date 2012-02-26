@@ -1,0 +1,239 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.testing.utils &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.testing.utils</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.testing.utils</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">..core.block</span> <span class="kn">import</span> <span class="n">Block</span>
+<span class="kn">from</span> <span class="nn">..core.exceptions</span> <span class="kn">import</span> <span class="n">SemanticError</span><span class="p">,</span> <span class="n">PGSyntaxError</span><span class="p">,</span> <span class="n">add_prefix</span>
+<span class="kn">from</span> <span class="nn">..core.model_loader</span> <span class="kn">import</span> <span class="n">model_from_string</span>
+<span class="kn">from</span> <span class="nn">..core.parsing</span> <span class="kn">import</span> <span class="n">parse_model</span>
+<span class="kn">from</span> <span class="nn">..core.registrar</span> <span class="kn">import</span> <span class="n">default_library</span><span class="p">,</span> <span class="n">Library</span>
+<span class="kn">import</span> <span class="nn">procgraph.components</span> <span class="c">#@UnusedImport</span>
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+
+
+<span class="c"># load standard components</span>
+
+<div class="viewcode-block" id="define_generic"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.define_generic">[docs]</a><span class="k">def</span> <span class="nf">define_generic</span><span class="p">(</span><span class="n">nin</span><span class="p">,</span> <span class="n">nout</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Generic</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+        <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;generic_in</span><span class="si">%d</span><span class="s">_out</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nin</span><span class="p">,</span> <span class="n">nout</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nin</span><span class="p">):</span>
+            <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nout</span><span class="p">):</span>
+            <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+</div>
+<span class="k">for</span> <span class="n">nin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">nout</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">):</span>
+        <span class="n">define_generic</span><span class="p">(</span><span class="n">nin</span><span class="p">,</span> <span class="n">nout</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="PGTestCase"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase">[docs]</a><span class="k">class</span> <span class="nc">PGTestCase</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="PGTestCase.check_syntax_ok"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase.check_syntax_ok">[docs]</a>    <span class="k">def</span> <span class="nf">check_syntax_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Tests that the given string can parse OK. </span>
+<span class="sd">            Returns parsed models. &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_spec</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">parsed</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s">&quot;Could not parse model:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s">Got error: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+                  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_fancy</span><span class="p">(</span><span class="n">model_spec</span><span class="p">),</span> <span class="n">e</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="PGTestCase.check_semantic_ok"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase.check_semantic_ok">[docs]</a>    <span class="k">def</span> <span class="nf">check_semantic_ok</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39; Tests that the given string can parse OK and we can create a model.</span>
+<span class="sd">             Note that a syntax error is translated into a test Error, </span>
+<span class="sd">             not a failure.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># Don&#39;t pollute the main library with unit tests    </span>
+        <span class="n">library</span> <span class="o">=</span> <span class="n">Library</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">default_library</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">model_from_string</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span>
+                                      <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">model</span>
+        <span class="k">except</span> <span class="n">SemanticError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s">&quot;Semantic error for not parse model:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span>
+                      <span class="s">&quot;Got error: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_fancy</span><span class="p">(</span><span class="n">model_spec</span><span class="p">),</span> <span class="n">e</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="PGTestCase.check_syntax_error"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase.check_syntax_error">[docs]</a>    <span class="k">def</span> <span class="nf">check_syntax_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Tests that the given string parsing gives a syntax error. &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_spec</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s">&#39;Expected SemanticError for model:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s">Parsed as:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_fancy</span><span class="p">(</span><span class="n">model_spec</span><span class="p">),</span> <span class="n">parsed</span><span class="p">))</span>
+        <span class="k">except</span> <span class="n">PGSyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">e</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">e</span>
+</div>
+<div class="viewcode-block" id="PGTestCase.check_semantic_error"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase.check_semantic_error">[docs]</a>    <span class="k">def</span> <span class="nf">check_semantic_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39; Tests that the given string parses ok </span>
+<span class="sd">            but gives a semantic error. &#39;&#39;&#39;</span>
+        <span class="c"># make sure we can parse it, before</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_spec</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">library</span> <span class="o">=</span> <span class="n">Library</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">default_library</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">model_from_string</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span>
+                                      <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="c"># Note: we only have check_semantic_error, perhaps we need</span>
+            <span class="c"># another for the tests that do need init()?</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s">&#39;Expected SemanticError for model:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">write_fancy</span><span class="p">(</span><span class="n">model_spec</span><span class="p">),</span> <span class="n">parsed</span><span class="p">))</span>
+
+        <span class="k">except</span> <span class="n">SemanticError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">pass</span>
+            <span class="c"># make sure we can write it as a string </span>
+            <span class="n">e</span><span class="o">.</span><span class="n">__str__</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">e</span>
+</div>
+<div class="viewcode-block" id="PGTestCase.check_execution_throws"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase.check_execution_throws">[docs]</a>    <span class="k">def</span> <span class="nf">check_execution_throws</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">possible_errors</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="sd">&#39;&#39;&#39; Tests that the model execution throws the specific error</span>
+<span class="sd">            semantic error. Returns the exception if it is thrown. &#39;&#39;&#39;</span>
+        <span class="n">library</span> <span class="o">=</span> <span class="n">Library</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">default_library</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">model_from_string</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">model</span><span class="o">.</span><span class="n">has_more</span><span class="p">():</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fail</span><span class="p">(</span><span class="s">&#39;Expected one of </span><span class="si">%s</span><span class="s"> for model:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                      <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">possible_errors</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">write_fancy</span><span class="p">(</span><span class="n">model_spec</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="n">possible_errors</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c"># make sure we can write e as a string:</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">e</span>
+</div>
+<div class="viewcode-block" id="PGTestCase.write_fancy"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.PGTestCase.write_fancy">[docs]</a>    <span class="k">def</span> <span class="nf">write_fancy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">add_prefix</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="s">&#39;  |&#39;</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="VerifyBlock"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.VerifyBlock">[docs]</a><span class="k">class</span> <span class="nc">VerifyBlock</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This debug block verifies that config.x == config.y </span>
+<span class="sd">        and throws an exception if that&#39;s not the case.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;verify&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;y&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="VerifyBlock.init"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.utils.VerifyBlock.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">x</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">y</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="s">&#39;Oops: &quot;</span><span class="si">%s</span><span class="s">&quot; != &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span> <span class="o">%</span> \
+                                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">y</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

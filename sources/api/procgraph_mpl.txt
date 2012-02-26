@@ -1,0 +1,35 @@
+procgraph_mpl Package
+=====================
+
+:mod:`procgraph_mpl` Package
+----------------------------
+
+.. automodule:: procgraph_mpl
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fanciness` Module
+-----------------------
+
+.. automodule:: procgraph_mpl.fanciness
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`plot` Module
+------------------
+
+.. automodule:: procgraph_mpl.plot
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pylab_to_image` Module
+----------------------------
+
+.. automodule:: procgraph_mpl.pylab_to_image
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

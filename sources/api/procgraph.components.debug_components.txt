@@ -1,0 +1,67 @@
+debug_components Package
+========================
+
+:mod:`debug_components` Package
+-------------------------------
+
+.. automodule:: procgraph.components.debug_components
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`clock` Module
+-------------------
+
+.. automodule:: procgraph.components.debug_components.clock
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`constant` Module
+----------------------
+
+.. automodule:: procgraph.components.debug_components.constant
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`gain` Module
+------------------
+
+.. automodule:: procgraph.components.debug_components.gain
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`identity` Module
+----------------------
+
+.. automodule:: procgraph.components.debug_components.identity
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`info` Module
+------------------
+
+.. automodule:: procgraph.components.debug_components.info
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`operations` Module
+------------------------
+
+.. automodule:: procgraph.components.debug_components.operations
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`printc` Module
+--------------------
+
+.. automodule:: procgraph.components.debug_components.printc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

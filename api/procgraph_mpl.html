@@ -1,0 +1,217 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_mpl Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_mpl Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-mpl-package">
+<h1>procgraph_mpl Package<a class="headerlink" href="#procgraph-mpl-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_mpl" title="procgraph_mpl"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_mpl</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_mpl"></span><p>Blocks using Matplotlib to display data.</p>
+</div>
+<div class="section" id="module-procgraph_mpl.fanciness">
+<span id="fanciness-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fanciness</span></tt> Module<a class="headerlink" href="#module-procgraph_mpl.fanciness" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_mpl.fanciness.remove_spine">
+<tt class="descclassname">procgraph_mpl.fanciness.</tt><tt class="descname">remove_spine</tt><big>(</big><em>pylab</em>, <em>which</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/fanciness.html#remove_spine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.fanciness.remove_spine" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_mpl.fanciness.set_spines_look_A">
+<tt class="descclassname">procgraph_mpl.fanciness.</tt><tt class="descname">set_spines_look_A</tt><big>(</big><em>pylab</em>, <em>outward_offset=10</em>, <em>linewidth=2</em>, <em>markersize=3</em>, <em>markeredgewidth=1</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/fanciness.html#set_spines_look_A"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.fanciness.set_spines_look_A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Taken from 
+<a class="reference external" href="http://matplotlib.sourceforge.net/examples/pylab_examples">http://matplotlib.sourceforge.net/examples/pylab_examples</a>
+/spine_placement_demo.html</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_mpl.fanciness.style">
+<tt class="descclassname">procgraph_mpl.fanciness.</tt><tt class="descname">style</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/fanciness.html#style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.fanciness.style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_mpl.plot">
+<span id="plot-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">plot</span></tt> Module<a class="headerlink" href="#module-procgraph_mpl.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_mpl.plot.Plot">
+<em class="property">class </em><tt class="descclassname">procgraph_mpl.plot.</tt><tt class="descname">Plot</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/plot.html#Plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.plot.Plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Plots the inputs using matplotlib.</p>
+<p>This block accepts an arbitrary number of signals. 
+Each signals is treated independently and plot separately.</p>
+<p>Each signal can either be:</p>
+<ol class="arabic simple">
+<li>A tuple of length 2. It is interpreted as a tuple <tt class="docutils literal"><span class="pre">(x,y)</span></tt>,
+and we plot <tt class="docutils literal"><span class="pre">x</span></tt> versus <tt class="docutils literal"><span class="pre">y</span></tt> (see also <a class="reference internal" href="../library.html#block-make-tuple"><em>Block make_tuple</em></a>).</li>
+<li>A list of numbers, or a 1-dimensional numpy array of length N. 
+In this case, it is interpreted as the y values, 
+and we set  <tt class="docutils literal"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">1:N</span></tt>.</li>
+</ol>
+<p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph_mpl.plot.Plot.apply_styles">
+<tt class="descname">apply_styles</tt><big>(</big><em>pylab</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/plot.html#Plot.apply_styles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.plot.Plot.apply_styles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mpl.plot.Plot.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('width',True,320,'Image dimension',''), BlockConfig('height',True,240,'Image dimension',''), BlockConfig('xlabel',True,None,'X label for the plot.',''), BlockConfig('ylabel',True,None,'Y label for the plot.',''), BlockConfig('legend',True,None,'List of strings to use as legend handles.',''), BlockConfig('title',True,None,'If None, use the signal name. Set to ``&quot;&quot;`` to disable.',''), BlockConfig('format',True,'-','Line format (&quot;-&quot;,&quot;.&quot;,&quot;x-&quot;,etc.)',''), BlockConfig('symmetric',True,False,'An alternative to y_min, y_max. Makes sure the plot is symmetric for y.',''), BlockConfig('x_min',True,None,'If set, force the X axis to have this minimum.',''), BlockConfig('x_max',True,None,'If set, force the X axis to have this maximum.',''), BlockConfig('y_min',True,None,'If set, force the Y axis to have this minimum.',''), BlockConfig('y_max',True,None,'If set, force the Y axis to have this maximum.',''), BlockConfig('keep',True,False,'If True, tries to reuse the figure, without closing. (buggy on some backends)',''), BlockConfig('transparent',True,False,'If true, outputs a RGBA image instead of RGB.',''), BlockConfig('tight',True,False,'Uses &quot;tight&quot; option for creating png.',''), BlockConfig('fancy_styles',True,[],&quot;A list of fancy styles to apply (['notopaxis', 'dickinsonA', 'noxticks', 'noyticks', 'nobottomaxis']).&quot;,'')]</em><a class="headerlink" href="#procgraph_mpl.plot.Plot.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mpl.plot.Plot.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_mpl.plot'</em><a class="headerlink" href="#procgraph_mpl.plot.Plot.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mpl.plot.Plot.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/plot.html#Plot.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.plot.Plot.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mpl.plot.Plot.init_figure">
+<tt class="descname">init_figure</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/plot.html#Plot.init_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.plot.Plot.init_figure" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mpl.plot.Plot.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x4402e60&gt;]</em><a class="headerlink" href="#procgraph_mpl.plot.Plot.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_mpl.plot.Plot.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,rgb)]</em><a class="headerlink" href="#procgraph_mpl.plot.Plot.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mpl.plot.Plot.plot_one">
+<tt class="descname">plot_one</tt><big>(</big><em>id</em>, <em>x</em>, <em>y</em>, <em>format</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/plot.html#Plot.plot_one"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.plot.Plot.plot_one" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_mpl.plot.Plot.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/plot.html#Plot.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.plot.Plot.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_mpl.pylab_to_image">
+<span id="pylab-to-image-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pylab_to_image</span></tt> Module<a class="headerlink" href="#module-procgraph_mpl.pylab_to_image" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_mpl.pylab_to_image.pylab2rgb">
+<tt class="descclassname">procgraph_mpl.pylab_to_image.</tt><tt class="descname">pylab2rgb</tt><big>(</big><em>transparent=False</em>, <em>tight=False</em><big>)</big><a class="reference internal" href="../modules/procgraph_mpl/pylab_to_image.html#pylab2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_mpl.pylab_to_image.pylab2rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves and returns the pixels in the current pylab figure.</p>
+<p>Returns a RGB uint8 array. Uses PIL to do the job.</p>
+<p>If transparent is true, returns a RGBA image instead of RGB.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

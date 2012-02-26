@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.testing.test_values &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.testing.test_values</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.testing.test_values</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">PGTestCase</span>
+
+<span class="kn">from</span> <span class="nn">..core.parsing</span> <span class="kn">import</span> <span class="n">parse_value</span>
+<span class="kn">from</span> <span class="nn">..core.parsing_elements</span> <span class="kn">import</span> <span class="n">VariableReference</span>
+
+<span class="n">examples</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;0&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s">&#39;0.0&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s">&#39;1.0&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>
+            <span class="s">&#39;1&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s">&#39;[]&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s">&#39;[1]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s">&#39;[1.0]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">],</span>
+            <span class="s">&#39;[1,2]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+            <span class="s">&#39;[1,[2]]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
+            <span class="s">&#39;[[]]&#39;</span><span class="p">:</span> <span class="p">[[]],</span>
+            <span class="s">&#39;[{}]&#39;</span><span class="p">:</span> <span class="p">[{}],</span>
+            <span class="s">&#39;{}&#39;</span><span class="p">:</span> <span class="p">{},</span>
+            <span class="s">&#39;[{a:0}]&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s">&#39;a&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">}],</span>
+            <span class="c"># XXX </span>
+            <span class="c">#&#39;{a:[]}&#39;: {&quot;a&quot;:[]},</span>
+            <span class="s">&#39;{a:0}&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
+            <span class="s">&#39;{a:0,b:1}&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+            <span class="s">&#39;{a:b}&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="s">&#39;b&#39;</span><span class="p">},</span>
+            <span class="s">&#39;{a:{b:c}}&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;a&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;b&#39;</span><span class="p">:</span> <span class="s">&#39;c&#39;</span><span class="p">}},</span>
+
+        <span class="sd">&quot;&quot;&quot;{ indices: [0,170] }&quot;&quot;&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;indices&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">170</span><span class="p">]},</span>
+
+        <span class="sd">&quot;&quot;&quot;{ indices: [0,170], theta: [-1,+1], color: &#39;r&#39;, \</span>
+<span class="sd">            origin: [0,0,0],  max_readings: 5}&quot;&quot;&quot;</span><span class="p">:</span>
+<span class="p">{</span><span class="s">&#39;indices&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="s">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;color&#39;</span><span class="p">:</span> <span class="s">&#39;r&#39;</span><span class="p">,</span>
+      <span class="s">&#39;origin&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s">&#39;max_readings&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+
+<span class="sd">&quot;&quot;&quot;[{ indices: [0,170], theta: [-1,+1], color: &#39;r&#39;, \</span>
+<span class="sd">      origin: [0,0,0],  max_readings: 5}, { indices: [171,341], \</span>
+<span class="sd">        theta: [+1,+5], color: &#39;b&#39;, origin: [0,0,0], max_readings: 5}]&quot;&quot;&quot;</span><span class="p">:</span>
+<span class="p">[{</span><span class="s">&#39;indices&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">170</span><span class="p">],</span> <span class="s">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="s">&#39;color&#39;</span><span class="p">:</span> <span class="s">&#39;r&#39;</span><span class="p">,</span>
+      <span class="s">&#39;origin&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s">&#39;max_readings&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+<span class="p">{</span><span class="s">&#39;indices&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">171</span><span class="p">,</span> <span class="mi">341</span><span class="p">],</span>
+        <span class="s">&#39;theta&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="o">+</span><span class="mi">5</span><span class="p">],</span> <span class="s">&#39;color&#39;</span><span class="p">:</span> <span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;origin&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="s">&#39;max_readings&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}],</span>
+
+        <span class="s">&#39;...&#39;</span><span class="p">:</span> <span class="bp">Ellipsis</span><span class="p">,</span>
+        <span class="s">&#39;[1,2,...]&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="bp">Ellipsis</span><span class="p">],</span>
+
+        <span class="s">&#39;$v&#39;</span><span class="p">:</span> <span class="n">VariableReference</span><span class="p">(</span><span class="s">&#39;v&#39;</span><span class="p">),</span>
+
+        <span class="c"># simple string is a string</span>
+        <span class="s">&#39;goodname&#39;</span><span class="p">:</span> <span class="s">&#39;goodname&#39;</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="SyntaxTest2"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_values.SyntaxTest2">[docs]</a><span class="k">class</span> <span class="nc">SyntaxTest2</span><span class="p">(</span><span class="n">PGTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SyntaxTest2.test_numbers"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_values.SyntaxTest2.test_numbers">[docs]</a>    <span class="k">def</span> <span class="nf">test_numbers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parse_value</span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">)),</span> <span class="nb">int</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyntaxTest2.test_numbers2"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_values.SyntaxTest2.test_numbers2">[docs]</a>    <span class="k">def</span> <span class="nf">test_numbers2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertEqual</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">parse_value</span><span class="p">(</span><span class="s">&#39;1.0&#39;</span><span class="p">)),</span> <span class="nb">float</span><span class="p">)</span>
+        <span class="c">#assert isinstance(parse_value(&#39;1.0&#39;), float)</span>
+</div>
+<div class="viewcode-block" id="SyntaxTest2.test_numbers3"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_values.SyntaxTest2.test_numbers3">[docs]</a>    <span class="k">def</span> <span class="nf">test_numbers3</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">parse_value</span><span class="p">(</span><span class="s">&#39;[1.0]&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyntaxTest2.test_numbers4"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_values.SyntaxTest2.test_numbers4">[docs]</a>    <span class="k">def</span> <span class="nf">test_numbers4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">parse_value</span><span class="p">(</span><span class="s">&#39;[1]&#39;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">int</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyntaxTest2.testExamples"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_values.SyntaxTest2.testExamples">[docs]</a>    <span class="k">def</span> <span class="nf">testExamples</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">example</span><span class="p">,</span> <span class="n">expected</span> <span class="ow">in</span> <span class="n">examples</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Trying &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> <span class="n">example</span><span class="p">)</span>
+            <span class="n">found</span> <span class="o">=</span> <span class="n">parse_value</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+
+            <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">found</span> <span class="o">==</span> <span class="n">expected</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">expected</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Parsing: </span><span class="si">%r</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">example</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39; expected: </span><span class="si">%r</span><span class="s"> (</span><span class="si">%s</span><span class="s">) </span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">expected</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">expected</span><span class="p">))</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="s">&#39;    found: </span><span class="si">%r</span><span class="s"> (</span><span class="si">%s</span><span class="s">) </span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">found</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">found</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

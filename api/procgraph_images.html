@@ -1,0 +1,650 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_images Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_images Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-images-package">
+<h1>procgraph_images Package<a class="headerlink" href="#procgraph-images-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_images" title="procgraph_images"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_images</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_images"></span><p>Blocks for basic operations on images.</p>
+<p>This package contains blocks that perform basic operations
+on images. The library has no software dependency.</p>
+<p>For more complex operations see also <a class="reference internal" href="../library.html#module-procgraph-cv"><em>Package procgraph_cv</em></a> and 
+<a class="reference internal" href="../library.html#module-procgraph-pil"><em>Package procgraph_pil</em></a></p>
+<p><strong>Example</strong></p>
+<p>Convert a RGB image to grayscale, and back to a RGB image::</p>
+<div class="highlight-python"><pre>|input| -&gt; |rgb2gray| -&gt; |gray2rgb| -&gt; |output| </pre>
+</div>
+</div>
+<div class="section" id="module-procgraph_images.blend">
+<span id="blend-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">blend</span></tt> Module<a class="headerlink" href="#module-procgraph_images.blend" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_images.blend.Blend">
+<em class="property">class </em><tt class="descclassname">procgraph_images.blend.</tt><tt class="descname">Blend</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/blend.html#Blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.blend.Blend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Blend two or more images.</p>
+<p>RGB images are interpreted as having full alpha (opaque). 
+All images must have the same width and height.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_images.blend.Blend.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_images.blend.Blend.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.blend.Blend.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_images.blend'</em><a class="headerlink" href="#procgraph_images.blend.Blend.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.blend.Blend.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x3dc19e0&gt;]</em><a class="headerlink" href="#procgraph_images.blend.Blend.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.blend.Blend.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,rgb)]</em><a class="headerlink" href="#procgraph_images.blend.Blend.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.blend.Blend.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/blend.html#Blend.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.blend.Blend.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.blend.blend">
+<tt class="descclassname">procgraph_images.blend.</tt><tt class="descname">blend</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/blend.html#blend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.blend.blend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blends two RGB or RGBA images.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.blend.to_rgb">
+<tt class="descclassname">procgraph_images.blend.</tt><tt class="descname">to_rgb</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/blend.html#to_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.blend.to_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the alpha layer if present.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.blend.to_rgba">
+<tt class="descclassname">procgraph_images.blend.</tt><tt class="descname">to_rgba</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/blend.html#to_rgba"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.blend.to_rgba" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a opaque alpha if not present.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.border">
+<span id="border-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">border</span></tt> Module<a class="headerlink" href="#module-procgraph_images.border" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_images.border.Border">
+<em class="property">class </em><tt class="descclassname">procgraph_images.border.</tt><tt class="descname">Border</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/border.html#Border"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.border.Border" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Adds a block around the input image.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_images.border.Border.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('color',True,[0, 0, 0],'border color (0-1 rgb)',''), BlockConfig('left',True,0,'pixel length for left border',''), BlockConfig('right',True,0,'pixel length for right border',''), BlockConfig('top',True,0,'pixel length for top border',''), BlockConfig('bottom',True,0,'pixel length for bottom border','')]</em><a class="headerlink" href="#procgraph_images.border.Border.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.border.Border.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_images.border'</em><a class="headerlink" href="#procgraph_images.border.Border.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.border.Border.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x15b5128&gt;]</em><a class="headerlink" href="#procgraph_images.border.Border.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.border.Border.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,rgb)]</em><a class="headerlink" href="#procgraph_images.border.Border.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.border.Border.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/border.html#Border.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.border.Border.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.border.image_border">
+<tt class="descclassname">procgraph_images.border.</tt><tt class="descname">image_border</tt><big>(</big><em>rgb, left=0, right=0, top=0, bottom=0, color=[1, 1, 1]</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/border.html#image_border"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.border.image_border" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.border.rgb_pad">
+<tt class="descclassname">procgraph_images.border.</tt><tt class="descname">rgb_pad</tt><big>(</big><em>height</em>, <em>width</em>, <em>color</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/border.html#rgb_pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.border.rgb_pad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.compose">
+<span id="compose-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">compose</span></tt> Module<a class="headerlink" href="#module-procgraph_images.compose" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_images.compose.Compose">
+<em class="property">class </em><tt class="descclassname">procgraph_images.compose.</tt><tt class="descname">Compose</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/compose.html#Compose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.compose.Compose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Compose several images in the same canvas.
+You should probably use <a class="reference internal" href="../library.html#block-grid"><em>Block grid</em></a> in many situations.</p>
+<p>Example configuration:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">compose</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="p">{</span><span class="n">y</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">ys</span><span class="p">:</span> <span class="p">[</span><span class="mi">320</span><span class="p">,</span><span class="mi">20</span><span class="p">]}</span>
+</pre></div>
+</div>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_images.compose.Compose.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('width',False,'not-given','Dimension in pixels.',''), BlockConfig('height',False,'not-given','Dimension in pixels.',''), BlockConfig('positions',False,'not-given','A structure giving the position of each signal in the canvas.','')]</em><a class="headerlink" href="#procgraph_images.compose.Compose.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.compose.Compose.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_images.compose'</em><a class="headerlink" href="#procgraph_images.compose.Compose.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.compose.Compose.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x1456248&gt;]</em><a class="headerlink" href="#procgraph_images.compose.Compose.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.compose.Compose.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,canvas)]</em><a class="headerlink" href="#procgraph_images.compose.Compose.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.compose.Compose.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/compose.html#Compose.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.compose.Compose.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.compose.place_at">
+<tt class="descclassname">procgraph_images.compose.</tt><tt class="descname">place_at</tt><big>(</big><em>canvas</em>, <em>image</em>, <em>xpix</em>, <em>ypix</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/compose.html#place_at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.compose.place_at" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.copied_from_reprep">
+<span id="copied-from-reprep-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">copied_from_reprep</span></tt> Module<a class="headerlink" href="#module-procgraph_images.copied_from_reprep" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.copied_from_reprep.posneg">
+<tt class="descclassname">procgraph_images.copied_from_reprep.</tt><tt class="descname">posneg</tt><big>(</big><em>value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/copied_from_reprep.html#posneg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.copied_from_reprep.posneg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a 2D float value to a RGB representation, where
+red is positive, blue is negative, white is zero.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> &#8211; The field to represent.
+:type value: array[HxW]</li>
+<li><strong>max_value</strong> &#8211; Maximum of absolute value (if None, detect).
+:type max_value:  float,&gt;0</li>
+<li><strong>skim</strong> &#8211; Fraction to skim (in percent).
+:type skim:       float,&gt;0,&lt;100</li>
+<li><strong>nan_color</strong> &#8211; Color to give for regions of NaN and Inf.
+:type nan_color:  color</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">posneg: A RGB image.
+:rtype: array[HxWx3](uint8)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.copied_from_reprep.scale">
+<tt class="descclassname">procgraph_images.copied_from_reprep.</tt><tt class="descname">scale</tt><big>(</big><em>value, min_value=None, max_value=None, min_color=[1, 1, 1], max_color=[0, 0, 0], nan_color=[1, 0, 0]</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/copied_from_reprep.html#scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.copied_from_reprep.scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides a RGB representation of the values by interpolating the range 
+[min(value),max(value)] into the colorspace [min_color, max_color].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> &#8211; The field to represent.
+:type value: array[HxW],H&gt;0,W&gt;0</li>
+<li><strong>max_value</strong> &#8211; If specified, everything <em>above</em> is clipped.
+:type max_value: float</li>
+<li><strong>min_value</strong> &#8211; If specified, everything <em>below</em> is clipped.
+:type min_value: float</li>
+<li><strong>min_color</strong> &#8211; Color to give to the minimum values.
+:type min_color:  color</li>
+<li><strong>max_color</strong> &#8211; Color to give to the maximum values.
+:type max_color:  color</li>
+<li><strong>nan_color</strong> &#8211; Color to give for regions of NaN and Inf.
+:type nan_color:  color</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">scale: A RGB image.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array[HxWx3](uint8)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.copied_from_reprep.skim_top">
+<tt class="descclassname">procgraph_images.copied_from_reprep.</tt><tt class="descname">skim_top</tt><big>(</big><em>a</em>, <em>top_percent='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/copied_from_reprep.html#skim_top"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.copied_from_reprep.skim_top" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cuts off the top percentile of the array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>top_percent</strong> &#8211; How much to cut off (decimal).
+:type top_percent: float,&gt;=0,&lt;90</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.copied_from_reprep.skim_top_and_bottom">
+<tt class="descclassname">procgraph_images.copied_from_reprep.</tt><tt class="descname">skim_top_and_bottom</tt><big>(</big><em>a</em>, <em>percent='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/copied_from_reprep.html#skim_top_and_bottom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.copied_from_reprep.skim_top_and_bottom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cuts off the top and bottom percentile of the array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>a</strong> &#8211; Any numpy array. 
+:type a: array[x]</li>
+<li><strong>percent</strong> &#8211; How much to cut off (decimal).
+:type percent: float,&gt;=0,&lt;90</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Skimmed version of <tt class="docutils literal"><span class="pre">a</span></tt>.
+:rtype: array[x]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.crop">
+<span id="crop-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">crop</span></tt> Module<a class="headerlink" href="#module-procgraph_images.crop" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.crop.crop">
+<tt class="descclassname">procgraph_images.crop.</tt><tt class="descname">crop</tt><big>(</big><em>rgb</em>, <em>left=0</em>, <em>right=0</em>, <em>top=0</em>, <em>bottom=0</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/crop.html#crop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.crop.crop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Crops an image by the given values</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.filters">
+<span id="filters-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">filters</span></tt> Module<a class="headerlink" href="#module-procgraph_images.filters" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.filters.gray2rgb">
+<tt class="descclassname">procgraph_images.filters.</tt><tt class="descname">gray2rgb</tt><big>(</big><em>gray</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/filters.html#gray2rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.filters.gray2rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a H x W grayscale into a H x W x 3 RGB image 
+by replicating the gray channel over R,G,B.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>gray</strong> (<em>array(HxW,uint8),H&gt;0,W&gt;0</em>) &#8211; grayscale</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A RGB image in shades of gray.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array(HxWx3,uint8)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.filters.rgb2gray">
+<tt class="descclassname">procgraph_images.filters.</tt><tt class="descname">rgb2gray</tt><big>(</big><em>rgb</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/filters.html#rgb2gray"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.filters.rgb2gray" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a HxWx3 RGB image into a HxW grayscale image 
+by computing the luminance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rgb</strong> (<em>array(HxWx3,uint8),H&gt;0,W&gt;0</em>) &#8211; RGB image</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A RGB image in shades of gray.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array(HxW,uint8)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.images_from_dir">
+<span id="images-from-dir-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">images_from_dir</span></tt> Module<a class="headerlink" href="#module-procgraph_images.images_from_dir" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_images.images_from_dir.FilesFromDir">
+<em class="property">class </em><tt class="descclassname">procgraph_images.images_from_dir.</tt><tt class="descname">FilesFromDir</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/images_from_dir.html#FilesFromDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p>This block reads the filenames from a directory according
+to a given regexp.</p>
+<p>For now the timestamp starts from 0 and it is fixed.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('dir',False,'not-given','Directory containing the image files.',''), BlockConfig('regexp',True,'(\\w+)_(\\d+)\\.jpg','Regular expression for images.',''), BlockConfig('fps',True,20.0,'Fixed frame per second.','')]</em><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_images.images_from_dir'</em><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/images_from_dir.html#FilesFromDir.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/images_from_dir.html#FilesFromDir.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,filename)]</em><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.images_from_dir.FilesFromDir.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/images_from_dir.html#FilesFromDir.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.images_from_dir.FilesFromDir.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.imggrid">
+<span id="imggrid-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">imggrid</span></tt> Module<a class="headerlink" href="#module-procgraph_images.imggrid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_images.imggrid.ImageGrid">
+<em class="property">class </em><tt class="descclassname">procgraph_images.imggrid.</tt><tt class="descname">ImageGrid</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/imggrid.html#ImageGrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.imggrid.ImageGrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>A block that creates a larger image by arranging them in a grid.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_images.imggrid.ImageGrid.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('cols',True,None,'Columns in the grid.',''), BlockConfig('bgcolor',True,[0, 0, 0],'Background color.','')]</em><a class="headerlink" href="#procgraph_images.imggrid.ImageGrid.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.imggrid.ImageGrid.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_images.imggrid'</em><a class="headerlink" href="#procgraph_images.imggrid.ImageGrid.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.imggrid.ImageGrid.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x15b50e0&gt;]</em><a class="headerlink" href="#procgraph_images.imggrid.ImageGrid.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.imggrid.ImageGrid.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,grid)]</em><a class="headerlink" href="#procgraph_images.imggrid.ImageGrid.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.imggrid.ImageGrid.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/imggrid.html#ImageGrid.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.imggrid.ImageGrid.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.pad">
+<span id="pad-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pad</span></tt> Module<a class="headerlink" href="#module-procgraph_images.pad" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.pad.image_pad">
+<tt class="descclassname">procgraph_images.pad.</tt><tt class="descname">image_pad</tt><big>(</big><em>pixel_data, expected_shape, bgcolor=[1, 1, 1]</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/pad.html#image_pad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.pad.image_pad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pads horizontally and vertically an image so that it is of the 
+given shape.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.posterize">
+<span id="posterize-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">posterize</span></tt> Module<a class="headerlink" href="#module-procgraph_images.posterize" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.posterize.posterize">
+<tt class="descclassname">procgraph_images.posterize.</tt><tt class="descname">posterize</tt><big>(</big><em>rgb</em>, <em>levels=2</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/posterize.html#posterize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.posterize.posterize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Posterizes the given image with the specified number of levels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rgb</strong> (<em>array(HxWx3,uint8),H&gt;0,W&gt;0</em>) &#8211; RGB image</li>
+<li><strong>levels</strong> (<em>int,&gt;=2</em>) &#8211; number of levels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A RGB image with the specified number of levels.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array(HxWx3,uint8)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.posterize.posterize_channel">
+<tt class="descclassname">procgraph_images.posterize.</tt><tt class="descname">posterize_channel</tt><big>(</big><em>chan</em>, <em>levels</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/posterize.html#posterize_channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.posterize.posterize_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Posterizes one channel of an image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rgb</strong> (<em>array(HxW,uint8),H&gt;0,W&gt;0</em>) &#8211; image channel</li>
+<li><strong>levels</strong> (<em>int,&gt;=2</em>) &#8211; number of levels</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Posterized channel</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array(HxW,uint8)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.reshape_rect">
+<span id="reshape-rect-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">reshape_rect</span></tt> Module<a class="headerlink" href="#module-procgraph_images.reshape_rect" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.reshape_rect.divisors">
+<tt class="descclassname">procgraph_images.reshape_rect.</tt><tt class="descname">divisors</tt><big>(</big><em>size</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/reshape_rect.html#divisors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.reshape_rect.divisors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of (a, b) tuples such that a*b=c and a&lt;=b.</p>
+<p>(a very naive implementation)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.reshape_rect.get_best_shape">
+<tt class="descclassname">procgraph_images.reshape_rect.</tt><tt class="descname">get_best_shape</tt><big>(</big><em>size</em>, <em>tall=True</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/reshape_rect.html#get_best_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.reshape_rect.get_best_shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.reshape_rect.reshape_rectangular">
+<tt class="descclassname">procgraph_images.reshape_rect.</tt><tt class="descname">reshape_rectangular</tt><big>(</big><em>x</em>, <em>tall=True</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/reshape_rect.html#reshape_rectangular"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.reshape_rect.reshape_rectangular" title="Permalink to this definition">¶</a></dt>
+<dd><p>If x is not 2D already, reshape it to 2D.
+Allow</p>
+<p>By default, the output is a &#8220;tall&#8221; array.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.reshape_smart">
+<span id="reshape-smart-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">reshape_smart</span></tt> Module<a class="headerlink" href="#module-procgraph_images.reshape_smart" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_images.reshape_smart.reshape2d">
+<tt class="descclassname">procgraph_images.reshape_smart.</tt><tt class="descname">reshape2d</tt><big>(</big><em>x</em>, <em>width=None</em>, <em>height=None</em>, <em>fill_value=nan</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/reshape_smart.html#reshape2d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.reshape_smart.reshape2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reshapes x into (?, width) if x is 1D.
+If width is not given, it is set to be the sqrt(size).</p>
+<p>If x is already 2D, it is left alone.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_images.solid">
+<span id="solid-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">solid</span></tt> Module<a class="headerlink" href="#module-procgraph_images.solid" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_images.solid.Solid">
+<em class="property">class </em><tt class="descclassname">procgraph_images.solid.</tt><tt class="descname">Solid</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/solid.html#Solid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.solid.Solid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_images.solid.Solid.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('width',False,'not-given',None,None), BlockConfig('height',False,'not-given',None,None), BlockConfig('color',False,'not-given',None,None)]</em><a class="headerlink" href="#procgraph_images.solid.Solid.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.solid.Solid.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_images.solid'</em><a class="headerlink" href="#procgraph_images.solid.Solid.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.solid.Solid.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_images.solid.Solid.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_images.solid.Solid.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,rgb)]</em><a class="headerlink" href="#procgraph_images.solid.Solid.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_images.solid.Solid.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_images/solid.html#Solid.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.solid.Solid.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_images.solid.solid">
+<tt class="descclassname">procgraph_images.solid.</tt><tt class="descname">solid</tt><big>(</big><em>width</em>, <em>height</em>, <em>color</em><big>)</big><a class="reference internal" href="../modules/procgraph_images/solid.html#solid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_images.solid.solid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

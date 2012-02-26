@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>utils Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>utils Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="utils-package">
+<h1>utils Package<a class="headerlink" href="#utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph.utils"></span></div>
+<div class="section" id="module-procgraph.utils.calling_ext_program">
+<span id="calling-ext-program-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">calling_ext_program</span></tt> Module<a class="headerlink" href="#module-procgraph.utils.calling_ext_program" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.utils.calling_ext_program.system_cmd_result">
+<tt class="descclassname">procgraph.utils.calling_ext_program.</tt><tt class="descname">system_cmd_result</tt><big>(</big><em>cwd</em>, <em>cmd</em>, <em>display_stdout=False</em>, <em>display_stderr=False</em>, <em>raise_on_error=False</em>, <em>capture_keyboard_interrupt=False</em><big>)</big><a class="reference internal" href="../modules/procgraph/utils/calling_ext_program.html#system_cmd_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.utils.calling_ext_program.system_cmd_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the structure CmdResult; raises CmdException.
+Also OSError are captured.
+KeyboardInterrupt is passed through unless specified</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph.utils.calling_ext_program.CmdResult">
+<em class="property">class </em><tt class="descclassname">procgraph.utils.calling_ext_program.</tt><tt class="descname">CmdResult</tt><big>(</big><em>cwd</em>, <em>cmd</em>, <em>ret</em>, <em>rets</em>, <em>interrupted</em>, <em>stdout</em>, <em>stderr</em><big>)</big><a class="reference internal" href="../modules/procgraph/utils/calling_ext_program.html#CmdResult"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.utils.calling_ext_program.CmdResult" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="procgraph.utils.calling_ext_program.CmdException">
+<em class="property">exception </em><tt class="descclassname">procgraph.utils.calling_ext_program.</tt><tt class="descname">CmdException</tt><big>(</big><em>cmd_result</em><big>)</big><a class="reference internal" href="../modules/procgraph/utils/calling_ext_program.html#CmdException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.utils.calling_ext_program.CmdException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.utils.friendly_paths">
+<span id="friendly-paths-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">friendly_paths</span></tt> Module<a class="headerlink" href="#module-procgraph.utils.friendly_paths" title="Permalink to this headline">¶</a></h2>
+<p>Utilities for writing compact file paths.</p>
+<dl class="function">
+<dt id="procgraph.utils.friendly_paths.friendly_path">
+<tt class="descclassname">procgraph.utils.friendly_paths.</tt><tt class="descname">friendly_path</tt><big>(</big><em>path</em>, <em>use_environment=True</em><big>)</big><a class="reference internal" href="../modules/procgraph/utils/friendly_paths.html#friendly_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.utils.friendly_paths.friendly_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a friendly representation of the given path,
+using relative paths or environment variables
+(if use_environment = True).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.utils.friendly_paths.replace_variables">
+<tt class="descclassname">procgraph.utils.friendly_paths.</tt><tt class="descname">replace_variables</tt><big>(</big><em>path</em>, <em>rules</em><big>)</big><a class="reference internal" href="../modules/procgraph/utils/friendly_paths.html#replace_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.utils.friendly_paths.replace_variables" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.utils.strings">
+<span id="strings-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">strings</span></tt> Module<a class="headerlink" href="#module-procgraph.utils.strings" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.utils.strings.indent">
+<tt class="descclassname">procgraph.utils.strings.</tt><tt class="descname">indent</tt><big>(</big><em>s</em>, <em>prefix</em><big>)</big><a class="reference internal" href="../modules/procgraph/utils/strings.html#indent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.utils.strings.indent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

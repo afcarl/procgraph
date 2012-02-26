@@ -1,0 +1,684 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.model_instantiation &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.model_instantiation</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.model_instantiation</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pyparsing</span> <span class="kn">import</span> <span class="n">ParseResults</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">SemanticError</span><span class="p">,</span> <span class="n">x_not_found</span><span class="p">,</span> <span class="n">aslist</span>
+<span class="kn">from</span> <span class="nn">.registrar</span> <span class="kn">import</span> <span class="n">default_library</span>
+<span class="kn">from</span> <span class="nn">.model</span> <span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">debug</span> <span class="k">as</span> <span class="n">debug_main</span><span class="p">,</span> <span class="n">semantic_warning</span><span class="p">,</span> <span class="n">info</span>
+<span class="kn">from</span> <span class="nn">.block_config</span> <span class="kn">import</span> <span class="n">resolve_config</span>
+<span class="kn">from</span> <span class="nn">.block_meta</span> <span class="kn">import</span> <span class="n">VARIABLE</span><span class="p">,</span> <span class="n">DEFINED_AT_RUNTIME</span>
+<span class="kn">from</span> <span class="nn">.model_io</span> <span class="kn">import</span> <span class="n">ModelInput</span>
+<span class="kn">from</span> <span class="nn">.parsing_elements</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ParsedSignalList</span><span class="p">,</span> <span class="n">VariableReference</span><span class="p">,</span>
+                               <span class="n">ParsedBlock</span><span class="p">,</span> <span class="n">ParsedModel</span><span class="p">,</span> <span class="n">ParsedSignal</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">STRICT</span>
+
+
+<div class="viewcode-block" id="check_link_compatibility_input"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.check_link_compatibility_input">[docs]</a><span class="k">def</span> <span class="nf">check_link_compatibility_input</span><span class="p">(</span><span class="n">previous_block</span><span class="p">,</span> <span class="n">previous_link</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">previous_link</span><span class="p">,</span> <span class="n">ParsedSignalList</span><span class="p">)</span>
+
+    <span class="n">num_required</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">)</span>
+    <span class="n">num_found</span> <span class="o">=</span> <span class="n">previous_block</span><span class="o">.</span><span class="n">num_output_signals</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">num_required</span> <span class="o">&gt;</span> <span class="n">num_found</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Required at least </span><span class="si">%d</span><span class="s">, found only </span><span class="si">%d</span><span class="s">.&#39;</span>
+               <span class="o">%</span> <span class="p">(</span><span class="n">num_required</span><span class="p">,</span> <span class="n">num_found</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">previous_link</span><span class="p">)</span>
+    <span class="c"># XXX, still something not quite right</span>
+
+    <span class="c"># We check that we have good matches for the previous                    </span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ParsedSignal</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">block_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Could not give the block a name when the connection is &#39;</span>
+                   <span class="s">&#39;between two blocks.&#39;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">local_input</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">local_input</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">previous_block</span><span class="o">.</span><span class="n">is_valid_output_name</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Could not find output name &quot;</span><span class="si">%s</span><span class="s">&quot;(</span><span class="si">%s</span><span class="s">) in </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">),</span> <span class="n">previous_block</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">local_input</span> <span class="o">=</span> <span class="n">previous_block</span><span class="o">.</span><span class="n">canonicalize_output</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="check_link_compatibility_output"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.check_link_compatibility_output">[docs]</a><span class="k">def</span> <span class="nf">check_link_compatibility_output</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">previous_link</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">previous_link</span><span class="p">,</span> <span class="n">ParsedSignalList</span><span class="p">)</span>
+
+    <span class="c"># we check that we have good matches for the next    </span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">ParsedSignal</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">local_output</span> <span class="ow">is</span>  <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span><span class="o">.</span><span class="n">local_output</span> <span class="o">=</span> <span class="n">i</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">block</span><span class="o">.</span><span class="n">is_valid_input_name</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not find input name </span><span class="si">%r</span><span class="s"> in </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">,</span>
+                                                          <span class="n">block</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+        <span class="n">s</span><span class="o">.</span><span class="n">local_output</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">canonicalize_input</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="expand_references_in_string"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.expand_references_in_string">[docs]</a><span class="k">def</span> <span class="nf">expand_references_in_string</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Expands references of the kind ${var} in the string s.</span>
+<span class="sd">        ``function``(var) translates from var -&gt; value &#39;&#39;&#39;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;(.*)\$\{(\w+)\}(.*)&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">s</span>
+        <span class="n">before</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">var</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">after</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">sub</span> <span class="o">=</span> <span class="n">function</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">before</span> <span class="o">+</span> <span class="n">sub</span> <span class="o">+</span> <span class="n">after</span>
+
+</div>
+<div class="viewcode-block" id="create_from_parsing_results"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.create_from_parsing_results">[docs]</a><span class="k">def</span> <span class="nf">create_from_parsing_results</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{},</span>
+                                <span class="n">library</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">ParsedModel</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="n">debug_main</span><span class="p">(</span><span class="s">&#39;Creating </span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s"> | </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+
+    <span class="c">#debug_main(&#39;config: %s&#39; % config)</span>
+
+    <span class="k">if</span> <span class="n">library</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">library</span> <span class="o">=</span> <span class="n">default_library</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">define_input_signals_new</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">input</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">define_output_signals_new</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">output</span><span class="p">])</span>
+
+    <span class="c"># first we divide the config in normal, and recursive config</span>
+    <span class="n">normal_config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">recursive_config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="n">recursive_config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">normal_config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="c"># We mix the normal config with the defaults</span>
+    <span class="c"># FIXME: None -&gt; no where information</span>
+    <span class="c">#        In fact, parsed_model is the one we are instancing, NOT </span>
+    <span class="c">#        where the error is made.</span>
+    <span class="n">resolved</span> <span class="o">=</span> <span class="n">resolve_config</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">normal_config</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="c"># we give none so that it can be filled in by the caller</span>
+
+    <span class="c"># Remember config statement</span>
+    <span class="n">key2element</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+        <span class="n">key2element</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+
+    <span class="c"># We collect here all the properties, to use in initialization.</span>
+    <span class="n">all_config</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># tuple (key, value, parsing_element)</span>
+
+    <span class="c"># 1. We put the resolved configuration </span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">resolved</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">all_config</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">key2element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)))</span>
+
+    <span class="c"># 2. We also put the recursive conf</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">recursive_config</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">all_config</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">key2element</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="bp">None</span><span class="p">)))</span>
+
+    <span class="c"># 3. We process the assignments</span>
+    <span class="k">for</span> <span class="n">assignment</span> <span class="ow">in</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">assignments</span><span class="p">:</span>
+        <span class="c"># We make sure we are not overwriting configuration    </span>
+        <span class="k">if</span> <span class="n">assignment</span><span class="o">.</span><span class="n">key</span> <span class="ow">in</span> <span class="n">resolved</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Assignment to </span><span class="si">%r</span><span class="s"> overwrites a config variable. &#39;</span>
+                   <span class="s">&#39;Perhaps you want to change the default instead?&#39;</span> <span class="o">%</span>
+                    <span class="n">assignment</span><span class="o">.</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">assignment</span><span class="p">)</span>
+
+        <span class="n">all_config</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">assignment</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">assignment</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">assignment</span><span class="p">))</span>
+
+    <span class="c"># Next, define the properties hash, and populate it intelligentily</span>
+    <span class="c"># from the tuples in all_config.</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c"># We keep track of what properties we use</span>
+    <span class="n">used_properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span> <span class="c"># of strings</span>
+    <span class="c"># This instead collects the block_properties</span>
+    <span class="n">block_properties</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c"># {str: {str: *}}</span>
+
+    <span class="k">def</span> <span class="nf">expand_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Function that looks for VariableReference and does the </span>
+<span class="sd">            substitution. </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">VariableReference</span><span class="p">):</span>
+            <span class="n">variable</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">variable</span>
+            <span class="k">if</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">properties</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="n">x_not_found</span><span class="p">(</span><span class="s">&#39;variable&#39;</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">properties</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+            <span class="n">used_properties</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">expand_value</span><span class="p">(</span><span class="n">properties</span><span class="p">[</span><span class="n">variable</span><span class="p">],</span> <span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">expand_references_in_string</span><span class="p">(</span><span class="n">value</span><span class="p">,</span>
+                    <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">expand_value</span><span class="p">(</span><span class="n">VariableReference</span><span class="p">(</span><span class="n">s</span><span class="p">),</span>
+                                           <span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">))</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">h</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">expand_value</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">h</span>
+
+        <span class="c"># XXX: we shouldn&#39;t have here ParseResults</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ParseResults</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">expand_value</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+    <span class="c"># We keep track of the blocks we reference so we can check it later</span>
+    <span class="n">referenced_blocks</span> <span class="o">=</span> <span class="p">[]</span> <span class="c"># list of tuples (block name, parsed_element)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">all_config</span><span class="p">:</span>
+        <span class="c"># if it is of the form  object.property = value</span>
+        <span class="k">if</span> <span class="s">&#39;.&#39;</span> <span class="ow">in</span> <span class="n">key</span><span class="p">:</span>
+            <span class="c"># TODO: put this in syntax</span>
+            <span class="n">object_</span><span class="p">,</span> <span class="n">property_</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">object_</span> <span class="ow">in</span> <span class="n">block_properties</span><span class="p">:</span>
+                <span class="n">block_properties</span><span class="p">[</span><span class="n">object_</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="c"># else:    </span>
+                <span class="c"># # XXX probably should be better</span>
+                <span class="c"># if not isinstance(properties[object], dict):</span>
+                <span class="c">#     msg = (&#39;Error while processing &quot;%s=%s&quot;: I already know&#39;</span>
+                <span class="c">#            &#39; the key.&#39; % (key, value)) </span>
+                <span class="c">#     raise SemanticError(msg, element)</span>
+            <span class="n">referenced_blocks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">object_</span><span class="p">,</span> <span class="n">element</span><span class="p">))</span>
+            <span class="n">block_properties</span><span class="p">[</span><span class="n">object_</span><span class="p">][</span><span class="n">property_</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span> <span class="c"># XX or expand?</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">properties</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">expand_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+
+    <span class="c"># Make sure we can access python modules in the same directory as the</span>
+    <span class="c"># filename; we add the directory to the sys.path</span>
+
+    <span class="n">old_sys_path</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dirname</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">imports</span><span class="p">:</span>
+            <span class="n">package</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">package</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">package</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">:</span>
+                <span class="n">info</span><span class="p">(</span><span class="s">&quot;Importing package </span><span class="si">%r</span><span class="s">...&quot;</span> <span class="o">%</span> <span class="n">package</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">__import__</span><span class="p">(</span><span class="n">package</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not import package </span><span class="si">%r</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">old_sys_path</span>
+
+    <span class="c"># Then we instantiate all the blocks</span>
+
+    <span class="c"># Iterate over connections </span>
+    <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">connections</span><span class="p">:</span>
+        <span class="n">previous_block</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">previous_link</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="c"># print &quot;Looking at connection %s&quot; % connection.elements</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">elements</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">ParsedSignalList</span><span class="p">):</span>
+                <span class="c"># We make a copy, because later we modify (for convenience)</span>
+                <span class="c"># its fields, in the check_compatibility_* functions</span>
+                <span class="c"># For example, we assign names to input/output.</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
+
+                <span class="c"># if this is not the last one, just save it, it will be</span>
+                <span class="c"># processed together with the next block</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">elements</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">previous_link</span> <span class="o">=</span> <span class="n">element</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="n">previous_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+                    <span class="c"># This is the last one, we should process it with the </span>
+                    <span class="c"># previous_block</span>
+                    <span class="n">previous_link</span> <span class="o">=</span> <span class="n">element</span>
+                    <span class="n">check_link_compatibility_input</span><span class="p">(</span><span class="n">previous_block</span><span class="p">,</span>
+                                                   <span class="n">previous_link</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">):</span>
+                        <span class="c"># We cannot have a local output</span>
+                        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">local_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Terminator connection </span><span class="si">%s</span><span class="s"> cannot have a &#39;</span>
+                                   <span class="s">&#39;local output&#39;</span> <span class="o">%</span> <span class="n">s</span><span class="p">)</span>
+                            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">public_signal_names</span><span class="p">():</span>
+                            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Public signal name </span><span class="si">%r</span><span class="s"> already taken.&#39;</span> <span class="o">%</span>
+                                   <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+                        <span class="n">model</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">block1</span><span class="o">=</span><span class="n">previous_block</span><span class="p">,</span>
+                                      <span class="n">block1_signal</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">,</span>
+                                      <span class="n">block2</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">block2_signal</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                      <span class="n">public_name</span><span class="o">=</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">ParsedBlock</span><span class="p">):</span>
+
+                <span class="c"># before processing this block, let&#39;s create a phantom</span>
+                <span class="c"># signal list</span>
+                <span class="k">if</span> <span class="n">previous_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">previous_link</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">previous_link</span> <span class="o">=</span> <span class="n">fill_anonymous_link</span><span class="p">(</span><span class="n">previous_block</span><span class="p">)</span>
+
+                <span class="c"># also we can check right now a common error</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">previous_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
+                    <span class="n">previous_block</span><span class="o">.</span><span class="n">num_output_signals</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;This block does not define outputs; yet it is not &#39;</span>
+                           <span class="s">&#39;the last in the sequence.&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">previous_block</span><span class="p">)</span>
+
+                <span class="n">block_type</span> <span class="o">=</span> <span class="n">expand_value</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">operation</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+
+                <span class="c"># give a name if anonymous</span>
+                <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="c"># give it, if possible the name of its type</span>
+                    <span class="k">if</span> <span class="ow">not</span>  <span class="n">block_type</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">:</span>
+                        <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">block_type</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+                        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+                            <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">block_type</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+                            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">:</span>
+                                <span class="k">break</span>
+
+                <span class="c"># update the configuration if given</span>
+                <span class="n">block_config</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="n">block_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">config</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">block_properties</span><span class="p">:</span>
+                    <span class="n">more_config_for_block</span> <span class="o">=</span> <span class="n">block_properties</span><span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                    <span class="c"># For example:</span>
+                    <span class="c">#   wait = 10       -&gt;  { wait: 10 }</span>
+                    <span class="c">#   wait.time  = 3  -&gt;  { wait: {time: 3} }</span>
+                    <span class="n">block_config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">more_config_for_block</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">block_config</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+                    <span class="n">block_config</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">expand_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="n">element</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">library</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">block_type</span><span class="p">):</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="n">x_not_found</span><span class="p">(</span><span class="s">&#39;block type&#39;</span><span class="p">,</span> <span class="n">block_type</span><span class="p">,</span>
+                                      <span class="n">library</span><span class="o">.</span><span class="n">get_known_blocks</span><span class="p">())</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+
+                <span class="n">debug</span><span class="p">(</span><span class="s">&#39;instancing </span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s"> config: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                      <span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">element</span><span class="o">.</span><span class="n">operation</span><span class="p">,</span> <span class="n">block_config</span><span class="p">))</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">block</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">block_type</span><span class="o">=</span><span class="n">block_type</span><span class="p">,</span>
+                                             <span class="n">name</span><span class="o">=</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                             <span class="n">config</span><span class="o">=</span><span class="n">block_config</span><span class="p">)</span>
+                    <span class="n">block</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">where</span>
+                <span class="k">except</span> <span class="n">SemanticError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c"># For config (see FIXME)</span>
+                    <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">element</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="n">e</span><span class="o">.</span><span class="n">element</span> <span class="o">=</span> <span class="n">element</span>
+                    <span class="k">raise</span>
+
+                <span class="c"># now define input and output</span>
+                <span class="n">generator</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_generator_for_block_type</span><span class="p">(</span><span class="n">block_type</span><span class="p">)</span>
+
+                <span class="n">define_input_signals</span><span class="p">(</span><span class="n">generator</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span>
+                                     <span class="n">previous_link</span><span class="p">,</span> <span class="n">previous_block</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+                <span class="n">define_output_signals</span><span class="p">(</span><span class="n">generator</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+                <span class="c"># at this point input/output should be defined</span>
+                <span class="k">assert</span> <span class="n">block</span><span class="o">.</span><span class="n">are_input_signals_defined</span><span class="p">()</span>
+                <span class="k">assert</span> <span class="n">block</span><span class="o">.</span><span class="n">are_output_signals_defined</span><span class="p">()</span>
+
+                <span class="n">block</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">add_block</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="n">block</span><span class="p">)</span>
+
+                <span class="n">previous_link</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="n">previous_block</span> <span class="o">=</span> <span class="n">block</span>
+            <span class="c"># end if </span>
+
+    <span class="c"># Check if any of the config referenced a nonexistent block</span>
+    <span class="c"># (before we warn it as just an unused variable in the next paragraph) </span>
+    <span class="k">for</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">referenced_blocks</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">block_name</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">x_not_found</span><span class="p">(</span><span class="s">&#39;block&#39;</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+
+    <span class="n">unused_properties</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">properties</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">used_properties</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">unused_properties</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Unused properties: </span><span class="si">%s</span><span class="s">. (Used: </span><span class="si">%s</span><span class="s">.)&#39;</span> <span class="o">%</span>
+               <span class="p">(</span><span class="n">aslist</span><span class="p">(</span><span class="n">unused_properties</span><span class="p">),</span> <span class="n">aslist</span><span class="p">(</span><span class="n">used_properties</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">STRICT</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="n">parsed_model</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">semantic_warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">parsed_model</span><span class="p">)</span>
+
+    <span class="c"># One last thing: define dummy blocks for inputs without |input| blocks</span>
+    <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">get_input_signals_names</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">model_input_ports</span><span class="p">:</span>
+            <span class="n">block_type</span> <span class="o">=</span> <span class="s">&#39;input&#39;</span>
+            <span class="n">block_name</span> <span class="o">=</span> <span class="s">&#39;dummy_input_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">signal</span>
+            <span class="n">block_config</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">signal</span><span class="p">}</span>
+            <span class="n">dummy_block</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="n">block_type</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span>
+                                           <span class="n">block_config</span><span class="p">)</span>
+            <span class="n">generator</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">get_generator_for_block_type</span><span class="p">(</span><span class="n">block_type</span><span class="p">)</span>
+            <span class="n">define_input_signals</span><span class="p">(</span><span class="n">generator</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="n">dummy_block</span><span class="p">,</span>
+                                 <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+            <span class="n">define_output_signals</span><span class="p">(</span><span class="n">generator</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="n">dummy_block</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">add_block</span><span class="p">(</span><span class="n">block_name</span><span class="p">,</span> <span class="n">dummy_block</span><span class="p">)</span>
+            <span class="c"># TODO: warn</span>
+
+    <span class="c"># TODO: warn if no output block was defined</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+
+</div>
+<div class="viewcode-block" id="define_output_signals"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.define_output_signals">[docs]</a><span class="k">def</span> <span class="nf">define_output_signals</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+    <span class="c"># this is a special case, in which the signal name</span>
+    <span class="c"># is not known before parsing the configuration</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">ModelInput</span><span class="p">):</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">define_output_signals_new</span><span class="p">([</span><span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">name</span><span class="p">])</span>
+        <span class="k">return</span>
+
+    <span class="n">output_is_defined_at_runtime</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span>
+                                    <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DEFINED_AT_RUNTIME</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">output_is_defined_at_runtime</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get_output_signals</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">names</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Repeated signal names in </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">names</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+        <span class="n">block</span><span class="o">.</span><span class="n">define_output_signals_new</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="n">output_is_variable</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span>
+
+    <span class="k">if</span> <span class="n">output_is_variable</span><span class="p">:</span>
+        <span class="c"># define output signals with the same name as the input signals</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get_input_signals_names</span><span class="p">()</span>
+        <span class="c"># TODO: maybe add a suffix someday</span>
+        <span class="c"># names = [name + suffix for name in names]</span>
+
+        <span class="n">block</span><span class="o">.</span><span class="n">define_output_signals_new</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># simply define the output signals</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">output</span><span class="p">]</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">define_output_signals_new</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="define_input_signals"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.define_input_signals">[docs]</a><span class="k">def</span> <span class="nf">define_input_signals</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="c">#@ReservedAssignment</span>
+                         <span class="n">previous_link</span><span class="p">,</span> <span class="n">previous_block</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="c"># there are two cases: either we define named signals,</span>
+    <span class="c"># or we have a generic number of signals</span>
+    <span class="n">input_is_arbitrary</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span>
+
+    <span class="k">if</span> <span class="n">input_is_arbitrary</span><span class="p">:</span>
+        <span class="c"># in this case, we have a minimum and maximum </span>
+        <span class="c"># number of signals that we can accept</span>
+        <span class="n">min_expected</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">min</span>
+        <span class="n">max_expected</span> <span class="o">=</span> <span class="nb">input</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">max</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">min_expected</span><span class="p">:</span>
+            <span class="n">min_expected</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">max_expected</span><span class="p">:</span>
+            <span class="n">max_expected</span> <span class="o">=</span> <span class="mi">10000</span>
+
+        <span class="c"># if we don&#39;t have a previous block, then</span>
+        <span class="c"># we just define no input signals</span>
+        <span class="c"># (if we expect something, then we throw an error)</span>
+        <span class="k">if</span> <span class="n">previous_link</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">min_expected</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;I expected at least </span><span class="si">%d</span><span class="s"> input signal(s) but the block &#39;</span>
+                       <span class="s">&#39;is not connected to anything.&#39;</span> <span class="o">%</span> <span class="n">min_expected</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># no inputs for this block</span>
+                <span class="n">block</span><span class="o">.</span><span class="n">define_input_signals_new</span><span class="p">([])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># We have a previous link, we check that the number</span>
+            <span class="c"># of signals is compatible.</span>
+            <span class="n">num_given</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">)</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_expected</span> <span class="o">&lt;=</span> <span class="n">num_given</span> <span class="o">&lt;=</span> <span class="n">max_expected</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;I expected between </span><span class="si">%d</span><span class="s"> and </span><span class="si">%d</span><span class="s"> input signals, and I got &#39;</span>
+                       <span class="s">&#39;</span><span class="si">%d</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">min_expected</span><span class="p">,</span> <span class="n">max_expected</span><span class="p">,</span> <span class="n">num_given</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+            <span class="c"># Define input signals given the names</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_given</span><span class="p">):</span>
+                <span class="c"># --&gt; [local_input] name [local_output] --&gt;    </span>
+                <span class="k">if</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">local_output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">local_output</span>
+                <span class="k">elif</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+                <span class="k">elif</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">local_input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">name</span> <span class="o">=</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">local_input</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">assert</span> <span class="bp">False</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">define_input_signals_new</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c"># the input is not arbitrary</span>
+        <span class="c"># define right away the names, it does not depend </span>
+        <span class="c"># on anything else</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">]</span>
+        <span class="n">block</span><span class="o">.</span><span class="n">define_input_signals_new</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+        <span class="c"># now check we were given the right input</span>
+        <span class="n">num_expected</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span>
+
+        <span class="c"># if we expect something and it is not given,</span>
+        <span class="c"># raise an exception</span>
+        <span class="k">if</span> <span class="n">previous_link</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">num_expected</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The block expected at least </span><span class="si">%d</span><span class="s"> input signals&#39;</span>
+                      <span class="s">&#39; but none were given.&#39;</span> <span class="o">%</span> <span class="n">num_expected</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># we have a previous block, the number of signals</span>
+            <span class="c"># should match</span>
+            <span class="n">num_given</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">num_expected</span> <span class="o">!=</span> <span class="n">num_given</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;The block expected </span><span class="si">%d</span><span class="s"> input signals, got </span><span class="si">%d</span><span class="s">.&#39;</span> <span class="o">%</span>
+                      <span class="p">(</span><span class="n">num_expected</span><span class="p">,</span> <span class="n">num_given</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+    <span class="c"># print &quot;Defined block %s = %s &quot; % (element.name , block)</span>
+    <span class="k">if</span> <span class="n">previous_link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">check_link_compatibility_output</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">previous_link</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">previous_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># normal connection between two blocks with named signals</span>
+
+            <span class="c"># Here we have to make sure that, if the blocks defined</span>
+            <span class="c">#  signals input/outputs, then the signals given by the user</span>
+            <span class="c">#  are coherent.</span>
+
+            <span class="n">check_link_compatibility_input</span><span class="p">(</span><span class="n">previous_block</span><span class="p">,</span> <span class="n">previous_link</span><span class="p">)</span>
+
+            <span class="c"># Finally we create the connection</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span><span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;input_</span><span class="si">%s</span><span class="s">_for_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+                <span class="n">model</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">previous_block</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">,</span>
+                                     <span class="n">block</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># this is the first block with previous signals</span>
+            <span class="c"># this time we need to be careful, because</span>
+            <span class="c"># links can refer to other parts</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">previous_link</span><span class="o">.</span><span class="n">signals</span><span class="p">:</span>
+                <span class="c"># Cannot use local_input here</span>
+                <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">local_input</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Link </span><span class="si">%s</span><span class="s"> uses local input without antecedent. &#39;</span> <span class="o">%</span> <span class="n">s</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+                <span class="c"># Check if it is using an explicit block name</span>
+                <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">block_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">block_name</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Link </span><span class="si">%s</span><span class="s"> refers to an unknown block </span><span class="si">%r</span><span class="s">.&#39;</span>
+                               <span class="s">&#39;Valid blocks: </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                               <span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">block_name</span><span class="p">,</span> <span class="n">aslist</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">)))</span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+                    <span class="n">input_block</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">block_name</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">input_block</span><span class="o">.</span><span class="n">is_valid_output_name</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                        <span class="c"># TODO: make other friendly messages like this</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;This link refers to an unknown output </span><span class="si">%r</span><span class="s">. &quot;</span> <span class="o">%</span>
+                               <span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                        <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s">&quot;The known outputs are: </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span>
+                                <span class="n">input_block</span><span class="o">.</span><span class="n">get_output_signals_names</span><span class="p">())</span>
+                        <span class="c"># msg += &quot;  link: %s \n&quot; % s</span>
+                        <span class="c"># msg += &quot; block: %s \n&quot; % input_block  </span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">local_input</span> <span class="o">=</span> <span class="n">input_block</span><span class="o">.</span><span class="n">canonicalize_output</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block_connection</span><span class="p">:</span>
+                        <span class="c"># throw out the autogenerated (XXX: make a flag)</span>
+                        <span class="n">valid</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block_connection</span>
+                                 <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;:&#39;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+                        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;This link refers to an unknown signal </span><span class="si">%r</span><span class="s">.</span><span class="se">\n</span><span class="s">&#39;</span>
+                               <span class="s">&#39;Valid signals: </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">aslist</span><span class="p">(</span><span class="n">valid</span><span class="p">)))</span>
+                        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="n">s</span><span class="p">)</span>
+                    <span class="n">defined_signal</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">name2block_connection</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+                    <span class="n">input_block</span> <span class="o">=</span> <span class="n">defined_signal</span><span class="o">.</span><span class="n">block1</span>
+                    <span class="n">s</span><span class="o">.</span><span class="n">local_input</span> <span class="o">=</span> <span class="n">defined_signal</span><span class="o">.</span><span class="n">block1_signal</span>
+
+                <span class="c"># make up a unique name    </span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">input_block</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                     <span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">input_block</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">local_input</span><span class="p">,</span>
+                                     <span class="n">block</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">local_output</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="fill_anonymous_link"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_instantiation.fill_anonymous_link">[docs]</a><span class="k">def</span> <span class="nf">fill_anonymous_link</span><span class="p">(</span><span class="n">previous_block</span><span class="p">):</span>
+    <span class="c"># --&gt; [local_input] name [local_output] --&gt;</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">previous_block</span><span class="o">.</span><span class="n">get_output_signals_names</span><span class="p">()</span>
+    <span class="n">signals</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+        <span class="n">signal</span> <span class="o">=</span> <span class="n">ParsedSignal</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">block_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                              <span class="n">local_input</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                              <span class="n">local_output</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+        <span class="n">signals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ParsedSignalList</span><span class="p">(</span><span class="n">signals</span><span class="p">)</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

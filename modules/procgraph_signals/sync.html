@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_signals.sync &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_signals.sync</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_signals.sync</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph</span>  <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">procgraph.core.constants</span> <span class="kn">import</span> <span class="n">ETERNITY</span>
+
+
+<span class="n">Sample</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Sample&#39;</span><span class="p">,</span> <span class="s">&#39;timestamp value&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="oldest"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.oldest">[docs]</a><span class="k">def</span> <span class="nf">oldest</span><span class="p">(</span><span class="n">queue</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">queue</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="newest"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.newest">[docs]</a><span class="k">def</span> <span class="nf">newest</span><span class="p">(</span><span class="n">queue</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">queue</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="add_last"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.add_last">[docs]</a><span class="k">def</span> <span class="nf">add_last</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">ob</span><span class="p">):</span>
+    <span class="n">queue</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ob</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="Sync"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.Sync">[docs]</a><span class="k">class</span> <span class="nc">Sync</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">    This block synchronizes a set of streams to the first stream (the master).</span>
+<span class="sd">    </span>
+<span class="sd">    The first signal is called the &quot;master&quot; signal.</span>
+<span class="sd">    The other (N-1) are slaves.</span>
+<span class="sd">    </span>
+<span class="sd">    We guarantee that:</span>
+<span class="sd">    </span>
+<span class="sd">    - if the slaves are faster than the master,</span>
+<span class="sd">      then we output exactly the same.</span>
+<span class="sd">      </span>
+<span class="sd">    Example diagrams: ::</span>
+<span class="sd">      </span>
+<span class="sd">        Master  *  *  *   *   *</span>
+<span class="sd">        Slave   ++++++++++++++++</span>
+<span class="sd">        </span>
+<span class="sd">        Master  *  *  *   *   *</span>
+<span class="sd">        output? v  v  x   v  </span>
+<span class="sd">        Slave   +    +      +   </span>
+<span class="sd">        output? v    v      v</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;sync&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input_is_variable</span><span class="p">(</span><span class="s">&#39;Signals to synchronize. The first is the master.&#39;</span><span class="p">,</span>
+                             <span class="nb">min</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output_is_variable</span><span class="p">(</span><span class="s">&#39;Synchronized signals.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Sync.init"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.Sync.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># output signals get the same name as the inputs</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_names</span><span class="p">()</span>
+
+        <span class="c"># create a state for each signal: it is an array</span>
+        <span class="c"># of tuples (timestamp, tuple)</span>
+        <span class="n">queues</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">queues</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c"># note in all queues, </span>
+        <span class="c"># [(t0,...), (t1,...), ... , (tn,...) ]</span>
+        <span class="c"># and we have t0 &gt; tn</span>
+        <span class="c"># The chronologically first (oldest) is queue[-1]</span>
+        <span class="c"># You get one out using queue.pop()</span>
+        <span class="c"># You insert one with queue.insert(0,...)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="s">&#39;queues&#39;</span><span class="p">,</span> <span class="n">queues</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">already_seen</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="s">&#39;master&#39;</span><span class="p">,</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="s">&#39;slaves&#39;</span><span class="p">,</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+        <span class="c"># The output is an array of tuple (timestamp, values)</span>
+        <span class="c"># [</span>
+        <span class="c">#    (timestamp1, [value1,value2,value3,...]),</span>
+        <span class="c">#    (timestamp1, [value1,value2,value3,...])</span>
+        <span class="c"># ]#</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="p">[])</span>
+</div>
+<div class="viewcode-block" id="Sync.update"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.Sync.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">False</span><span class="p">:</span> <span class="c"># XXX: use facilities</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;sync </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">)</span>
+        <span class="n">queues</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="s">&#39;queues&#39;</span><span class="p">)</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_names</span><span class="p">()</span>
+        <span class="c"># for each input signal, put its value in the queues</span>
+        <span class="c"># if it is not already present</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+            <span class="n">current_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">current_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="c">#            Commenting this; we clarified 0 = eternity; None = no signal yet</span>
+<span class="c">#            if current_timestamp == 0:</span>
+<span class="c">#                debug(&#39;Ignoring %s because timestamp still 0&#39; % name)</span>
+<span class="c">#                continue</span>
+            <span class="k">if</span> <span class="n">current_timestamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">debug</span><span class="p">(</span><span class="s">&#39;Ignoring signal </span><span class="si">%r</span><span class="s"> because timestamp is None.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="k">if</span>  <span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">already_seen</span> <span class="ow">and</span>
+                 <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">already_seen</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">==</span> <span class="n">current_timestamp</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">already_seen</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_timestamp</span>
+
+            <span class="n">queue</span> <span class="o">=</span> <span class="n">queues</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="c"># if there is nothing in the queue</span>
+            <span class="c"># or this is a new sample</span>
+            <span class="k">if</span> <span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span>
+                <span class="n">newest</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">!=</span> <span class="n">current_timestamp</span><span class="p">):</span> <span class="c"># new sample</span>
+                <span class="n">debug</span><span class="p">(</span><span class="s">&quot;Inserting signal &#39;</span><span class="si">%s</span><span class="s">&#39;  ts </span><span class="si">%s</span><span class="s"> (queue len: </span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span>
+                      <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">current_timestamp</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)))</span>
+                <span class="c">#debug(&#39;Before the queue is: %s&#39; % queue)</span>
+                <span class="n">add_last</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="n">Sample</span><span class="p">(</span><span class="n">timestamp</span><span class="o">=</span><span class="n">current_timestamp</span><span class="p">,</span>
+                                       <span class="n">value</span><span class="o">=</span><span class="n">current_value</span><span class="p">))</span>
+
+                <span class="c">#debug(&#39;Now the queue is: %s&#39; % queue)</span>
+
+        <span class="n">master</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="s">&#39;master&#39;</span><span class="p">)</span>
+        <span class="n">master_queue</span> <span class="o">=</span> <span class="n">queues</span><span class="p">[</span><span class="n">master</span><span class="p">]</span>
+        <span class="n">slaves</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="s">&#39;slaves&#39;</span><span class="p">)</span>
+
+        <span class="c"># if there is more than one value in each slave</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">master_queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="n">master_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="n">debug</span><span class="p">(</span><span class="s">&#39;DROPPING master (</span><span class="si">%s</span><span class="s">) ts =</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">master</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">timestamp</span><span class="p">))</span>
+
+        <span class="c"># Now check whether all slaves signals are &gt;= the master</span>
+        <span class="c"># If so, output a synchronized sample.</span>
+        <span class="k">if</span> <span class="n">master_queue</span><span class="p">:</span>
+            <span class="n">all_ready</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">master_timestamp</span> <span class="o">=</span> <span class="n">master_queue</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">timestamp</span>
+            <span class="c">#print &quot;Master timestamp: %s&quot; % (master_timestamp)</span>
+            <span class="k">for</span> <span class="n">slave</span> <span class="ow">in</span> <span class="n">slaves</span><span class="p">:</span>
+                <span class="n">slave_queue</span> <span class="o">=</span> <span class="n">queues</span><span class="p">[</span><span class="n">slave</span><span class="p">]</span>
+                <span class="c"># remove oldest</span>
+                <span class="k">while</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slave_queue</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span>
+                      <span class="n">oldest</span><span class="p">(</span><span class="n">slave_queue</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">&lt;</span> <span class="n">master_timestamp</span> <span class="ow">and</span>
+                      <span class="n">oldest</span><span class="p">(</span><span class="n">slave_queue</span><span class="p">)</span><span class="o">.</span><span class="n">timestamp</span> <span class="o">!=</span> <span class="n">ETERNITY</span><span class="p">):</span>
+                    <span class="n">debug</span><span class="p">(</span><span class="s">&quot;DROP one from </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">slave</span><span class="p">)</span>
+                    <span class="n">slave_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">slave_queue</span><span class="p">:</span>
+                    <span class="c"># or (master_timestamp &gt; slave_queue[-1].timestamp): </span>
+                    <span class="n">all_ready</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="c">#its_ts = map(lambda x:x.timestamp, slave_queue)</span>
+                    <span class="c">#print &quot;Slave %s not ready: %s&quot; %(slave, its_ts)</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">all_ready</span><span class="p">:</span>
+                <span class="n">debug</span><span class="p">(</span><span class="s">&quot;**** Ready: master timestamp </span><span class="si">%s</span><span class="s"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">master_timestamp</span><span class="p">))</span>
+                <span class="n">master_value</span> <span class="o">=</span> <span class="n">master_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span><span class="o">.</span><span class="n">value</span>
+                <span class="n">output_values</span> <span class="o">=</span> <span class="p">[</span><span class="n">master_value</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">slave</span> <span class="ow">in</span> <span class="n">slaves</span><span class="p">:</span>
+                    <span class="c"># get the freshest still after the master</span>
+                    <span class="n">slave_queue</span> <span class="o">=</span> <span class="n">queues</span><span class="p">[</span><span class="n">slave</span><span class="p">]</span>
+                    <span class="n">slave_timestamp</span><span class="p">,</span> <span class="n">slave_value</span> <span class="o">=</span> <span class="n">slave_queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+                    <span class="c">#print(&#39;Slave, %s %s &#39; % (slave, slave_timestamp))</span>
+                    <span class="k">if</span> <span class="n">slave_timestamp</span> <span class="o">==</span> <span class="n">ETERNITY</span><span class="p">:</span>
+                        <span class="n">slave_queue</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">slave_timestamp</span><span class="p">,</span> <span class="n">slave_value</span><span class="p">))</span>
+                    <span class="c">## not true anymore, assert slave_timestamp &gt;= </span>
+                    <span class="c"># master_timestamp</span>
+                    <span class="c">#difference = slave_timestamp - master_timestamp</span>
+                    <span class="c">#debug(&quot; - %s timestamp %s diff %s&quot; % </span>
+                    <span class="c">#      (slave, slave_timestamp, difference))</span>
+                    <span class="n">output_values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">slave_value</span><span class="p">)</span>
+                <span class="n">output</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">master_timestamp</span><span class="p">,</span> <span class="n">output_values</span><span class="p">))</span>
+
+    <span class="c"># XXX XXX not really sure here</span>
+        <span class="c"># if master has more than one sample, then drop the first one</span>
+
+        <span class="c"># if we have something to output, do it </span>
+        <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">timestamp</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="c"># FIXME: had to remove this for Vehicles simulation </span>
+            <span class="c"># assert timestamp &gt; 0</span>
+            <span class="n">debug</span><span class="p">(</span><span class="s">&quot;---------------- @ </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">timestamp</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_output_signals</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">timestamp</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Sync.next_data_status"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync.Sync.next_data_status">[docs]</a>    <span class="k">def</span> <span class="nf">next_data_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span><span class="p">:</span> <span class="c"># no output ready</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

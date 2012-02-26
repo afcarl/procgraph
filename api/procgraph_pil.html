@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_pil Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_pil Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-pil-package">
+<h1>procgraph_pil Package<a class="headerlink" href="#procgraph-pil-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_pil" title="procgraph_pil"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_pil</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_pil"></span><p>Blocks for image operations based on the PIL library</p>
+</div>
+<div class="section" id="module-procgraph_pil.imread">
+<span id="imread-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">imread</span></tt> Module<a class="headerlink" href="#module-procgraph_pil.imread" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_pil.imread.imread">
+<tt class="descclassname">procgraph_pil.imread.</tt><tt class="descname">imread</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/imread.html#imread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.imread.imread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads an image from a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#string" title="(in Python v2.7)"><em>string</em></a>) &#8211; Image filename.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">image: The image as a numpy array.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">image</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_pil.imwrite">
+<span id="imwrite-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">imwrite</span></tt> Module<a class="headerlink" href="#module-procgraph_pil.imwrite" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_pil.imwrite.imwrite">
+<tt class="descclassname">procgraph_pil.imwrite.</tt><tt class="descname">imwrite</tt><big>(</big><em>rgb</em>, <em>file='compulsory-param'</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/imwrite.html#imwrite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.imwrite.imwrite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an image to a file.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_pil.pil_conversions">
+<span id="pil-conversions-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pil_conversions</span></tt> Module<a class="headerlink" href="#module-procgraph_pil.pil_conversions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_pil.pil_conversions.Image_from_array">
+<tt class="descclassname">procgraph_pil.pil_conversions.</tt><tt class="descname">Image_from_array</tt><big>(</big><em>a</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/pil_conversions.html#Image_from_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.pil_conversions.Image_from_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an image in a numpy array to an Image instance.
+Accepts:  h x w      255  interpreted as grayscale
+Accepts:  h x w x 3  255  rgb  
+Accepts:  h x w x 4  255  rgba</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_pil.pil_operations">
+<span id="pil-operations-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pil_operations</span></tt> Module<a class="headerlink" href="#module-procgraph_pil.pil_operations" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_pil.pil_operations.resize">
+<tt class="descclassname">procgraph_pil.pil_operations.</tt><tt class="descname">resize</tt><big>(</big><em>value</em>, <em>width=None</em>, <em>height=None</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/pil_operations.html#resize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.pil_operations.resize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resizes an image.</p>
+<p>You should pass at least one of <tt class="docutils literal"><span class="pre">width</span></tt> or <tt class="docutils literal"><span class="pre">height</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>value</strong> (<em>image</em>) &#8211; The image to resize.</li>
+<li><strong>width</strong> (<em>int,&gt;0</em>) &#8211; Target image width.</li>
+<li><strong>height</strong> (<em>int,&gt;0</em>) &#8211; Target image height.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">image: The image as a numpy array.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">rgb</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_pil.text">
+<span id="text-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">text</span></tt> Module<a class="headerlink" href="#module-procgraph_pil.text" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_pil.text.Text">
+<em class="property">class </em><tt class="descclassname">procgraph_pil.text.</tt><tt class="descname">Text</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#Text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.Text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>This block provides text overlays over an image.</p>
+<p>This block is very powerful, but the configuration is a bit complicated.</p>
+<p>You should provide a list of dictionary in the configuration variable 
+<tt class="docutils literal"><span class="pre">texts</span></tt>. Each dictionary in the list describes how and where to write
+one piece of text.</p>
+<p>An example of valid configuration is the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">text</span><span class="o">.</span><span class="n">texts</span> <span class="o">=</span> <span class="p">[{</span><span class="n">string</span><span class="p">:</span> <span class="s">&quot;raw image&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">30</span><span class="p">],</span> <span class="n">halign</span><span class="p">:</span> <span class="n">left</span><span class="p">,</span> 
+              <span class="n">color</span><span class="p">:</span> <span class="n">black</span><span class="p">,</span> <span class="n">bg</span><span class="p">:</span> <span class="n">white</span> <span class="p">}]</span>
+</pre></div>
+</div>
+<p>The meaning of the fields is as follow:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">string</span></tt></dt>
+<dd>Text to display. See the section below about keyword expansion.</dd>
+<dt><tt class="docutils literal"><span class="pre">position</span></tt></dt>
+<dd>Array of two integers giving the position of the text in the image</dd>
+<dt><tt class="docutils literal"><span class="pre">color</span></tt></dt>
+<dd>Text color. It can be a keyword color or an hexadecimal string 
+(<tt class="docutils literal"><span class="pre">white</span></tt> or <tt class="docutils literal"><span class="pre">#ffffff</span></tt>).</dd>
+<dt><tt class="docutils literal"><span class="pre">bg</span></tt></dt>
+<dd>background color</dd>
+<dt><tt class="docutils literal"><span class="pre">halign</span></tt></dt>
+<dd>Horizontal alignment. 
+Choose between <tt class="docutils literal"><span class="pre">left</span></tt> (default), <tt class="docutils literal"><span class="pre">center</span></tt>, <tt class="docutils literal"><span class="pre">right</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">valign</span></tt></dt>
+<dd>Vertical alignment. 
+Choose between <tt class="docutils literal"><span class="pre">top</span></tt> (default), <tt class="docutils literal"><span class="pre">middle</span></tt>, <tt class="docutils literal"><span class="pre">center</span></tt>.</dd>
+<dt><tt class="docutils literal"><span class="pre">size</span></tt></dt>
+<dd>Font size in pixels</dd>
+<dt><tt class="docutils literal"><span class="pre">font</span></tt></dt>
+<dd>Font family. Must be a ttf file (<tt class="docutils literal"><span class="pre">Arial.ttf</span></tt>)</dd>
+</dl>
+<p><strong>Expansion</strong>: Also we expand macros in the text using <tt class="docutils literal"><span class="pre">format()</span></tt>. 
+The available keywords are:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">frame</span></tt></dt>
+<dd>number of frames since the beginning</dd>
+<dt><tt class="docutils literal"><span class="pre">time</span></tt></dt>
+<dd>seconds since the beginning of the log</dd>
+<dt><tt class="docutils literal"><span class="pre">timestamp</span></tt></dt>
+<dd>absolute timestamp</dd>
+</dl>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_pil.text.Text.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('texts',False,'not-given','Text specification (see block description).','')]</em><a class="headerlink" href="#procgraph_pil.text.Text.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_pil.text.Text.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_pil.text'</em><a class="headerlink" href="#procgraph_pil.text.Text.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_pil.text.Text.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#Text.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.Text.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_pil.text.Text.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x43ffbd8&gt;]</em><a class="headerlink" href="#procgraph_pil.text.Text.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_pil.text.Text.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,rgb)]</em><a class="headerlink" href="#procgraph_pil.text.Text.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="procgraph_pil.text.Text.replace">
+<em class="property">static </em><tt class="descname">replace</tt><big>(</big><em>s</em>, <em>macros</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#Text.replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.Text.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expand macros in the text.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph_pil.text.Text.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#Text.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.Text.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_pil.text.error">
+<tt class="descclassname">procgraph_pil.text.</tt><tt class="descname">error</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_pil.text.find_file">
+<tt class="descclassname">procgraph_pil.text.</tt><tt class="descname">find_file</tt><big>(</big><em>font_name</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#find_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.find_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_pil.text.get_font">
+<tt class="descclassname">procgraph_pil.text.</tt><tt class="descname">get_font</tt><big>(</big><em>name</em>, <em>size</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#get_font"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.get_font" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_pil.text.info">
+<tt class="descclassname">procgraph_pil.text.</tt><tt class="descname">info</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph_pil.text.process_text">
+<tt class="descclassname">procgraph_pil.text.</tt><tt class="descname">process_text</tt><big>(</big><em>draw</em>, <em>t</em><big>)</big><a class="reference internal" href="../modules/procgraph_pil/text.html#process_text"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_pil.text.process_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

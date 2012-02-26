@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.scripts.pgindex &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.scripts.pgindex</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.scripts.pgindex</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">from</span> <span class="nn">setuptools</span> <span class="kn">import</span> <span class="n">find_packages</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+
+<span class="kn">from</span> <span class="nn">.pgdoc</span> <span class="kn">import</span> <span class="n">get_all_info</span>
+<span class="kn">from</span> <span class="nn">..core.registrar</span> <span class="kn">import</span> <span class="n">default_library</span>
+<span class="kn">from</span> <span class="nn">..core.import_magic</span> <span class="kn">import</span> <span class="n">REQUIRES_PARSED</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgindex.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;procgraph_packages.py&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--src&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;src&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;Source directory&quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;No arguments necessary.&#39;</span><span class="p">)</span>
+
+    <span class="n">given_modules</span> <span class="o">=</span> <span class="n">find_packages</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">given_modules</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;procgraph.block_utils&#39;</span><span class="p">)</span>
+    <span class="n">given_modules</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;procgraph.core&#39;</span><span class="p">)</span>
+    <span class="n">given_modules</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;procgraph.scripts&#39;</span><span class="p">)</span>
+    <span class="n">given_modules</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s">&#39;procgraph.testing&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">given_modules</span><span class="p">:</span>
+        <span class="nb">__import__</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;ceremony&#39;</span><span class="p">])</span>
+
+    <span class="n">all_modules</span> <span class="o">=</span> <span class="n">get_all_info</span><span class="p">(</span><span class="n">default_library</span><span class="p">)</span>
+
+    <span class="c"># check they were not empty</span>
+    <span class="n">all_info</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;packages&#39;</span><span class="p">:</span> <span class="p">{}}</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">given_modules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">all_modules</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Warning: I found no blocks defined *directly* in </span><span class="si">%r</span><span class="s">. &#39;</span>
+                  <span class="s">&#39;No index will be generated.&#39;</span> <span class="o">%</span> <span class="n">module</span><span class="p">)</span>
+            <span class="k">continue</span>
+
+        <span class="n">info</span> <span class="o">=</span> <span class="n">all_modules</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
+        <span class="n">extract</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c">#extract[&#39;name&#39;] = info.name</span>
+        <span class="n">extract</span><span class="p">[</span><span class="s">&#39;desc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">desc</span>
+        <span class="n">extract</span><span class="p">[</span><span class="s">&#39;blocks&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">blocks</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="n">extract</span><span class="p">[</span><span class="s">&#39;requires&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">procgraph_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">REQUIRES_PARSED</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="n">all_info</span><span class="p">[</span><span class="s">&#39;packages&#39;</span><span class="p">][</span><span class="n">info</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">extract</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Writing to </span><span class="si">%r</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;# Autogenerated file -- do not modify.</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;# This file is generated by &quot;pgindex&quot;.  </span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+<span class="s">&#39;# It lists the default ProcGraph packages and their dependencies </span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="s">&#39;# so that we can warn the user if some dependency is not found at </span><span class="se">\n</span><span class="s">&#39;</span>
+<span class="s">&quot;# install time. ProcGraph&#39;s policy is to be very liberal; for example, </span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="s">&quot;# the `procgraph_cv&#39; package is installed even though OpenCV is not found.</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="s">&quot;# and an error will be thrown only if the user actually uses those blocks.</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;index = &#39;</span><span class="p">)</span>
+        <span class="n">pprint</span><span class="p">(</span><span class="n">all_info</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

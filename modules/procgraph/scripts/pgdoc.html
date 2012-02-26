@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.scripts.pgdoc &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.scripts.pgdoc</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.scripts.pgdoc</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+
+<span class="kn">from</span> <span class="nn">..core.model_loader</span> <span class="kn">import</span>  <span class="n">ModelSpec</span>
+<span class="kn">from</span> <span class="nn">..core.registrar</span> <span class="kn">import</span> <span class="n">default_library</span>
+<span class="kn">from</span> <span class="nn">..core.block</span> <span class="kn">import</span> <span class="n">Block</span>
+<span class="kn">from</span> <span class="nn">..core.block_meta</span> <span class="kn">import</span> <span class="p">(</span><span class="n">split_docstring</span><span class="p">,</span> <span class="n">FIXED</span><span class="p">,</span> <span class="n">VARIABLE</span><span class="p">,</span>
+                              <span class="n">DEFINED_AT_RUNTIME</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..core.import_magic</span> <span class="kn">import</span> <span class="n">get_module_info</span>
+
+<span class="c"># TODO: make it possible to document simple functions </span>
+
+<span class="n">type_block</span> <span class="o">=</span> <span class="s">&#39;block&#39;</span>
+<span class="n">type_model</span> <span class="o">=</span> <span class="s">&#39;model&#39;</span>
+<span class="n">type_simple_block</span> <span class="o">=</span> <span class="s">&#39;simple_block&#39;</span>
+
+<span class="n">ModelDoc</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ModelDoc&#39;</span><span class="p">,</span>
+                      <span class="s">&#39;name source module type implementation input &#39;</span>
+                      <span class="s">&#39;output config desc desc_rest&#39;</span><span class="p">)</span>
+
+<span class="c"># module : reference to actual module instance</span>
+<span class="n">ModuleDoc</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;ModuleDoc&#39;</span><span class="p">,</span>
+                       <span class="s">&#39;name blocks desc desc_rest module procgraph_info&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_module_name_with_doc"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.get_module_name_with_doc">[docs]</a><span class="k">def</span> <span class="nf">get_module_name_with_doc</span><span class="p">(</span><span class="n">original_module_name</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">original_module_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">original_module_name</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">__doc__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">module</span><span class="o">.</span><span class="n">__name__</span>
+
+        <span class="n">parent_name</span> <span class="o">=</span> <span class="s">&#39;.&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">__name__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c"># Empty!!</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parent_name</span> <span class="ow">or</span> <span class="n">parent_name</span> <span class="o">==</span> <span class="s">&#39;procgraph&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">original_module_name</span>
+
+        <span class="n">module_name</span> <span class="o">=</span> <span class="n">parent_name</span>
+
+</div>
+<div class="viewcode-block" id="collect_info"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.collect_info">[docs]</a><span class="k">def</span> <span class="nf">collect_info</span><span class="p">(</span><span class="n">block_type</span><span class="p">,</span> <span class="n">block_generator</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block_generator</span><span class="p">,</span> <span class="n">ModelSpec</span><span class="p">):</span>
+        <span class="n">parsed_model</span> <span class="o">=</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">parsed_model</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">type_model</span> <span class="c">#@ReservedAssignment</span>
+        <span class="n">implementation</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block_generator</span><span class="o">.</span><span class="n">defined_in</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">get_module_name_with_doc</span><span class="p">(</span><span class="n">block_generator</span><span class="o">.</span><span class="n">defined_in</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">filename</span>
+        <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">docstring</span><span class="p">)</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">config</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">input</span> <span class="c">#@ReservedAssignment</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">output</span>
+
+    <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">block_generator</span><span class="p">,</span> <span class="n">Block</span><span class="p">):</span>
+        <span class="nb">type</span> <span class="o">=</span> <span class="n">type_block</span> <span class="c">#@ReservedAssignment</span>
+        <span class="n">implementation</span> <span class="o">=</span> <span class="n">block_generator</span>
+
+        <span class="k">if</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">defined_in</span><span class="p">:</span>
+            <span class="n">original_module_name</span> <span class="o">=</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">defined_in</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block_generator</span><span class="o">.</span><span class="n">defined_in</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">original_module_name</span> <span class="o">=</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">__module__</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">original_module_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+        <span class="n">original_module</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">original_module_name</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">])</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">original_module</span><span class="o">.</span><span class="n">__file__</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">get_module_name_with_doc</span><span class="p">(</span><span class="n">original_module_name</span><span class="p">)</span>
+
+        <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">block_generator</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+
+        <span class="n">config</span> <span class="o">=</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">config</span>
+        <span class="nb">input</span> <span class="o">=</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">input</span> <span class="c">#@ReservedAssignment</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">block_generator</span><span class="o">.</span><span class="n">output</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="bp">False</span>
+
+    <span class="c">#  print block_type, module</span>
+
+    <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;.pyc&#39;</span><span class="p">):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">print</span> <span class="n">block_type</span><span class="p">,</span> <span class="s">&#39;has it wrong&#39;</span>
+
+    <span class="k">return</span> <span class="n">ModelDoc</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">block_type</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
+                    <span class="n">module</span><span class="o">=</span><span class="n">module</span><span class="p">,</span> <span class="n">implementation</span><span class="o">=</span><span class="n">implementation</span><span class="p">,</span>
+                    <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="o">=</span><span class="n">desc_rest</span><span class="p">,</span>
+                    <span class="nb">input</span><span class="o">=</span><span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_all_info"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.get_all_info">[docs]</a><span class="k">def</span> <span class="nf">get_all_info</span><span class="p">(</span><span class="n">library</span><span class="p">):</span>
+
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">block_type</span><span class="p">,</span> <span class="n">generator</span> <span class="ow">in</span> <span class="n">library</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">collect_info</span><span class="p">(</span><span class="n">block_type</span><span class="p">,</span> <span class="n">generator</span><span class="p">))</span>
+
+    <span class="c"># get all modules</span>
+    <span class="n">module_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">module</span><span class="p">,</span> <span class="n">blocks</span><span class="p">))</span>
+    <span class="c"># create module -&gt; list of blocks</span>
+
+    <span class="n">modules</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">module_names</span><span class="p">:</span>
+        <span class="n">module_blocks</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">block</span><span class="p">:</span> <span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span>
+                         <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">block</span><span class="p">:</span> <span class="n">block</span><span class="o">.</span><span class="n">module</span> <span class="o">==</span> <span class="n">name</span><span class="p">,</span> <span class="n">blocks</span><span class="p">)))</span>
+
+        <span class="n">actual</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;ceremony&#39;</span><span class="p">])</span>
+
+        <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">actual</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">procgraph_info</span> <span class="o">=</span> <span class="n">get_module_info</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: procgraph_info missing for </span><span class="si">%r</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+            <span class="n">procgraph_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">modules</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ModuleDoc</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="n">module_blocks</span><span class="p">,</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="o">=</span><span class="n">desc_rest</span><span class="p">,</span>
+                                  <span class="n">module</span><span class="o">=</span><span class="n">actual</span><span class="p">,</span> <span class="n">procgraph_info</span><span class="o">=</span><span class="n">procgraph_info</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">modules</span>
+
+</div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--output&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;pgdoc.rst&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&quot;RST output file.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;--translate&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;append&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[],</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&quot;directory=url&quot;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">translate</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">couple</span> <span class="ow">in</span> <span class="n">options</span><span class="o">.</span><span class="n">translate</span><span class="p">:</span>
+        <span class="n">root</span><span class="p">,</span> <span class="n">reference</span> <span class="o">=</span> <span class="n">couple</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="n">translate</span><span class="p">[</span><span class="n">root</span><span class="p">]</span> <span class="o">=</span> <span class="n">reference</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Give at least one module.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">given_modules</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">given_modules</span><span class="p">:</span>
+        <span class="nb">__import__</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;ceremony&#39;</span><span class="p">])</span>
+
+    <span class="n">library</span> <span class="o">=</span> <span class="n">default_library</span>
+
+    <span class="n">all_modules</span> <span class="o">=</span> <span class="n">get_all_info</span><span class="p">(</span><span class="n">library</span><span class="p">)</span>
+
+    <span class="c"># check they were not empty</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">given_modules</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">all_modules</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Warning: I found no blocks defined *directly* in </span><span class="si">%r</span><span class="s">. &#39;</span>
+                  <span class="s">&#39;No documentation will be generated.&#39;</span> <span class="o">%</span> <span class="n">module</span><span class="p">)</span>
+
+    <span class="c"># only retain the ones that we have to document </span>
+    <span class="n">modules</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">all_modules</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+                <span class="n">modules</span><span class="p">[</span><span class="n">module</span><span class="p">]</span> <span class="o">=</span> <span class="n">all_modules</span><span class="p">[</span><span class="n">module</span><span class="p">]</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;.. |towrite| replace:: **to write** </span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+    <span class="c"># first write a summary</span>
+    <span class="k">for</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">modules</span><span class="p">):</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
+
+        <span class="c">#f.write(&#39;%s\n&#39; % module_reference(module.name))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">Package ``</span><span class="si">%s</span><span class="s">``</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">getstr</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> description&#39;</span> <span class="o">%</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">block_name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">blocks</span><span class="p">):</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_name</span><span class="p">]</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="n">getstr</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s"> desc&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">))</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">block_reference</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">desc</span><span class="p">))</span>
+        <span class="n">write_rst_table</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">modules</span><span class="p">):</span>
+        <span class="n">module</span> <span class="o">=</span> <span class="n">modules</span><span class="p">[</span><span class="n">module_name</span><span class="p">]</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">module_anchor</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:module&#39;</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Package ``</span><span class="si">%s</span><span class="s">``</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">module</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;=&#39;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:desc&#39;</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">getstr</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">module</span><span class="o">.</span><span class="n">desc_rest</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:desc_rest&#39;</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">desc_rest</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">block_name</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">module</span><span class="o">.</span><span class="n">blocks</span><span class="p">):</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">blocks</span><span class="p">[</span><span class="n">block_name</span><span class="p">]</span>
+
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">block_anchor</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:block&#39;</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Block ``</span><span class="si">%s</span><span class="s">``</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">block</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">66</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+            <span class="n">d</span> <span class="o">=</span> <span class="n">getstr</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">d</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">desc_rest</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">desc_rest</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:config&#39;</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Configuration</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;^&#39;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">getstr</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s"> config </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                                        <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">has_default</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- ``</span><span class="si">%s</span><span class="s">`` (default: </span><span class="si">%s</span><span class="s">): </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span>
+                                <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">default</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- ``</span><span class="si">%s</span><span class="s">``: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                        <span class="c"># TODO: add desc_rest</span>
+
+            <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:input&#39;</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Input</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;^&#39;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">getstr</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s"> input </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                                        <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FIXED</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- ``</span><span class="si">%s</span><span class="s">``: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span>
+                                <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="n">i</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span><span class="p">:</span>
+
+                        <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">i</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="n">condition</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+                        <span class="k">elif</span> <span class="n">i</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="n">condition</span> <span class="o">=</span> <span class="s">&quot;: n &gt;= </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">min</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="n">i</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                            <span class="n">condition</span> <span class="o">=</span> <span class="s">&quot;: n &lt;= </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">condition</span> <span class="o">=</span> <span class="s">&quot;: </span><span class="si">%d</span><span class="s"> &lt;= n &lt;= </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">min</span><span class="p">,</span> <span class="n">i</span><span class="o">.</span><span class="n">max</span><span class="p">)</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- </span><span class="si">%s</span><span class="s"> (variable number</span><span class="si">%s</span><span class="s">)</span><span class="se">\n\n</span><span class="s">&#39;</span>
+                                <span class="o">%</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">condition</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:output&#39;</span><span class="p">))</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Output</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;^&#39;</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n\n</span><span class="s">&#39;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">block</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                    <span class="n">d</span> <span class="o">=</span> <span class="n">getstr</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s"> output </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                                        <span class="p">(</span><span class="n">module_name</span><span class="p">,</span> <span class="n">block_name</span><span class="p">,</span> <span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+                    <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FIXED</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- ``</span><span class="si">%s</span><span class="s">``: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="n">o</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- </span><span class="si">%s</span><span class="s"> (variable number)</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">d</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">o</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">DEFINED_AT_RUNTIME</span><span class="p">:</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;- </span><span class="si">%s</span><span class="s"> (signals are defined at runtime)</span><span class="se">\n\n</span><span class="s">&#39;</span>
+                                <span class="o">%</span> <span class="n">d</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+
+            <span class="n">url</span> <span class="o">=</span> <span class="n">get_source_ref</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">translate</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst_class</span><span class="p">(</span><span class="s">&#39;procgraph:source&#39;</span><span class="p">))</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;Implemented in </span><span class="si">%s</span><span class="s">. </span><span class="se">\n\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">url</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="getstr"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.getstr">[docs]</a><span class="k">def</span> <span class="nf">getstr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">what</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Missing documentation: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">what</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&quot;|towrite|&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+</div>
+<div class="viewcode-block" id="get_source_ref"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.get_source_ref">[docs]</a><span class="k">def</span> <span class="nf">get_source_ref</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">translation</span><span class="p">):</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">prefix</span><span class="p">,</span> <span class="n">ref</span>   <span class="ow">in</span> <span class="n">translation</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">):</span>
+            <span class="n">rest</span> <span class="o">=</span> <span class="n">source</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">ref</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">rest</span>
+            <span class="k">return</span> <span class="s">&#39;`</span><span class="si">%s</span><span class="s"> &lt;</span><span class="si">%s</span><span class="s">&gt;`_&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rest</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">source</span>
+
+</div>
+<div class="viewcode-block" id="rst_class"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.rst_class">[docs]</a><span class="k">def</span> <span class="nf">rst_class</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">.. rst-class:: </span><span class="si">%s</span><span class="se">\n\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span>
+
+</div>
+<div class="viewcode-block" id="module_anchor"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.module_anchor">[docs]</a><span class="k">def</span> <span class="nf">module_anchor</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;.. _`module:</span><span class="si">%s</span><span class="s">`:</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+
+</div>
+<div class="viewcode-block" id="block_anchor"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.block_anchor">[docs]</a><span class="k">def</span> <span class="nf">block_anchor</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;.. _`block:</span><span class="si">%s</span><span class="s">`:</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">name</span>
+
+</div>
+<div class="viewcode-block" id="block_reference"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.block_reference">[docs]</a><span class="k">def</span> <span class="nf">block_reference</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="c">#return &quot;:ref:`block:%s`&quot; % name</span>
+    <span class="k">return</span> <span class="s">&quot;:ref:`</span><span class="si">%s</span><span class="s"> &lt;block:</span><span class="si">%s</span><span class="s">&gt;`&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="module_reference"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.module_reference">[docs]</a><span class="k">def</span> <span class="nf">module_reference</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&quot;:ref:`module:</span><span class="si">%s</span><span class="s">`&quot;</span> <span class="o">%</span> <span class="n">name</span>
+</div>
+<span class="sd">&quot;&quot;&quot;    </span>
+<span class="sd">.. list-table:: Frozen Delights!</span>
+<span class="sd">   :widths: 15 10 30</span>
+<span class="sd">   :header-rows: 1</span>
+
+<span class="sd">   * - Treat</span>
+<span class="sd">     - Quantity</span>
+<span class="sd">     - Description</span>
+<span class="sd">   * - Albatross</span>
+<span class="sd">     - 2.99</span>
+<span class="sd">     - On a stick!</span>
+<span class="sd">   * - Crunchy Frog</span>
+<span class="sd">     - 1.49</span>
+<span class="sd">     - If we took the bones out, it wouldn&#39;t be</span>
+<span class="sd">       crunchy, now would it?</span>
+<span class="sd">   * - Gannet Ripple</span>
+<span class="sd">     - 1.99</span>
+<span class="sd">     - On a stick!</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="write_rst_table"><a class="viewcode-back" href="../../../api/procgraph.scripts.html#procgraph.scripts.pgdoc.write_rst_table">[docs]</a><span class="k">def</span> <span class="nf">write_rst_table</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">rows</span><span class="p">,</span> <span class="n">widths</span><span class="o">=</span><span class="p">[</span><span class="mi">30</span><span class="p">,</span> <span class="mi">70</span><span class="p">]):</span>
+    <span class="c"># XXX: does not work with multiline</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;.. list-table::</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;   :widths: </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="s">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">widths</span><span class="p">]))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">row</span><span class="p">):</span>
+            <span class="k">if</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Warning: malformed cell </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;   * - </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;     - </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

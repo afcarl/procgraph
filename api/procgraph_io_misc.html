@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_io_misc Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_io_misc Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-io-misc-package">
+<h1>procgraph_io_misc Package<a class="headerlink" href="#procgraph-io-misc-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_io_misc" title="procgraph_io_misc"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_io_misc</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_io_misc"></span><p>Miscellaneous functions to be better organized.</p>
+</div>
+<div class="section" id="module-procgraph_io_misc.json_misc">
+<span id="json-misc-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">json_misc</span></tt> Module<a class="headerlink" href="#module-procgraph_io_misc.json_misc" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_io_misc.json_misc.AsJSON">
+<em class="property">class </em><tt class="descclassname">procgraph_io_misc.json_misc.</tt><tt class="descname">AsJSON</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/json_misc.html#AsJSON"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.json_misc.AsJSON" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Converts the input into a JSON string.</p>
+<p>TODO: add example</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_io_misc.json_misc.AsJSON.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_io_misc.json_misc.AsJSON.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.json_misc.AsJSON.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_io_misc.json_misc'</em><a class="headerlink" href="#procgraph_io_misc.json_misc.AsJSON.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.json_misc.AsJSON.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x3fac248&gt;]</em><a class="headerlink" href="#procgraph_io_misc.json_misc.AsJSON.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.json_misc.AsJSON.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,json)]</em><a class="headerlink" href="#procgraph_io_misc.json_misc.AsJSON.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.json_misc.AsJSON.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/json_misc.html#AsJSON.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.json_misc.AsJSON.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_io_misc.pickling">
+<span id="pickling-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">pickling</span></tt> Module<a class="headerlink" href="#module-procgraph_io_misc.pickling" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_io_misc.pickling.Pickle">
+<em class="property">class </em><tt class="descclassname">procgraph_io_misc.pickling.</tt><tt class="descname">Pickle</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#Pickle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Dumps the input as a <a class="reference external" href="http://docs.python.org/library/pickle.html#pickle" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">pickle</span></tt></a> file.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.Pickle.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','File to write to.','')]</em><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.Pickle.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_io_misc.pickling'</em><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.Pickle.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#Pickle.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.Pickle.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x3fac710&gt;]</em><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.Pickle.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.Pickle.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#Pickle.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.Pickle.write">
+<tt class="descname">write</tt><big>(</big><em>x</em>, <em>filename</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#Pickle.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.Pickle.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph_io_misc.pickling.PickleGroup">
+<em class="property">class </em><tt class="descclassname">procgraph_io_misc.pickling.</tt><tt class="descname">PickleGroup</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Dumps the input as a <a class="reference external" href="http://docs.python.org/library/pickle.html#pickle" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">pickle</span></tt></a> file, in the form
+of a dictionary  signal name -&gt; value.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleGroup.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','File to write to.','')]</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleGroup.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_io_misc.pickling'</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.PickleGroup.finish">
+<tt class="descname">finish</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleGroup.finish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.finish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.PickleGroup.get_dict">
+<tt class="descname">get_dict</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleGroup.get_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.get_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleGroup.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x3fac878&gt;]</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleGroup.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.PickleGroup.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleGroup.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.PickleGroup.write">
+<tt class="descname">write</tt><big>(</big><em>x</em>, <em>filename</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleGroup.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleGroup.write" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph_io_misc.pickling.PickleLoad">
+<em class="property">class </em><tt class="descclassname">procgraph_io_misc.pickling.</tt><tt class="descname">PickleLoad</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleLoad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleLoad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Dumps the input as a <a class="reference external" href="http://docs.python.org/library/pickle.html#pickle" title="(in Python v2.7)"><tt class="xref py py-mod docutils literal"><span class="pre">pickle</span></tt></a> file.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleLoad.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','File to read from.','')]</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleLoad.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleLoad.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_io_misc.pickling'</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleLoad.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleLoad.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleLoad.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.pickling.PickleLoad.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,x)]</em><a class="headerlink" href="#procgraph_io_misc.pickling.PickleLoad.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.pickling.PickleLoad.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/pickling.html#PickleLoad.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.pickling.PickleLoad.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_io_misc.to_file">
+<span id="to-file-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">to_file</span></tt> Module<a class="headerlink" href="#module-procgraph_io_misc.to_file" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_io_misc.to_file.ToFile">
+<em class="property">class </em><tt class="descclassname">procgraph_io_misc.to_file.</tt><tt class="descname">ToFile</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/to_file.html#ToFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Prints the input line by line to a given file.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_io_misc.to_file.ToFile.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','File to write.','')]</em><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.to_file.ToFile.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_io_misc.to_file'</em><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.to_file.ToFile.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/to_file.html#ToFile.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.to_file.ToFile.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x3fac5f0&gt;]</em><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_io_misc.to_file.ToFile.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_io_misc.to_file.ToFile.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_io_misc/to_file.html#ToFile.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_io_misc.to_file.ToFile.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

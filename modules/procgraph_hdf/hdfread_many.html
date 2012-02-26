@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_hdf.hdfread_many &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_hdf.hdfread_many</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_hdf.hdfread_many</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Generator</span><span class="p">,</span> <span class="n">BadConfig</span>
+
+<span class="kn">from</span> <span class="nn">.tables_cache</span> <span class="kn">import</span> <span class="n">tc_open_for_reading</span><span class="p">,</span> <span class="n">tc_close</span>
+<span class="kn">from</span> <span class="nn">.hdfwrite</span> <span class="kn">import</span> <span class="n">PROCGRAPH_LOG_GROUP</span>
+<span class="kn">from</span> <span class="nn">.hdfread</span> <span class="kn">import</span> <span class="n">check_is_procgraph_log</span>
+
+
+<div class="viewcode-block" id="HDFread_many"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many">[docs]</a><span class="k">class</span> <span class="nc">HDFread_many</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        This block is a variation on :ref:`block:hdfread` that can </span>
+<span class="sd">        concatenate the output of logs stored in multiple HDF files.</span>
+<span class="sd">        </span>
+<span class="sd">        The files are specified using a wildcard: for example, ``dir/*.h5``.</span>
+<span class="sd">        </span>
+<span class="sd">        A difference with :ref:`block:hdfread` is that all signals</span>
+<span class="sd">        must be specified explicitly (:ref:`block:hdfread` can guess); the</span>
+<span class="sd">        reason is that we want to avoid reading unrelated logs with different</span>
+<span class="sd">        signals.</span>
+<span class="sd">        </span>
+<span class="sd">        We check that all files specified have all required signals.</span>
+<span class="sd">        </span>
+<span class="sd">        The logfiles are read in the order compatible with their timestamp.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;hdfread_many&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output_is_defined_at_runtime</span><span class="p">(</span><span class="s">&#39;The signals read from the logs.&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;files&#39;</span><span class="p">,</span> <span class="s">&#39;HDF files to read; you can use the wildcard ``*``.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;signals&#39;</span><span class="p">,</span> <span class="s">&#39;Which signals to output (and in what order). &#39;</span>
+                 <span class="s">&#39;Should be a comma-separated list. &#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;quiet&#39;</span><span class="p">,</span> <span class="s">&#39;If true, disables advancements status messages.&#39;</span><span class="p">,</span>
+                 <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HDFread_many.get_output_signals"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.get_output_signals">[docs]</a>    <span class="k">def</span> <span class="nf">get_output_signals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signals</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">signals</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="s">&#39;No signals specified.&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;signals&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span>
+</div>
+<div class="viewcode-block" id="HDFread_many.init"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># Find the required files</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">files</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadConfig</span><span class="p">(</span><span class="s">&#39;No files correspond to the pattern </span><span class="si">%r</span><span class="s">.&#39;</span>
+                            <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">files</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;files&#39;</span><span class="p">)</span>
+
+        <span class="c"># Open all logs; make sure they have the required signals and</span>
+        <span class="c"># note their initial timestamp.</span>
+
+        <span class="c"># list(tuple(file, timestamp, signal2table))</span>
+        <span class="n">logs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">hf</span> <span class="o">=</span> <span class="n">tc_open_for_reading</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">check_is_procgraph_log</span><span class="p">(</span><span class="n">hf</span><span class="p">)</span>
+
+            <span class="n">log_group</span> <span class="o">=</span> <span class="n">hf</span><span class="o">.</span><span class="n">root</span><span class="o">.</span><span class="n">_f_getChild</span><span class="p">(</span><span class="n">PROCGRAPH_LOG_GROUP</span><span class="p">)</span>
+            <span class="n">log_signals</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">log_group</span><span class="o">.</span><span class="n">_v_children</span><span class="p">)</span>
+
+            <span class="n">signal2table</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">log_signals</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Log </span><span class="si">%r</span><span class="s"> does not have signal </span><span class="si">%r</span><span class="s"> &#39;</span>
+                                    <span class="s">&#39;(it has </span><span class="si">%s</span><span class="s">).&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">log_signals</span><span class="p">))</span>
+                <span class="n">signal2table</span><span class="p">[</span><span class="n">s</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_group</span><span class="o">.</span><span class="n">_f_getChild</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">signal2table</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;time&#39;</span><span class="p">]</span>
+            <span class="n">logs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">hf</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">signal2table</span><span class="p">))</span>
+
+        <span class="c"># Sort them by timestamp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logs</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">logs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">for</span> <span class="n">log</span> <span class="ow">in</span> <span class="n">logs</span><span class="p">:</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">log</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">&#39;- queued log (</span><span class="si">%6d</span><span class="s"> rows) from </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_reading_next_log</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="HDFread_many.status"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.status">[docs]</a>    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">quiet</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HDFread_many.start_reading_next_log"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.start_reading_next_log">[docs]</a>    <span class="k">def</span> <span class="nf">start_reading_next_log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">&#39;Just finished log </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">tc_close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_log</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">:</span>
+            <span class="c"># we finished</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">&#39;No logs remaining.&#39;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">&#39;Now starting with </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="c"># signal -&gt; index in the table (or None)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span><span class="p">[</span><span class="n">signal</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+</div>
+    <span class="k">def</span> <span class="nf">_choose_next_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns a tuple (name,timestamp) of the signal that produces </span>
+<span class="sd">            the next event, or (None,None) if we finished the log. &#39;&#39;&#39;</span>
+        <span class="c"># array of tuples (signal, timestamp)</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">:</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span>
+                <span class="n">timestamp</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s">&#39;time&#39;</span><span class="p">]</span>
+                <span class="n">status</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">signal</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sorted_status</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">operator</span><span class="o">.</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">sorted_status</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<div class="viewcode-block" id="HDFread_many.next_data_status"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.next_data_status">[docs]</a>    <span class="k">def</span> <span class="nf">next_data_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">next_signal</span><span class="p">,</span> <span class="n">next_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_next_signal</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">next_signal</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># one log is finished:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs</span><span class="p">:</span>
+                <span class="c"># no more logs</span>
+                <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">start_reading_next_log</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">next_data_status</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="n">next_timestamp</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HDFread_many.update"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">next_signal</span><span class="p">,</span> <span class="n">next_timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_choose_next_signal</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">next_signal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+        <span class="c"># get value</span>
+        <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span><span class="p">[</span><span class="n">next_signal</span><span class="p">]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span><span class="p">[</span><span class="n">next_signal</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">next_timestamp</span> <span class="o">==</span> <span class="n">table</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s">&#39;time&#39;</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">next_signal</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">next_timestamp</span><span class="p">)</span>
+
+        <span class="c"># update index</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">):</span>
+            <span class="c"># finished</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">&#39;Finished reading signal </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">next_signal</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span><span class="p">[</span><span class="n">next_signal</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signal2index</span><span class="p">[</span><span class="n">next_signal</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c"># Status messages for the first signal</span>
+        <span class="k">if</span> <span class="n">next_signal</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">signals</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="n">nintervals</span> <span class="o">=</span> <span class="mi">10</span>
+            <span class="n">interval</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">nintervals</span><span class="p">))</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">interval</span> <span class="o">*</span> <span class="p">(</span><span class="n">nintervals</span><span class="p">)</span> <span class="ow">and</span>
+                 <span class="n">index</span> <span class="o">%</span> <span class="n">interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">percentage</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="mf">100.0</span> <span class="o">/</span> <span class="n">T</span>
+
+                <span class="n">T</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">T</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">(</span><span class="s">&#39;Read </span><span class="si">%.0f%%</span><span class="s"> (</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">) of </span><span class="si">%r</span><span class="s"> (tracking signal </span><span class="si">%r</span><span class="s">).&#39;</span> <span class="o">%</span>
+                            <span class="p">(</span><span class="n">percentage</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span>
+                             <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_log</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">filename</span><span class="p">),</span>
+                             <span class="n">next_signal</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="HDFread_many.finish"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfread_many.HDFread_many.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_reading_next_log</span><span class="p">()</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

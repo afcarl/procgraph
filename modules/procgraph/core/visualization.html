@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.visualization &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.visualization</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.visualization</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span> <span class="k">as</span> <span class="n">env</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">termcolor</span> <span class="kn">import</span> <span class="n">colored</span> <span class="k">as</span> <span class="n">termcolor_colored</span> <span class="c">#@UnresolvedImport</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;procgraph can make use of the package &quot;termcolor&quot;. &#39;</span>
+                     <span class="s">&#39;Please install it.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">termcolor_colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">on_color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+        <span class="sd">&#39;&#39;&#39; emulation of the termcolor interface &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+
+<div class="viewcode-block" id="colored"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.colored">[docs]</a><span class="k">def</span> <span class="nf">colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">on_color</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">colorize</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="c"># TODO: no colorize during tests</span>
+    <span class="k">if</span> <span class="n">colorize</span><span class="p">:</span> <span class="c">#@UndefinedVariable</span>
+        <span class="k">return</span> <span class="n">termcolor_colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">on_color</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+</div>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">setproctitle</span> <span class="kn">import</span> <span class="n">setproctitle</span> <span class="c">#@UnresolvedImport @UnusedImport</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;procgraph can make use of the package &quot;setproctitle&quot;. &#39;</span>
+                     <span class="s">&#39;Please install it.</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">setproctitle</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; emulation of the setproctitle interface &#39;&#39;&#39;</span>
+        <span class="k">pass</span>
+
+<span class="n">screen_columns</span> <span class="o">=</span> <span class="bp">None</span>
+
+
+<div class="viewcode-block" id="get_screen_columns"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.get_screen_columns">[docs]</a><span class="k">def</span> <span class="nf">get_screen_columns</span><span class="p">():</span>
+    <span class="n">module</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="n">__name__</span><span class="p">]</span>
+    <span class="k">if</span>  <span class="n">module</span><span class="o">.</span><span class="n">screen_columns</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">max_x</span><span class="p">,</span> <span class="n">max_y</span> <span class="o">=</span> <span class="n">getTerminalSize</span><span class="p">()</span> <span class="c">#@UnusedVariable</span>
+        <span class="n">module</span><span class="o">.</span><span class="n">screen_columns</span> <span class="o">=</span> <span class="n">max_x</span>
+
+    <span class="k">return</span> <span class="n">module</span><span class="o">.</span><span class="n">screen_columns</span>
+
+</div>
+<div class="viewcode-block" id="getTerminalSize"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.getTerminalSize">[docs]</a><span class="k">def</span> <span class="nf">getTerminalSize</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    max_x, max_y = getTerminalSize()</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+
+    <span class="k">def</span> <span class="nf">ioctl_GWINSZ</span><span class="p">(</span><span class="n">fd</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">fcntl</span>
+            <span class="kn">import</span> <span class="nn">termios</span>
+            <span class="kn">import</span> <span class="nn">struct</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="s">&#39;hh&#39;</span><span class="p">,</span> <span class="n">fcntl</span><span class="o">.</span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="n">termios</span><span class="o">.</span><span class="n">TIOCGWINSZ</span><span class="p">,</span>
+        <span class="s">&#39;1234&#39;</span><span class="p">))</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">return</span> <span class="n">cr</span>
+    <span class="n">cr</span> <span class="o">=</span> <span class="n">ioctl_GWINSZ</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ioctl_GWINSZ</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="n">ioctl_GWINSZ</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cr</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">ctermid</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">O_RDONLY</span><span class="p">)</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="n">ioctl_GWINSZ</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fd</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cr</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="p">(</span><span class="n">env</span><span class="p">[</span><span class="s">&#39;LINES&#39;</span><span class="p">],</span> <span class="n">env</span><span class="p">[</span><span class="s">&#39;COLUMNS&#39;</span><span class="p">])</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">cr</span> <span class="o">=</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">80</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">cr</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">cr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+
+<span class="c"># These should be kwargs to </span>
+<span class="c">#    colored(s, color=None, on_color=None, attrs=None</span></div>
+<span class="n">color_warning</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;yellow&#39;</span><span class="p">)</span>
+<span class="n">color_error</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">color_user_error</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+<span class="n">color_info</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;green&#39;</span><span class="p">)</span>
+<span class="n">color_debug</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s">&#39;magenta&#39;</span><span class="p">)</span>
+
+
+<span class="c"># TODO: use logging</span>
+<div class="viewcode-block" id="warning"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.warning">[docs]</a><span class="k">def</span> <span class="nf">warning</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">write_message</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&#39;pg: &#39;</span> <span class="o">+</span> <span class="n">colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">color_warning</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="error"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.error">[docs]</a><span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">write_message</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&#39;pg: &#39;</span> <span class="o">+</span> <span class="n">colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">color_error</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="user_error"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.user_error">[docs]</a><span class="k">def</span> <span class="nf">user_error</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">write_message</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&#39;pg: &#39;</span> <span class="o">+</span> <span class="n">colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">color_user_error</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="info"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.info">[docs]</a><span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">write_message</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&#39;pg: &#39;</span> <span class="o">+</span> <span class="n">colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">color_info</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="debug"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.debug">[docs]</a><span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">string</span><span class="p">):</span>
+    <span class="n">write_message</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s">&#39;pg: &#39;</span> <span class="o">+</span> <span class="n">colored</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">color_debug</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="write_message"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.write_message">[docs]</a><span class="k">def</span> <span class="nf">write_message</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">formatting</span><span class="p">):</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+
+    <span class="c">#clean_console_line(sys.stderr)</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">formatting</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+            <span class="c">#if i == 1: </span>
+            <span class="c">#    l = &#39;- &#39; + l</span>
+            <span class="c">#else:</span>
+            <span class="c">#    l = &#39;  &#39; + l</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">formatting</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+
+    <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="semantic_warning"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.visualization.semantic_warning">[docs]</a><span class="k">def</span> <span class="nf">semantic_warning</span><span class="p">(</span><span class="n">error</span><span class="p">,</span> <span class="n">element</span><span class="p">):</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">element</span><span class="o">.</span><span class="n">where</span><span class="p">)</span>
+    <span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

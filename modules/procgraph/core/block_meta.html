@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.block_meta &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.block_meta</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.block_meta</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">BlockWriterError</span><span class="p">,</span> <span class="n">ModelWriterError</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">FIXED</span><span class="p">,</span> <span class="n">VARIABLE</span><span class="p">,</span> <span class="n">DEFINED_AT_RUNTIME</span>
+
+
+<div class="viewcode-block" id="BlockConfig"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockConfig">[docs]</a><span class="k">class</span> <span class="nc">BlockConfig</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variable</span><span class="p">,</span> <span class="n">has_default</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span>
+                 <span class="n">where</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variable</span> <span class="o">=</span> <span class="n">variable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_default</span> <span class="o">=</span> <span class="n">has_default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="n">default</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc_rest</span> <span class="o">=</span> <span class="n">desc_rest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;BlockConfig(</span><span class="si">%r</span><span class="s">,</span><span class="si">%r</span><span class="s">,</span><span class="si">%r</span><span class="s">,</span><span class="si">%r</span><span class="s">,</span><span class="si">%r</span><span class="s">)&#39;</span> <span class="o">%</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_default</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">default</span><span class="p">,</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">desc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">desc_rest</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="BlockInput"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockInput">[docs]</a><span class="k">class</span> <span class="nc">BlockInput</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span> <span class="c">#@ReservedAssignment</span>
+                 <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="n">where</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min</span> <span class="o">=</span> <span class="nb">min</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max</span> <span class="o">=</span> <span class="nb">max</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc_rest</span> <span class="o">=</span> <span class="n">desc_rest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
+
+    <span class="c"># TODO: add repr</span>
+
+</div>
+<div class="viewcode-block" id="BlockOutput"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockOutput">[docs]</a><span class="k">class</span> <span class="nc">BlockOutput</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="c">#@ReservedAssignment</span>
+                 <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="n">where</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="nb">type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc</span> <span class="o">=</span> <span class="n">desc</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">desc_rest</span> <span class="o">=</span> <span class="n">desc_rest</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;BlockOutput(</span><span class="si">%s</span><span class="s">,</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="block_alias"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_alias">[docs]</a><span class="k">def</span> <span class="nf">block_alias</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="block_config"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_config">[docs]</a><span class="k">def</span> <span class="nf">block_config</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;not-given&#39;</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">description</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="n">has_default</span> <span class="o">=</span> <span class="n">default</span> <span class="o">!=</span> <span class="s">&#39;not-given&#39;</span>
+    <span class="k">if</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_config</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">variable</span> <span class="o">==</span> <span class="n">name</span><span class="p">]:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Already described config variable </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_config</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BlockConfig</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">has_default</span><span class="p">,</span> <span class="n">default</span><span class="p">,</span>
+                                            <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="block_input"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_input">[docs]</a><span class="k">def</span> <span class="nf">block_input</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">description</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Already described input variable &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span> <span class="ow">and</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span><span class="p">:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Cannot mix variable and fixed input.&#39;</span><span class="p">)</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BlockInput</span><span class="p">(</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                          <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="block_input_is_variable"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_input_is_variable">[docs]</a><span class="k">def</span> <span class="nf">block_input_is_variable</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                             <span class="nb">min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span> <span class="c">#@ReservedAssignment</span>
+    <span class="k">assert</span> <span class="n">description</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span><span class="p">:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Cannot mix variable and fixed input&#39;</span>
+                               <span class="s">&#39; or variable with variable.&#39;</span><span class="p">)</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BlockInput</span><span class="p">(</span><span class="n">VARIABLE</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">,</span>
+                                          <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="block_output"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_output">[docs]</a><span class="k">def</span> <span class="nf">block_output</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">description</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">name</span><span class="p">]:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Already described output variable &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span>
+                               <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span> <span class="ow">and</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span><span class="p">:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Cannot mix variable and fixed output.&#39;</span><span class="p">)</span>
+
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BlockOutput</span><span class="p">(</span><span class="n">FIXED</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+                                             <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="block_output_is_variable"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_output_is_variable">[docs]</a><span class="k">def</span> <span class="nf">block_output_is_variable</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">description</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="p">:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Cannot mix variable and fixed output&#39;</span>
+                      <span class="s">&#39; or variable with variable. (added already: </span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span>
+                         <span class="p">(</span><span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="p">))</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BlockOutput</span><span class="p">(</span><span class="n">VARIABLE</span><span class="p">,</span> <span class="n">suffix</span><span class="p">,</span>
+                                            <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="block_output_is_defined_at_runtime"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.block_output_is_defined_at_runtime">[docs]</a><span class="k">def</span> <span class="nf">block_output_is_defined_at_runtime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">description</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span> <span class="o">=</span> <span class="n">split_docstring</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="p">:</span>
+        <span class="n">cleanup</span><span class="p">()</span>
+        <span class="k">raise</span> <span class="n">BlockWriterError</span><span class="p">(</span><span class="s">&#39;Cannot mix variable and fixed output&#39;</span>
+                            <span class="s">&#39; or variable with variable. (added already: </span><span class="si">%s</span><span class="s">)&#39;</span>
+                               <span class="o">%</span> <span class="p">(</span><span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="p">))</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">BlockOutput</span><span class="p">(</span><span class="n">DEFINED_AT_RUNTIME</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span>
+                                            <span class="n">desc</span><span class="p">,</span> <span class="n">desc_rest</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="cleanup"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.cleanup">[docs]</a><span class="k">def</span> <span class="nf">cleanup</span><span class="p">():</span>
+    <span class="sd">&#39;&#39;&#39; Cleans up temporary data for the meta-sugar, if the construction </span>
+<span class="sd">        is aborted &#39;&#39;&#39;</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_config</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
+
+</div>
+<div class="viewcode-block" id="BlockMeta"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMeta">[docs]</a><span class="k">class</span> <span class="nc">BlockMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tmp_config</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tmp_input</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tmp_output</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">clsname</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">clsdict</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+        <span class="c"># Do not do this for the superclasses </span>
+        <span class="k">if</span> <span class="n">clsname</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;Generator&#39;</span><span class="p">,</span> <span class="s">&#39;Block&#39;</span><span class="p">]:</span>
+            <span class="k">return</span>
+
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&#39;defined_in&#39;</span><span class="p">,</span> <span class="n">cls</span><span class="o">.</span><span class="n">__module__</span><span class="p">)</span>
+
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&#39;config&#39;</span><span class="p">,</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_config</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&#39;input&#39;</span><span class="p">,</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span><span class="p">)</span>
+        <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_config</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">has_variable_input</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span>
+                              <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_input</span>
+                              <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span><span class="p">]</span>
+        <span class="n">has_variable_output</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span>
+                               <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">tmp_output</span>
+                               <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">VARIABLE</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">has_variable_output</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_variable_input</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ModelWriterError</span><span class="p">(</span><span class="s">&#39;Cannot have variable output without &#39;</span>
+                                   <span class="s">&#39;variable input.&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ModelWriterError</span><span class="p">(</span><span class="s">&quot;We don&#39;t support multiple aliases yet. &quot;</span>
+                                   <span class="s">&quot;Tried to set  </span><span class="si">%r</span><span class="s">.&quot;</span> <span class="o">%</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span>
+
+        <span class="kn">from</span> <span class="nn">.registrar</span> <span class="kn">import</span> <span class="n">default_library</span>
+        <span class="n">default_library</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span>
+
+        <span class="n">BlockMeta</span><span class="o">.</span><span class="n">aliases</span> <span class="o">=</span> <span class="p">[]</span>
+
+</div>
+<div class="viewcode-block" id="BlockMetaSugar"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar">[docs]</a><span class="k">class</span> <span class="nc">BlockMetaSugar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.alias"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.alias">[docs]</a>    <span class="k">def</span> <span class="nf">alias</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">block_alias</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.config"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">block_config</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.input"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.input">[docs]</a>    <span class="k">def</span> <span class="nf">input</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span> <span class="c">#@ReservedAssignment</span>
+        <span class="n">block_input</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.output"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.output">[docs]</a>    <span class="k">def</span> <span class="nf">output</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">block_output</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.output_is_variable"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.output_is_variable">[docs]</a>    <span class="k">def</span> <span class="nf">output_is_variable</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">block_output_is_variable</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.output_is_defined_at_runtime"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.output_is_defined_at_runtime">[docs]</a>    <span class="k">def</span> <span class="nf">output_is_defined_at_runtime</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">block_output_is_defined_at_runtime</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+</div>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="BlockMetaSugar.input_is_variable"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.BlockMetaSugar.input_is_variable">[docs]</a>    <span class="k">def</span> <span class="nf">input_is_variable</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                          <span class="nb">min</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span> <span class="c">#@ReservedAssignment</span>
+        <span class="sd">&#39;&#39;&#39; Declares that this block can accept a variable number</span>
+<span class="sd">            of inputs. You can specify minimum and maximum number. &#39;&#39;&#39;</span>
+        <span class="n">block_input_is_variable</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">)</span>
+
+
+<span class="c"># TODO: move this somewhere else</span>
+</div></div>
+<div class="viewcode-block" id="trim"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.trim">[docs]</a><span class="k">def</span> <span class="nf">trim</span><span class="p">(</span><span class="n">docstring</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">docstring</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="n">docstring</span><span class="o">.</span><span class="n">expandtabs</span><span class="p">()</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
+
+    <span class="c"># Determine minimum indentation (first line doesn&#39;t count):</span>
+    <span class="n">maxi</span> <span class="o">=</span> <span class="mi">10000</span>
+    <span class="n">indent</span> <span class="o">=</span> <span class="n">maxi</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">stripped</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">stripped</span><span class="p">:</span>
+            <span class="n">indent</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">indent</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">stripped</span><span class="p">))</span>
+
+    <span class="c"># Remove indentation (first line is special):</span>
+    <span class="n">trimmed</span> <span class="o">=</span> <span class="p">[</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+    <span class="k">if</span> <span class="n">indent</span> <span class="o">&lt;</span> <span class="n">maxi</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">trimmed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="n">indent</span><span class="p">:]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
+
+    <span class="c"># Strip off trailing and leading blank lines:</span>
+    <span class="k">while</span> <span class="n">trimmed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trimmed</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">trimmed</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+    <span class="k">while</span> <span class="n">trimmed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">trimmed</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">trimmed</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">trimmed</span><span class="p">)</span>
+
+    <span class="c">#print &#39;input: &quot;&quot;&quot;%s&quot;&quot;&quot;&#39; % docstring</span>
+    <span class="c">#print &#39;result: &quot;&quot;&quot;%s&quot;&quot;&quot;&#39; % result</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="c"># TODO: remove space on the right</span>
+
+</div>
+<div class="viewcode-block" id="split_docstring"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.block_meta.split_docstring">[docs]</a><span class="k">def</span> <span class="nf">split_docstring</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Splits a docstring in a tuple (first, rest). &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">trim</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="n">all_lines</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">stripped</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">all_lines</span><span class="p">]</span>
+    <span class="n">valid_lines</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">stripped</span> <span class="k">if</span> <span class="n">l</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">valid_lines</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">all_lines</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">all_lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="c"># found first</span>
+                <span class="c"># join all non-empty lines with the first</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_lines</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">all_lines</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_lines</span><span class="p">[</span><span class="n">i</span><span class="p">:(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)])</span>
+                <span class="n">rest</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_lines</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+                <span class="k">return</span> <span class="n">first</span><span class="p">,</span> <span class="n">rest</span>
+        <span class="k">assert</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

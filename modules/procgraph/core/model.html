@@ -1,0 +1,546 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.model &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.model</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.model</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">SemanticError</span><span class="p">,</span> <span class="n">ModelExecutionError</span><span class="p">,</span> <span class="n">ModelWriterError</span>
+<span class="kn">from</span> <span class="nn">.block</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">.model_io</span> <span class="kn">import</span> <span class="n">ModelInput</span><span class="p">,</span> <span class="n">ModelOutput</span>
+<span class="kn">from</span> <span class="nn">.model_stats</span> <span class="kn">import</span> <span class="n">ExecutionStats</span>
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">debug</span> <span class="k">as</span> <span class="n">debug_main</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">warning</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">STRICT_CHECK_OF_DEFINED_IO</span><span class="p">,</span> <span class="n">ETERNITY</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">indent</span>
+<span class="kn">from</span> <span class="nn">.model_stats</span> <span class="kn">import</span> <span class="n">write_stats</span>
+
+
+<div class="viewcode-block" id="BlockConnection"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.BlockConnection">[docs]</a><span class="k">class</span> <span class="nc">BlockConnection</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block1</span><span class="p">,</span> <span class="n">block1_signal</span><span class="p">,</span> <span class="n">block2</span><span class="p">,</span> <span class="n">block2_signal</span><span class="p">,</span>
+                       <span class="n">public_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block1</span><span class="p">,</span> <span class="n">Block</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">block1_signal</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+        <span class="k">assert</span> <span class="n">block2</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block2</span><span class="p">,</span> <span class="n">Block</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">block1</span> <span class="o">=</span> <span class="n">block1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block1_signal</span> <span class="o">=</span> <span class="n">block1_signal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block2</span> <span class="o">=</span> <span class="n">block2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block2_signal</span> <span class="o">=</span> <span class="n">block2_signal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">public_name</span> <span class="o">=</span> <span class="n">public_name</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;Connection(&#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block1</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">block1_signal</span>
+
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39; --&gt; &#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block2</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block2</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">block2_signal</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;?.?&#39;</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;)&#39;</span>
+
+        <span class="k">return</span> <span class="n">s</span>
+
+</div>
+<div class="viewcode-block" id="Model"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model">[docs]</a><span class="k">class</span> <span class="nc">Model</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        A Model is a block and a generator. </span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">        cleanup() and finish(): &quot;cleanup&quot; is the emergency clean up.</span>
+<span class="sd">        It is called after finish().</span>
+<span class="sd">        </span>
+<span class="sd">        Order in which init(), update(), cleanup() can be called:</span>
+<span class="sd">        - init(), update(), ..., update(), finish(), cleanup() </span>
+<span class="sd">        - init(), finish(), cleanup()</span>
+<span class="sd">        - init(), cleanup()</span>
+<span class="sd">        </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Name is the personal name of this instance.</span>
+<span class="sd">            model_name is this model&#39;s name.</span>
+<span class="sd">            </span>
+<span class="sd">            model_name is used for visualization and serialization</span>
+<span class="sd">            config is usef only for serialization.</span>
+<span class="sd">             &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;unnamed-block&#39;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">model_name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">model_name</span> <span class="o">=</span> <span class="s">&#39;unnamed-model&#39;</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="o">=</span> <span class="n">model_name</span>
+
+        <span class="c"># As a block</span>
+        <span class="n">Block</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="p">{},</span> <span class="n">library</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c"># block -&gt; block unresolved </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unresolved</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c"># list of blocks that act as generators (instance of Generator)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generators</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_execution</span><span class="p">()</span>
+
+        <span class="c"># hash signal name -&gt; Block for blocks of type ModelInput</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model_input_ports</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span> <span class="o">=</span> <span class="n">ExecutionStats</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_already_inited</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Model.add_block"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.add_block">[docs]</a>    <span class="k">def</span> <span class="nf">add_block</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;  Add a block to the model. Returns the block instance. &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="p">,</span> <span class="s">&#39;Name </span><span class="si">%r</span><span class="s"> already taken&#39;</span> <span class="o">%</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">Generator</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">generators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">ModelInput</span><span class="p">):</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">init</span><span class="p">()</span> <span class="c"># get the name from config</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_input_name</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">signal_name</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Input </span><span class="si">%r</span><span class="s"> was not defined formally.&#39;</span> <span class="o">%</span> <span class="n">block</span><span class="o">.</span><span class="n">signal_name</span>
+                <span class="k">if</span> <span class="n">STRICT_CHECK_OF_DEFINED_IO</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">warning</span><span class="p">(</span><span class="s">&quot;Warning: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">are_input_signals_defined</span><span class="p">():</span>
+                    <span class="n">all_inputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_names</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">all_inputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">define_input_signals_new</span><span class="p">(</span><span class="n">all_inputs</span> <span class="o">+</span> <span class="p">[</span><span class="n">block</span><span class="o">.</span><span class="n">signal_name</span><span class="p">])</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">model_input_ports</span><span class="p">[</span><span class="n">block</span><span class="o">.</span><span class="n">signal_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">ModelOutput</span><span class="p">):</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">init</span><span class="p">()</span> <span class="c"># get the name from config</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_valid_output_name</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">signal_name</span><span class="p">):</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Output </span><span class="si">%r</span><span class="s"> was not defined formally.&#39;</span> <span class="o">%</span> <span class="n">block</span><span class="o">.</span><span class="n">signal_name</span>
+                <span class="k">if</span> <span class="n">STRICT_CHECK_OF_DEFINED_IO</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">warning</span><span class="p">(</span><span class="s">&quot;Warning: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">msg</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">are_output_signals_defined</span><span class="p">():</span>
+                    <span class="n">all_outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_output_signals_names</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">all_outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="c"># XXX: bug: output_signals -&gt; output_signals</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">define_output_signals_new</span><span class="p">(</span><span class="n">all_outputs</span> <span class="o">+</span>
+                                               <span class="p">[</span><span class="n">block</span><span class="o">.</span><span class="n">signal_name</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">block</span>
+</div>
+<div class="viewcode-block" id="Model.from_outside_set_input"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.from_outside_set_input">[docs]</a>    <span class="k">def</span> <span class="nf">from_outside_set_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_or_id</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_already_inited</span><span class="p">,</span> <span class="s">&#39;The block must first be init()ed.&#39;</span>
+        <span class="n">Block</span><span class="o">.</span><span class="n">from_outside_set_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_or_id</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+
+        <span class="n">signal_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">canonicalize_input</span><span class="p">(</span><span class="n">num_or_id</span><span class="p">)</span>
+        <span class="n">input_block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_input_ports</span><span class="p">[</span><span class="n">signal_name</span><span class="p">]</span>
+        <span class="n">input_block</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">signal_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_block</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Model.connect"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.connect">[docs]</a>    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">block1</span><span class="p">,</span> <span class="n">block1_signal</span><span class="p">,</span>
+                <span class="n">block2</span><span class="p">,</span> <span class="n">block2_signal</span><span class="p">,</span>
+                <span class="n">public_name</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Caller should check that the public name is not taken. &#39;&#39;&#39;</span>
+        <span class="k">assert</span> <span class="n">public_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="n">public_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">public_signal_names</span><span class="p">(),</span> \
+            <span class="s">&quot;</span><span class="si">%r</span><span class="s"> is already taken&quot;</span> <span class="o">%</span> <span class="n">public_name</span>
+
+        <span class="n">BC</span> <span class="o">=</span> <span class="n">BlockConnection</span><span class="p">(</span><span class="n">block1</span><span class="p">,</span> <span class="n">block1_signal</span><span class="p">,</span> <span class="n">block2</span><span class="p">,</span> <span class="n">block2_signal</span><span class="p">,</span>
+                             <span class="n">public_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span><span class="p">[</span><span class="n">public_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">BC</span>
+</div>
+<div class="viewcode-block" id="Model.public_signal_names"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.public_signal_names">[docs]</a>    <span class="k">def</span> <span class="nf">public_signal_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns the set of public signal names. &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="Model.next_data_status"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.next_data_status">[docs]</a>    <span class="k">def</span> <span class="nf">next_data_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; XXX: OK, I&#39;m writing this late and probably it&#39;s more </span>
+<span class="sd">            complicated than this. &#39;&#39;&#39;</span>
+        <span class="n">generator_timestamps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">at_least_one</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">generator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">generators</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">next_data_status</span><span class="p">()</span>
+            <span class="p">(</span><span class="n">has_next</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span> <span class="o">=</span> <span class="n">status</span> <span class="c">#@UnusedVariable</span>
+            <span class="k">if</span> <span class="n">has_next</span><span class="p">:</span>
+                <span class="n">at_least_one</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">generator_timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span>
+<span class="c">#                    self.debug(&#39;No timestamp for %s&#39; % generator)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">at_least_one</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">generator_timestamps</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">generator_timestamps</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Model.has_more"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.has_more">[docs]</a>    <span class="k">def</span> <span class="nf">has_more</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns true if there are blocks with pending updates,</span>
+<span class="sd">            or there is at least one generator that has not ended. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="k">for</span> <span class="n">generator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">generators</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">next_data_status</span><span class="p">()</span> <span class="c">#@UnusedVariable</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">status</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;next_data_status() should return a tuple of len 2, &#39;</span>
+                       <span class="s">&#39; not </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="n">status</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ModelWriterError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">generator</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">has_next</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span> <span class="o">=</span> <span class="n">status</span> <span class="c">#@UnusedVariable</span>
+            <span class="k">if</span> <span class="n">has_next</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Model.reset_execution"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.reset_execution">[docs]</a>    <span class="k">def</span> <span class="nf">reset_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># add all the blocks without input to the update list</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
+                <span class="c"># Don&#39;t consider generators because has_more() will consider </span>
+                <span class="c"># them.</span>
+                <span class="c"># This is mainly for propagating constants.</span>
+                <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">ModelInput</span><span class="p">)</span> <span class="ow">and</span>
+                 <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">Generator</span><span class="p">)</span> <span class="ow">and</span>
+                 <span class="n">block</span><span class="o">.</span><span class="n">num_input_signals</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="c"># These are the constants blocks.</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Model.init"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_already_inited</span><span class="p">,</span> <span class="s">&#39;The block has already been init()ed.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_already_inited</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_execution</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Model.finish"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">block</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Model.cleanup"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.cleanup">[docs]</a>    <span class="k">def</span> <span class="nf">cleanup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; We try hard to call cleanup() on all the blocks. &#39;&#39;&#39;</span>
+        <span class="n">blocks_failed</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">block</span><span class="o">.</span><span class="n">cleanup</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s">&#39;Cleanup for </span><span class="si">%s</span><span class="s"> failed:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span> <span class="o">%</span>
+                        <span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">indent</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="s">&#39;&gt; &#39;</span><span class="p">)))</span>
+                <span class="n">blocks_failed</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">blocks_failed</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Cleanup for </span><span class="si">%d</span><span class="s"> blocks failed.</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+                 <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blocks_failed</span><span class="p">),</span> <span class="n">msg</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="c">#XXX: which other exception?</span>
+</div>
+<div class="viewcode-block" id="Model.update"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">debug</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="n">debug_main</span><span class="p">(</span><span class="s">&#39;Model </span><span class="si">%s</span><span class="s"> | </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="n">s</span><span class="p">))</span>
+
+        <span class="c"># We keep a list of blocks to be updated.</span>
+        <span class="c"># If the list is not empty, then pop one and update it.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="p">:</span>
+            <span class="c"># get one block</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">debug</span><span class="p">(</span><span class="s">&#39;Got block to update </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">block</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">debug</span><span class="p">(</span><span class="s">&#39;No blocks to update&#39;</span><span class="p">)</span>
+
+            <span class="c"># look if we have any generators</span>
+            <span class="c"># list of (generator, timestamp) </span>
+            <span class="n">generators_with_timestamps</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">generator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">generators</span><span class="p">:</span>
+                <span class="p">(</span><span class="n">has_next</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span> <span class="o">=</span> <span class="n">generator</span><span class="o">.</span><span class="n">next_data_status</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">has_next</span><span class="p">:</span>
+                    <span class="n">generators_with_timestamps</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">generator</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">generators_with_timestamps</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;You asked me to update but nothing&#39;s left.&quot;</span>
+                <span class="k">raise</span> <span class="n">ModelExecutionError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+            <span class="c"># now look for the smallest available timestamp</span>
+            <span class="c"># (timestamp can be none)</span>
+            <span class="k">def</span> <span class="nf">cmpk</span><span class="p">(</span><span class="n">timestamp1</span><span class="p">,</span> <span class="n">timestamp2</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">timestamp1</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">timestamp2</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">timestamp1</span> <span class="o">&lt;</span> <span class="n">timestamp2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">timestamp2</span> <span class="o">&lt;</span> <span class="n">timestamp1</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="mi">0</span>
+
+            <span class="n">generators_with_timestamps</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">cmp</span><span class="o">=</span><span class="n">cmpk</span><span class="p">)</span>
+            <span class="n">block</span> <span class="o">=</span> <span class="n">generators_with_timestamps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">block</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c"># We finished everything</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;You asked me to update but nothing&#39;s left.&quot;</span>
+            <span class="k">raise</span> <span class="n">ModelExecutionError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="c"># now we have a block (could be a generator)</span>
+        <span class="n">debug</span><span class="p">(</span><span class="s">&#39;Updating </span><span class="si">%s</span><span class="s"> (input ts: </span><span class="si">%s</span><span class="s">)&#39;</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">get_input_signals_timestamps</span><span class="p">()))</span>
+
+        <span class="c"># We also time the execution</span>
+        <span class="n">start_cpu</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span>
+        <span class="n">start_wall</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="n">cpu</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_cpu</span>
+        <span class="n">wall</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_wall</span>
+
+        <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">get_input_signals_timestamps</span><span class="p">():</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">get_input_signals_timestamps</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">block</span><span class="o">.</span><span class="n">get_output_signals_timestamps</span><span class="p">():</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">get_output_signals_timestamps</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span> <span class="c"># for those that don&#39;t have input signals</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">ETERNITY</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="n">block</span><span class="p">,</span> <span class="n">cpu</span><span class="o">=</span><span class="n">cpu</span><span class="p">,</span> <span class="n">wall</span><span class="o">=</span><span class="n">wall</span><span class="p">,</span>
+                       <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+
+        <span class="c"># if the update is not finished, we put it back in the queue</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">==</span> <span class="n">block</span><span class="o">.</span><span class="n">UPDATE_NOT_FINISHED</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># the block updated, propagate</span>
+            <span class="n">debug</span><span class="p">(</span><span class="s">&quot;  processed </span><span class="si">%s</span><span class="s">, ts: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+                  <span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="o">.</span><span class="n">get_output_signals_timestamps</span><span class="p">()))</span>
+            <span class="n">debug</span><span class="p">(</span><span class="s">&quot;  its successors: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+                  <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_output_connections</span><span class="p">(</span><span class="n">block</span><span class="p">)))</span>
+            <span class="c"># check if the output signals were updated</span>
+            <span class="k">for</span> <span class="n">connection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__get_output_connections</span><span class="p">(</span><span class="n">block</span><span class="p">):</span>
+                <span class="n">other</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">block2</span>
+                <span class="c"># Don&#39;t include dummy connection</span>
+                <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">debug</span><span class="p">(</span><span class="s">&quot; ignoring dummy connection </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">connection</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">other_signal</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">block2_signal</span>
+                <span class="n">old_timestamp</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="n">other_signal</span><span class="p">)</span>
+                <span class="n">this_signal</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">block1_signal</span>
+                <span class="n">this_timestamp</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get_output_timestamp</span><span class="p">(</span><span class="n">this_signal</span><span class="p">)</span>
+
+                <span class="n">value</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="n">this_signal</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">this_timestamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Strange, value is not None but the timestamp is 0&#39;</span>
+                          <span class="s">&#39; for output signal </span><span class="si">%r</span><span class="s"> of block </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+                            <span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">canonicalize_output</span><span class="p">(</span><span class="n">this_signal</span><span class="p">),</span> <span class="n">block</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="n">ModelExecutionError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+
+                <span class="c"># Ignore if this signal wasn&#39;t updated yet</span>
+                <span class="k">if</span> <span class="n">this_timestamp</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+
+                <span class="k">if</span> <span class="n">old_timestamp</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">this_timestamp</span> <span class="o">&gt;</span> <span class="n">old_timestamp</span><span class="p">:</span>
+                    <span class="n">debug</span><span class="p">(</span><span class="s">&#39;  then waking up </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">other</span><span class="p">)</span>
+
+                    <span class="n">other</span><span class="o">.</span><span class="n">from_outside_set_input</span><span class="p">(</span><span class="n">other_signal</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span>
+                                                 <span class="n">this_timestamp</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">other</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+
+                    <span class="c"># If this is an output port, update the model</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ModelOutput</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">signal_name</span><span class="p">,</span>
+                                        <span class="n">value</span><span class="p">,</span> <span class="n">this_timestamp</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">debug</span><span class="p">(</span><span class="s">&quot;  Not updated </span><span class="si">%s</span><span class="s"> because not </span><span class="si">%s</span><span class="s"> &gt; </span><span class="si">%s</span><span class="s">.&quot;</span> <span class="o">%</span>
+                           <span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">this_timestamp</span><span class="p">,</span> <span class="n">old_timestamp</span><span class="p">))</span>
+
+        <span class="c"># now let&#39;s see if we have still work to do</span>
+        <span class="c"># this step is important when the model is inside another one</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks_to_update</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Block</span><span class="o">.</span><span class="n">UPDATE_NOT_FINISHED</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+</div>
+    <span class="k">def</span> <span class="nf">__get_output_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">block_connection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">block_connection</span><span class="o">.</span><span class="n">block1</span> <span class="o">==</span> <span class="n">block</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">block_connection</span>
+
+    <span class="k">def</span> <span class="nf">__get_successors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39; Returns an iterable of all the blocks connected</span>
+<span class="sd">            to one of the outputs of the given block. &#39;&#39;&#39;</span>
+        <span class="n">successors</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">block_connection</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">block_connection</span><span class="o">.</span><span class="n">block1</span> <span class="o">==</span> <span class="n">block</span><span class="p">:</span>
+                <span class="n">successors</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">block_connection</span><span class="o">.</span><span class="n">block2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">successors</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;M:</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">(&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_io_repr</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&#39;)&#39;</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+<div class="viewcode-block" id="Model.summary"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.summary">[docs]</a>    <span class="k">def</span> <span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">info</span><span class="p">(</span><span class="s">&quot;--- Model: </span><span class="si">%d</span><span class="s"> blocks, </span><span class="si">%d</span><span class="s"> connections&quot;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">info</span><span class="p">(</span><span class="s">&quot;- </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">block</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">conn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block_connection</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">info</span><span class="p">(</span><span class="s">&quot;- </span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">conn</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="Model.print_stats"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.print_stats">[docs]</a>    <span class="k">def</span> <span class="nf">print_stats</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Prints statistics for the leaves of the hierarchy. &quot;&quot;&quot;</span>
+        <span class="n">all_samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">collect_stats_leaves</span><span class="p">()</span>
+        <span class="n">write_stats</span><span class="p">(</span><span class="n">all_samples</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Model.collect_stats_leaves"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model.Model.collect_stats_leaves">[docs]</a>    <span class="k">def</span> <span class="nf">collect_stats_leaves</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Collects the stats from the leaves. &quot;&quot;&quot;</span>
+        <span class="n">all_samples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">name2block</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
+                <span class="n">all_samples</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">block</span><span class="o">.</span><span class="n">collect_stats_leaves</span><span class="p">())</span>
+
+        <span class="n">leaves</span> <span class="o">=</span> <span class="p">[</span><span class="n">v</span> <span class="k">for</span> <span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                  <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Model</span><span class="p">)]</span>
+        <span class="n">all_samples</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">leaves</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">all_samples</span></div></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

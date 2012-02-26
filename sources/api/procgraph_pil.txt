@@ -1,0 +1,51 @@
+procgraph_pil Package
+=====================
+
+:mod:`procgraph_pil` Package
+----------------------------
+
+.. automodule:: procgraph_pil
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`imread` Module
+--------------------
+
+.. automodule:: procgraph_pil.imread
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`imwrite` Module
+---------------------
+
+.. automodule:: procgraph_pil.imwrite
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pil_conversions` Module
+-----------------------------
+
+.. automodule:: procgraph_pil.pil_conversions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pil_operations` Module
+----------------------------
+
+.. automodule:: procgraph_pil.pil_operations
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`text` Module
+------------------
+
+.. automodule:: procgraph_pil.text
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

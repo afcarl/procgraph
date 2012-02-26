@@ -1,0 +1,35 @@
+utils Package
+=============
+
+:mod:`utils` Package
+--------------------
+
+.. automodule:: procgraph.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`calling_ext_program` Module
+---------------------------------
+
+.. automodule:: procgraph.utils.calling_ext_program
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`friendly_paths` Module
+----------------------------
+
+.. automodule:: procgraph.utils.friendly_paths
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`strings` Module
+---------------------
+
+.. automodule:: procgraph.utils.strings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

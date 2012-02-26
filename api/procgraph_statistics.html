@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_statistics Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_statistics Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-statistics-package">
+<h1>procgraph_statistics Package<a class="headerlink" href="#procgraph-statistics-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_statistics" title="procgraph_statistics"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_statistics</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_statistics"></span><p>Blocks for common statistical operations.</p>
+</div>
+<div class="section" id="module-procgraph_statistics.cov2corr">
+<span id="cov2corr-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">cov2corr</span></tt> Module<a class="headerlink" href="#module-procgraph_statistics.cov2corr" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_statistics.cov2corr.cov2corr">
+<tt class="descclassname">procgraph_statistics.cov2corr.</tt><tt class="descname">cov2corr</tt><big>(</big><em>covariance</em>, <em>zero_diagonal=True</em><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/cov2corr.html#cov2corr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.cov2corr.cov2corr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the correlation matrix from the covariance matrix.
+If zero_diagonal = True, the diagonal is set to 0 instead of 1.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>zero_diagonal</strong> &#8211; Whether to set the (noninformative) diagonal to zero.</li>
+<li><strong>covariance</strong> &#8211; A 2D numpy array.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">correlation: The exctracted correlation.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_statistics.covariance">
+<span id="covariance-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">covariance</span></tt> Module<a class="headerlink" href="#module-procgraph_statistics.covariance" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-procgraph_statistics.expectation">
+<span id="expectation-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">expectation</span></tt> Module<a class="headerlink" href="#module-procgraph_statistics.expectation" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_statistics.expectation.Expectation">
+<em class="property">class </em><tt class="descclassname">procgraph_statistics.expectation.</tt><tt class="descname">Expectation</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/expectation.html#Expectation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.expectation.Expectation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Computes the sample expectation of a signal.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_statistics.expectation.Expectation.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_statistics.expectation.Expectation.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.expectation.Expectation.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_statistics.expectation'</em><a class="headerlink" href="#procgraph_statistics.expectation.Expectation.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_statistics.expectation.Expectation.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/expectation.html#Expectation.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.expectation.Expectation.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.expectation.Expectation.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x460fe18&gt;]</em><a class="headerlink" href="#procgraph_statistics.expectation.Expectation.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.expectation.Expectation.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,Ex)]</em><a class="headerlink" href="#procgraph_statistics.expectation.Expectation.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_statistics.expectation.Expectation.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/expectation.html#Expectation.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.expectation.Expectation.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_statistics.minimum">
+<span id="minimum-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">minimum</span></tt> Module<a class="headerlink" href="#module-procgraph_statistics.minimum" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph_statistics.minimum.Maximum">
+<em class="property">class </em><tt class="descclassname">procgraph_statistics.minimum.</tt><tt class="descname">Maximum</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/minimum.html#Maximum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.minimum.Maximum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Computes the minimum of a signal over time.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Maximum.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_statistics.minimum.Maximum.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Maximum.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_statistics.minimum'</em><a class="headerlink" href="#procgraph_statistics.minimum.Maximum.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_statistics.minimum.Maximum.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/minimum.html#Maximum.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.minimum.Maximum.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Maximum.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x43f8c68&gt;]</em><a class="headerlink" href="#procgraph_statistics.minimum.Maximum.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Maximum.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,max_x)]</em><a class="headerlink" href="#procgraph_statistics.minimum.Maximum.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_statistics.minimum.Maximum.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/minimum.html#Maximum.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.minimum.Maximum.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="procgraph_statistics.minimum.Minimum">
+<em class="property">class </em><tt class="descclassname">procgraph_statistics.minimum.</tt><tt class="descname">Minimum</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/minimum.html#Minimum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.minimum.Minimum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Block" title="procgraph.core.block.Block"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Block</span></tt></a></p>
+<p>Computes the minimum of a signal over time.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Minimum.config">
+<tt class="descname">config</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph_statistics.minimum.Minimum.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Minimum.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph_statistics.minimum'</em><a class="headerlink" href="#procgraph_statistics.minimum.Minimum.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_statistics.minimum.Minimum.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/minimum.html#Minimum.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.minimum.Minimum.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Minimum.input">
+<tt class="descname">input</tt><em class="property"> = [&lt;procgraph.core.block_meta.BlockInput instance at 0x43f8cb0&gt;]</em><a class="headerlink" href="#procgraph_statistics.minimum.Minimum.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph_statistics.minimum.Minimum.output">
+<tt class="descname">output</tt><em class="property"> = [BlockOutput(fixed-signal,min_x)]</em><a class="headerlink" href="#procgraph_statistics.minimum.Minimum.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph_statistics.minimum.Minimum.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph_statistics/minimum.html#Minimum.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_statistics.minimum.Minimum.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph_statistics.variance">
+<span id="variance-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">variance</span></tt> Module<a class="headerlink" href="#module-procgraph_statistics.variance" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

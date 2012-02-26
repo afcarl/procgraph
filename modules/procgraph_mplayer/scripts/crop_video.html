@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_mplayer.scripts.crop_video &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_mplayer.scripts.crop_video</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_mplayer.scripts.crop_video</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">pg</span><span class="p">,</span> <span class="n">register_model_spec</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">usage</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    </span><span class="si">%c</span><span class="s">md  [-o &lt;output&gt;] &lt;filename&gt;</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../api/procgraph_mplayer.scripts.html#procgraph_mplayer.scripts.crop_video.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="n">usage</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&quot;-o&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;output&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;string&quot;</span><span class="p">,</span>
+                      <span class="n">help</span><span class="o">=</span><span class="s">&#39;Output video.&#39;</span><span class="p">)</span>
+
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Exactly one argument necessary.&#39;</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">video_crop</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="video_crop"><a class="viewcode-back" href="../../../api/procgraph_mplayer.scripts.html#procgraph_mplayer.scripts.crop_video.video_crop">[docs]</a><span class="k">def</span> <span class="nf">video_crop</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">-crop</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">get_motion_mask</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="c">#print mask</span>
+    <span class="n">H</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">useless_line</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">H</span><span class="p">)]</span>
+    <span class="n">useless_col</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">mask</span><span class="p">[:,</span> <span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">W</span><span class="p">)]</span>
+
+    <span class="n">useful_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">useless_line</span><span class="p">)</span>
+    <span class="n">useful_col</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">useless_col</span><span class="p">)</span>
+    <span class="c">#print useful_line</span>
+    <span class="c">#print useful_col</span>
+
+    <span class="n">crop_top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">useful_line</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">crop_bottom</span> <span class="o">=</span> <span class="n">H</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">useful_line</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">crop_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">useful_col</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">crop_right</span> <span class="o">=</span> <span class="n">W</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">useful_col</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Cropping left </span><span class="si">%s</span><span class="s">  right </span><span class="si">%s</span><span class="s">  top </span><span class="si">%s</span><span class="s">  bottom </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>
+          <span class="p">(</span><span class="n">crop_left</span><span class="p">,</span> <span class="n">crop_right</span><span class="p">,</span> <span class="n">crop_top</span><span class="p">,</span> <span class="n">crop_bottom</span><span class="p">))</span>
+
+    <span class="n">register_model_spec</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">--- model crop_movie</span>
+<span class="s">config video &#39;video&#39;</span>
+<span class="s">config output</span>
+<span class="s">config top = 0</span>
+<span class="s">config left = 0</span>
+<span class="s">config right = 0</span>
+<span class="s">config bottom = 0</span>
+
+<span class="s">|mplayer file=$video stats=1| --&gt; rgb</span>
+
+<span class="s">rgb --&gt; |crop left=$left top=$top bottom=$bottom right=$right| --&gt; rgb2</span>
+
+<span class="s">rgb2 --&gt; |mencoder quiet=1 file=$output timestamps=0|</span>
+<span class="s">    </span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="n">pg</span><span class="p">(</span><span class="s">&#39;crop_movie&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="n">crop_top</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">crop_bottom</span><span class="p">,</span>
+                          <span class="n">left</span><span class="o">=</span><span class="n">crop_left</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="n">crop_right</span><span class="p">,</span>
+                          <span class="n">video</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="get_motion_mask"><a class="viewcode-back" href="../../../api/procgraph_mplayer.scripts.html#procgraph_mplayer.scripts.crop_video.get_motion_mask">[docs]</a><span class="k">def</span> <span class="nf">get_motion_mask</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">register_model_spec</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">--- model movie_stats</span>
+<span class="s">config video &#39;video&#39;</span>
+<span class="s">output rgb_min</span>
+<span class="s">output rgb_max</span>
+
+<span class="s">|mplayer file=$video stats=1| --&gt; rgb</span>
+
+<span class="s">rgb --&gt; |minimum_over_time| --&gt; |output name=rgb_min|</span>
+<span class="s">rgb --&gt; |maximum_over_time| --&gt; |output name=rgb_max|</span>
+<span class="s">    </span>
+<span class="s">    &quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pg</span><span class="p">(</span><span class="s">&#39;movie_stats&#39;</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">video</span><span class="o">=</span><span class="n">filename</span><span class="p">))</span>
+    <span class="n">rgb_min</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="s">&#39;rgb_min&#39;</span><span class="p">)</span>
+    <span class="n">rgb_max</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="s">&#39;rgb_max&#39;</span><span class="p">)</span>
+
+    <span class="n">no_motion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">rgb_min</span> <span class="o">==</span> <span class="n">rgb_max</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">percentage</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">flat</span><span class="p">)</span> <span class="o">/</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Immobile: </span><span class="si">%.1f%%</span><span class="s"> of the image.&#39;</span> <span class="o">%</span> <span class="n">percentage</span><span class="p">(</span><span class="n">no_motion</span><span class="p">))</span>
+
+    <span class="n">bgcolor</span> <span class="o">=</span> <span class="n">rgb_min</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;bgcolor: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">bgcolor</span><span class="p">)</span>
+
+    <span class="n">whiter</span> <span class="o">=</span> <span class="n">rgb_min</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">bgcolor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">whiteg</span> <span class="o">=</span> <span class="n">rgb_min</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">bgcolor</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">whiteb</span> <span class="o">=</span> <span class="n">rgb_min</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">bgcolor</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">white</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">whiter</span><span class="p">,</span> <span class="n">whiteg</span><span class="p">),</span> <span class="n">whiteb</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;White: </span><span class="si">%.1f%%</span><span class="s"> of the image.&#39;</span> <span class="o">%</span> <span class="n">percentage</span><span class="p">(</span><span class="n">white</span><span class="p">))</span>
+
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">white</span><span class="p">,</span> <span class="n">no_motion</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Both: </span><span class="si">%.1f%%</span><span class="s"> of the image.&#39;</span> <span class="o">%</span> <span class="n">percentage</span><span class="p">(</span><span class="n">mask</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">mask</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

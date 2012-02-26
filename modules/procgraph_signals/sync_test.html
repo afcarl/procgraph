@@ -1,0 +1,270 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_signals.sync_test &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_signals.sync_test</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_signals.sync_test</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Generator</span><span class="p">,</span> <span class="n">Block</span><span class="p">,</span> <span class="n">ModelExecutionError</span><span class="p">,</span>
+    <span class="n">register_model_spec</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">procgraph.core.registrar</span> <span class="kn">import</span> <span class="n">default_library</span>
+<span class="kn">from</span> <span class="nn">procgraph.testing.utils</span> <span class="kn">import</span> <span class="n">PGTestCase</span>
+
+
+<span class="n">examples</span> <span class="o">=</span> <span class="p">[</span>
+<span class="p">(</span><span class="s">&quot;If coincident, output that&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1 2 3 4 5 6 7 8 9 </span>
+<span class="sd">1 2 3 4 5 6 7 8 9</span>
+<span class="sd">1 2 3 4 5 6 7 8 9 </span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="s">&quot;Skip additional&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1 2 3 4 5 6 7 8 9 </span>
+<span class="sd">1*2*3*4*5*6*7*8*9</span>
+<span class="sd">1 2 3 4 5 6 7 8 9 </span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="s">&quot;Wait for the next.&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1 2 3 4 5 6 7 8 9 </span>
+<span class="sd"> 1 2 3 4 5 6 7 8 9</span>
+<span class="sd"> 1 2 3 4 5 6 7 8 9</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+
+<span class="p">(</span><span class="s">&quot;Skip first one if necessary&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"> 1 2 3 4 5 6 7 8 9 </span>
+<span class="sd">* 1 2 3 4 5 6 7 8 9</span>
+<span class="sd">* 1 2 3 4 5 6 7 8 9</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="s">&quot;Wait for the next  (multiple delay).&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1   2   3   4   5   6   7   8   9 </span>
+<span class="sd"> 1   2   3   4   5   6   7   8   9</span>
+<span class="sd">  1   2   3   4   5   6   7   8   9</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="s">&quot;Skip master if signals don&#39;t arrive .&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1  *2  *3  **4***5**6   7   8   9 </span>
+<span class="sd"> 1   2   3   4   5   6   7   8   9</span>
+<span class="sd"> 1   2   3   4   5   6   7   8   9</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="s">&quot;Skip slave if other slave doesn&#39;t arrive.&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">1   2   3   4   5   6   7   8   9 </span>
+<span class="sd"> 1*  2   3   4   5   6   7   8   9</span>
+<span class="sd">  1   2   3   4   5   6   7   8   9</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">(</span><span class="s">&quot;Skip slave if other slave doesn&#39;t arrive.&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">* 1   2   3   4   9  </span>
+<span class="sd"> 1   *   2   3   4   9</span>
+<span class="sd">   1   2   3   4   9</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">register_model_spec</span><span class="p">(</span><span class="s">&#39;&#39;&#39;</span>
+<span class="s">--- model sync_test</span>
+
+<span class="s">|log_sim line=$master| -&gt; master </span>
+<span class="s">|log_sim line=$slave1| -&gt; slave1</span>
+<span class="s">|log_sim line=$slave2| -&gt; slave2</span>
+
+<span class="s">master, slave1, slave2 -&gt; |sync2| -&gt; |check_sync| --&gt; |output name=value|</span>
+
+<span class="s">&#39;&#39;&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="LogSim"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.LogSim">[docs]</a><span class="k">class</span> <span class="nc">LogSim</span><span class="p">(</span><span class="n">Generator</span><span class="p">):</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;log_sim&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;stream&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LogSim.init"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.LogSim.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">line</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39; &#39;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;*&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">char</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Bad input &quot;</span><span class="si">%s</span><span class="s">&quot; at char </span><span class="si">%d</span><span class="s"> of &quot;</span><span class="si">%s</span><span class="s">&quot;.&#39;</span> <span class="o">%</span> \
+                                <span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="LogSim.next_data_status"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.LogSim.next_data_status">[docs]</a>    <span class="k">def</span> <span class="nf">next_data_status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LogSim.update"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.LogSim.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span>
+        <span class="n">timestamp</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="CheckSync"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.CheckSync">[docs]</a><span class="k">class</span> <span class="nc">CheckSync</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;check_sync&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CheckSync.update"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.CheckSync.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_values</span><span class="p">()</span>
+        <span class="n">timestamps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_timestamps</span><span class="p">()</span>
+
+        <span class="n">ok</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span>  <span class="n">v</span> <span class="o">!=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">timestamps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">t</span> <span class="o">!=</span> <span class="n">timestamps</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">ok</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Received bad inputs. Timestamps: </span><span class="si">%s</span><span class="s"> Values: </span><span class="si">%s</span><span class="s"> &#39;</span> <span class="o">%</span> \
+                    <span class="p">(</span><span class="n">timestamps</span><span class="p">,</span> <span class="n">values</span><span class="p">)</span>
+
+            <span class="k">raise</span> <span class="n">ModelExecutionError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="TestSync"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.TestSync">[docs]</a><span class="k">class</span> <span class="nc">TestSync</span><span class="p">(</span><span class="n">PGTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TestSync.not_working"><a class="viewcode-back" href="../../api/procgraph_signals.html#procgraph_signals.sync_test.TestSync.not_working">[docs]</a>    <span class="k">def</span> <span class="nf">not_working</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">description</span><span class="p">,</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">examples</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">&quot;Trying with: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">description</span>
+            <span class="c"># get non-empty lines</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span> <span class="n">example</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">))</span>
+            <span class="k">print</span> <span class="n">lines</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;master&#39;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                      <span class="s">&#39;slave1&#39;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                      <span class="s">&#39;slave2&#39;</span><span class="p">:</span> <span class="n">lines</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
+
+            <span class="n">model</span> <span class="o">=</span> <span class="n">default_library</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="s">&#39;sync_test&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                             <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+
+            <span class="n">model</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">model</span><span class="o">.</span><span class="n">has_more</span><span class="p">():</span>
+                <span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span>
+
+            <span class="n">final</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">get_output</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">final</span> <span class="o">!=</span> <span class="mi">9</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;expected final output to be 9, not </span><span class="si">%s</span><span class="s">&#39;</span>
+                                <span class="o">%</span> <span class="n">final</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

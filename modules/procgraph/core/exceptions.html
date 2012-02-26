@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.exceptions &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.exceptions</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.exceptions</h1><div class="highlight"><pre>
+<span class="k">class</span> <span class="nc">PGException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+<div class="viewcode-block" id="PGException"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.PGException">[docs]</a>
+
+<span class="k">class</span> <span class="nc">BlockWriterError</span><span class="p">(</span><span class="n">PGException</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; An error by who wrote the block (e.g.: did not define signals).&#39;&#39;&#39;</span></div>
+<div class="viewcode-block" id="BlockWriterError"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.BlockWriterError">[docs]</a>    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">ModelWriterError</span><span class="p">(</span><span class="n">PGException</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; An error by who wrote the model, can be either Syntax or Semantic &#39;&#39;&#39;</span></div>
+<div class="viewcode-block" id="ModelWriterError"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.ModelWriterError">[docs]</a>    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">SemanticError</span><span class="p">(</span><span class="n">ModelWriterError</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; A semantic error by who wrote the model spec.</span></div>
+<div class="viewcode-block" id="SemanticError"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.SemanticError">[docs]</a><span class="sd">       (and, as a platypus case, when wrong config is passed.&#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">element</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="c"># http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">element</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+        <span class="k">if</span> <span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="s">&#39;where&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">element</span> <span class="o">=</span> <span class="n">element</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">+=</span> <span class="n">format_where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="k">class</span> <span class="nc">PGSyntaxError</span><span class="p">(</span><span class="n">ModelWriterError</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; A syntactic error by who wrote the model spec.&#39;&#39;&#39;</span></div>
+<div class="viewcode-block" id="PGSyntaxError"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.PGSyntaxError">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="c"># http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">where</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">where</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">add_prefix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">__str__</span><span class="p">(),</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="k">class</span> <span class="nc">ModelExecutionError</span><span class="p">(</span><span class="n">PGException</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Runtime errors, including misuse by the user &#39;&#39;&#39;</span></div>
+<div class="viewcode-block" id="ModelExecutionError"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.ModelExecutionError">[docs]</a>    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">BadInput</span><span class="p">(</span><span class="n">ModelExecutionError</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Exception thrown to communicate a problem with one</span></div>
+<div class="viewcode-block" id="BadInput"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.BadInput">[docs]</a><span class="sd">        of the inputs to the block. &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">input_signal</span><span class="p">):</span>
+        <span class="c"># http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">input_signal</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_signal</span> <span class="o">=</span> <span class="n">input_signal</span>
+        <span class="k">if</span> <span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bad_value</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="n">input_signal</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bad_value</span> <span class="o">=</span> <span class="s">&#39;??? (block not given)&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;(unknown)&#39;</span>
+
+        <span class="c"># TODO: add short bad_value</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;Bad input </span><span class="si">%r</span><span class="s"> for block </span><span class="si">%r</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_signal</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">format_where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="k">class</span> <span class="nc">BadConfig</span><span class="p">(</span><span class="n">ModelExecutionError</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Exception thrown to communicate a problem with one</span></div>
+<div class="viewcode-block" id="BadConfig"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.BadConfig">[docs]</a><span class="sd">        of the configuration values passed to the block. &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="n">error</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="o">=</span> <span class="n">block</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bad_value</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="n">config</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;(unknown)&#39;</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;Bad config </span><span class="si">%r</span><span class="s"> = </span><span class="si">%r</span><span class="s"> for block </span><span class="si">%r</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span>
+             <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bad_value</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">error</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">+=</span> <span class="n">format_where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span>
+
+
+<span class="c"># A couple of functions for pretty errors</span>
+<span class="k">def</span> <span class="nf">aslist</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span></div>
+<div class="viewcode-block" id="aslist"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.aslist">[docs]</a>        <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;&lt;empty&gt;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">x_not_found</span><span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">iterable</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Shortcut for creating pretty error messages. &#39;&#39;&#39;</span></div>
+<div class="viewcode-block" id="x_not_found"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.x_not_found">[docs]</a>    <span class="c"># TODO: add guess in case of typos</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s">&#39;Could not find </span><span class="si">%s</span><span class="s"> </span><span class="si">%r</span><span class="s">. I know </span><span class="si">%s</span><span class="s">.&#39;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">what</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">aslist</span><span class="p">(</span><span class="n">iterable</span><span class="p">)))</span>
+
+
+<span class="k">def</span> <span class="nf">add_prefix</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="s">&quot;&quot;</span></div>
+<div class="viewcode-block" id="add_prefix"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.add_prefix">[docs]</a>    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">s</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">prefix</span> <span class="o">+</span> <span class="n">l</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">format_where</span><span class="p">(</span><span class="n">element_or_block</span><span class="p">):</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">element_or_block</span></div>
+<div class="viewcode-block" id="format_where"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.exceptions.format_where">[docs]</a>    <span class="k">if</span> <span class="n">e</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">where</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">add_prefix</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">where</span><span class="o">.</span><span class="n">__str__</span><span class="p">(),</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot; (no position given)&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot; (no element/block given)&quot;</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

@@ -1,0 +1,51 @@
+procgraph_statistics Package
+============================
+
+:mod:`procgraph_statistics` Package
+-----------------------------------
+
+.. automodule:: procgraph_statistics
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`cov2corr` Module
+----------------------
+
+.. automodule:: procgraph_statistics.cov2corr
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`covariance` Module
+------------------------
+
+.. automodule:: procgraph_statistics.covariance
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`expectation` Module
+-------------------------
+
+.. automodule:: procgraph_statistics.expectation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`minimum` Module
+---------------------
+
+.. automodule:: procgraph_statistics.minimum
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`variance` Module
+----------------------
+
+.. automodule:: procgraph_statistics.variance
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

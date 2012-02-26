@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_hdf.hdfwrite &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_hdf.hdfwrite</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_hdf.hdfwrite</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">procgraph</span>  <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">BadInput</span>
+<span class="kn">from</span> <span class="nn">procgraph.block_utils</span> <span class="kn">import</span> <span class="n">make_sure_dir_exists</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">tables</span>
+<span class="kn">from</span> <span class="nn">.tables_cache</span> <span class="kn">import</span> <span class="n">tc_open_for_writing</span><span class="p">,</span> <span class="n">tc_close</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+
+<span class="c"># TODO: write original order</span>
+
+
+<span class="n">PROCGRAPH_LOG_GROUP</span> <span class="o">=</span> <span class="s">&#39;procgraph&#39;</span>
+
+
+<div class="viewcode-block" id="HDFwrite"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfwrite.HDFwrite">[docs]</a><span class="k">class</span> <span class="nc">HDFwrite</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; This block writes the incoming signals to a file in HDF_ format.</span>
+<span class="sd">     </span>
+<span class="sd">    The HDF format is organized as follows: ::</span>
+<span class="sd">    </span>
+<span class="sd">         /            (root)</span>
+<span class="sd">         /procgraph             (group with name procgraph)</span>
+<span class="sd">         /procgraph/signal1     (table)</span>
+<span class="sd">         /procgraph/signal2     (table)</span>
+<span class="sd">         ...</span>
+<span class="sd">         </span>
+<span class="sd">    Each table has the following fields:</span>
+<span class="sd">    </span>
+<span class="sd">         time         (float64 timestamp)</span>
+<span class="sd">         value        (the datatype of the signal)</span>
+<span class="sd">         </span>
+<span class="sd">    If a signal changes datatype, then an error is thrown.</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;hdfwrite&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">input_is_variable</span><span class="p">(</span><span class="s">&#39;Signals to be written&#39;</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">,</span> <span class="s">&#39;HDF file to write&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;compress&#39;</span><span class="p">,</span> <span class="s">&#39;Whether to compress the hdf table.&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;complib&#39;</span><span class="p">,</span> <span class="s">&#39;Compression library (zlib, bzip2, blosc, lzo).&#39;</span><span class="p">,</span>
+                 <span class="n">default</span><span class="o">=</span><span class="s">&#39;zlib&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="s">&#39;complevel&#39;</span><span class="p">,</span> <span class="s">&#39;Compression level (0-9)&#39;</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HDFwrite.init"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfwrite.HDFwrite.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">make_sure_dir_exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span> <span class="o">+</span> <span class="s">&#39;.active&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Writing to file </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hf</span> <span class="o">=</span> <span class="n">tc_open_for_writing</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hf</span><span class="o">.</span><span class="n">createGroup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hf</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;procgraph&#39;</span><span class="p">)</span>
+        <span class="c"># TODO: add meta info</span>
+
+        <span class="c"># signal name -&gt; table in hdf file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c"># signal name -&gt; last timestamp written</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal2timestamp</span> <span class="o">=</span> <span class="p">{}</span>
+</div>
+<div class="viewcode-block" id="HDFwrite.update"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfwrite.HDFwrite.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">signals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_signals_names</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">signal</span> <span class="ow">in</span> <span class="n">signals</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_signal</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HDFwrite.log_signal"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfwrite.HDFwrite.log_signal">[docs]</a>    <span class="k">def</span> <span class="nf">log_signal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">):</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input_timestamp</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+        <span class="c"># only do something if we have something </span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span>
+        <span class="k">assert</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="c"># TODO: try converting</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;I can only log numpy arrays, not </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">value</span><span class="o">.</span><span class="n">__class__</span>
+                <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">signal</span><span class="p">)</span>
+
+        <span class="c"># also check that we didn&#39;t already log this instant</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2timestamp</span><span class="p">)</span> <span class="ow">and</span> \
+           <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">signal2timestamp</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span> <span class="o">==</span> <span class="n">timestamp</span><span class="p">):</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">signal2timestamp</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestamp</span>
+
+        <span class="c"># check that we have the table for this signal</span>
+        <span class="n">table_dtype</span> <span class="o">=</span> <span class="p">[(</span><span class="s">&#39;time&#39;</span><span class="p">,</span> <span class="s">&#39;float64&#39;</span><span class="p">),</span>
+                       <span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">shape</span><span class="p">)]</span>
+
+        <span class="n">table_dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="n">table_dtype</span><span class="p">)</span>
+
+        <span class="c"># TODO: check that the dtype is consistnet</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">signal</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span><span class="p">:</span>
+            <span class="c"># a bit of compression. zlib is standard for hdf5</span>
+            <span class="c"># fletcher32 writes by entry rather than by rows</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">compress</span><span class="p">:</span>
+                <span class="n">filters</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">Filters</span><span class="p">(</span>
+                            <span class="n">complevel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">complevel</span><span class="p">,</span>
+                            <span class="n">complib</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">complib</span><span class="p">,</span>
+                            <span class="n">fletcher32</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">filters</span> <span class="o">=</span> <span class="n">tables</span><span class="o">.</span><span class="n">Filters</span><span class="p">(</span><span class="n">fletcher32</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hf</span><span class="o">.</span><span class="n">createTable</span><span class="p">(</span>
+                        <span class="n">where</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">signal</span><span class="p">,</span>
+                        <span class="n">description</span><span class="o">=</span><span class="n">table_dtype</span><span class="p">,</span>
+                        <span class="c">#expectedrows=10000, # large guess</span>
+                        <span class="n">byteorder</span><span class="o">=</span><span class="s">&#39;little&#39;</span><span class="p">,</span>
+                        <span class="n">filters</span><span class="o">=</span><span class="n">filters</span>
+                    <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">NotImplementedError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not create table with dtype </span><span class="si">%r</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> \
+                      <span class="p">(</span><span class="n">table_dtype</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">input_signal</span><span class="o">=</span><span class="n">signal</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Created table </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">table</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">signal2table</span><span class="p">[</span><span class="n">signal</span><span class="p">]</span>
+
+        <span class="n">row</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">table_dtype</span><span class="p">)</span>
+        <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">timestamp</span>
+        <span class="k">if</span> <span class="n">value</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">][:]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="c"># row[0][&#39;value&#39;] = value  &lt;--- gives memory error</span>
+        <span class="n">table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HDFwrite.finish"><a class="viewcode-back" href="../../api/procgraph_hdf.html#procgraph_hdf.hdfwrite.HDFwrite.finish">[docs]</a>    <span class="k">def</span> <span class="nf">finish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tc_close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hf</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tmp_filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

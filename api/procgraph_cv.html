@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_cv Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_cv Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="procgraph-cv-package">
+<h1>procgraph_cv Package<a class="headerlink" href="#procgraph-cv-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><a class="reference internal" href="#module-procgraph_cv" title="procgraph_cv"><tt class="xref py py-mod docutils literal"><span class="pre">procgraph_cv</span></tt></a> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph_cv"></span><p>Blocks using the OpenCV library.</p>
+</div>
+<div class="section" id="module-procgraph_cv.opencv_utils">
+<span id="opencv-utils-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">opencv_utils</span></tt> Module<a class="headerlink" href="#module-procgraph_cv.opencv_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph_cv.opencv_utils.cv_to_numpy">
+<tt class="descclassname">procgraph_cv.opencv_utils.</tt><tt class="descname">cv_to_numpy</tt><big>(</big><em>im</em><big>)</big><a class="reference internal" href="../modules/procgraph_cv/opencv_utils.html#cv_to_numpy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_cv.opencv_utils.cv_to_numpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts opencv to numpy</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_cv.opencv_utils.gradient">
+<tt class="descclassname">procgraph_cv.opencv_utils.</tt><tt class="descname">gradient</tt><big>(</big><em>grayscale</em>, <em>aperture_size=3</em><big>)</big><a class="reference internal" href="../modules/procgraph_cv/opencv_utils.html#gradient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_cv.opencv_utils.gradient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the gradient of an image using a Sobel filter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>grayscale</strong> (<em>HxW array float</em>) &#8211; A field to derive.</li>
+<li><strong>aperture_size</strong> (<em>int,odd,&gt;=1</em>) &#8211; Aperture of the Sobel filter (odd).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gx: Gradient in the <em>x</em> direction.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array(HxW,float)</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gy: Gradient in the <em>y</em> direction.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array(HxW,float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_cv.opencv_utils.numpy_to_cv">
+<tt class="descclassname">procgraph_cv.opencv_utils.</tt><tt class="descname">numpy_to_cv</tt><big>(</big><em>numpy_array</em><big>)</big><a class="reference internal" href="../modules/procgraph_cv/opencv_utils.html#numpy_to_cv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_cv.opencv_utils.numpy_to_cv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a HxW or HxWx3 numpy array to OpenCV &#8216;image&#8217;</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph_cv.opencv_utils.smooth">
+<tt class="descclassname">procgraph_cv.opencv_utils.</tt><tt class="descname">smooth</tt><big>(</big><em>grayscale</em>, <em>gaussian_std=5.0</em><big>)</big><a class="reference internal" href="../modules/procgraph_cv/opencv_utils.html#smooth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph_cv.opencv_utils.smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smooths an image with a Gaussian filter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>grayscale</strong> (<em>HxW array float</em>) &#8211; A field to derive.</li>
+<li><strong>gaussian_std</strong> (<em>float,&gt;0</em>) &#8211; Std-deviation of the Gaussian filter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">smoothed: The smoothed image.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">array(HxW,float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

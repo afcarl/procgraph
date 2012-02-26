@@ -1,0 +1,282 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>block_utils Package &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/jquery.js"></script>
+    <script type="text/javascript" src="../static/underscore.js"></script>
+    <script type="text/javascript" src="../static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>block_utils Package</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="block-utils-package">
+<h1>block_utils Package<a class="headerlink" href="#block-utils-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="id1">
+<h2><tt class="xref py py-mod docutils literal"><span class="pre">block_utils</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-procgraph.block_utils"></span><p>Very common utils for writing blocks.</p>
+</div>
+<div class="section" id="module-procgraph.block_utils.executables">
+<span id="executables-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">executables</span></tt> Module<a class="headerlink" href="#module-procgraph.block_utils.executables" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.block_utils.executables.executable_exists">
+<tt class="descclassname">procgraph.block_utils.executables.</tt><tt class="descname">executable_exists</tt><big>(</big><em>executable</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/executables.html#executable_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.executables.executable_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the given executable exists.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.block_utils.file_io">
+<span id="file-io-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">file_io</span></tt> Module<a class="headerlink" href="#module-procgraph.block_utils.file_io" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.block_utils.file_io.expand">
+<tt class="descclassname">procgraph.block_utils.file_io.</tt><tt class="descname">expand</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/file_io.html#expand"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.file_io.expand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands environment variables in the filename.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.file_io.make_sure_dir_exists">
+<tt class="descclassname">procgraph.block_utils.file_io.</tt><tt class="descname">make_sure_dir_exists</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/file_io.html#make_sure_dir_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.file_io.make_sure_dir_exists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes sure that the path to file exists, but creating directories.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.block_utils.image_checks">
+<span id="image-checks-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">image_checks</span></tt> Module<a class="headerlink" href="#module-procgraph.block_utils.image_checks" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.block_utils.image_checks.assert_gray_image">
+<tt class="descclassname">procgraph.block_utils.image_checks.</tt><tt class="descname">assert_gray_image</tt><big>(</big><em>image</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/image_checks.html#assert_gray_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.image_checks.assert_gray_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.image_checks.assert_rgb_image">
+<tt class="descclassname">procgraph.block_utils.image_checks.</tt><tt class="descname">assert_rgb_image</tt><big>(</big><em>image</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/image_checks.html#assert_rgb_image"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.image_checks.assert_rgb_image" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.image_checks.check_2d_array">
+<tt class="descclassname">procgraph.block_utils.image_checks.</tt><tt class="descname">check_2d_array</tt><big>(</big><em>value</em>, <em>name=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/image_checks.html#check_2d_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.image_checks.check_2d_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that we have 2D numpy array</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.image_checks.check_rgb">
+<tt class="descclassname">procgraph.block_utils.image_checks.</tt><tt class="descname">check_rgb</tt><big>(</big><em>block</em>, <em>input</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/image_checks.html#check_rgb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.image_checks.check_rgb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the selected input is either  a RGB image.
+That is, a numpy array of uint8 of shape H x W x 3. 
+Raises BadInput if it is not.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.image_checks.check_rgb_or_grayscale">
+<tt class="descclassname">procgraph.block_utils.image_checks.</tt><tt class="descname">check_rgb_or_grayscale</tt><big>(</big><em>block</em>, <em>input</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/image_checks.html#check_rgb_or_grayscale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.image_checks.check_rgb_or_grayscale" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that the selected input is either a grayscale or RGB image.
+That is, a numpy array of uint8 either H x W,  H x W x 3,
+or HxWx4. 
+Raises BadInput if it is not.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.block_utils.natsort">
+<span id="natsort-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">natsort</span></tt> Module<a class="headerlink" href="#module-procgraph.block_utils.natsort" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="procgraph.block_utils.natsort.natcasecmp">
+<tt class="descclassname">procgraph.block_utils.natsort.</tt><tt class="descname">natcasecmp</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/natsort.html#natcasecmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.natsort.natcasecmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Natural string comparison, ignores case.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.natsort.natcmp">
+<tt class="descclassname">procgraph.block_utils.natsort.</tt><tt class="descname">natcmp</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/natsort.html#natcmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.natsort.natcmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Natural string comparison, case sensitive.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.natsort.natsort">
+<tt class="descclassname">procgraph.block_utils.natsort.</tt><tt class="descname">natsort</tt><big>(</big><em>seq</em>, <em>kcmp=&lt;function natcmp at 0x35ea230&gt;</em>, <em>key=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/natsort.html#natsort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.natsort.natsort" title="Permalink to this definition">¶</a></dt>
+<dd><p>In-place natural string sort.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.natsort.natsort_key">
+<tt class="descclassname">procgraph.block_utils.natsort.</tt><tt class="descname">natsort_key</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/natsort.html#natsort_key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.natsort.natsort_key" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used internally to get a tuple by which s is sorted.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.natsort.natsorted">
+<tt class="descclassname">procgraph.block_utils.natsort.</tt><tt class="descname">natsorted</tt><big>(</big><em>seq</em>, <em>kcmp=&lt;function natcmp at 0x35ea230&gt;</em>, <em>key=None</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/natsort.html#natsorted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.natsort.natsorted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of seq, sorted by natural string sort.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="procgraph.block_utils.natsort.try_int">
+<tt class="descclassname">procgraph.block_utils.natsort.</tt><tt class="descname">try_int</tt><big>(</big><em>s</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/natsort.html#try_int"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.natsort.try_int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to integer if possible.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-procgraph.block_utils.textlog">
+<span id="textlog-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">textlog</span></tt> Module<a class="headerlink" href="#module-procgraph.block_utils.textlog" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="procgraph.block_utils.textlog.TextLog">
+<em class="property">class </em><tt class="descclassname">procgraph.block_utils.textlog.</tt><tt class="descname">TextLog</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/textlog.html#TextLog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="procgraph.core.html#procgraph.core.block.Generator" title="procgraph.core.block.Generator"><tt class="xref py py-class docutils literal"><span class="pre">procgraph.core.block.Generator</span></tt></a></p>
+<p>This represents a generic log reader that reads
+from a file line-by-line.</p>
+<p>Subclasses should overload the parse_format() static method.
+Also they should put the adequate output() methods.</p>
+<p class="rubric">Methods</p>
+<dl class="attribute">
+<dt id="procgraph.block_utils.textlog.TextLog.config">
+<tt class="descname">config</tt><em class="property"> = [BlockConfig('file',False,'not-given','File to read. If it ends with ``bz2``, it is treated as compressed.','')]</em><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.block_utils.textlog.TextLog.defined_in">
+<tt class="descname">defined_in</tt><em class="property"> = 'procgraph.block_utils.textlog'</em><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.defined_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.block_utils.textlog.TextLog.init">
+<tt class="descname">init</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/textlog.html#TextLog.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.block_utils.textlog.TextLog.input">
+<tt class="descname">input</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.input" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.block_utils.textlog.TextLog.next_data_status">
+<tt class="descname">next_data_status</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/textlog.html#TextLog.next_data_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.next_data_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="procgraph.block_utils.textlog.TextLog.output">
+<tt class="descname">output</tt><em class="property"> = []</em><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.output" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.block_utils.textlog.TextLog.parse_format">
+<tt class="descname">parse_format</tt><big>(</big><em>line</em><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/textlog.html#TextLog.parse_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.parse_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function implemented by subclasses to interpret one line from 
+the log.</p>
+<p>Return None is the line should be ignored (for example it is 
+a comment). Otherwise, return a tuple (timestamp, array of 
+(name, value) ).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.block_utils.textlog.TextLog.read_next_line">
+<tt class="descname">read_next_line</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/textlog.html#TextLog.read_next_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.read_next_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="procgraph.block_utils.textlog.TextLog.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="../modules/procgraph/block_utils/textlog.html#TextLog.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#procgraph.block_utils.textlog.TextLog.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

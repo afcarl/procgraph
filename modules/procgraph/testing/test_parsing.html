@@ -1,0 +1,222 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.testing.test_parsing &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.testing.test_parsing</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.testing.test_parsing</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">PGTestCase</span>
+
+<span class="n">good_examples</span> <span class="o">=</span> <span class="p">[</span>
+<span class="s">&quot;u = -1&quot;</span><span class="p">,</span>
+<span class="s">&quot;|GENERATOR| --&gt; result&quot;</span><span class="p">,</span>
+<span class="s">&quot;result --&gt; |SINK|&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |FUNCTION| --&gt; result&quot;</span><span class="p">,</span>
+<span class="s">&quot;u ,v -&gt; |FUNCTION| --&gt; result, d&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |opa:FUNCTION| -&gt;  result&quot;</span><span class="p">,</span>
+<span class="s">&quot;u --&gt; |op1:FUNCTION op=tan| -&gt; result&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |FUNCTION| -&gt; |FUNCTION2| -&gt; result&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |FUNCTION| -&gt; a -&gt; |FUNCTION2| -&gt; result&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |FUNCTION| -&gt; a -&gt; |FUNCTION2| -&gt; |FUNCTION2| -&gt; result&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |FUNCTION| -&gt; a -&gt; |FUNCTION2| ---&gt; a,d --&gt; |FUNCTION2| -&gt; result&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;  |origin| -&gt; a  -&gt; |block| &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot; |constant value=12| -&gt; [0] a  -&gt; |block| &quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s">&quot;u = 1&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;u = 1</span>
+<span class="sd">u = 2</span>
+<span class="sd">u =3 &quot;&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;&quot;u = 2</span>
+<span class="s">x -&gt; |func2| -&gt; res3&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;x -&gt; |func2| </span>
+<span class="sd">u = 2&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">x -&gt; |func2| </span>
+
+<span class="sd">u = 2</span>
+
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="s">&quot; a -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; a[o] -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; a.s[o] -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; [i]a -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; [i]a[d] -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; [i]a[d], b -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; [i]a[d], b[c] -&gt; |block| &quot;</span><span class="p">,</span>
+<span class="s">&quot; b1.f [input_name] -&gt; |test| -&gt; [t] y [U], z [t] -&gt; |test| -&gt; res&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">b1.f [input_name] -&gt; |test| -&gt; [t] y [U], z [t] -&gt; |test| -&gt; res</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd"># this is a comment</span>
+<span class="sd">u = 1</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="c"># I don&#39;t think we use it anymore</span>
+<span class="c"># in case, readd:</span>
+<span class="c"># # parameter_list = delimitedList(key_value_pair) ^ OneOrMore(key_value_pair)</span>
+<span class="c"># &quot; |generic in=0,out=2|  &quot;,</span>
+<span class="s">&quot; |generic in=0 out=2|  &quot;</span><span class="p">,</span>
+<span class="c"># assignment with object</span>
+<span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">g1.in = 2</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="c"># quoted strings</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">g1.in = &quot;ciao&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">g1.in = &#39;ciao&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="c"># Triple quotes</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">g1.in = &#39;&#39;&#39;ciao</span>
+<span class="sd">come va&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">g1.in = &quot;&quot;&quot;ciao</span>
+<span class="sd">come va&quot;&quot;&quot;</span>
+<span class="sd">&#39;&#39;&#39;</span><span class="p">,</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">g1.in = &quot;ci\\&quot;a/o&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="p">,</span>
+<span class="c"># underscores </span>
+<span class="s">&quot; |output name=x_old|  &quot;</span>
+
+
+<span class="p">]</span>
+
+
+<span class="n">bad_examples</span> <span class="o">=</span> <span class="p">[</span>
+<span class="c"># empty string gives error</span>
+<span class="s">&quot;   </span><span class="se">\n</span><span class="s"> </span><span class="se">\n</span><span class="s"> &quot;</span><span class="p">,</span>
+<span class="s">&quot;u = -1a&quot;</span><span class="p">,</span>
+<span class="s">&quot;|GENERATOR| --&gt; result resu&quot;</span><span class="p">,</span>
+<span class="s">&quot;|GENERATOR GENERATOR| --&gt; result resu&quot;</span><span class="p">,</span>
+<span class="s">&quot;result x --&gt; |SINK|&quot;</span><span class="p">,</span>
+<span class="s">&quot;u -&gt; |FUNCTION| |FUNCTION| --&gt; result&quot;</span><span class="p">,</span>
+<span class="c"># invalid names</span>
+<span class="s">&quot;.u = 2&quot;</span><span class="p">,</span>
+<span class="s">&quot;.u.d = 2&quot;</span><span class="p">,</span>
+<span class="s">&quot;1u = 2&quot;</span><span class="p">,</span>
+<span class="c"># bad quotation</span>
+<span class="sd">&quot;&quot;&quot; a = &quot;ci&quot;ao&quot; &quot;&quot;&quot;</span>
+
+<span class="p">]</span>
+
+
+<div class="viewcode-block" id="SyntaxTest"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_parsing.SyntaxTest">[docs]</a><span class="k">class</span> <span class="nc">SyntaxTest</span><span class="p">(</span><span class="n">PGTestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="SyntaxTest.testBadExamples"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_parsing.SyntaxTest.testBadExamples">[docs]</a>    <span class="k">def</span> <span class="nf">testBadExamples</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">bad_examples</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_syntax_error</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SyntaxTest.testExamples"><a class="viewcode-back" href="../../../api/procgraph.testing.html#procgraph.testing.test_parsing.SyntaxTest.testExamples">[docs]</a>    <span class="k">def</span> <span class="nf">testExamples</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="n">good_examples</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_syntax_ok</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+</pre></div></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

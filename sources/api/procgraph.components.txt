@@ -1,0 +1,18 @@
+components Package
+==================
+
+:mod:`components` Package
+-------------------------
+
+.. automodule:: procgraph.components
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    procgraph.components.debug_components
+

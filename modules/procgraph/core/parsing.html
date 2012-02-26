@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.parsing &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.parsing</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.parsing</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">pyparsing</span> <span class="kn">import</span> <span class="n">ParserElement</span>
+<span class="c"># Enable memoization; much faster, but we can&#39;t use</span>
+<span class="c"># parse actions with side effects.</span>
+<span class="n">ParserElement</span><span class="o">.</span><span class="n">enablePackrat</span><span class="p">()</span>
+
+<span class="kn">from</span> <span class="nn">pyparsing</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Regex</span><span class="p">,</span> <span class="n">Word</span><span class="p">,</span> <span class="n">delimitedList</span><span class="p">,</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">OneOrMore</span><span class="p">,</span>
+    <span class="n">stringEnd</span><span class="p">,</span> <span class="n">alphanums</span><span class="p">,</span> <span class="n">ZeroOrMore</span><span class="p">,</span> <span class="n">Group</span><span class="p">,</span> <span class="n">Suppress</span><span class="p">,</span> <span class="n">lineEnd</span><span class="p">,</span>
+    <span class="n">Combine</span><span class="p">,</span> <span class="n">nums</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">CaselessLiteral</span><span class="p">,</span>
+    <span class="n">restOfLine</span><span class="p">,</span> <span class="n">QuotedString</span><span class="p">,</span> <span class="n">ParseException</span><span class="p">,</span> <span class="n">Forward</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">.parsing_elements</span> <span class="kn">import</span> <span class="p">(</span><span class="n">VariableReference</span><span class="p">,</span> <span class="n">ParsedBlock</span><span class="p">,</span>
+    <span class="n">ParsedAssignment</span><span class="p">,</span> <span class="n">ImportStatement</span><span class="p">,</span> <span class="n">ParsedModel</span><span class="p">,</span> <span class="n">ParsedSignal</span><span class="p">,</span>
+    <span class="n">ParsedSignalList</span><span class="p">,</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Where</span><span class="p">,</span>
+    <span class="n">output_from_tokens</span><span class="p">,</span> <span class="n">input_from_tokens</span><span class="p">,</span> <span class="n">config_from_tokens</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">PGSyntaxError</span>
+
+
+<div class="viewcode-block" id="eval_dictionary"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.eval_dictionary">[docs]</a><span class="k">def</span> <span class="nf">eval_dictionary</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s">&#39;content&#39;</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;value&#39;</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">a</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">d</span>
+
+</div>
+<div class="viewcode-block" id="eval_array"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.eval_array">[docs]</a><span class="k">def</span> <span class="nf">eval_array</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+    <span class="n">elements</span> <span class="o">=</span> <span class="n">tokens</span><span class="o">.</span><span class="n">asList</span><span class="p">()</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">elements</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="c"># Shortcuts</span></div>
+<span class="n">S</span> <span class="o">=</span> <span class="n">Suppress</span>
+<span class="n">O</span> <span class="o">=</span> <span class="n">Optional</span>
+
+<span class="c"># Important: should be at the beginning</span>
+<span class="c"># make end of lines count</span>
+<span class="n">ParserElement</span><span class="o">.</span><span class="n">setDefaultWhitespaceChars</span><span class="p">(</span><span class="s">&quot; </span><span class="se">\t</span><span class="s">&quot;</span><span class="p">)</span>
+
+<span class="c"># These are just values</span>
+<span class="c"># Definition of numbers</span>
+<span class="n">number</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="n">nums</span><span class="p">)</span>
+<span class="n">point</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">CaselessLiteral</span><span class="p">(</span><span class="s">&#39;E&#39;</span><span class="p">)</span>
+<span class="n">plusorminus</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&#39;+&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">integer</span> <span class="o">=</span> <span class="n">Combine</span><span class="p">(</span><span class="n">O</span><span class="p">(</span><span class="n">plusorminus</span><span class="p">)</span> <span class="o">+</span> <span class="n">number</span><span class="p">)</span>
+<span class="c"># Note that &#39;42&#39; is not a valid float...</span>
+<span class="n">floatnumber</span> <span class="o">=</span> <span class="p">(</span><span class="n">Combine</span><span class="p">(</span><span class="n">integer</span> <span class="o">+</span> <span class="n">point</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">number</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="n">integer</span><span class="p">))</span> <span class="o">|</span>
+                <span class="n">Combine</span><span class="p">(</span><span class="n">integer</span> <span class="o">+</span> <span class="n">e</span> <span class="o">+</span> <span class="n">integer</span><span class="p">))</span>
+
+<span class="n">ellipsis_value</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">(</span><span class="s">&#39;...&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="bp">Ellipsis</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="convert_int"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.convert_int">[docs]</a><span class="k">def</span> <span class="nf">convert_int</span><span class="p">(</span><span class="n">tokens</span><span class="p">):</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</div>
+<span class="n">integer</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">convert_int</span><span class="p">)</span>
+<span class="n">floatnumber</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="k">lambda</span> <span class="n">tokens</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">tokens</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="c"># comments</span>
+<span class="n">comment</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="n">Literal</span><span class="p">(</span><span class="s">&#39;#&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">restOfLine</span><span class="p">)</span>
+<span class="n">good_name</span> <span class="o">=</span> <span class="n">Combine</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="n">alphas</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="n">alphanums</span> <span class="o">+</span> <span class="s">&#39;_&#39;</span><span class="p">)))</span>
+
+<span class="c"># All kinds of python strings</span>
+
+<span class="n">single_quoted</span> <span class="o">=</span> <span class="p">(</span><span class="n">QuotedString</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">unquoteResults</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">|</span>
+                 <span class="n">QuotedString</span><span class="p">(</span><span class="s">&quot;&#39;&quot;</span><span class="p">,</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">unquoteResults</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="n">multi_quoted</span> <span class="o">=</span> <span class="p">(</span><span class="n">QuotedString</span><span class="p">(</span><span class="n">quoteChar</span><span class="o">=</span><span class="s">&#39;&quot;&quot;&quot;&#39;</span><span class="p">,</span> <span class="n">escChar</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span>
+                              <span class="n">multiline</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">unquoteResults</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span> <span class="o">|</span>
+                 <span class="n">QuotedString</span><span class="p">(</span><span class="n">quoteChar</span><span class="o">=</span><span class="s">&quot;&#39;&#39;&#39;&quot;</span><span class="p">,</span> <span class="n">escChar</span><span class="o">=</span><span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span><span class="p">,</span>
+                              <span class="n">multiline</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">unquoteResults</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="n">quoted</span> <span class="o">=</span> <span class="n">multi_quoted</span> <span class="o">|</span> <span class="n">single_quoted</span>
+
+<span class="n">reference</span> <span class="o">=</span> <span class="n">Combine</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&#39;$&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">good_name</span><span class="p">(</span><span class="s">&#39;variable&#39;</span><span class="p">))</span>
+
+<span class="n">reference</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">VariableReference</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">)</span>
+
+<span class="n">dictionary</span> <span class="o">=</span> <span class="n">Forward</span><span class="p">()</span>
+<span class="n">array</span> <span class="o">=</span> <span class="n">Forward</span><span class="p">()</span>
+
+<span class="n">value</span> <span class="o">=</span> <span class="p">(</span>
+          <span class="n">ellipsis_value</span> <span class="o">|</span>
+          <span class="n">quoted</span> <span class="o">|</span>
+          <span class="n">array</span> <span class="o">|</span>
+          <span class="n">dictionary</span> <span class="o">|</span>
+          <span class="n">reference</span> <span class="o">|</span>
+          <span class="n">good_name</span> <span class="o">|</span> <span class="c"># order is important... </span>
+          <span class="n">floatnumber</span> <span class="o">|</span>
+          <span class="n">integer</span>
+         <span class="p">)(</span><span class="s">&#39;val&#39;</span><span class="p">)</span>
+
+<span class="c"># dictionaries</span>
+
+<span class="n">dict_key</span> <span class="o">=</span> <span class="n">good_name</span> <span class="o">|</span> <span class="n">quoted</span>
+<span class="n">dictionary</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&quot;{&quot;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="n">O</span><span class="p">(</span>
+             <span class="n">delimitedList</span><span class="p">(</span>
+                 <span class="n">Group</span><span class="p">(</span><span class="n">dict_key</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="p">(</span><span class="s">&#39;value&#39;</span><span class="p">))</span>
+                 <span class="p">)</span>
+             <span class="p">)(</span><span class="s">&#39;content&#39;</span><span class="p">)</span> <span class="o">+</span>
+    <span class="n">S</span><span class="p">(</span><span class="s">&quot;}&quot;</span><span class="p">))</span>
+
+
+<span class="n">dictionary</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">eval_dictionary</span><span class="p">)</span>
+
+<span class="n">array</span> <span class="o">&lt;&lt;</span> <span class="n">Group</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&quot;[&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">delimitedList</span><span class="p">(</span><span class="n">value</span><span class="p">)(</span><span class="s">&#39;elements&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&quot;]&quot;</span><span class="p">))</span>
+
+<span class="n">array</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">eval_array</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="parse_value"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.parse_value">[docs]</a><span class="k">def</span> <span class="nf">parse_value</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; This is useful for debugging &#39;&#39;&#39;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ret_value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">parseAll</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret_value</span><span class="p">[</span><span class="s">&#39;val&#39;</span><span class="p">]</span>
+
+    <span class="k">except</span> <span class="n">ParseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">where</span> <span class="o">=</span> <span class="n">Where</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">col</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">PGSyntaxError</span><span class="p">(</span><span class="s">&#39;Error in parsing string: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="create_model_grammar"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.create_model_grammar">[docs]</a><span class="k">def</span> <span class="nf">create_model_grammar</span><span class="p">():</span>
+    <span class="c"># We pass a &quot;where&quot; object to the constructors</span>
+    <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">constructor</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">from_tokens</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">tokens</span><span class="p">):</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="n">constructor</span><span class="p">(</span><span class="n">tokens</span><span class="p">)</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">where</span> <span class="o">=</span> <span class="n">Where</span><span class="p">(</span><span class="n">ParsedModel</span><span class="o">.</span><span class="n">static_filename</span><span class="p">,</span>
+                                  <span class="n">string</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">element</span>
+        <span class="k">return</span> <span class="n">from_tokens</span>
+
+    <span class="n">arrow</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="n">Regex</span><span class="p">(</span><span class="s">r&#39;-+&gt;&#39;</span><span class="p">))</span>
+
+    <span class="c"># (don&#39;t put &#39;.&#39; at the beginning)</span>
+    <span class="n">qualified_name</span> <span class="o">=</span> <span class="n">Combine</span><span class="p">(</span><span class="n">good_name</span> <span class="o">+</span> <span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="p">(</span><span class="n">integer</span> <span class="o">|</span> <span class="n">good_name</span><span class="p">))</span>
+
+    <span class="n">block_name</span> <span class="o">=</span> <span class="n">good_name</span>
+    <span class="n">block_type</span> <span class="o">=</span> <span class="n">good_name</span> <span class="o">|</span> <span class="n">Word</span><span class="p">(</span><span class="s">&#39;_+-/*&#39;</span><span class="p">)</span> <span class="o">|</span> <span class="n">quoted</span> <span class="o">|</span> <span class="n">reference</span>
+
+    <span class="n">signal</span> <span class="o">=</span> <span class="p">(</span><span class="n">O</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&#39;[&#39;</span><span class="p">)</span> <span class="o">+</span>
+                <span class="p">(</span><span class="n">integer</span> <span class="o">|</span> <span class="n">good_name</span><span class="p">)(</span><span class="s">&#39;local_input&#39;</span><span class="p">)</span> <span class="o">+</span>
+                <span class="n">S</span><span class="p">(</span><span class="s">&#39;]&#39;</span><span class="p">))</span> <span class="o">+</span>
+              <span class="n">O</span><span class="p">(</span><span class="n">block_name</span><span class="p">(</span><span class="s">&#39;block_name&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">))</span> <span class="o">+</span>
+              <span class="p">(</span><span class="n">integer</span> <span class="o">|</span> <span class="n">good_name</span><span class="p">)(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="o">+</span>
+             <span class="n">O</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&#39;[&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">integer</span> <span class="o">|</span> <span class="n">good_name</span><span class="p">)(</span><span class="s">&#39;local_output&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;]&#39;</span><span class="p">)))</span>
+    <span class="n">signal</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ParsedSignal</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">))</span>
+
+    <span class="n">signals</span> <span class="o">=</span> <span class="n">delimitedList</span><span class="p">(</span><span class="n">signal</span><span class="p">)</span>
+    <span class="n">signals</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ParsedSignalList</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">))</span>
+
+    <span class="c"># Note that here the order matters (as qualified = good + something)</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">qualified_name</span> <span class="o">|</span> <span class="n">good_name</span>
+
+    <span class="n">key_value_pair</span> <span class="o">=</span> <span class="n">Group</span><span class="p">(</span><span class="n">key</span><span class="p">(</span><span class="s">&quot;key&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">))</span>
+
+    <span class="n">parameter_list</span> <span class="o">=</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">key_value_pair</span><span class="p">)</span>
+    <span class="n">parameter_list</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">t</span><span class="p">:</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]))</span> <span class="c">#@UnusedVariable</span>
+
+    <span class="n">block</span> <span class="o">=</span> <span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&quot;|&quot;</span><span class="p">)</span> <span class="o">+</span>
+             <span class="n">O</span><span class="p">(</span><span class="n">block_name</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">))</span> <span class="o">+</span>
+             <span class="n">block_type</span><span class="p">(</span><span class="s">&quot;blocktype&quot;</span><span class="p">)</span> <span class="o">+</span>
+             <span class="n">O</span><span class="p">(</span><span class="n">parameter_list</span><span class="p">(</span><span class="s">&quot;config&quot;</span><span class="p">))</span> <span class="o">+</span>
+             <span class="n">S</span><span class="p">(</span><span class="s">&quot;|&quot;</span><span class="p">))</span>
+
+    <span class="n">block</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ParsedBlock</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">))</span>
+
+    <span class="n">between</span> <span class="o">=</span> <span class="n">arrow</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">signals</span> <span class="o">+</span> <span class="n">arrow</span><span class="p">)</span>
+
+    <span class="c"># Different patterns</span>
+    <span class="n">arrow_arrow</span> <span class="o">=</span> <span class="p">(</span><span class="n">signals</span> <span class="o">+</span>
+                   <span class="n">arrow</span> <span class="o">+</span>
+                   <span class="n">O</span><span class="p">(</span><span class="n">block</span> <span class="o">+</span> <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">between</span> <span class="o">+</span> <span class="n">block</span><span class="p">))</span> <span class="o">+</span>
+                   <span class="n">arrow</span> <span class="o">+</span>
+                   <span class="n">signals</span><span class="p">)</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">block</span> <span class="o">+</span> <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">between</span> <span class="o">+</span> <span class="n">block</span><span class="p">)</span> <span class="o">+</span> <span class="n">arrow</span> <span class="o">+</span> <span class="n">signals</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">signals</span> <span class="o">+</span> <span class="n">arrow</span> <span class="o">+</span> <span class="n">block</span> <span class="o">+</span> <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">between</span> <span class="o">+</span> <span class="n">block</span><span class="p">)</span>
+    <span class="n">source_sink</span> <span class="o">=</span> <span class="n">block</span> <span class="o">+</span> <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">between</span> <span class="o">+</span> <span class="n">block</span><span class="p">)</span>
+
+    <span class="c"># all of those are called a &quot;connection&quot;</span>
+    <span class="n">connection</span> <span class="o">=</span> <span class="n">arrow_arrow</span> <span class="o">|</span> <span class="n">sink</span> <span class="o">|</span> <span class="n">source</span> <span class="o">|</span> <span class="n">source_sink</span> <span class="c"># order matters</span>
+
+    <span class="n">connection</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">Connection</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">))</span>
+
+    <span class="c"># allow breaking lines with backslash</span>
+    <span class="n">continuation</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\\</span><span class="s">&#39;</span> <span class="o">+</span> <span class="n">lineEnd</span>
+    <span class="n">connection</span><span class="o">.</span><span class="n">ignore</span><span class="p">(</span><span class="n">continuation</span><span class="p">)</span>
+
+    <span class="n">assignment</span> <span class="o">=</span> <span class="p">(</span><span class="n">key</span><span class="p">(</span><span class="s">&quot;key&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">))</span>
+    <span class="n">assignment</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ParsedAssignment</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">))</span>
+
+    <span class="n">package_name</span> <span class="o">=</span> <span class="n">good_name</span> <span class="o">+</span> <span class="n">ZeroOrMore</span><span class="p">(</span><span class="s">&#39;.&#39;</span> <span class="o">+</span> <span class="n">good_name</span><span class="p">)</span>
+    <span class="n">import_statement</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;import&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">package_name</span><span class="p">(</span><span class="s">&#39;package&#39;</span><span class="p">)</span>
+    <span class="n">import_statement</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ImportStatement</span><span class="o">.</span><span class="n">from_tokens</span><span class="p">))</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&#39;config&#39;</span><span class="p">)</span> <span class="o">+</span>
+               <span class="n">good_name</span><span class="p">(</span><span class="s">&#39;variable&#39;</span><span class="p">)</span> <span class="o">+</span>
+               <span class="n">O</span><span class="p">(</span><span class="n">S</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">value</span><span class="p">(</span><span class="s">&#39;default&#39;</span><span class="p">))</span> <span class="o">+</span>
+               <span class="n">O</span><span class="p">(</span><span class="n">quoted</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">)))</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">config_from_tokens</span><span class="p">))</span>
+
+    <span class="n">input_s</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;input&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">good_name</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">quoted</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">))</span>
+    <span class="n">input_s</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">input_from_tokens</span><span class="p">))</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;output&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">good_name</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">quoted</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">))</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">output_from_tokens</span><span class="p">))</span>
+
+    <span class="n">newline</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="n">lineEnd</span><span class="p">)</span>
+
+    <span class="n">docs</span> <span class="o">=</span> <span class="n">S</span><span class="p">(</span><span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">multi_quoted</span> <span class="o">+</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">newline</span><span class="p">)))</span>
+
+    <span class="n">action</span> <span class="o">=</span> <span class="p">(</span><span class="n">comment</span> <span class="o">|</span>
+              <span class="n">config</span> <span class="o">|</span>
+              <span class="n">input_s</span> <span class="o">|</span>
+              <span class="n">output</span> <span class="o">|</span>
+              <span class="p">(</span><span class="n">docs</span> <span class="o">+</span> <span class="n">connection</span><span class="p">)</span> <span class="o">|</span>
+              <span class="p">(</span><span class="n">docs</span> <span class="o">+</span> <span class="n">assignment</span><span class="p">)</span> <span class="o">|</span>
+              <span class="p">(</span><span class="n">docs</span> <span class="o">+</span> <span class="n">import_statement</span><span class="p">))</span>
+
+    <span class="n">model_content</span> <span class="o">=</span> <span class="p">(</span><span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">newline</span><span class="p">)</span> <span class="o">+</span> <span class="n">action</span> <span class="o">+</span>
+                    <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">OneOrMore</span><span class="p">(</span><span class="n">newline</span><span class="p">)</span> <span class="o">+</span> <span class="n">action</span><span class="p">)</span> <span class="o">+</span>
+                    <span class="n">ZeroOrMore</span><span class="p">(</span><span class="n">newline</span><span class="p">))</span>
+
+    <span class="n">named_model</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">S</span><span class="p">(</span><span class="n">Combine</span><span class="p">(</span><span class="s">&#39;---&#39;</span> <span class="o">+</span> <span class="n">O</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">))))</span> <span class="o">+</span> <span class="n">S</span><span class="p">(</span><span class="s">&#39;model&#39;</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">good_name</span><span class="p">(</span><span class="s">&#39;model_name&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">OneOrMore</span><span class="p">(</span><span class="n">newline</span><span class="p">)</span> <span class="o">+</span>
+        <span class="n">O</span><span class="p">(</span><span class="n">quoted</span><span class="p">(</span><span class="s">&#39;docstring&#39;</span><span class="p">))</span> <span class="o">+</span>
+        <span class="n">model_content</span><span class="p">(</span><span class="s">&#39;content&#39;</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">named_model</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ParsedModel</span><span class="o">.</span><span class="n">from_named_model</span><span class="p">))</span>
+
+    <span class="n">anonymous_model</span> <span class="o">=</span> <span class="n">model_content</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">anonymous_model</span><span class="o">.</span><span class="n">setParseAction</span><span class="p">(</span><span class="n">wrap</span><span class="p">(</span><span class="n">ParsedModel</span><span class="o">.</span><span class="n">from_anonymous_model</span><span class="p">))</span>
+
+    <span class="n">comments</span> <span class="o">=</span> <span class="n">ZeroOrMore</span><span class="p">((</span><span class="n">comment</span> <span class="o">+</span> <span class="n">newline</span><span class="p">)</span> <span class="o">|</span> <span class="n">newline</span><span class="p">)</span>
+    <span class="n">pg_file</span> <span class="o">=</span> <span class="p">(</span><span class="n">comments</span> <span class="o">+</span>
+               <span class="p">(</span><span class="n">OneOrMore</span><span class="p">(</span><span class="n">named_model</span><span class="p">)</span> <span class="o">|</span> <span class="n">anonymous_model</span><span class="p">)</span> <span class="o">+</span>
+               <span class="n">stringEnd</span><span class="p">)</span> <span class="c"># important</span>
+
+    <span class="k">return</span> <span class="n">pg_file</span>
+</div>
+<span class="n">pg_file</span> <span class="o">=</span> <span class="n">create_model_grammar</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="parse_model"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.parse_model">[docs]</a><span class="k">def</span> <span class="nf">parse_model</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Returns a list of ParsedModel &#39;&#39;&#39;</span>
+    <span class="c"># make this check a special case, otherwise it&#39;s hard to debug</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">string</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Passed empty string.&#39;</span>
+        <span class="k">raise</span> <span class="n">PGSyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">Where</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+    <span class="c"># this is not threadsafe (but we don&#39;t have threads, so it&#39;s all good)</span>
+    <span class="n">ParsedModel</span><span class="o">.</span><span class="n">static_filename</span> <span class="o">=</span> <span class="n">filename</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">pg_file</span><span class="o">.</span><span class="n">parseString</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">parsed</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">ParseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">where</span> <span class="o">=</span> <span class="n">Where</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">lineno</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="n">e</span><span class="o">.</span><span class="n">col</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Error in parsing string: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span>
+        <span class="k">raise</span> <span class="n">PGSyntaxError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">where</span><span class="p">)</span>
+
+
+<span class="c"># Register handler for ellipsis, so that ParsedModel is pickable.</span>
+<span class="c"># Ellipsis is they only object we use that is not pickable by default.</span></div>
+<span class="kn">import</span> <span class="nn">copy_reg</span>
+<span class="kn">import</span> <span class="nn">types</span>
+
+
+<div class="viewcode-block" id="code_unpickler"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.code_unpickler">[docs]</a><span class="k">def</span> <span class="nf">code_unpickler</span><span class="p">(</span><span class="n">data</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+    <span class="k">return</span> <span class="bp">Ellipsis</span>
+
+</div>
+<div class="viewcode-block" id="code_pickler"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.parsing.code_pickler">[docs]</a><span class="k">def</span> <span class="nf">code_pickler</span><span class="p">(</span><span class="n">code</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+    <span class="k">return</span> <span class="n">code_unpickler</span><span class="p">,</span> <span class="p">(</span><span class="bp">None</span><span class="p">,)</span>
+</div>
+<span class="n">copy_reg</span><span class="o">.</span><span class="n">pickle</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">EllipsisType</span><span class="p">,</span> <span class="n">code_pickler</span><span class="p">,</span> <span class="n">code_unpickler</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

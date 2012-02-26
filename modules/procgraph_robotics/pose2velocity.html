@@ -1,0 +1,171 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph_robotics.pose2velocity &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph_robotics.pose2velocity</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph_robotics.pose2velocity</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">procgraph</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">BadInput</span><span class="p">,</span> <span class="n">register_model_spec</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">geometry</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="n">geometry</span>
+
+
+<div class="viewcode-block" id="Pose2velocity"><a class="viewcode-back" href="../../api/procgraph_robotics.html#procgraph_robotics.pose2velocity.Pose2velocity">[docs]</a><span class="k">class</span> <span class="nc">Pose2velocity</span><span class="p">(</span><span class="n">Block</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Block used by :ref:`block:pose2commands`. &#39;&#39;&#39;</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="s">&#39;pose2vel_&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;q12&#39;</span><span class="p">,</span> <span class="s">&#39;Last two poses.&#39;</span><span class="p">)</span>
+    <span class="n">Block</span><span class="o">.</span><span class="n">input</span><span class="p">(</span><span class="s">&#39;t12&#39;</span><span class="p">,</span> <span class="s">&#39;Last two timestamps.&#39;</span><span class="p">)</span>
+
+    <span class="n">Block</span><span class="o">.</span><span class="n">output</span><span class="p">(</span><span class="s">&#39;commands&#39;</span><span class="p">,</span> <span class="s">&#39;Estimated commands ``[vx,vy,omega]``.&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Pose2velocity.update"><a class="viewcode-back" href="../../api/procgraph_robotics.html#procgraph_robotics.pose2velocity.Pose2velocity.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="s">&#39;q12&#39;</span><span class="p">)</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_input</span><span class="p">(</span><span class="s">&#39;t12&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="s">&#39;Bad input received.&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">pose1</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">SE2_from_xytheta</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">pose2</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">SE2_from_xytheta</span><span class="p">(</span><span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">delta</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BadInput</span><span class="p">(</span><span class="s">&#39;Bad timestamp sequence </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="s">&#39;t&#39;</span><span class="p">)</span>
+
+        <span class="n">_</span><span class="p">,</span> <span class="n">vel</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">SE2</span><span class="o">.</span><span class="n">velocity_from_points</span><span class="p">(</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+
+        <span class="n">linear</span><span class="p">,</span> <span class="n">angular</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">linear_angular_from_se2</span><span class="p">(</span><span class="n">vel</span><span class="p">)</span>
+
+        <span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="n">linear</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">linear</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">angular</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_output</span><span class="p">(</span><span class="s">&#39;commands&#39;</span><span class="p">,</span> <span class="n">commands</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+
+<span class="c"># TODO: move this to models/ </span></div></div>
+<span class="n">register_model_spec</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">--- model pose2commands</span>
+<span class="s">&#39;&#39;&#39; Computes the velocity commands from the odometry data. &#39;&#39;&#39;</span>
+
+<span class="s">input pose &quot;Odometry as an array ``[x,y,theta]``.&quot;</span>
+
+<span class="s">output commands &quot;Estimated commands as an array ``[vx,vy,omega]``.&quot;</span>
+<span class="s">output vx       &quot;Linear velocity, forward (m/s)&quot;</span>
+<span class="s">output vy       &quot;Linear velocity, side (m/s)&quot;</span>
+<span class="s">output omega    &quot;Angular velocity (rad/s)&quot;</span>
+<span class="s"> </span>
+<span class="s">|input name=pose| --&gt; |last_n_samples n=2| --&gt; |pose2vel_| --&gt; commands </span>
+
+<span class="s">    commands          --&gt;          |output name=commands|</span>
+<span class="s">    commands --&gt; |extract index=0| --&gt; |output name=vx|</span>
+<span class="s">    commands --&gt; |extract index=1| --&gt; |output name=vy|</span>
+<span class="s">    commands --&gt; |extract index=2| --&gt; |output name=omega|</span>
+<span class="s">    </span>
+<span class="s">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>

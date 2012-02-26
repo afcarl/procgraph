@@ -1,0 +1,115 @@
+procgraph_images Package
+========================
+
+:mod:`procgraph_images` Package
+-------------------------------
+
+.. automodule:: procgraph_images
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`blend` Module
+-------------------
+
+.. automodule:: procgraph_images.blend
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`border` Module
+--------------------
+
+.. automodule:: procgraph_images.border
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`compose` Module
+---------------------
+
+.. automodule:: procgraph_images.compose
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`copied_from_reprep` Module
+--------------------------------
+
+.. automodule:: procgraph_images.copied_from_reprep
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`crop` Module
+------------------
+
+.. automodule:: procgraph_images.crop
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`filters` Module
+---------------------
+
+.. automodule:: procgraph_images.filters
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`images_from_dir` Module
+-----------------------------
+
+.. automodule:: procgraph_images.images_from_dir
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`imggrid` Module
+---------------------
+
+.. automodule:: procgraph_images.imggrid
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`pad` Module
+-----------------
+
+.. automodule:: procgraph_images.pad
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`posterize` Module
+-----------------------
+
+.. automodule:: procgraph_images.posterize
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`reshape_rect` Module
+--------------------------
+
+.. automodule:: procgraph_images.reshape_rect
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`reshape_smart` Module
+---------------------------
+
+.. automodule:: procgraph_images.reshape_smart
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`solid` Module
+-------------------
+
+.. automodule:: procgraph_images.solid
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

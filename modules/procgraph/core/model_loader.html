@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>procgraph.core.model_loader &mdash; procgraph 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="procgraph 1.1 documentation" href="../../../index.html" />
+    <link rel="up" title="procgraph" href="../../procgraph.html" />
+	 
+
+
+   <style type="text/css">
+	body { 
+		font-family: Verdana, sans-serif;
+		font-size: 16px;
+	}
+
+	div.col1 {
+		display: block;
+		float: left;
+	}
+
+	div.col2 {
+		margin-left: 3em;
+		display: block;
+		float: left;
+	}
+
+	div.after {
+		clear: left;
+	}
+	
+</style>
+
+<link  href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css" >
+<link  href="http://fonts.googleapis.com/css?family=Droid+Serif" rel="stylesheet" type="text/css" >
+<link  href="static/procgraph.css" rel="stylesheet" type="text/css" >
+
+
+
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
+          <span>procgraph 1.1 documentation</span></a></h1>
+        <h2 class="heading"><span>procgraph.core.model_loader</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for procgraph.core.model_loader</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">fnmatch</span>
+<span class="kn">import</span> <span class="nn">inspect</span>
+<span class="kn">import</span> <span class="nn">cPickle</span> <span class="kn">as</span> <span class="nn">pickle</span>
+
+<span class="kn">from</span> <span class="nn">.model_instantiation</span> <span class="kn">import</span> <span class="n">create_from_parsing_results</span>
+<span class="kn">from</span> <span class="nn">.visualization</span> <span class="kn">import</span> <span class="n">warning</span><span class="p">,</span> <span class="n">debug</span>
+<span class="kn">from</span> <span class="nn">.parsing</span> <span class="kn">import</span> <span class="n">parse_model</span><span class="p">,</span> <span class="n">ParsedModel</span>
+<span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">SemanticError</span>
+<span class="kn">from</span> <span class="nn">.registrar</span> <span class="kn">import</span> <span class="n">default_library</span><span class="p">,</span> <span class="n">Library</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="kn">import</span> <span class="n">PATH_ENV_VAR</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">deny_pgc_cache</span>
+
+
+<div class="viewcode-block" id="ModelSpec"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_loader.ModelSpec">[docs]</a><span class="k">class</span> <span class="nc">ModelSpec</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Class used to register as a block type &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parsed_model</span><span class="p">,</span> <span class="n">defined_in</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parsed_model</span> <span class="o">=</span> <span class="n">parsed_model</span>
+
+        <span class="c"># each generator should expose this</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">output</span>
+
+        <span class="c"># the module to which this model is associated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">defined_in</span> <span class="o">=</span> <span class="n">defined_in</span>
+        <span class="k">assert</span> <span class="n">defined_in</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">library</span><span class="p">):</span>
+        <span class="n">parsed_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parsed_model</span>
+
+        <span class="n">parent</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="c"># We create a mock library that forbids that this</span>
+        <span class="c"># model is created again. This prevents recursion.</span>
+        <span class="k">class</span> <span class="nc">ForbidRecursion</span><span class="p">(</span><span class="n">Library</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">forbid</span><span class="p">):</span>
+                <span class="n">Library</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">forbid</span> <span class="o">=</span> <span class="n">forbid</span>
+
+            <span class="k">def</span> <span class="nf">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">parent_library</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">block_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbid</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Recursion error for model </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbid</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">parsed_model</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">Library</span><span class="o">.</span><span class="n">instance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_type</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+                                            <span class="n">config</span><span class="p">,</span> <span class="n">parent_library</span><span class="p">)</span>
+
+            <span class="k">def</span> <span class="nf">get_generator_for_block_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">block_type</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">block_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbid</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Recursion error for model </span><span class="si">%r</span><span class="s">.&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbid</span>
+                    <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">parent</span><span class="o">.</span><span class="n">parsed_model</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">Library</span><span class="o">.</span><span class="n">get_generator_for_block_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                                                <span class="n">block_type</span><span class="p">)</span>
+
+        <span class="n">sandbox</span> <span class="o">=</span> <span class="n">ForbidRecursion</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">create_from_parsing_results</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span>
+                                            <span class="n">library</span><span class="o">=</span><span class="n">sandbox</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">model</span>
+
+</div>
+<div class="viewcode-block" id="pg_add_this_package_models"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_loader.pg_add_this_package_models">[docs]</a><span class="k">def</span> <span class="nf">pg_add_this_package_models</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">assign_to</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="s">&#39;models&#39;</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Add the models for this package.</span>
+<span class="sd">        Shortcut to put into the module ``__init__.py``.</span>
+<span class="sd">        Call with filename = __file__, assign_to= __package__.</span>
+<span class="sd">        </span>
+<span class="sd">        Example: ::</span>
+<span class="sd">        </span>
+<span class="sd">            pg_add_this_package_models(filename__file__, assign_to=__package__)</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span> <span class="n">subdir</span><span class="p">)</span>
+    <span class="n">pg_look_for_models</span><span class="p">(</span><span class="n">default_library</span><span class="p">,</span>
+                       <span class="n">additional_paths</span><span class="o">=</span><span class="p">[</span><span class="n">dirname</span><span class="p">],</span>
+                       <span class="n">ignore_env</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                       <span class="n">assign_to_module</span><span class="o">=</span><span class="n">assign_to</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="pg_look_for_models"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_loader.pg_look_for_models">[docs]</a><span class="k">def</span> <span class="nf">pg_look_for_models</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">additional_paths</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ignore_env</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                       <span class="n">ignore_cache</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">assign_to_module</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Call this function at the beginning of the executions.</span>
+<span class="sd">    It scans the disk for model definitions, and register</span>
+<span class="sd">    them as available block types. </span>
+<span class="sd">    Other than the paths that are passed by argument,</span>
+<span class="sd">    it looks into the ones in the PROCGRAPH_PATH environment</span>
+<span class="sd">    variable (colon separated list of paths), unless ignore_env is True.</span>
+<span class="sd">    </span>
+<span class="sd">    assign_to_module is a string that gives the nominal module the model</span>
+<span class="sd">    is associated to -- this is only used for the documentation generation.</span>
+<span class="sd">    </span>
+<span class="sd">    TODO: add global cache in user directory.</span>
+<span class="sd">    </span>
+<span class="sd">    Honors global deny_pgc_cache to disable all caches.</span>
+<span class="sd">     </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="n">paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">additional_paths</span><span class="p">:</span>
+        <span class="n">paths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">additional_paths</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ignore_env</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">PATH_ENV_VAR</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+            <span class="n">paths</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="n">PATH_ENV_VAR</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">False</span><span class="p">:</span>
+            <span class="c"># TODO: add verbose switch</span>
+            <span class="n">warning</span><span class="p">(</span><span class="s">&quot;No paths given and environment var </span><span class="si">%r</span><span class="s"> not defined.&quot;</span> <span class="o">%</span>
+                     <span class="n">PATH_ENV_VAR</span><span class="p">)</span>
+
+    <span class="c"># enumerate each sub directory</span>
+    <span class="n">all_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">paths</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="c"># XXX: should I use exception?</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&#39;Invalid path </span><span class="si">%r</span><span class="s"> to search for models. &#39;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">path</span><span class="p">):</span> <span class="c">#@UnusedVariable</span>
+            <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="s">&#39;*.pg&#39;</span><span class="p">):</span>
+                    <span class="n">all_files</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">path</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">f</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">path</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">all_files</span><span class="p">:</span>
+        <span class="n">split</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">f</span><span class="p">))</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">split</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c"># Make sure we use an absolute filename</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">library</span><span class="o">.</span><span class="n">loaded_files</span><span class="p">:</span>
+            <span class="c"># Skip if already looked at it</span>
+            <span class="k">continue</span>
+
+        <span class="n">library</span><span class="o">.</span><span class="n">loaded_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="n">cache</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;.pgc&#39;</span>
+
+        <span class="k">if</span> <span class="n">deny_pgc_cache</span><span class="p">:</span>
+            <span class="c"># global switch</span>
+            <span class="n">ignore_cache</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ignore_cache</span> <span class="ow">and</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">f</span><span class="p">)):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">models</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">cache</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">debug</span><span class="p">(</span><span class="s">&#39;Cannot unpickle file </span><span class="si">%r</span><span class="s">: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cache</span><span class="p">,</span> <span class="n">e</span><span class="p">))</span>
+                <span class="c"># XXX repeated code </span>
+                <span class="c">#debug(&quot;Parsing %r.&quot; % os.path.relpath(f))</span>
+                <span class="n">model_spec</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+                <span class="n">models</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c">#debug(&quot;Parsing %r.&quot; % os.path.relpath(f))</span>
+            <span class="n">model_spec</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">models</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># TODO: make it parallel</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cache</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">models</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c"># Cannot write on the cache for whatever reason</span>
+            <span class="n">debug</span><span class="p">(</span><span class="s">&#39;Cannot write cache file: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">e</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cache</span><span class="p">):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">cache</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">base</span>
+
+        <span class="k">for</span> <span class="n">parsed_model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">library</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+                <span class="n">prev</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">name2block</span><span class="p">[</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">where</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Found model </span><span class="si">%r</span><span class="s"> in file:</span><span class="se">\n</span><span class="s"> </span><span class="si">%r</span><span class="s">, and already in</span><span class="se">\n</span><span class="s"> </span><span class="si">%r</span><span class="s">. &#39;</span> <span class="o">%</span>
+                       <span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">prev</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">parsed_model</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">assign_to_module</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">assign_to_module</span> <span class="o">=</span> <span class="n">path</span>
+            <span class="n">model_spec</span> <span class="o">=</span> <span class="n">ModelSpec</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">assign_to_module</span><span class="p">)</span>
+
+            <span class="n">library</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="pg_add_parsed_model_to_library"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_loader.pg_add_parsed_model_to_library">[docs]</a><span class="k">def</span> <span class="nf">pg_add_parsed_model_to_library</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">library</span><span class="p">,</span> <span class="n">defined_in</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">library</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="n">library</span><span class="o">.</span><span class="n">name2block</span><span class="p">[</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">where</span>
+        <span class="c"># FIXME: suppose that I have tutorials.pg</span>
+        <span class="c">#  and I do:</span>
+        <span class="c">#    pg -d . tutorials.pg</span>
+        <span class="c"># This will fail because it will try to read tutorials.pg twice</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;I already have registered model </span><span class="si">%r</span><span class="s"> from </span><span class="si">%r</span><span class="s">. &#39;</span> <span class="o">%</span>
+              <span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">prev</span><span class="o">.</span><span class="n">filename</span><span class="p">))</span>
+        <span class="k">raise</span> <span class="n">SemanticError</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">parsed_model</span><span class="p">)</span>
+
+    <span class="n">model_spec</span> <span class="o">=</span> <span class="n">ModelSpec</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">defined_in</span><span class="p">)</span>
+    <span class="n">library</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">model_spec</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="add_models_to_library"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_loader.add_models_to_library">[docs]</a><span class="k">def</span> <span class="nf">add_models_to_library</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">string</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                          <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">defined_in</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    defined_in: module NAME (to display in documentation)</span>
+<span class="sd">        (Compulsory!)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">defined_in</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="n">defined_in</span><span class="p">,</span> <span class="n">fromlist</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;x&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">__file__</span>
+
+    <span class="n">models</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span>
+        <span class="n">models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="p">:</span>
+        <span class="n">pg_add_parsed_model_to_library</span><span class="p">(</span><span class="n">parsed_model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">,</span>
+                                       <span class="n">defined_in</span><span class="o">=</span><span class="n">defined_in</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="model_from_string"><a class="viewcode-back" href="../../../api/procgraph.core.html#procgraph.core.model_loader.model_from_string">[docs]</a><span class="k">def</span> <span class="nf">model_from_string</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                      <span class="n">library</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39; Instances a model from a specification. Optional</span>
+<span class="sd">        attributes can be passed. Returns a Model object. </span>
+<span class="sd">        </span>
+<span class="sd">        Additional models in the spec (after the first) are automatically</span>
+<span class="sd">        added to the library (defined_in = calling module).</span>
+<span class="sd">        </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">config</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">library</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">library</span> <span class="o">=</span> <span class="n">default_library</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="n">parsed_models</span> <span class="o">=</span> <span class="n">parse_model</span><span class="p">(</span><span class="n">model_spec</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed_models</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">parsed_models</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">ParsedModel</span><span class="p">)</span>
+
+    <span class="c"># Get the first one</span>
+    <span class="n">parsed_model</span> <span class="o">=</span> <span class="n">parsed_models</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parsed_models</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">frm</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">stack</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getmodule</span><span class="p">(</span><span class="n">frm</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">support</span> <span class="ow">in</span> <span class="n">parsed_models</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="n">pg_add_parsed_model_to_library</span><span class="p">(</span><span class="n">support</span><span class="p">,</span> <span class="n">library</span><span class="p">,</span> <span class="n">defined_in</span><span class="o">=</span><span class="n">mod</span><span class="p">)</span>
+
+            <span class="c"># TODO: introduce the concept of submodels?</span>
+            <span class="c"># support.parent = parsed_model</span>
+            <span class="c"># parsed_model.children.append(support)</span>
+
+    <span class="n">model</span> <span class="o">=</span> <span class="n">create_from_parsing_results</span><span class="p">(</span><span class="n">parsed_model</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                                        <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">library</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+	
+    <div class="footer">
+        &copy; Copyright 2010, Andrea Censi.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
+    </div>
+	
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-155626-6']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
+
+
+  </body>
+</html>
