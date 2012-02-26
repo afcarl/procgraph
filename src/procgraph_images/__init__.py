@@ -32,5 +32,5 @@ from .reshape_smart import *
 from .solid import *
 from .crop import *
 
-
+from . import reshape_rect
 

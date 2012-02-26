@@ -13,7 +13,7 @@ class Print(Block):
 
     def update(self):
         for i in range(self.num_input_signals()):
-            print 'P %s %s %s' % (self.canonicalize_input(i),
+            print('P %s %s %s' % (self.canonicalize_input(i),
                                   self.get_input_timestamp(i),
-                                self.get_input(i))
+                                  self.get_input(i)))
 

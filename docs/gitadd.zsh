@@ -1,5 +1,5 @@
 #!/bin/zsh
-cd website
+cd $1
 git add **/*
 git commit -a -m "added"
 exit 0

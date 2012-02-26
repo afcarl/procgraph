@@ -30,7 +30,7 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.pngmath', 'sphinx.ext.ifconfig',
               'sphinx.ext.viewcode', 'sphinx.ext.intersphinx',
               'sphinxtogithub',
-              'numpydoc'
+              'numpydoc' 
              ]
 
 intersphinx_mapping = {'http://docs.python.org/': None,

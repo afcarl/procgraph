@@ -22,11 +22,11 @@ def assert_rgb_image(image, name=None):
                         None, name)
 
     if image.dtype != 'uint8':
-        raise BadInput('Expected RGB image for %r, got an array %s %s.' % \
+        raise BadInput('Expected RGB image for %r, got an array %s %s.' %
                             (name, str(image.shape), image.dtype), None, name)
 
     if len(image.shape) != 3 or image.shape[2] != 3:
-        raise BadInput('Bad shape for %s, expected RGB, got %s.' % \
+        raise BadInput('Bad shape for %s, expected RGB, got %s.' %
                         (name, str(image.shape)), None, name)
 
 
@@ -42,7 +42,7 @@ def assert_gray_image(image, name=None):
                              None, name)
 
     if len(image.shape) != 2:
-        raise BadInput('Bad shape for %r, expected grayscale, got %s.' % \
+        raise BadInput('Bad shape for %r, expected grayscale, got %s.' %
                         (name, str(image.shape)), None, name)
 
 
@@ -55,10 +55,10 @@ def check_rgb_or_grayscale(block, input): #@ReservedAssignment
     # TODO: write this better
     image = block.get_input(input)
     if not isinstance(image, numpy.ndarray):
-        raise BadInput('Expected RGB or grayscale, this is not even a ' \
+        raise BadInput('Expected RGB or grayscale, this is not even a '
             'numpy array: %s' % image.__class__.__name__, block, input)
     if image.dtype != 'uint8':
-        raise BadInput('Expected an image, got an array %s %s.' % \
+        raise BadInput('Expected an image, got an array %s %s.' %
                             (str(image.shape), image.dtype), block, input)
     shape = image.shape
     if len(shape) == 3:
@@ -79,10 +79,10 @@ def check_rgb(block, input): #@ReservedAssignment
     '''
     image = block.get_input(input)
     if not isinstance(image, numpy.ndarray):
-        raise BadInput('Expected RGB, this is not even a ' \
+        raise BadInput('Expected RGB, this is not even a '
             'numpy array: %s' % image.__class__.__name__, block, input)
     if image.dtype != 'uint8':
-        raise BadInput('Expected an image, got an array %s %s.' % \
+        raise BadInput('Expected an image, got an array %s %s.' %
                             (str(image.shape), image.dtype), block, input)
     shape = image.shape
     if len(shape) == 3:

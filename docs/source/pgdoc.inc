@@ -22,7 +22,7 @@ Components used for debugging and unit tests.
    * - :ref:`gain <block:gain>`
      - A simple example of a gain block.
    * - :ref:`identity <block:identity>`
-     - This block outputs the inputs, unchanged. 
+     - This block outputs the inputs, unchanged.
    * - :ref:`info <block:info>`
      - Prints more compact information about the inputs than :ref:`block:print`. 
    * - :ref:`print <block:print>`
@@ -89,6 +89,10 @@ Blocks for basic operations on images.
      - Adds a block around the input image.
    * - :ref:`compose <block:compose>`
      - Compose several images in the same canvas. You should probably use :ref:`block:grid` in many situations. 
+   * - :ref:`crop <block:crop>`
+     - Crops an image by the given values
+   * - :ref:`files_from_dir <block:files_from_dir>`
+     - This block reads the filenames from a directory according to a given regexp. 
    * - :ref:`gray2rgb <block:gray2rgb>`
      - Converts a H x W grayscale into a H x W x 3 RGB image by replicating the gray channel over R,G,B.
    * - :ref:`grid <block:grid>`
@@ -231,6 +235,8 @@ Blocks for image operations based on the PIL library
 
    * - :ref:`imread <block:imread>`
      - Reads an image from a file.
+   * - :ref:`imwrite <block:imwrite>`
+     - Writes an image to a file.
    * - :ref:`resize <block:resize>`
      - Resizes an image. 
    * - :ref:`text <block:text>`
@@ -257,6 +263,26 @@ Some functions specific to robotics applications.
      - Block used by :ref:`block:pose2commands`.
    * - :ref:`skim <block:skim>`
      - Cuts off the top and bottom percentile of the array.
+
+
+Package ``procgraph_ros``
+------------------------------------------------------------
+
+This is a set of blocks to read and write logs in ROS_ Bag format. 
+
+.. list-table::
+   :widths: 30 70
+
+   * - :ref:`bagread <block:bagread>`
+     - This block reads a bag file (ROS logging format).
+   * - :ref:`bagread_test <block:bagread_test>`
+     - Test of the bagread block.
+   * - :ref:`bagwrite <block:bagwrite>`
+     - This block writes the incoming signals to a ROS bag file. 
+   * - :ref:`ros2python <block:ros2python>`
+     - Converts a ROS message to a Python object.
+   * - :ref:`ros_scan2python <block:ros_scan2python>`
+     - |towrite|
 
 
 Package ``procgraph_signals``
@@ -306,7 +332,7 @@ Blocks performing operations with a dynamic nature.
    * - :ref:`two_step_difference <block:two_step_difference>`
      - Computes ``x[t+1] - x[t]`` normalized with timestamp.
    * - :ref:`wait <block:wait>`
-     - This block waits a given number of updates before transmitting the output.
+     - This block waits a given number of updates before transmitting the output signal.
 
 
 Package ``procgraph_statistics``
@@ -323,12 +349,28 @@ Blocks for common statistical operations.
      - Computes the covariance matrix of the input.
    * - :ref:`expectation <block:expectation>`
      - Computes the sample expectation of a signal.
+   * - :ref:`maximum_over_time <block:maximum_over_time>`
+     - Computes the minimum of a signal over time.
+   * - :ref:`minimum_over_time <block:minimum_over_time>`
+     - Computes the minimum of a signal over time.
    * - :ref:`normalize <block:normalize>`
      - Removes the mean from a signal.
    * - :ref:`soft_variance <block:soft_variance>`
-     - Computes the element-wise "soft" variance (expectation of error absolute value)
+     - Computes the element-wise "soft" variance (exp. of error abs. value)
    * - :ref:`variance <block:variance>`
      - Computes the element-wise variance.
+
+
+Package ``procgraph_yaml``
+------------------------------------------------------------
+
+YAML conversions.
+
+.. list-table::
+   :widths: 30 70
+
+   * - :ref:`yaml2object <block:yaml2object>`
+     - |towrite|
 
 .. _`module:procgraph.components.debug_components`:
 
@@ -569,10 +611,7 @@ Implemented in `/src/procgraph/components/debug_components/gain.py <https://gith
 
 Block ``identity``
 ------------------------------------------------------------------
-This block outputs the inputs, unchanged. 
-
-This is an example of a block whose signal configuration is dynamics:
-init() gets called twice.
+This block outputs the inputs, unchanged.
 
 
 .. rst-class:: procgraph:input
@@ -605,7 +644,8 @@ Block ``info``
 ------------------------------------------------------------------
 Prints more compact information about the inputs than :ref:`block:print`. 
 
-For numpy arrays it prints their shape and dtype instead of their values.
+For numpy arrays it prints their shape and dtype
+instead of their values.
 
 
 .. rst-class:: procgraph:input
@@ -1159,6 +1199,88 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_images/compose.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/compose.py>`_. 
+
+
+.. _`block:crop`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``crop``
+------------------------------------------------------------------
+Crops an image by the given values
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``top`` (default: 0): |towrite|
+
+- ``right`` (default: 0): |towrite|
+
+- ``left`` (default: 0): |towrite|
+
+- ``bottom`` (default: 0): |towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``rgb``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/crop.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/crop.py>`_. 
+
+
+.. _`block:files_from_dir`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``files_from_dir``
+------------------------------------------------------------------
+This block reads the filenames from a directory according to a given regexp. 
+
+For now the timestamp starts from 0 and it is fixed.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``dir``: Directory containing the image files.
+
+- ``regexp`` (default: (\w+)_(\d+)\.jpg): Regular expression for images.
+
+- ``fps`` (default: 20.0): Fixed frame per second.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``filename``: Image filename
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_images/images_from_dir.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_images/images_from_dir.py>`_. 
 
 
 .. _`block:gray2rgb`:
@@ -1791,6 +1913,10 @@ Configuration
 
 - ``transparent`` (default: False): If true, outputs a RGBA image instead of RGB.
 
+- ``tight`` (default: False): Uses "tight" option for creating png.
+
+- ``fancy_styles`` (default: []): A list of fancy styles to apply (['notopaxis', 'dickinsonA', 'noxticks', 'noyticks', 'nobottomaxis']).
+
 
 .. rst-class:: procgraph:input
 
@@ -1836,7 +1962,15 @@ Block ``mencoder``
 ------------------------------------------------------------------
 Encodes a video stream using ``mencoder``. 
 
-Note that allowed codec and bitrate depend on your version of mencoder.
+Note that allowed codec and bitrate depend on
+your version of mencoder.
+
+MP4 output: currently it works by creating a .AVI with mencoder
+and then converting to MP4 using ffmpeg (MP4 support for mencoder
+is currently --- Feb'12 --- broken).
+
+RGBA videos: not working fully. For now it outputs .AVI with
+mencoder and encoded using png.
 
 
 .. rst-class:: procgraph:config
@@ -1844,7 +1978,7 @@ Note that allowed codec and bitrate depend on your version of mencoder.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``file``: Output file (AVI format.)
+- ``file``: Output file (AVI/MP4 format)
 
 - ``fps`` (default: None): Framerate of resulting movie. If not specified, it will be guessed from data.
 
@@ -1857,6 +1991,8 @@ Configuration
 - ``quiet`` (default: True): If True, suppress mencoder's messages
 
 - ``timestamps`` (default: True): If True, also writes <file>.timestamps that includes a line with the timestamp for each frame
+
+- ``crop`` (default: False): If true, the video will be post-processed and cropped
 
 
 .. rst-class:: procgraph:input
@@ -1890,6 +2026,8 @@ Configuration
 - ``file``: Input video file. This can be in any format that ``mplayer`` understands.
 
 - ``quiet`` (default: True): If true, suppress stderr messages from mplayer.
+
+- ``stats``: If true, writes some statistics about the remaining time.
 
 
 .. rst-class:: procgraph:output
@@ -2687,7 +2825,8 @@ example: ::
 
 see also:
 
-numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman, numpy.convolve
+numpy.hanning, numpy.hamming, numpy.bartlett, numpy.blackman,
+numpy.convolve
 scipy.signal.lfilter
 
 TODO: the window parameter could be the window itself if an
@@ -2904,6 +3043,45 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_pil/imread.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_pil/imread.py>`_. 
+
+
+.. _`block:imwrite`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``imwrite``
+------------------------------------------------------------------
+Writes an image to a file.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: |towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``rgb``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_pil/imwrite.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_pil/imwrite.py>`_. 
 
 
 .. _`block:resize`:
@@ -3321,6 +3499,191 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_robotics/misc.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_robotics/misc.py>`_. 
+
+
+.. _`module:procgraph_ros`:
+
+
+.. rst-class:: procgraph:module
+
+Package ``procgraph_ros``
+============================================================
+
+
+
+.. rst-class:: procgraph:desc
+
+This is a set of blocks to read and write logs in ROS_ Bag format. 
+
+
+.. rst-class:: procgraph:desc_rest
+
+You need the `rospy` package to be installed.
+
+.. _pytables: http://pytables.org
+
+.. _ROS: http://www.ros.org
+
+.. _`block:bagread`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``bagread``
+------------------------------------------------------------------
+This block reads a bag file (ROS logging format).
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: Bag file to read
+
+- ``topics`` (default: None): Which signals to output (and in what order). Should be a comma-separated list. If you do not specify it (or if empty) it will be all signals.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- The signals read from the log. (signals are defined at runtime)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_ros/bagread.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_ros/bagread.py>`_. 
+
+
+.. _`block:bagread_test`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``bagread_test``
+------------------------------------------------------------------
+Test of the bagread block.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: .bag file to read
+
+- ``topics``: topics to read
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_ros/models/bagread_test.pg <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_ros/models/bagread_test.pg>`_. 
+
+
+.. _`block:bagwrite`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``bagwrite``
+------------------------------------------------------------------
+This block writes the incoming signals to a ROS bag file. 
+
+By default, the signals are organized as follows: ::
+
+     /            (root)
+     /procgraph             (group with name procgraph)
+     /procgraph/signal1     (table)
+     /procgraph/signal2     (table)
+     ...
+
+
+Note that the input should be ROS messages; no conversion is done.
+
+
+.. rst-class:: procgraph:config
+
+Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``file``: Bag file to write
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- Signals to be written (variable number: n >= 1)
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_ros/bagwrite.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_ros/bagwrite.py>`_. 
+
+
+.. _`block:ros2python`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``ros2python``
+------------------------------------------------------------------
+Converts a ROS message to a Python object.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``msg``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_ros/conversions.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_ros/conversions.py>`_. 
+
+
+.. _`block:ros_scan2python`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``ros_scan2python``
+------------------------------------------------------------------
+|towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``scan``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_ros/conversions.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_ros/conversions.py>`_. 
 
 
 .. _`module:procgraph_signals`:
@@ -4049,7 +4412,7 @@ Implemented in `/src/procgraph_signals/derivative2.py <https://github.com/Andrea
 
 Block ``wait``
 ------------------------------------------------------------------
-This block waits a given number of updates before transmitting the output.
+This block waits a given number of updates before transmitting the output signal.
 
 
 .. rst-class:: procgraph:config
@@ -4073,7 +4436,7 @@ Input
 Output
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- Copy of the signals, minus the first n updates. (variable number)
+- Copy of the signals, minus the first *n* updates. (variable number)
 
 
 .. rst-class:: procgraph:source
@@ -4204,6 +4567,68 @@ Output
 Implemented in `/src/procgraph_statistics/expectation.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_statistics/expectation.py>`_. 
 
 
+.. _`block:maximum_over_time`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``maximum_over_time``
+------------------------------------------------------------------
+Computes the minimum of a signal over time.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Any numpy array.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``max_x``: Maximum of input over time.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_statistics/minimum.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_statistics/minimum.py>`_. 
+
+
+.. _`block:minimum_over_time`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``minimum_over_time``
+------------------------------------------------------------------
+Computes the minimum of a signal over time.
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``x``: Any numpy array.
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``min_x``: Minimum of input.
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_statistics/minimum.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_statistics/minimum.py>`_. 
+
+
 .. _`block:normalize`:
 
 
@@ -4250,7 +4675,7 @@ Implemented in `/src/procgraph_statistics/covariance.py <https://github.com/Andr
 
 Block ``soft_variance``
 ------------------------------------------------------------------
-Computes the element-wise "soft" variance (expectation of error absolute value)
+Computes the element-wise "soft" variance (exp. of error abs. value)
 
 
 .. rst-class:: procgraph:config
@@ -4258,7 +4683,7 @@ Computes the element-wise "soft" variance (expectation of error absolute value)
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
+- ``wait`` (default: 100): Number of samples to wait before declaring the value valid.
 
 
 .. rst-class:: procgraph:input
@@ -4297,7 +4722,7 @@ Computes the element-wise variance.
 Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- ``wait`` (default: 100): Number of samples to wait before declaring the expectation valid.
+- ``wait`` (default: 100): Number of samples to wait before declaring the value valid.
 
 
 .. rst-class:: procgraph:input
@@ -4319,5 +4744,50 @@ Output
 .. rst-class:: procgraph:source
 
 Implemented in `/src/procgraph_statistics/variance.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_statistics/variance.py>`_. 
+
+
+.. _`module:procgraph_yaml`:
+
+
+.. rst-class:: procgraph:module
+
+Package ``procgraph_yaml``
+============================================================
+
+
+
+.. rst-class:: procgraph:desc
+
+YAML conversions.
+
+.. _`block:yaml2object`:
+
+
+.. rst-class:: procgraph:block
+
+Block ``yaml2object``
+------------------------------------------------------------------
+|towrite|
+
+
+.. rst-class:: procgraph:input
+
+Input
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``s``: |towrite|
+
+
+.. rst-class:: procgraph:output
+
+Output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+- ``0``: |towrite|
+
+
+.. rst-class:: procgraph:source
+
+Implemented in `/src/procgraph_yaml/yaml2object.py <https://github.com/AndreaCensi/procgraph/blob/master//src/procgraph_yaml/yaml2object.py>`_. 
 
 

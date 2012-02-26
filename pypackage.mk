@@ -1,3 +1,7 @@
+# (common version)
+
+.PHONY: docs all develop test
+	
 all: develop
 
 develop:

@@ -10,6 +10,7 @@ import os
 import subprocess
 import tempfile
 import signal
+from procgraph.utils.strings import indent
 
 
 #"""
@@ -90,6 +91,11 @@ class MEncoder(Block):
         self.shape = first_image.shape
         self.height = self.shape[0]
         self.width = self.shape[1]
+
+        if self.height > 8192 or self.width > 8192:
+            msg = 'Mencoder cannot support movies this big (%sx%s)'
+            msg = msg % (self.height, self.width)
+            raise Exception(msg)
         self.ndim = len(self.shape)
 
         # Format for mencoder's rawvideo "format" option
@@ -171,7 +177,6 @@ class MEncoder(Block):
 
         self.tmp_stdout = tempfile.TemporaryFile()
         self.tmp_stderr = tempfile.TemporaryFile()
-
 
         quiet = self.config.quiet
         if quiet:
@@ -278,6 +283,17 @@ class MEncoder(Block):
 #            self.error(msg)
 #            msg += '\n' + indent(self.process.stdout.read(), 'stdout> ')
 #            msg += '\n' + indent(self.process.stderr.read(), 'stderr> ')
+
+            def read_all(f):
+                os.lseek(f.fileno(), 0, 0)
+                return f.read()
+
+            stderr = read_all(self.tmp_stderr)
+            stdout = read_all(self.tmp_stdout)
+
+            msg += indent('stdout>', stderr)
+            msg += indent('stderr>', stdout)
+
             raise Exception(msg)
 
         if self.config.timestamps:
