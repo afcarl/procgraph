@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph_signals.derivative</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph_signals-module.html">Package&nbsp;procgraph_signals</a> ::
+        Module&nbsp;derivative
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph_signals.derivative-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph_signals.derivative-module.html">Module procgraph_signals.derivative</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package procgraph=procgraph-module.html"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-0', 'procgraph', 'link-0');">procgraph</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class procgraph.core.block.Block=procgraph.core.block.Block-class.html"><a title="procgraph.core.block.Block" class="py-name" href="#" onclick="return doclink('link-1', 'Block', 'link-1');">Block</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Class procgraph.core.exceptions.BadInput=procgraph.core.exceptions.BadInput-class.html"><a title="procgraph.core.exceptions.BadInput" class="py-name" href="#" onclick="return doclink('link-2', 'BadInput', 'link-2');">BadInput</a></tt><tt class="py-op">,</tt> <tt id="link-3" class="py-name" targets="Function procgraph.core.registrar_other.register_model_spec()=procgraph.core.registrar_other-module.html#register_model_spec"><a title="procgraph.core.registrar_other.register_model_spec" class="py-name" href="#" onclick="return doclink('link-3', 'register_model_spec', 'link-3');">register_model_spec</a></tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"> </tt>
+<a name="isiterable"></a><div id="isiterable-def"><a name="L6"></a><tt class="py-lineno"> 6</tt> <a class="py-toggle" href="#" id="isiterable-toggle" onclick="return toggle('isiterable');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_signals.derivative-module.html#isiterable">isiterable</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="isiterable-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="isiterable-expanded"><a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line">    <tt class="py-docstring">''' Checks that an object is iterable. '''</tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line">        <tt class="py-name">iter</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">True</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">TypeError</tt><tt class="py-op">:</tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt>
+<a name="ForwardDifference"></a><div id="ForwardDifference-def"><a name="L15"></a><tt class="py-lineno">15</tt> <a class="py-toggle" href="#" id="ForwardDifference-toggle" onclick="return toggle('ForwardDifference');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph_signals.derivative.ForwardDifference-class.html">ForwardDifference</a><tt class="py-op">(</tt><tt class="py-base-class">Block</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ForwardDifference-collapsed" style="display:none;" pad="++" indent="++++"></div><div id="ForwardDifference-expanded"><a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line">    <tt class="py-docstring">''' Computes ``x[t+1] - x[t-1]`` normalized with timestamp. </tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-docstring">        You want to attach this to :ref:`block:last_n_samples`.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line">    <tt id="link-4" class="py-name"><a title="procgraph.core.block.Block" class="py-name" href="#" onclick="return doclink('link-4', 'Block', 'link-1');">Block</a></tt><tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Static Method procgraph.core.block_meta.BlockMetaSugar.alias()=procgraph.core.block_meta.BlockMetaSugar-class.html#alias"><a title="procgraph.core.block_meta.BlockMetaSugar.alias" class="py-name" href="#" onclick="return doclink('link-5', 'alias', 'link-5');">alias</a></tt><tt class="py-op">(</tt><tt class="py-string">'forward_difference'</tt><tt class="py-op">)</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line">     </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line">    <tt id="link-6" class="py-name"><a title="procgraph.core.block.Block" class="py-name" href="#" onclick="return doclink('link-6', 'Block', 'link-1');">Block</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Variable procgraph.block_utils.textlog.TextLog.input=procgraph.block_utils.textlog.TextLog-class.html#input,Variable procgraph.components.debug_components.clock.Clock.input=procgraph.components.debug_components.clock.Clock-class.html#input,Variable procgraph.components.debug_components.constant.Constant.input=procgraph.components.debug_components.constant.Constant-class.html#input,Variable procgraph.components.debug_components.gain.Gain.input=procgraph.components.debug_components.gain.Gain-class.html#input,Variable procgraph.components.debug_components.identity.Identity.input=procgraph.components.debug_components.identity.Identity-class.html#input,Variable procgraph.components.debug_components.info.Info.input=procgraph.components.debug_components.info.Info-class.html#input,Variable procgraph.components.debug_components.operations.Minus.input=procgraph.components.debug_components.operations.Minus-class.html#input,Variable procgraph.components.debug_components.printc.Print.input=procgraph.components.debug_components.printc.Print-class.html#input,Static Method procgraph.core.block_meta.BlockMetaSugar.input()=procgraph.core.block_meta.BlockMetaSugar-class.html#input,Variable procgraph.core.model.Model.input=procgraph.core.model.Model-class.html#input,Variable procgraph.core.model_io.ModelInput.input=procgraph.core.model_io.ModelInput-class.html#input,Variable procgraph.core.model_io.ModelOutput.input=procgraph.core.model_io.ModelOutput-class.html#input,Variable procgraph.scripts.pgdoc.ModelDoc.input=procgraph.scripts.pgdoc.ModelDoc-class.html#input,Variable procgraph.testing.utils.VerifyBlock.input=procgraph.testing.utils.VerifyBlock-class.html#input,Variable procgraph_foo.example0_simplest_block.BlockSimpleExample.input=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#input,Variable procgraph_hdf.hdfread.HDFread.input=procgraph_hdf.hdfread.HDFread-class.html#input,Variable procgraph_hdf.hdfread_many.HDFread_many.input=procgraph_hdf.hdfread_many.HDFread_many-class.html#input,Variable procgraph_hdf.hdfwrite.HDFwrite.input=procgraph_hdf.hdfwrite.HDFwrite-class.html#input,Variable procgraph_images.blend'.Blend.input=procgraph_images.blend%27.Blend-class.html#input,Variable procgraph_images.border.Border.input=procgraph_images.border.Border-class.html#input,Variable procgraph_images.compose.Compose.input=procgraph_images.compose.Compose-class.html#input,Variable procgraph_images.images_from_dir.FilesFromDir.input=procgraph_images.images_from_dir.FilesFromDir-class.html#input,Variable procgraph_images.imggrid.ImageGrid.input=procgraph_images.imggrid.ImageGrid-class.html#input,Variable procgraph_images.solid'.Solid.input=procgraph_images.solid%27.Solid-class.html#input,Variable procgraph_io_misc.json_misc.AsJSON.input=procgraph_io_misc.json_misc.AsJSON-class.html#input,Variable procgraph_io_misc.pickling.Pickle.input=procgraph_io_misc.pickling.Pickle-class.html#input,Variable procgraph_io_misc.pickling.PickleGroup.input=procgraph_io_misc.pickling.PickleGroup-class.html#input,Variable procgraph_io_misc.pickling.PickleLoad.input=procgraph_io_misc.pickling.PickleLoad-class.html#input,Variable procgraph_io_misc.to_file.ToFile.input=procgraph_io_misc.to_file.ToFile-class.html#input,Variable procgraph_mpl.plot.Plot.input=procgraph_mpl.plot.Plot-class.html#input,Variable procgraph_mplayer.mencoder.MEncoder.input=procgraph_mplayer.mencoder.MEncoder-class.html#input,Variable procgraph_mplayer.mplayer.MPlayer.input=procgraph_mplayer.mplayer.MPlayer-class.html#input,Variable procgraph_pil.text.Text.input=procgraph_pil.text.Text-class.html#input,Variable procgraph_robotics.laser_display.LaserDisplay.input=procgraph_robotics.laser_display.LaserDisplay-class.html#input,Variable procgraph_robotics.laser_dot_display.LaserDotDisplay.input=procgraph_robotics.laser_dot_display.LaserDotDisplay-class.html#input,Variable procgraph_robotics.organic_scale.OrganicScale.input=procgraph_robotics.organic_scale.OrganicScale-class.html#input,Variable procgraph_robotics.pose2velocity.Pose2velocity.input=procgraph_robotics.pose2velocity.Pose2velocity-class.html#input,Variable procgraph_ros.bagread.BagRead.input=procgraph_ros.bagread.BagRead-class.html#input,Variable procgraph_ros.bagwrite.BagWrite.input=procgraph_ros.bagwrite.BagWrite-class.html#input,Variable procgraph_signals.any.Any.input=procgraph_signals.any.Any-class.html#input,Variable procgraph_signals.async.ASync.input=procgraph_signals.async.ASync-class.html#input,Variable procgraph_signals.derivative.ForwardDifference.input=procgraph_signals.derivative.ForwardDifference-class.html#input,Variable procgraph_signals.derivative2.ForwardDifference12.input=procgraph_signals.derivative2.ForwardDifference12-class.html#input,Variable procgraph_signals.extract.Extract.input=procgraph_signals.extract.Extract-class.html#input,Variable procgraph_signals.fps_data_limit.FPSDataLimit.input=procgraph_signals.fps_data_limit.FPSDataLimit-class.html#input,Variable procgraph_signals.fps_limit.FPSLimit.input=procgraph_signals.fps_limit.FPSLimit-class.html#input,Variable procgraph_signals.fps_print.FPSPrint.input=procgraph_signals.fps_print.FPSPrint-class.html#input,Variable procgraph_signals.history.History.input=procgraph_signals.history.History-class.html#input,Variable procgraph_signals.historyt.HistoryT.input=procgraph_signals.historyt.HistoryT-class.html#input,Variable procgraph_signals.join.Join.input=procgraph_signals.join.Join-class.html#input,Variable procgraph_signals.last_n_samples.HistoryN.input=procgraph_signals.last_n_samples.HistoryN-class.html#input,Variable procgraph_signals.low_pass.LowPass.input=procgraph_signals.low_pass.LowPass-class.html#input,Variable procgraph_signals.make_tuple.MakeTuple.input=procgraph_signals.make_tuple.MakeTuple-class.html#input,Variable procgraph_signals.sieve.Sieve.input=procgraph_signals.sieve.Sieve-class.html#input,Variable procgraph_signals.sync.Sync.input=procgraph_signals.sync.Sync-class.html#input,Variable procgraph_signals.sync_test.CheckSync.input=procgraph_signals.sync_test.CheckSync-class.html#input,Variable procgraph_signals.sync_test.LogSim.input=procgraph_signals.sync_test.LogSim-class.html#input,Variable procgraph_signals.wait.Wait.input=procgraph_signals.wait.Wait-class.html#input,Variable procgraph_statistics.expectation.Expectation.input=procgraph_statistics.expectation.Expectation-class.html#input,Variable procgraph_statistics.minimum.Maximum.input=procgraph_statistics.minimum.Maximum-class.html#input,Variable procgraph_statistics.minimum.Minimum.input=procgraph_statistics.minimum.Minimum-class.html#input"><a title="procgraph.block_utils.textlog.TextLog.input
+procgraph.components.debug_components.clock.Clock.input
+procgraph.components.debug_components.constant.Constant.input
+procgraph.components.debug_components.gain.Gain.input
+procgraph.components.debug_components.identity.Identity.input
+procgraph.components.debug_components.info.Info.input
+procgraph.components.debug_components.operations.Minus.input
+procgraph.components.debug_components.printc.Print.input
+procgraph.core.block_meta.BlockMetaSugar.input
+procgraph.core.model.Model.input
+procgraph.core.model_io.ModelInput.input
+procgraph.core.model_io.ModelOutput.input
+procgraph.scripts.pgdoc.ModelDoc.input
+procgraph.testing.utils.VerifyBlock.input
+procgraph_foo.example0_simplest_block.BlockSimpleExample.input
+procgraph_hdf.hdfread.HDFread.input
+procgraph_hdf.hdfread_many.HDFread_many.input
+procgraph_hdf.hdfwrite.HDFwrite.input
+procgraph_images.blend'.Blend.input
+procgraph_images.border.Border.input
+procgraph_images.compose.Compose.input
+procgraph_images.images_from_dir.FilesFromDir.input
+procgraph_images.imggrid.ImageGrid.input
+procgraph_images.solid'.Solid.input
+procgraph_io_misc.json_misc.AsJSON.input
+procgraph_io_misc.pickling.Pickle.input
+procgraph_io_misc.pickling.PickleGroup.input
+procgraph_io_misc.pickling.PickleLoad.input
+procgraph_io_misc.to_file.ToFile.input
+procgraph_mpl.plot.Plot.input
+procgraph_mplayer.mencoder.MEncoder.input
+procgraph_mplayer.mplayer.MPlayer.input
+procgraph_pil.text.Text.input
+procgraph_robotics.laser_display.LaserDisplay.input
+procgraph_robotics.laser_dot_display.LaserDotDisplay.input
+procgraph_robotics.organic_scale.OrganicScale.input
+procgraph_robotics.pose2velocity.Pose2velocity.input
+procgraph_ros.bagread.BagRead.input
+procgraph_ros.bagwrite.BagWrite.input
+procgraph_signals.any.Any.input
+procgraph_signals.async.ASync.input
+procgraph_signals.derivative.ForwardDifference.input
+procgraph_signals.derivative2.ForwardDifference12.input
+procgraph_signals.extract.Extract.input
+procgraph_signals.fps_data_limit.FPSDataLimit.input
+procgraph_signals.fps_limit.FPSLimit.input
+procgraph_signals.fps_print.FPSPrint.input
+procgraph_signals.history.History.input
+procgraph_signals.historyt.HistoryT.input
+procgraph_signals.join.Join.input
+procgraph_signals.last_n_samples.HistoryN.input
+procgraph_signals.low_pass.LowPass.input
+procgraph_signals.make_tuple.MakeTuple.input
+procgraph_signals.sieve.Sieve.input
+procgraph_signals.sync.Sync.input
+procgraph_signals.sync_test.CheckSync.input
+procgraph_signals.sync_test.LogSim.input
+procgraph_signals.wait.Wait.input
+procgraph_statistics.expectation.Expectation.input
+procgraph_statistics.minimum.Maximum.input
+procgraph_statistics.minimum.Minimum.input" class="py-name" href="#" onclick="return doclink('link-7', 'input', 'link-7');">input</a></tt><tt class="py-op">(</tt><tt class="py-string">'x123'</tt><tt class="py-op">,</tt> <tt class="py-string">'An array with the last 3 values of x.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line">    <tt id="link-8" class="py-name"><a title="procgraph.core.block.Block" class="py-name" href="#" onclick="return doclink('link-8', 'Block', 'link-1');">Block</a></tt><tt class="py-op">.</tt><tt id="link-9" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.input
+procgraph.components.debug_components.clock.Clock.input
+procgraph.components.debug_components.constant.Constant.input
+procgraph.components.debug_components.gain.Gain.input
+procgraph.components.debug_components.identity.Identity.input
+procgraph.components.debug_components.info.Info.input
+procgraph.components.debug_components.operations.Minus.input
+procgraph.components.debug_components.printc.Print.input
+procgraph.core.block_meta.BlockMetaSugar.input
+procgraph.core.model.Model.input
+procgraph.core.model_io.ModelInput.input
+procgraph.core.model_io.ModelOutput.input
+procgraph.scripts.pgdoc.ModelDoc.input
+procgraph.testing.utils.VerifyBlock.input
+procgraph_foo.example0_simplest_block.BlockSimpleExample.input
+procgraph_hdf.hdfread.HDFread.input
+procgraph_hdf.hdfread_many.HDFread_many.input
+procgraph_hdf.hdfwrite.HDFwrite.input
+procgraph_images.blend'.Blend.input
+procgraph_images.border.Border.input
+procgraph_images.compose.Compose.input
+procgraph_images.images_from_dir.FilesFromDir.input
+procgraph_images.imggrid.ImageGrid.input
+procgraph_images.solid'.Solid.input
+procgraph_io_misc.json_misc.AsJSON.input
+procgraph_io_misc.pickling.Pickle.input
+procgraph_io_misc.pickling.PickleGroup.input
+procgraph_io_misc.pickling.PickleLoad.input
+procgraph_io_misc.to_file.ToFile.input
+procgraph_mpl.plot.Plot.input
+procgraph_mplayer.mencoder.MEncoder.input
+procgraph_mplayer.mplayer.MPlayer.input
+procgraph_pil.text.Text.input
+procgraph_robotics.laser_display.LaserDisplay.input
+procgraph_robotics.laser_dot_display.LaserDotDisplay.input
+procgraph_robotics.organic_scale.OrganicScale.input
+procgraph_robotics.pose2velocity.Pose2velocity.input
+procgraph_ros.bagread.BagRead.input
+procgraph_ros.bagwrite.BagWrite.input
+procgraph_signals.any.Any.input
+procgraph_signals.async.ASync.input
+procgraph_signals.derivative.ForwardDifference.input
+procgraph_signals.derivative2.ForwardDifference12.input
+procgraph_signals.extract.Extract.input
+procgraph_signals.fps_data_limit.FPSDataLimit.input
+procgraph_signals.fps_limit.FPSLimit.input
+procgraph_signals.fps_print.FPSPrint.input
+procgraph_signals.history.History.input
+procgraph_signals.historyt.HistoryT.input
+procgraph_signals.join.Join.input
+procgraph_signals.last_n_samples.HistoryN.input
+procgraph_signals.low_pass.LowPass.input
+procgraph_signals.make_tuple.MakeTuple.input
+procgraph_signals.sieve.Sieve.input
+procgraph_signals.sync.Sync.input
+procgraph_signals.sync_test.CheckSync.input
+procgraph_signals.sync_test.LogSim.input
+procgraph_signals.wait.Wait.input
+procgraph_statistics.expectation.Expectation.input
+procgraph_statistics.minimum.Maximum.input
+procgraph_statistics.minimum.Minimum.input" class="py-name" href="#" onclick="return doclink('link-9', 'input', 'link-7');">input</a></tt><tt class="py-op">(</tt><tt class="py-string">'t123'</tt><tt class="py-op">,</tt> <tt class="py-string">'An array with the last 3 values of the timestamp.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line">     </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line">    <tt id="link-10" class="py-name"><a title="procgraph.core.block.Block" class="py-name" href="#" onclick="return doclink('link-10', 'Block', 'link-1');">Block</a></tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Variable procgraph.block_utils.textlog.TextLog.output=procgraph.block_utils.textlog.TextLog-class.html#output,Variable procgraph.components.debug_components.clock.Clock.output=procgraph.components.debug_components.clock.Clock-class.html#output,Variable procgraph.components.debug_components.constant.Constant.output=procgraph.components.debug_components.constant.Constant-class.html#output,Variable procgraph.components.debug_components.gain.Gain.output=procgraph.components.debug_components.gain.Gain-class.html#output,Variable procgraph.components.debug_components.identity.Identity.output=procgraph.components.debug_components.identity.Identity-class.html#output,Variable procgraph.components.debug_components.info.Info.output=procgraph.components.debug_components.info.Info-class.html#output,Variable procgraph.components.debug_components.operations.Minus.output=procgraph.components.debug_components.operations.Minus-class.html#output,Variable procgraph.components.debug_components.printc.Print.output=procgraph.components.debug_components.printc.Print-class.html#output,Static Method procgraph.core.block_meta.BlockMetaSugar.output()=procgraph.core.block_meta.BlockMetaSugar-class.html#output,Variable procgraph.core.model.Model.output=procgraph.core.model.Model-class.html#output,Variable procgraph.core.model_io.ModelInput.output=procgraph.core.model_io.ModelInput-class.html#output,Variable procgraph.core.model_io.ModelOutput.output=procgraph.core.model_io.ModelOutput-class.html#output,Variable procgraph.scripts.pgdoc.ModelDoc.output=procgraph.scripts.pgdoc.ModelDoc-class.html#output,Variable procgraph.testing.utils.VerifyBlock.output=procgraph.testing.utils.VerifyBlock-class.html#output,Variable procgraph_foo.example0_simplest_block.BlockSimpleExample.output=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#output,Variable procgraph_hdf.hdfread.HDFread.output=procgraph_hdf.hdfread.HDFread-class.html#output,Variable procgraph_hdf.hdfread_many.HDFread_many.output=procgraph_hdf.hdfread_many.HDFread_many-class.html#output,Variable procgraph_hdf.hdfwrite.HDFwrite.output=procgraph_hdf.hdfwrite.HDFwrite-class.html#output,Variable procgraph_images.blend'.Blend.output=procgraph_images.blend%27.Blend-class.html#output,Variable procgraph_images.border.Border.output=procgraph_images.border.Border-class.html#output,Variable procgraph_images.compose.Compose.output=procgraph_images.compose.Compose-class.html#output,Variable procgraph_images.images_from_dir.FilesFromDir.output=procgraph_images.images_from_dir.FilesFromDir-class.html#output,Variable procgraph_images.imggrid.ImageGrid.output=procgraph_images.imggrid.ImageGrid-class.html#output,Variable procgraph_images.solid'.Solid.output=procgraph_images.solid%27.Solid-class.html#output,Variable procgraph_io_misc.json_misc.AsJSON.output=procgraph_io_misc.json_misc.AsJSON-class.html#output,Variable procgraph_io_misc.pickling.Pickle.output=procgraph_io_misc.pickling.Pickle-class.html#output,Variable procgraph_io_misc.pickling.PickleGroup.output=procgraph_io_misc.pickling.PickleGroup-class.html#output,Variable procgraph_io_misc.pickling.PickleLoad.output=procgraph_io_misc.pickling.PickleLoad-class.html#output,Variable procgraph_io_misc.to_file.ToFile.output=procgraph_io_misc.to_file.ToFile-class.html#output,Variable procgraph_mpl.plot.Plot.output=procgraph_mpl.plot.Plot-class.html#output,Variable procgraph_mplayer.mencoder.MEncoder.output=procgraph_mplayer.mencoder.MEncoder-class.html#output,Variable procgraph_mplayer.mplayer.MPlayer.output=procgraph_mplayer.mplayer.MPlayer-class.html#output,Variable procgraph_pil.text.Text.output=procgraph_pil.text.Text-class.html#output,Variable procgraph_robotics.laser_display.LaserDisplay.output=procgraph_robotics.laser_display.LaserDisplay-class.html#output,Variable procgraph_robotics.laser_dot_display.LaserDotDisplay.output=procgraph_robotics.laser_dot_display.LaserDotDisplay-class.html#output,Variable procgraph_robotics.organic_scale.OrganicScale.output=procgraph_robotics.organic_scale.OrganicScale-class.html#output,Variable procgraph_robotics.pose2velocity.Pose2velocity.output=procgraph_robotics.pose2velocity.Pose2velocity-class.html#output,Variable procgraph_ros.bagread.BagRead.output=procgraph_ros.bagread.BagRead-class.html#output,Variable procgraph_ros.bagwrite.BagWrite.output=procgraph_ros.bagwrite.BagWrite-class.html#output,Variable procgraph_signals.any.Any.output=procgraph_signals.any.Any-class.html#output,Variable procgraph_signals.async.ASync.output=procgraph_signals.async.ASync-class.html#output,Variable procgraph_signals.derivative.ForwardDifference.output=procgraph_signals.derivative.ForwardDifference-class.html#output,Variable procgraph_signals.derivative2.ForwardDifference12.output=procgraph_signals.derivative2.ForwardDifference12-class.html#output,Variable procgraph_signals.extract.Extract.output=procgraph_signals.extract.Extract-class.html#output,Variable procgraph_signals.fps_data_limit.FPSDataLimit.output=procgraph_signals.fps_data_limit.FPSDataLimit-class.html#output,Variable procgraph_signals.fps_limit.FPSLimit.output=procgraph_signals.fps_limit.FPSLimit-class.html#output,Variable procgraph_signals.fps_print.FPSPrint.output=procgraph_signals.fps_print.FPSPrint-class.html#output,Variable procgraph_signals.history.History.output=procgraph_signals.history.History-class.html#output,Variable procgraph_signals.historyt.HistoryT.output=procgraph_signals.historyt.HistoryT-class.html#output,Variable procgraph_signals.join.Join.output=procgraph_signals.join.Join-class.html#output,Variable procgraph_signals.last_n_samples.HistoryN.output=procgraph_signals.last_n_samples.HistoryN-class.html#output,Variable procgraph_signals.low_pass.LowPass.output=procgraph_signals.low_pass.LowPass-class.html#output,Variable procgraph_signals.make_tuple.MakeTuple.output=procgraph_signals.make_tuple.MakeTuple-class.html#output,Variable procgraph_signals.sieve.Sieve.output=procgraph_signals.sieve.Sieve-class.html#output,Variable procgraph_signals.sync.Sync.output=procgraph_signals.sync.Sync-class.html#output,Variable procgraph_signals.sync_test.CheckSync.output=procgraph_signals.sync_test.CheckSync-class.html#output,Variable procgraph_signals.sync_test.LogSim.output=procgraph_signals.sync_test.LogSim-class.html#output,Variable procgraph_signals.wait.Wait.output=procgraph_signals.wait.Wait-class.html#output,Variable procgraph_statistics.expectation.Expectation.output=procgraph_statistics.expectation.Expectation-class.html#output,Variable procgraph_statistics.minimum.Maximum.output=procgraph_statistics.minimum.Maximum-class.html#output,Variable procgraph_statistics.minimum.Minimum.output=procgraph_statistics.minimum.Minimum-class.html#output"><a title="procgraph.block_utils.textlog.TextLog.output
+procgraph.components.debug_components.clock.Clock.output
+procgraph.components.debug_components.constant.Constant.output
+procgraph.components.debug_components.gain.Gain.output
+procgraph.components.debug_components.identity.Identity.output
+procgraph.components.debug_components.info.Info.output
+procgraph.components.debug_components.operations.Minus.output
+procgraph.components.debug_components.printc.Print.output
+procgraph.core.block_meta.BlockMetaSugar.output
+procgraph.core.model.Model.output
+procgraph.core.model_io.ModelInput.output
+procgraph.core.model_io.ModelOutput.output
+procgraph.scripts.pgdoc.ModelDoc.output
+procgraph.testing.utils.VerifyBlock.output
+procgraph_foo.example0_simplest_block.BlockSimpleExample.output
+procgraph_hdf.hdfread.HDFread.output
+procgraph_hdf.hdfread_many.HDFread_many.output
+procgraph_hdf.hdfwrite.HDFwrite.output
+procgraph_images.blend'.Blend.output
+procgraph_images.border.Border.output
+procgraph_images.compose.Compose.output
+procgraph_images.images_from_dir.FilesFromDir.output
+procgraph_images.imggrid.ImageGrid.output
+procgraph_images.solid'.Solid.output
+procgraph_io_misc.json_misc.AsJSON.output
+procgraph_io_misc.pickling.Pickle.output
+procgraph_io_misc.pickling.PickleGroup.output
+procgraph_io_misc.pickling.PickleLoad.output
+procgraph_io_misc.to_file.ToFile.output
+procgraph_mpl.plot.Plot.output
+procgraph_mplayer.mencoder.MEncoder.output
+procgraph_mplayer.mplayer.MPlayer.output
+procgraph_pil.text.Text.output
+procgraph_robotics.laser_display.LaserDisplay.output
+procgraph_robotics.laser_dot_display.LaserDotDisplay.output
+procgraph_robotics.organic_scale.OrganicScale.output
+procgraph_robotics.pose2velocity.Pose2velocity.output
+procgraph_ros.bagread.BagRead.output
+procgraph_ros.bagwrite.BagWrite.output
+procgraph_signals.any.Any.output
+procgraph_signals.async.ASync.output
+procgraph_signals.derivative.ForwardDifference.output
+procgraph_signals.derivative2.ForwardDifference12.output
+procgraph_signals.extract.Extract.output
+procgraph_signals.fps_data_limit.FPSDataLimit.output
+procgraph_signals.fps_limit.FPSLimit.output
+procgraph_signals.fps_print.FPSPrint.output
+procgraph_signals.history.History.output
+procgraph_signals.historyt.HistoryT.output
+procgraph_signals.join.Join.output
+procgraph_signals.last_n_samples.HistoryN.output
+procgraph_signals.low_pass.LowPass.output
+procgraph_signals.make_tuple.MakeTuple.output
+procgraph_signals.sieve.Sieve.output
+procgraph_signals.sync.Sync.output
+procgraph_signals.sync_test.CheckSync.output
+procgraph_signals.sync_test.LogSim.output
+procgraph_signals.wait.Wait.output
+procgraph_statistics.expectation.Expectation.output
+procgraph_statistics.minimum.Maximum.output
+procgraph_statistics.minimum.Minimum.output" class="py-name" href="#" onclick="return doclink('link-11', 'output', 'link-11');">output</a></tt><tt class="py-op">(</tt><tt class="py-string">'x_dot'</tt><tt class="py-op">,</tt> <tt class="py-string">'Derivative of x'</tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line">         </tt>
+<a name="ForwardDifference.update"></a><div id="ForwardDifference.update-def"><a name="L27"></a><tt class="py-lineno">27</tt> <a class="py-toggle" href="#" id="ForwardDifference.update-toggle" onclick="return toggle('ForwardDifference.update');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_signals.derivative.ForwardDifference-class.html#update">update</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ForwardDifference.update-collapsed" style="display:none;" pad="++" indent="++++++++"></div><div id="ForwardDifference.update-expanded"><a name="L28"></a><tt class="py-lineno">28</tt>  <tt class="py-line">        <tt class="py-name">x</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.input
+procgraph.components.debug_components.clock.Clock.input
+procgraph.components.debug_components.constant.Constant.input
+procgraph.components.debug_components.gain.Gain.input
+procgraph.components.debug_components.identity.Identity.input
+procgraph.components.debug_components.info.Info.input
+procgraph.components.debug_components.operations.Minus.input
+procgraph.components.debug_components.printc.Print.input
+procgraph.core.block_meta.BlockMetaSugar.input
+procgraph.core.model.Model.input
+procgraph.core.model_io.ModelInput.input
+procgraph.core.model_io.ModelOutput.input
+procgraph.scripts.pgdoc.ModelDoc.input
+procgraph.testing.utils.VerifyBlock.input
+procgraph_foo.example0_simplest_block.BlockSimpleExample.input
+procgraph_hdf.hdfread.HDFread.input
+procgraph_hdf.hdfread_many.HDFread_many.input
+procgraph_hdf.hdfwrite.HDFwrite.input
+procgraph_images.blend'.Blend.input
+procgraph_images.border.Border.input
+procgraph_images.compose.Compose.input
+procgraph_images.images_from_dir.FilesFromDir.input
+procgraph_images.imggrid.ImageGrid.input
+procgraph_images.solid'.Solid.input
+procgraph_io_misc.json_misc.AsJSON.input
+procgraph_io_misc.pickling.Pickle.input
+procgraph_io_misc.pickling.PickleGroup.input
+procgraph_io_misc.pickling.PickleLoad.input
+procgraph_io_misc.to_file.ToFile.input
+procgraph_mpl.plot.Plot.input
+procgraph_mplayer.mencoder.MEncoder.input
+procgraph_mplayer.mplayer.MPlayer.input
+procgraph_pil.text.Text.input
+procgraph_robotics.laser_display.LaserDisplay.input
+procgraph_robotics.laser_dot_display.LaserDotDisplay.input
+procgraph_robotics.organic_scale.OrganicScale.input
+procgraph_robotics.pose2velocity.Pose2velocity.input
+procgraph_ros.bagread.BagRead.input
+procgraph_ros.bagwrite.BagWrite.input
+procgraph_signals.any.Any.input
+procgraph_signals.async.ASync.input
+procgraph_signals.derivative.ForwardDifference.input
+procgraph_signals.derivative2.ForwardDifference12.input
+procgraph_signals.extract.Extract.input
+procgraph_signals.fps_data_limit.FPSDataLimit.input
+procgraph_signals.fps_limit.FPSLimit.input
+procgraph_signals.fps_print.FPSPrint.input
+procgraph_signals.history.History.input
+procgraph_signals.historyt.HistoryT.input
+procgraph_signals.join.Join.input
+procgraph_signals.last_n_samples.HistoryN.input
+procgraph_signals.low_pass.LowPass.input
+procgraph_signals.make_tuple.MakeTuple.input
+procgraph_signals.sieve.Sieve.input
+procgraph_signals.sync.Sync.input
+procgraph_signals.sync_test.CheckSync.input
+procgraph_signals.sync_test.LogSim.input
+procgraph_signals.wait.Wait.input
+procgraph_statistics.expectation.Expectation.input
+procgraph_statistics.minimum.Maximum.input
+procgraph_statistics.minimum.Minimum.input" class="py-name" href="#" onclick="return doclink('link-12', 'input', 'link-7');">input</a></tt><tt class="py-op">.</tt><tt class="py-name">x123</tt> </tt>
+<a name="L29"></a><tt class="py-lineno">29</tt>  <tt class="py-line">        <tt class="py-name">t</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.input
+procgraph.components.debug_components.clock.Clock.input
+procgraph.components.debug_components.constant.Constant.input
+procgraph.components.debug_components.gain.Gain.input
+procgraph.components.debug_components.identity.Identity.input
+procgraph.components.debug_components.info.Info.input
+procgraph.components.debug_components.operations.Minus.input
+procgraph.components.debug_components.printc.Print.input
+procgraph.core.block_meta.BlockMetaSugar.input
+procgraph.core.model.Model.input
+procgraph.core.model_io.ModelInput.input
+procgraph.core.model_io.ModelOutput.input
+procgraph.scripts.pgdoc.ModelDoc.input
+procgraph.testing.utils.VerifyBlock.input
+procgraph_foo.example0_simplest_block.BlockSimpleExample.input
+procgraph_hdf.hdfread.HDFread.input
+procgraph_hdf.hdfread_many.HDFread_many.input
+procgraph_hdf.hdfwrite.HDFwrite.input
+procgraph_images.blend'.Blend.input
+procgraph_images.border.Border.input
+procgraph_images.compose.Compose.input
+procgraph_images.images_from_dir.FilesFromDir.input
+procgraph_images.imggrid.ImageGrid.input
+procgraph_images.solid'.Solid.input
+procgraph_io_misc.json_misc.AsJSON.input
+procgraph_io_misc.pickling.Pickle.input
+procgraph_io_misc.pickling.PickleGroup.input
+procgraph_io_misc.pickling.PickleLoad.input
+procgraph_io_misc.to_file.ToFile.input
+procgraph_mpl.plot.Plot.input
+procgraph_mplayer.mencoder.MEncoder.input
+procgraph_mplayer.mplayer.MPlayer.input
+procgraph_pil.text.Text.input
+procgraph_robotics.laser_display.LaserDisplay.input
+procgraph_robotics.laser_dot_display.LaserDotDisplay.input
+procgraph_robotics.organic_scale.OrganicScale.input
+procgraph_robotics.pose2velocity.Pose2velocity.input
+procgraph_ros.bagread.BagRead.input
+procgraph_ros.bagwrite.BagWrite.input
+procgraph_signals.any.Any.input
+procgraph_signals.async.ASync.input
+procgraph_signals.derivative.ForwardDifference.input
+procgraph_signals.derivative2.ForwardDifference12.input
+procgraph_signals.extract.Extract.input
+procgraph_signals.fps_data_limit.FPSDataLimit.input
+procgraph_signals.fps_limit.FPSLimit.input
+procgraph_signals.fps_print.FPSPrint.input
+procgraph_signals.history.History.input
+procgraph_signals.historyt.HistoryT.input
+procgraph_signals.join.Join.input
+procgraph_signals.last_n_samples.HistoryN.input
+procgraph_signals.low_pass.LowPass.input
+procgraph_signals.make_tuple.MakeTuple.input
+procgraph_signals.sieve.Sieve.input
+procgraph_signals.sync.Sync.input
+procgraph_signals.sync_test.CheckSync.input
+procgraph_signals.sync_test.LogSim.input
+procgraph_signals.wait.Wait.input
+procgraph_statistics.expectation.Expectation.input
+procgraph_statistics.minimum.Maximum.input
+procgraph_statistics.minimum.Minimum.input" class="py-name" href="#" onclick="return doclink('link-13', 'input', 'link-7');">input</a></tt><tt class="py-op">.</tt><tt class="py-name">t123</tt> </tt>
+<a name="L30"></a><tt class="py-lineno">30</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-14" class="py-name" targets="Function procgraph_signals.derivative.isiterable()=procgraph_signals.derivative-module.html#isiterable,Function procgraph_signals.derivative2.isiterable()=procgraph_signals.derivative2-module.html#isiterable"><a title="procgraph_signals.derivative.isiterable
+procgraph_signals.derivative2.isiterable" class="py-name" href="#" onclick="return doclink('link-14', 'isiterable', 'link-14');">isiterable</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno">31</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-15" class="py-name"><a title="procgraph.core.exceptions.BadInput" class="py-name" href="#" onclick="return doclink('link-15', 'BadInput', 'link-2');">BadInput</a></tt><tt class="py-op">(</tt><tt class="py-string">'Expected arrays of 3 elements'</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'x'</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno">32</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-16" class="py-name"><a title="procgraph_signals.derivative.isiterable
+procgraph_signals.derivative2.isiterable" class="py-name" href="#" onclick="return doclink('link-16', 'isiterable', 'link-14');">isiterable</a></tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> <tt class="py-keyword">or</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">t</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno">33</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-17" class="py-name"><a title="procgraph.core.exceptions.BadInput" class="py-name" href="#" onclick="return doclink('link-17', 'BadInput', 'link-2');">BadInput</a></tt><tt class="py-op">(</tt><tt class="py-string">'Expected arrays of 3 elements'</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'t'</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno">34</tt>  <tt class="py-line">        </tt>
+<a name="L35"></a><tt class="py-lineno">35</tt>  <tt class="py-line">        <tt class="py-name">delta</tt> <tt class="py-op">=</tt> <tt class="py-name">t</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> <tt class="py-op">-</tt> <tt class="py-name">t</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L36"></a><tt class="py-lineno">36</tt>  <tt class="py-line">         </tt>
+<a name="L37"></a><tt class="py-lineno">37</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">delta</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno">38</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-18" class="py-name"><a title="procgraph.core.exceptions.BadInput" class="py-name" href="#" onclick="return doclink('link-18', 'BadInput', 'link-2');">BadInput</a></tt><tt class="py-op">(</tt><tt class="py-string">'Bad timestamp sequence % s'</tt> <tt class="py-op">%</tt> <tt class="py-name">t</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-string">'t'</tt><tt class="py-op">)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno">39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno">40</tt>  <tt class="py-line">        <tt class="py-comment"># if this is a sequence of bytes, let's promove them to floats</tt> </tt>
+<a name="L41"></a><tt class="py-lineno">41</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt class="py-name">dtype</tt> <tt class="py-op">==</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">dtype</tt><tt class="py-op">(</tt><tt class="py-string">'uint8'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L42"></a><tt class="py-lineno">42</tt>  <tt class="py-line">            <tt class="py-name">diff</tt> <tt class="py-op">=</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name" targets="Function procgraph_numpy_ops.filters.astype()=procgraph_numpy_ops.filters-module.html#astype"><a title="procgraph_numpy_ops.filters.astype" class="py-name" href="#" onclick="return doclink('link-19', 'astype', 'link-19');">astype</a></tt><tt class="py-op">(</tt><tt class="py-string">'float32'</tt><tt class="py-op">)</tt> <tt class="py-op">-</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">.</tt><tt id="link-20" class="py-name"><a title="procgraph_numpy_ops.filters.astype" class="py-name" href="#" onclick="return doclink('link-20', 'astype', 'link-19');">astype</a></tt><tt class="py-op">(</tt><tt class="py-string">'float32'</tt><tt class="py-op">)</tt> </tt>
+<a name="L43"></a><tt class="py-lineno">43</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L44"></a><tt class="py-lineno">44</tt>  <tt class="py-line">            <tt class="py-name">diff</tt> <tt class="py-op">=</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> <tt class="py-op">-</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L45"></a><tt class="py-lineno">45</tt>  <tt class="py-line">        <tt class="py-name">time</tt> <tt class="py-op">=</tt> <tt class="py-name">t</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L46"></a><tt class="py-lineno">46</tt>  <tt class="py-line">        <tt class="py-name">x_dot</tt> <tt class="py-op">=</tt> <tt class="py-name">diff</tt> <tt class="py-op">/</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">float32</tt><tt class="py-op">(</tt><tt class="py-name">delta</tt><tt class="py-op">)</tt> </tt>
+<a name="L47"></a><tt class="py-lineno">47</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method procgraph.core.block.Block.set_output()=procgraph.core.block.Block-class.html#set_output"><a title="procgraph.core.block.Block.set_output" class="py-name" href="#" onclick="return doclink('link-21', 'set_output', 'link-21');">set_output</a></tt><tt class="py-op">(</tt><tt class="py-string">'x_dot'</tt><tt class="py-op">,</tt> <tt class="py-name">x_dot</tt><tt class="py-op">,</tt> <tt id="link-22" class="py-name" targets="Variable procgraph_signals.sync.Sample.timestamp=procgraph_signals.sync.Sample-class.html#timestamp"><a title="procgraph_signals.sync.Sample.timestamp" class="py-name" href="#" onclick="return doclink('link-22', 'timestamp', 'link-22');">timestamp</a></tt><tt class="py-op">=</tt><tt class="py-name">time</tt><tt class="py-op">)</tt>    </tt>
+</div></div><a name="L48"></a><tt class="py-lineno">48</tt>  <tt class="py-line"> </tt>
+<a name="L49"></a><tt class="py-lineno">49</tt>  <tt class="py-line"><tt class="py-comment"># TODO: move this to models/</tt> </tt>
+<a name="L50"></a><tt class="py-lineno">50</tt>  <tt class="py-line"><tt id="link-23" class="py-name"><a title="procgraph.core.registrar_other.register_model_spec" class="py-name" href="#" onclick="return doclink('link-23', 'register_model_spec', 'link-3');">register_model_spec</a></tt><tt class="py-op">(</tt><tt class="py-string">"""</tt> </tt>
+<a name="L51"></a><tt class="py-lineno">51</tt>  <tt class="py-line"><tt class="py-string">--- model derivative </tt> </tt>
+<a name="L52"></a><tt class="py-lineno">52</tt>  <tt class="py-line"><tt class="py-string">''' Computes the derivative of a quantity with 3 taps  (``x[t+1] - x[t-1]``).</tt> </tt>
+<a name="L53"></a><tt class="py-lineno">53</tt>  <tt class="py-line"><tt class="py-string">    See also :ref:`block:derivative2`.                   '''</tt> </tt>
+<a name="L54"></a><tt class="py-lineno">54</tt>  <tt class="py-line"><tt class="py-string">input x "quantity to derive"</tt> </tt>
+<a name="L55"></a><tt class="py-lineno">55</tt>  <tt class="py-line"><tt class="py-string">output x_dot "approximate derivative"</tt> </tt>
+<a name="L56"></a><tt class="py-lineno">56</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L57"></a><tt class="py-lineno">57</tt>  <tt class="py-line"><tt class="py-string">|input name=x| --&gt; |last_n_samples n=3| --&gt; x,t</tt> </tt>
+<a name="L58"></a><tt class="py-lineno">58</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L59"></a><tt class="py-lineno">59</tt>  <tt class="py-line"><tt class="py-string">   x, t --&gt; |forward_difference| --&gt; |output name=x_dot|</tt> </tt>
+<a name="L60"></a><tt class="py-lineno">60</tt>  <tt class="py-line"><tt class="py-string">    </tt> </tt>
+<a name="L61"></a><tt class="py-lineno">61</tt>  <tt class="py-line"><tt class="py-string">"""</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno">62</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:04 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

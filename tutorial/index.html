@@ -3,18 +3,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>The ProcGraph tutorial &mdash; procgraph v0.9.0 documentation</title>
+    <title>The ProcGraph tutorial &mdash; procgraph 1.1 documentation</title>
+    
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.9.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +27,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="procgraph v0.9.0 documentation" href="../index.html" />
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
 	 
 
 
@@ -60,7 +63,7 @@
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>procgraph v0.9.0 documentation</span></a></h1>
+          <span>procgraph 1.1 documentation</span></a></h1>
         <h2 class="heading"><span>The ProcGraph tutorial</span></h2>
       </div>
       <div class="topnav">
@@ -94,13 +97,13 @@ up to the recommended design patterns and how to document your creations.</p>
 <p>It&#8217;s time to run this model. As you might have guessed, the model transcodes one
 video file to another format. Albeit <span class="procgraph-brand">ProcGraph</span> is pretty much data-agnostic, most of the examples involve
 reading and manipulating a video, as it is fun to have an immediate visual
-feedback of what you are doing. All the scripts refer to the file <a class="reference download internal" href="../downloads/coastguard.mp4"><tt class="xref download docutils literal"><span class="pre">coastguard.mp4</span></tt></a>,
+feedback of what you are doing. All the scripts refer to the file <tt class="xref download docutils literal"><span class="pre">coastguard.mp4</span></tt>,
 which should be in your current directory; you can, of course, use any video you want.</p>
 <p><span class="procgraph-brand">ProcGraph</span> has both an API to run modules from inside your Python code (see <a class="reference internal" href="../running.html#running"><em>Executing ProcGraph models</em></a>), and a command-line program that runs the models for you, called <tt class="docutils literal"><span class="pre">pg</span></tt>. In this tutorial, we are going to use the latter. If <span class="procgraph-brand">ProcGraph</span> is properly installed, you can run a model using
 the syntax <tt class="docutils literal"><span class="pre">pg</span> <span class="pre">&lt;model</span> <span class="pre">name&gt;</span></tt>. If you saved the above model to a file <tt class="docutils literal"><span class="pre">tutorial00_basics.pg</span></tt>, then you can run it using:</p>
 <div class="highlight-python"><pre>$ pg tutorial00_basics</pre>
 </div>
-<p>The expected output is <a class="reference download internal" href="../downloads/coastguard00.avi"><tt class="xref download docutils literal"><span class="pre">coastguard00.avi</span></tt></a>.</p>
+<p>The expected output is <tt class="xref download docutils literal"><span class="pre">coastguard00.avi</span></tt>.</p>
 </div>
 <div class="section" id="naming-signals">
 <span id="tutorial-naming-signals"></span><h2>Naming signals<a class="headerlink" href="#naming-signals" title="Permalink to this headline">¶</a></h2>
@@ -333,7 +336,7 @@ syntax:</p>
 	
     <div class="footer">
         &copy; Copyright 2010, Andrea Censi.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
 	
 	<script type="text/javascript">

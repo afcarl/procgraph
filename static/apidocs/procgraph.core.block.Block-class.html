@@ -1,0 +1,1164 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph.core.block.Block</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph-module.html">Package&nbsp;procgraph</a> ::
+        <a href="procgraph.core-module.html">Package&nbsp;core</a> ::
+        <a href="procgraph.core.block-module.html">Module&nbsp;block</a> ::
+        Class&nbsp;Block
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph.core.block.Block-class.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS DESCRIPTION ==================== -->
+<h1 class="epydoc">Class Block</h1><p class="nomargin-top"><span class="codelink"><a href="procgraph.core.block-pysrc.html#Block">source&nbsp;code</a></span></p>
+<center>
+<center>  <map id="uml_class_diagram_for_procgrap_9" name="uml_class_diagram_for_procgrap_9">
+<area shape="rect" href="procgraph.core.model_io.ModelInput-class.html" title="This represents one input to the model." alt="" coords="16,565,149,592"/>
+<area shape="rect" href="procgraph_io_misc.pickling.PickleGroup-class.html" title="Dumps the input as a :py:mod:`pickle` file, in the form of a dictionary signal name &#45;&gt; value." alt="" coords="200,565,445,592"/>
+<area shape="rect" href="procgraph_robotics.pose2velocity.Pose2velocity-class.html" title="Block used by :ref:`block:pose2commands`." alt="" coords="496,565,784,592"/>
+<area shape="rect" href="procgraph_robotics.laser_dot_display.LaserDotDisplay-class.html" title="Produces a plot of a range&#45;finder scan variation (derivative)." alt="" coords="835,565,1163,592"/>
+<area shape="rect" href="procgraph_mplayer.mencoder.MEncoder-class.html" title="Encodes a video stream using mencoder." alt="" coords="1213,565,1459,592"/>
+<area shape="rect" href="procgraph_io_misc.pickling.Pickle-class.html" title="Dumps the input as a :py:mod:`pickle` file." alt="" coords="1509,565,1720,592"/>
+<area shape="rect" href="procgraph_robotics.organic_scale.OrganicScale-class.html" title="A (almost failed!) attempt to scale a signal into [&#45;1,1] according to the history." alt="" coords="1771,565,2061,592"/>
+<area shape="rect" href="procgraph_io_misc.pickling.PickleLoad-class.html" title="Dumps the input as a :py:mod:`pickle` file." alt="" coords="2112,565,2352,592"/>
+<area shape="rect" href="procgraph_images.border.Border-class.html" title="Adds a block around the input image." alt="" coords="2403,565,2603,592"/>
+<area shape="rect" href="procgraph_images.compose.Compose-class.html" title="Compose several images in the same canvas." alt="" coords="2653,565,2891,592"/>
+<area shape="rect" href="procgraph_robotics.laser_display.LaserDisplay-class.html" title="Produces a plot of a range&#45;finder scan." alt="" coords="2941,565,3224,592"/>
+<area shape="rect" href="procgraph_io_misc.json_misc.AsJSON-class.html" title="Converts the input into a JSON string." alt="" coords="3275,565,3515,592"/>
+<area shape="rect" href="procgraph_signals.low_pass.LowPass-class.html" title="Implements simple low&#45;pass filtering." alt="" coords="3565,565,3800,592"/>
+<area shape="rect" href="procgraph_signals.any.Any-class.html" title="Joins the stream of multiple signals onto one output signal." alt="" coords="3851,565,4021,592"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#alias" title="procgraph.core.block_meta.BlockMetaSugar.alias" alt="" coords="6861,36,7211,55"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#config" title="procgraph.core.block_meta.BlockMetaSugar.config" alt="" coords="6861,55,7211,73"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#input" title="procgraph.core.block_meta.BlockMetaSugar.input" alt="" coords="6861,73,7211,92"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#input_is_variable" title="Declares that this block can accept a variable number of inputs." alt="" coords="6861,92,7211,111"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#output" title="procgraph.core.block_meta.BlockMetaSugar.output" alt="" coords="6861,111,7211,129"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#output_is_defined_at_runtime" title="procgraph.core.block_meta.BlockMetaSugar.output_is_defined_at_runtime" alt="" coords="6861,129,7211,148"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html#output_is_variable" title="procgraph.core.block_meta.BlockMetaSugar.output_is_variable" alt="" coords="6861,148,7211,167"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMetaSugar-class.html" title="procgraph.core.block_meta.BlockMetaSugar" alt="" coords="6860,11,7212,168"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#UPDATE_NOT_FINISHED" title="procgraph.core.block.Block.UPDATE_NOT_FINISHED" alt="" coords="6917,215,7155,233"/>
+<area shape="rect" href="procgraph.core.block_meta.BlockMeta-class.html" title="procgraph.core.block.Block.__metaclass__" alt="" coords="6917,233,7155,252"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#__init__" title="x.__init__(...) initializes x; see help(type(x)) for signature" alt="" coords="6917,255,7155,273"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#__repr__" title="repr(x)" alt="" coords="6917,273,7155,292"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#all_input_signals_ready" title="Returns True if all input signals are ready." alt="" coords="6917,292,7155,311"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#are_input_signals_defined" title="procgraph.core.block.Block.are_input_signals_defined" alt="" coords="6917,311,7155,329"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#are_output_signals_defined" title="procgraph.core.block.Block.are_output_signals_defined" alt="" coords="6917,329,7155,348"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#canonicalize_input" title="Converts the signal spec (either string or id) to string (useful because more user&#45;friendly)." alt="" coords="6917,348,7155,367"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#canonicalize_output" title="Converts the signal spec (either string or id) to string (useful because more user&#45;friendly)." alt="" coords="6917,367,7155,385"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#cleanup" title="procgraph.core.block.Block.cleanup" alt="" coords="6917,385,7155,404"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#debug" title="Writes a debug message." alt="" coords="6917,404,7155,423"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#define_input_signals_new" title="procgraph.core.block.Block.define_input_signals_new" alt="" coords="6917,423,7155,441"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#define_output_signals_new" title="procgraph.core.block.Block.define_output_signals_new" alt="" coords="6917,441,7155,460"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#error" title="Writes a debug message." alt="" coords="6917,460,7155,479"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#finish" title="procgraph.core.block.Block.finish" alt="" coords="6917,479,7155,497"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html#warning" title="Writes an info message." alt="" coords="6917,516,7155,535"/>
+<area shape="rect" href="procgraph.core.block.Block-class.html" title="procgraph.core.block.Block" alt="" coords="6916,197,7156,536"/>
+<area shape="rect" href="procgraph.components.debug_components.identity.Identity-class.html" title="This block outputs the inputs, unchanged." alt="" coords="4072,565,4365,592"/>
+<area shape="rect" href="procgraph_images.images_from_dir.FilesFromDir-class.html" title="This block reads the filenames from a directory according to a given regexp." alt="" coords="5405,621,5701,648"/>
+<area shape="rect" href="procgraph_mplayer.mplayer.MPlayer-class.html" title="Decodes a video stream." alt="" coords="5752,621,5976,648"/>
+<area shape="rect" href="procgraph_signals.sync_test.LogSim-class.html" title="procgraph_signals.sync_test.LogSim" alt="" coords="6027,621,6256,648"/>
+<area shape="rect" href="procgraph_signals.sync_test.CheckSync-class.html" title="procgraph_signals.sync_test.CheckSync" alt="" coords="4416,565,4667,592"/>
+<area shape="rect" href="procgraph_signals.sieve.Sieve-class.html" title="This block decimates the data in time by transmitting only one in n updates." alt="" coords="4717,565,4904,592"/>
+<area shape="rect" href="procgraph_io_misc.to_file.ToFile-class.html" title="Prints the input line by line to a given file." alt="" coords="4955,565,5155,592"/>
+<area shape="rect" href="procgraph_signals.derivative2.ForwardDifference12-class.html" title="Computes x[t+1] &#45; x[t] normalized with timestamp." alt="" coords="5205,565,5509,592"/>
+<area shape="rect" href="procgraph_signals.derivative.ForwardDifference-class.html" title="Computes ``x[t+1] &#45; x[t&#45;1]`` normalized with timestamp." alt="" coords="5560,565,5843,592"/>
+<area shape="rect" href="procgraph_mpl.plot.Plot-class.html" title="Plots the inputs using matplotlib." alt="" coords="5893,565,6045,592"/>
+<area shape="rect" href="procgraph.components.debug_components.operations.Minus-class.html" title="Implements the difference of two signals, taking care of overflows." alt="" coords="6096,565,6400,592"/>
+<area shape="rect" href="procgraph_signals.extract.Extract-class.html" title="This block extracts some of the components of a vector." alt="" coords="6451,565,6659,592"/>
+<area shape="rect" href="procgraph.core.block.Generator-class.html" title="procgraph.core.block.Generator" alt="" coords="6709,565,6781,592"/>
+<area shape="rect" href="procgraph.core.model.Model-class.html" title="A Model is a block and a generator." alt="" coords="6307,621,6395,648"/>
+<area shape="rect" href="procgraph.components.debug_components.clock.Clock-class.html" title="procgraph.components.debug_components.clock.Clock" alt="" coords="6445,621,6720,648"/>
+<area shape="rect" href="procgraph_hdf.hdfread_many.HDFread_many-class.html" title="This block is a variation on :ref:`block:hdfread` that can concatenate the output of logs stored in multiple HDF files." alt="" coords="6771,621,7043,648"/>
+<area shape="rect" href="procgraph_signals.sync.Sync-class.html" title="This block synchronizes a set of streams to the first stream (the master)." alt="" coords="7093,621,7277,648"/>
+<area shape="rect" href="procgraph_hdf.hdfread.HDFread-class.html" title="This block reads a log written with :ref:`block:hdfwrite`." alt="" coords="7328,621,7525,648"/>
+<area shape="rect" href="procgraph_ros.bagread.BagRead-class.html" title="This block reads a bag file (ROS logging format)." alt="" coords="7576,621,7779,648"/>
+<area shape="rect" href="procgraph.block_utils.textlog.TextLog-class.html" title="This represents a generic log reader that reads from a file line&#45;by&#45;line." alt="" coords="7829,621,7997,648"/>
+<area shape="rect" href="procgraph_signals.join.Join-class.html" title="This block joins multiple signals into one." alt="" coords="6832,565,7003,592"/>
+<area shape="rect" href="procgraph_signals.history.History-class.html" title="This block collects the history of a quantity, and outputs two signals ``x`` and ``t``." alt="" coords="7053,565,7259,592"/>
+<area shape="rect" href="procgraph_pil.text.Text-class.html" title="This block provides text overlays over an image." alt="" coords="7309,565,7453,592"/>
+<area shape="rect" href="procgraph_images.imggrid.ImageGrid-class.html" title="A block that creates a larger image by arranging them in a grid." alt="" coords="7504,565,7733,592"/>
+<area shape="rect" href="procgraph_signals.fps_limit.FPSLimit-class.html" title="This block limits the output update to a certain realtime framerate." alt="" coords="7784,565,8013,592"/>
+<area shape="rect" href="procgraph_signals.last_n_samples.HistoryN-class.html" title="This block collects the last N samples of a signals, and outputs two signals ``x`` and ``t``." alt="" coords="8064,565,8333,592"/>
+<area shape="rect" href="procgraph_signals.fps_data_limit.FPSDataLimit-class.html" title="This block limits the output update to a certain framerate." alt="" coords="8384,565,8672,592"/>
+<area shape="rect" href="procgraph_statistics.minimum.Minimum-class.html" title="Computes the minimum of a signal over time." alt="" coords="8723,565,8968,592"/>
+<area shape="rect" href="procgraph_images.blend%27.Blend-class.html" title="Blend two or more images." alt="" coords="9019,565,9213,592"/>
+<area shape="rect" href="procgraph.components.debug_components.info.Info-class.html" title="Prints more compact information about the inputs than :ref:`block:print`." alt="" coords="9264,565,9515,592"/>
+<area shape="rect" href="procgraph_signals.make_tuple.MakeTuple-class.html" title="Creates a tuple out of the input signals values." alt="" coords="9565,565,9821,592"/>
+<area shape="rect" href="procgraph_signals.async.ASync-class.html" title="procgraph_signals.async.ASync" alt="" coords="9872,565,10072,592"/>
+<area shape="rect" href="procgraph_signals.wait.Wait-class.html" title="This block waits a given number of updates before transmitting the output signal." alt="" coords="10123,565,10299,592"/>
+<area shape="rect" href="procgraph_hdf.hdfwrite.HDFwrite-class.html" title="This block writes the incoming signals to a file in HDF_ format." alt="" coords="10349,565,10549,592"/>
+<area shape="rect" href="procgraph_ros.bagwrite.BagWrite-class.html" title="This block writes the incoming signals to a ROS bag file." alt="" coords="10600,565,10805,592"/>
+<area shape="rect" href="procgraph.components.debug_components.printc.Print-class.html" title="Print a representation of the input values along with their timestamp." alt="" coords="10856,565,11125,592"/>
+<area shape="rect" href="procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html" title="This is a documented example of the simplest block possible." alt="" coords="11176,565,11552,592"/>
+<area shape="rect" href="procgraph.testing.utils.VerifyBlock-class.html" title="This debug block verifies that config.x == config.y and throws an exception if that&#39;s not the case." alt="" coords="11603,565,11752,592"/>
+<area shape="rect" href="procgraph_images.solid%27.Solid-class.html" title="procgraph_images.solid&#39;.Solid" alt="" coords="11803,565,11989,592"/>
+<area shape="rect" href="procgraph_signals.historyt.HistoryT-class.html" title="This block collects the signals samples of a signals, and outputs *one* signal containing a tuple ``(t,x)``." alt="" coords="12040,565,12259,592"/>
+<area shape="rect" href="procgraph.components.debug_components.gain.Gain-class.html" title="A simple example of a gain block." alt="" coords="12309,565,12571,592"/>
+<area shape="rect" href="procgraph.components.debug_components.constant.Constant-class.html" title="Output a numerical constant that never changes." alt="" coords="12621,565,12933,592"/>
+<area shape="rect" href="procgraph_signals.fps_print.FPSPrint-class.html" title="Prints the fps count for the input signals." alt="" coords="12984,565,13213,592"/>
+<area shape="rect" href="procgraph.core.model_io.ModelOutput-class.html" title="This represents one output to the model." alt="" coords="13264,565,13408,592"/>
+<area shape="rect" href="procgraph_statistics.expectation.Expectation-class.html" title="Computes the sample expectation of a signal." alt="" coords="13459,565,13733,592"/>
+<area shape="rect" href="procgraph_statistics.minimum.Maximum-class.html" title="Computes the minimum of a signal over time." alt="" coords="13784,565,14032,592"/>
+</map>
+  <img src="uml_class_diagram_for_procgrap_9.gif" alt='' usemap="#uml_class_diagram_for_procgrap_9" ismap="ismap" class="graph-without-title" />
+</center>
+</center>
+<hr />
+<!-- ==================== NESTED CLASSES ==================== -->
+<a name="section-NestedClasses"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Nested Classes</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-NestedClasses"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="procgraph.core.block_meta.BlockMeta-class.html" class="summary-name">__metaclass__</a>
+    </td>
+  </tr>
+</table>
+<!-- ==================== INSTANCE METHODS ==================== -->
+<a name="section-InstanceMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Instance Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-InstanceMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__get_input_struct"></a><span class="summary-sig-name">__get_input_struct</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Returns a reference to the Value structure of the given
+input signal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.__get_input_struct">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="__get_output_struct"></a><span class="summary-sig-name">__get_output_struct</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Returns a reference to the Value structure of the given
+output signal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.__get_output_struct">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="procgraph.core.block.Block-class.html#__init__" class="summary-sig-name">__init__</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">name</span>,
+        <span class="summary-sig-arg">config</span>,
+        <span class="summary-sig-arg">library</span>)</span><br />
+      x.__init__(...) initializes x; see help(type(x)) for signature</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.__init__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="procgraph.core.block.Block-class.html#__repr__" class="summary-sig-name">__repr__</a>(<span class="summary-sig-arg">self</span>)</span><br />
+      repr(x)</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.__repr__">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr class="private">
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="_log_prefix"></a><span class="summary-sig-name">_log_prefix</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block._log_prefix">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="all_input_signals_ready"></a><span class="summary-sig-name">all_input_signals_ready</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns True if all input signals are ready.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.all_input_signals_ready">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="are_input_signals_defined"></a><span class="summary-sig-name">are_input_signals_defined</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.are_input_signals_defined">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="are_output_signals_defined"></a><span class="summary-sig-name">are_output_signals_defined</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.are_output_signals_defined">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="canonicalize_input"></a><span class="summary-sig-name">canonicalize_input</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Converts the signal spec (either string or id) to string
+(useful because more user-friendly).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.canonicalize_input">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="canonicalize_output"></a><span class="summary-sig-name">canonicalize_output</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Converts the signal spec (either string or id) to string
+(useful because more user-friendly).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.canonicalize_output">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="cleanup"></a><span class="summary-sig-name">cleanup</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.cleanup">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="debug"></a><span class="summary-sig-name">debug</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>)</span><br />
+      Writes a debug message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.debug">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="define_input_signals_new"></a><span class="summary-sig-name">define_input_signals_new</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">signals</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.define_input_signals_new">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="define_output_signals_new"></a><span class="summary-sig-name">define_output_signals_new</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">signals</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.define_output_signals_new">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="error"></a><span class="summary-sig-name">error</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>)</span><br />
+      Writes a debug message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.error">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="finish"></a><span class="summary-sig-name">finish</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.finish">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="procgraph.core.block.Block-class.html#from_outside_set_input" class="summary-sig-name">from_outside_set_input</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">timestamp</span>)</span><br />
+      Sets an input value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.from_outside_set_input">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_config"></a><span class="summary-sig-name">get_config</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">conf</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_config">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_input"></a><span class="summary-sig-name">get_input</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Gets the value of an input signal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_input">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_input_signals_names"></a><span class="summary-sig-name">get_input_signals_names</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the list of names of currently defined input signals.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_input_signals_names">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_input_signals_timestamps"></a><span class="summary-sig-name">get_input_signals_timestamps</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a list of the input signals timestamps.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_input_signals_timestamps">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_input_signals_values"></a><span class="summary-sig-name">get_input_signals_values</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a list of the input signals values.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_input_signals_values">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_input_timestamp"></a><span class="summary-sig-name">get_input_timestamp</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Gets the timestamp of an input signal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_input_timestamp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_io_repr"></a><span class="summary-sig-name">get_io_repr</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a representation of io ports for this block.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_io_repr">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_output"></a><span class="summary-sig-name">get_output</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Gets the value of an output signal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_output">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_output_signals_names"></a><span class="summary-sig-name">get_output_signals_names</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns the list of names of currently defined output signals.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_output_signals_names">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_output_signals_timestamps"></a><span class="summary-sig-name">get_output_signals_timestamps</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a list of the output values timestamps.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_output_signals_timestamps">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_output_timestamp"></a><span class="summary-sig-name">get_output_timestamp</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Gets the timestamp of an output signal.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_output_timestamp">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_state"></a><span class="summary-sig-name">get_state</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">varname</span>)</span><br />
+      Can be called during init() and update() .</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="get_state_vars"></a><span class="summary-sig-name">get_state_vars</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Returns a list of the names for the state variables.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.get_state_vars">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="info"></a><span class="summary-sig-name">info</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>)</span><br />
+      Writes an info message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.info">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="init"></a><span class="summary-sig-name">init</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Initializes the block.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.init">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_valid_input_name"></a><span class="summary-sig-name">is_valid_input_name</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Checks that num_or_id (string or int) is a valid handle
+for one of the signals.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.is_valid_input_name">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="is_valid_output_name"></a><span class="summary-sig-name">is_valid_output_name</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>)</span><br />
+      Checks that num_or_id (string or int) is a valid handle
+for one of the signals.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.is_valid_output_name">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="num_input_signals"></a><span class="summary-sig-name">num_input_signals</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.num_input_signals">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="num_output_signals"></a><span class="summary-sig-name">num_output_signals</span>(<span class="summary-sig-arg">self</span>)</span></td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.num_output_signals">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="procgraph.core.block.Block-class.html#set_output" class="summary-sig-name">set_output</a>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">num_or_id</span>,
+        <span class="summary-sig-arg">value</span>,
+        <span class="summary-sig-arg">timestamp</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Sets an output value.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.set_output">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="set_state"></a><span class="summary-sig-name">set_state</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">varname</span>,
+        <span class="summary-sig-arg">value</span>)</span><br />
+      Can be called during init() and update().</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.set_state">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="update"></a><span class="summary-sig-name">update</span>(<span class="summary-sig-arg">self</span>)</span><br />
+      Performs the block function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.update">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="warning"></a><span class="summary-sig-name">warning</span>(<span class="summary-sig-arg">self</span>,
+        <span class="summary-sig-arg">s</span>)</span><br />
+      Writes an info message.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.warning">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__delattr__</code>,
+      <code>__format__</code>,
+      <code>__getattribute__</code>,
+      <code>__hash__</code>,
+      <code>__new__</code>,
+      <code>__reduce__</code>,
+      <code>__reduce_ex__</code>,
+      <code>__setattr__</code>,
+      <code>__sizeof__</code>,
+      <code>__str__</code>,
+      <code>__subclasshook__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== STATIC METHODS ==================== -->
+<a name="section-StaticMethods"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Static Methods</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-StaticMethods"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html">block_meta.BlockMetaSugar</a></code></b>:
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#alias">alias</a></code>,
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#config">config</a></code>,
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#input">input</a></code>,
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#input_is_variable">input_is_variable</a></code>,
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#output">output</a></code>,
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#output_is_defined_at_runtime">output_is_defined_at_runtime</a></code>,
+      <code><a href="procgraph.core.block_meta.BlockMetaSugar-class.html#output_is_variable">output_is_variable</a></code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== CLASS VARIABLES ==================== -->
+<a name="section-ClassVariables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Class Variables</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-ClassVariables"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="UPDATE_NOT_FINISHED"></a><span class="summary-name">UPDATE_NOT_FINISHED</span> = <code title="'update-not-finished'"><code class="variable-quote">'</code><code class="variable-string">update-not-finished</code><code class="variable-quote">'</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PROPERTIES ==================== -->
+<a name="section-Properties"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Properties</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-Properties"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+  <tr>
+    <td colspan="2" class="summary">
+    <p class="indent-wrapped-lines"><b>Inherited from <code>object</code></b>:
+      <code>__class__</code>
+      </p>
+    </td>
+  </tr>
+</table>
+<!-- ==================== METHOD DETAILS ==================== -->
+<a name="section-MethodDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td colspan="2" class="table-header">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr valign="top">
+        <td align="left"><span class="table-header">Method Details</span></td>
+        <td align="right" valign="top"
+         ><span class="options">[<a href="#section-MethodDetails"
+         class="privatelink" onclick="toggle_private();"
+         >hide private</a>]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+</table>
+<a name="__init__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__init__</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">name</span>,
+        <span class="sig-arg">config</span>,
+        <span class="sig-arg">library</span>)</span>
+    <br /><em class="fname">(Constructor)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.__init__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  x.__init__(...) initializes x; see help(type(x)) for signature
+  <dl class="fields">
+    <dt>Overrides:
+        object.__init__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="__repr__"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">__repr__</span>(<span class="sig-arg">self</span>)</span>
+    <br /><em class="fname">(Representation operator)</em>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.__repr__">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  repr(x)
+  <dl class="fields">
+    <dt>Overrides:
+        object.__repr__
+        <dd><em class="note">(inherited documentation)</em></dd>
+    </dt>
+  </dl>
+</td></tr></table>
+</div>
+<a name="from_outside_set_input"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">from_outside_set_input</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">num_or_id</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">timestamp</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.from_outside_set_input">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Sets an input value. This is used from outside, not
+from the block. (This is overloaded by Model)
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="set_output"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">set_output</span>(<span class="sig-arg">self</span>,
+        <span class="sig-arg">num_or_id</span>,
+        <span class="sig-arg">value</span>,
+        <span class="sig-arg">timestamp</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="procgraph.core.block-pysrc.html#Block.set_output">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  Sets an output value. If timestamp is omitted, it
+will default to the maximum of the input signals timestamp.
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:23:56 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

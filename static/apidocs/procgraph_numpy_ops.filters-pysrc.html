@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph_numpy_ops.filters</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph_numpy_ops-module.html">Package&nbsp;procgraph_numpy_ops</a> ::
+        Module&nbsp;filters
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph_numpy_ops.filters-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph_numpy_ops.filters-module.html">Module procgraph_numpy_ops.filters</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">numpy</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">numpy</tt> <tt class="py-keyword">import</tt> <tt id="link-0" class="py-name" targets="Variable procgraph_numpy_ops.filters.multiply=procgraph_numpy_ops.filters-module.html#multiply,Variable procgraph_statistics.cov2corr.multiply=procgraph_statistics.cov2corr-module.html#multiply"><a title="procgraph_numpy_ops.filters.multiply
+procgraph_statistics.cov2corr.multiply" class="py-name" href="#" onclick="return doclink('link-0', 'multiply', 'link-0');">multiply</a></tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Variable procgraph.core.parsing.array=procgraph.core.parsing-module.html#array,Function procgraph_numpy_ops.filters.array()=procgraph_numpy_ops.filters-module.html#array"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-1', 'array', 'link-1');">array</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Package procgraph=procgraph-module.html"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-2', 'procgraph', 'link-2');">procgraph</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Variable procgraph.COMPULSORY=procgraph-module.html#COMPULSORY,Variable procgraph.core.constants.COMPULSORY=procgraph.core.constants-module.html#COMPULSORY,Variable procgraph.core.registrar_other.COMPULSORY=procgraph.core.registrar_other-module.html#COMPULSORY,Variable procgraph_images.copied_from_reprep.COMPULSORY=procgraph_images.copied_from_reprep-module.html#COMPULSORY,Variable procgraph_numpy_ops.filters.COMPULSORY=procgraph_numpy_ops.filters-module.html#COMPULSORY,Variable procgraph_pil.imwrite.COMPULSORY=procgraph_pil.imwrite-module.html#COMPULSORY,Variable procgraph_signals.COMPULSORY=procgraph_signals-module.html#COMPULSORY,Variable procgraph_signals.extract.COMPULSORY=procgraph_signals.extract-module.html#COMPULSORY"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-3', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Function procgraph.core.registrar_other.register_simple_block()=procgraph.core.registrar_other-module.html#register_simple_block"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-4', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Function procgraph.core.registrar_other.simple_block()=procgraph.core.registrar_other-module.html#simple_block"><a title="procgraph.core.registrar_other.simple_block" class="py-name" href="#" onclick="return doclink('link-5', 'simple_block', 'link-5');">simple_block</a></tt> </tt>
+<a name="astype"></a><div id="astype-def"><a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt> <a class="py-toggle" href="#" id="astype-toggle" onclick="return toggle('astype');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#astype">astype</a><tt class="py-op">(</tt><tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-param">dtype</tt><tt class="py-op">=</tt><tt id="link-6" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-6', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="astype-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="astype-expanded"><a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line">    <tt class="py-docstring">''' </tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">        Converts an array using the ``astype`` function. </tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-docstring">        :param a: Numpy array</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-docstring">        :type a: array</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-docstring">        :param dtype: The new dtype.</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-docstring">        :type dtype: string</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-docstring">        :return: typed: The Numpy array with the new type. </tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">        :rtype: array</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">a</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Function procgraph_numpy_ops.filters.astype()=procgraph_numpy_ops.filters-module.html#astype"><a title="procgraph_numpy_ops.filters.astype" class="py-name" href="#" onclick="return doclink('link-7', 'astype', 'link-7');">astype</a></tt><tt class="py-op">(</tt><tt class="py-name">dtype</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"> </tt>
+<a name="take"></a><div id="take-def"><a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt> <a class="py-toggle" href="#" id="take-toggle" onclick="return toggle('take');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#take">take</a><tt class="py-op">(</tt><tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-param">axis</tt><tt class="py-op">=</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-param">indices</tt><tt class="py-op">=</tt><tt id="link-8" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-8', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="take-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="take-expanded"><a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">    <tt class="py-keyword">assert</tt> <tt class="py-name">indices</tt> <tt class="py-op">!=</tt> <tt id="link-9" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-9', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt class="py-name">a</tt> <tt class="py-op">=</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-10', 'array', 'link-1');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">a</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt class="py-name">indices</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">indices</tt><tt class="py-op">)</tt> <tt class="py-comment"># parsingresult bug</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">    <tt class="py-name">axis</tt> <tt class="py-op">=</tt> <tt class="py-name">int</tt><tt class="py-op">(</tt><tt class="py-name">axis</tt><tt class="py-op">)</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">a</tt><tt class="py-op">.</tt><tt id="link-11" class="py-name" targets="Function procgraph_numpy_ops.filters.take()=procgraph_numpy_ops.filters-module.html#take"><a title="procgraph_numpy_ops.filters.take" class="py-name" href="#" onclick="return doclink('link-11', 'take', 'link-11');">take</a></tt><tt class="py-op">(</tt><tt class="py-name">axis</tt><tt class="py-op">=</tt><tt class="py-name">axis</tt><tt class="py-op">,</tt> <tt class="py-name">indices</tt><tt class="py-op">=</tt><tt class="py-name">indices</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">squeeze</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt> <tt class="py-keyword">as</tt> <tt id="link-12" class="py-name" targets="Variable procgraph.core.parsing.e=procgraph.core.parsing-module.html#e"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-12', 'e', 'link-12');">e</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'take(axis=%s,indices=%s) failed on array '</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                        <tt class="py-string">'with shape %s: %s'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">axis</tt><tt class="py-op">,</tt> <tt class="py-name">indices</tt><tt class="py-op">,</tt> <tt class="py-name">a</tt><tt class="py-op">.</tt><tt class="py-name">shape</tt><tt class="py-op">,</tt> <tt id="link-13" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-13', 'e', 'link-12');">e</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="outer"></a><div id="outer-def"><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="outer-toggle" onclick="return toggle('outer');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#outer">outer</a><tt class="py-op">(</tt><tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-param">b</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="outer-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="outer-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">    <tt class="py-docstring">''' </tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-docstring">        Outer product of two vectors.</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-docstring">        This is a wrapper around :py:func:`numpy.multiply.outer`.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-docstring">        :param a: First vector.</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-docstring">        :param b: Second vector.</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-docstring">        :return: outer: Outer product of the two vectors. </tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">    <tt class="py-name">a</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-14', 'array', 'link-1');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">a</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-name">b</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-15', 'array', 'link-1');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">b</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-16" class="py-name"><a title="procgraph_numpy_ops.filters.multiply
+procgraph_statistics.cov2corr.multiply" class="py-name" href="#" onclick="return doclink('link-16', 'multiply', 'link-0');">multiply</a></tt><tt class="py-op">.</tt><tt id="link-17" class="py-name" targets="Function procgraph_numpy_ops.filters.outer()=procgraph_numpy_ops.filters-module.html#outer"><a title="procgraph_numpy_ops.filters.outer" class="py-name" href="#" onclick="return doclink('link-17', 'outer', 'link-17');">outer</a></tt><tt class="py-op">(</tt><tt class="py-name">a</tt><tt class="py-op">,</tt> <tt class="py-name">b</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">res</tt> </tt>
+</div><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
+<a name="select"></a><div id="select-def"><a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt> <a class="py-toggle" href="#" id="select-toggle" onclick="return toggle('select');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#select">select</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">,</tt> <tt class="py-param">every</tt><tt class="py-op">=</tt><tt id="link-18" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-18', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="select-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="select-expanded"><a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-docstring">'''</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-docstring">        Selects some of the elements of ``x``.</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        </tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-docstring">        :param x: Numpy array that can be flatly addressed.</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring">        :param every: How many to jump (every=2 takes only the even elements).</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">        :return: decimated: The decimated output.</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt class="py-keyword">assert</tt> <tt class="py-name">every</tt> <tt class="py-op">!=</tt> <tt id="link-19" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-19', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-name">n</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">x</tt><tt class="py-op">[</tt><tt class="py-name">range</tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-name">n</tt><tt class="py-op">,</tt> <tt class="py-name">every</tt><tt class="py-op">)</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="normalize_Linf"></a><div id="normalize_Linf-def"><a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt> <a class="py-toggle" href="#" id="normalize_Linf-toggle" onclick="return toggle('normalize_Linf');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#normalize_Linf">normalize_Linf</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="normalize_Linf-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="normalize_Linf-expanded"><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-docstring">''' Normalize a vector such that ``|x|_inf = max(abs(x))= 1``. </tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-docstring">        :param x: Any numpy array.</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-docstring">        :return: normalized: The same array normalized.</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-docstring">         </tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">x</tt> <tt class="py-op">/</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">abs</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">max</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"> </tt>
+<a name="minimum"></a><div id="minimum-def"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt> <a class="py-toggle" href="#" id="minimum-toggle" onclick="return toggle('minimum');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#minimum">minimum</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">threshold</tt><tt class="py-op">=</tt><tt id="link-20" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-20', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="minimum-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="minimum-expanded"><a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-docstring">''' Limits the numpy array to the given threshold. </tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-docstring">        :param value: Any numpy array.</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-docstring">        :return: Array of same shape.</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-keyword">assert</tt> <tt class="py-name">threshold</tt> <tt class="py-op">!=</tt> <tt id="link-21" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-21', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Variable procgraph_images.copied_from_reprep.minimum=procgraph_images.copied_from_reprep-module.html#minimum,Function procgraph_numpy_ops.filters.minimum()=procgraph_numpy_ops.filters-module.html#minimum,Variable procgraph_robotics.laser_display.minimum=procgraph_robotics.laser_display-module.html#minimum,Variable procgraph_robotics.organic_scale.minimum=procgraph_robotics.organic_scale-module.html#minimum,Module procgraph_statistics.minimum=procgraph_statistics.minimum-module.html"><a title="procgraph_images.copied_from_reprep.minimum
+procgraph_numpy_ops.filters.minimum
+procgraph_robotics.laser_display.minimum
+procgraph_robotics.organic_scale.minimum
+procgraph_statistics.minimum" class="py-name" href="#" onclick="return doclink('link-22', 'minimum', 'link-22');">minimum</a></tt><tt class="py-op">(</tt><tt id="link-23" class="py-name" targets="Variable procgraph.core.parsing.value=procgraph.core.parsing-module.html#value,Variable procgraph_signals.sync.Sample.value=procgraph_signals.sync.Sample-class.html#value"><a title="procgraph.core.parsing.value
+procgraph_signals.sync.Sample.value" class="py-name" href="#" onclick="return doclink('link-23', 'value', 'link-23');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">threshold</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"> </tt>
+<a name="maximum"></a><div id="maximum-def"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt> <a class="py-toggle" href="#" id="maximum-toggle" onclick="return toggle('maximum');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#maximum">maximum</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">threshold</tt><tt class="py-op">=</tt><tt id="link-24" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-24', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="maximum-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="maximum-expanded"><a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-docstring">''' Limits the numpy array to the given threshold. '''</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-keyword">assert</tt> <tt class="py-name">threshold</tt> <tt class="py-op">!=</tt> <tt id="link-25" class="py-name"><a title="procgraph.COMPULSORY
+procgraph.core.constants.COMPULSORY
+procgraph.core.registrar_other.COMPULSORY
+procgraph_images.copied_from_reprep.COMPULSORY
+procgraph_numpy_ops.filters.COMPULSORY
+procgraph_pil.imwrite.COMPULSORY
+procgraph_signals.COMPULSORY
+procgraph_signals.extract.COMPULSORY" class="py-name" href="#" onclick="return doclink('link-25', 'COMPULSORY', 'link-3');">COMPULSORY</a></tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name" targets="Variable procgraph_images.copied_from_reprep.maximum=procgraph_images.copied_from_reprep-module.html#maximum,Function procgraph_numpy_ops.filters.maximum()=procgraph_numpy_ops.filters-module.html#maximum,Variable procgraph_robotics.laser_display.maximum=procgraph_robotics.laser_display-module.html#maximum,Variable procgraph_robotics.organic_scale.maximum=procgraph_robotics.organic_scale-module.html#maximum"><a title="procgraph_images.copied_from_reprep.maximum
+procgraph_numpy_ops.filters.maximum
+procgraph_robotics.laser_display.maximum
+procgraph_robotics.organic_scale.maximum" class="py-name" href="#" onclick="return doclink('link-26', 'maximum', 'link-26');">maximum</a></tt><tt class="py-op">(</tt><tt id="link-27" class="py-name"><a title="procgraph.core.parsing.value
+procgraph_signals.sync.Sample.value" class="py-name" href="#" onclick="return doclink('link-27', 'value', 'link-23');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">threshold</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="norm"></a><div id="norm-def"><a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt> <a class="py-toggle" href="#" id="norm-toggle" onclick="return toggle('norm');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#norm">norm</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">,</tt> <tt class="py-param">ord</tt><tt class="py-op">=</tt><tt class="py-number">2</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-comment">#@ReservedAssignment</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">    <tt class="py-docstring">''' Returns the norm of the vector. '''</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">linalg</tt><tt class="py-op">.</tt><tt id="link-28" class="py-name" targets="Function procgraph_numpy_ops.filters.norm()=procgraph_numpy_ops.filters-module.html#norm"><a title="procgraph_numpy_ops.filters.norm" class="py-name" href="#" onclick="return doclink('link-28', 'norm', 'link-28');">norm</a></tt><tt class="py-op">(</tt><tt id="link-29" class="py-name"><a title="procgraph.core.parsing.value
+procgraph_signals.sync.Sample.value" class="py-name" href="#" onclick="return doclink('link-29', 'value', 'link-23');">value</a></tt><tt class="py-op">,</tt> <tt class="py-name">ord</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="array"></a><div id="array-def"><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-comment"># XXX: not sure the best thing to do</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-decorator">@</tt><tt class="py-decorator">simple_block</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt> <a class="py-toggle" href="#" id="array-toggle" onclick="return toggle('array');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph_numpy_ops.filters-module.html#array">array</a><tt class="py-op">(</tt><tt class="py-param">value</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="array-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="array-expanded"><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">    <tt class="py-docstring">''' Converts the value to a Numpy array. '''</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt id="link-30" class="py-name"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-30', 'array', 'link-1');">array</a></tt><tt class="py-op">(</tt><tt id="link-31" class="py-name"><a title="procgraph.core.parsing.value
+procgraph_signals.sync.Sample.value" class="py-name" href="#" onclick="return doclink('link-31', 'value', 'link-23');">value</a></tt><tt class="py-op">)</tt> </tt>
+</div><a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt id="link-32" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-32', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">mean</tt><tt class="py-op">,</tt> <tt class="py-string">'mean'</tt><tt class="py-op">,</tt> <tt class="py-name">params</tt><tt class="py-op">=</tt><tt class="py-op">{</tt><tt class="py-string">'axis'</tt><tt class="py-op">:</tt> <tt class="py-number">0</tt><tt class="py-op">}</tt><tt class="py-op">,</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.mean`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt id="link-33" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-33', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">square</tt><tt class="py-op">,</tt> <tt class="py-string">'square'</tt><tt class="py-op">,</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.square`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt id="link-34" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-34', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">log</tt><tt class="py-op">,</tt> <tt class="py-string">'log'</tt><tt class="py-op">,</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.log`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt id="link-35" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-35', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">abs</tt><tt class="py-op">,</tt> <tt class="py-string">'abs'</tt><tt class="py-op">,</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.absolute`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt id="link-36" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-36', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">sign</tt><tt class="py-op">,</tt> <tt class="py-string">'sign'</tt><tt class="py-op">,</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.sign`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt id="link-37" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-37', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">arctan</tt><tt class="py-op">,</tt> <tt class="py-string">'arctan'</tt><tt class="py-op">,</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.arctan`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt id="link-38" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-38', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">real</tt><tt class="py-op">,</tt> <tt class="py-string">'real'</tt><tt class="py-op">,</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.real`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt id="link-39" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-39', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">:</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">dstack</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'dstack'</tt><tt class="py-op">,</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">                      <tt class="py-name">num_inputs</tt><tt class="py-op">=</tt><tt class="py-number">2</tt><tt class="py-op">,</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.ma.dstack`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt id="link-40" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-40', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">:</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">hstack</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'hstack'</tt><tt class="py-op">,</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">                      <tt class="py-name">num_inputs</tt><tt class="py-op">=</tt><tt class="py-number">2</tt><tt class="py-op">,</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.ma.hstack`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt id="link-41" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-41', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">:</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">vstack</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">y</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'vstack'</tt><tt class="py-op">,</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">                      <tt class="py-name">num_inputs</tt><tt class="py-op">=</tt><tt class="py-number">2</tt><tt class="py-op">,</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Wrapper around :np:data:`numpy.ma.vstack`.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt id="link-42" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-42', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">max</tt><tt class="py-op">(</tt><tt id="link-43" class="py-name"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-43', 'array', 'link-1');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">flat</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'max'</tt><tt class="py-op">,</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Maximum over **all** elements. '</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt id="link-44" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-44', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-keyword">lambda</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> <tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">sum</tt><tt class="py-op">(</tt><tt id="link-45" class="py-name"><a title="procgraph.core.parsing.array
+procgraph_numpy_ops.filters.array" class="py-name" href="#" onclick="return doclink('link-45', 'array', 'link-1');">array</a></tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">flat</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">'sum'</tt><tt class="py-op">,</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">      <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Sum over **all** elements. '</tt><tt class="py-op">)</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt id="link-46" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-46', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">flipud</tt><tt class="py-op">,</tt> <tt class="py-string">'flipud'</tt><tt class="py-op">,</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">     <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)'</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt id="link-47" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-47', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">fliplr</tt><tt class="py-op">,</tt> <tt class="py-string">'fliplr'</tt><tt class="py-op">,</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">     <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Flips the array left/right (wrapper for :py:func:`numpy.fliplr`.)'</tt><tt class="py-op">)</tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"><tt id="link-48" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-48', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">radians</tt><tt class="py-op">,</tt> <tt class="py-string">'deg2rad'</tt><tt class="py-op">,</tt> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Converts degrees to radians (wrapper around '</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt class="py-string">':np:data:`numpy.radians`.)'</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line"><tt id="link-49" class="py-name"><a title="procgraph.core.registrar_other.register_simple_block" class="py-name" href="#" onclick="return doclink('link-49', 'register_simple_block', 'link-4');">register_simple_block</a></tt><tt class="py-op">(</tt><tt class="py-name">numpy</tt><tt class="py-op">.</tt><tt class="py-name">degrees</tt><tt class="py-op">,</tt> <tt class="py-string">'rad2deg'</tt><tt class="py-op">,</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">    <tt class="py-name">doc</tt><tt class="py-op">=</tt><tt class="py-string">'Converts radians to degrees (wrapper around '</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-string">':np:data:`numpy.degrees`.)'</tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:05 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

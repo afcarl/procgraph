@@ -3,18 +3,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>&lt;no title&gt; &mdash; procgraph v0.9.0 documentation</title>
+    <title>&lt;no title&gt; &mdash; procgraph 1.1 documentation</title>
+    
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +27,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="procgraph v0.9.0 documentation" href="index.html" />
+    <link rel="top" title="procgraph 1.1 documentation" href="index.html" />
 	 
 
 
@@ -60,7 +63,7 @@
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>procgraph v0.9.0 documentation</span></a></h1>
+          <span>procgraph 1.1 documentation</span></a></h1>
         <h2 class="heading"><span>&lt;no title&gt;</span></h2>
       </div>
       <div class="topnav">
@@ -75,7 +78,7 @@
         
   <p>Types of nodes:</p>
 <blockquote>
-<dl class="docutils">
+<div><dl class="docutils">
 <dt>A - fixed number of inputs, fixed number of outputs</dt>
 <dd>Most of the blocks.</dd>
 <dt>B - variable number of inputs (&gt;= K), fixed number of outputs</dt>
@@ -83,11 +86,11 @@
 <dt>C - variable number of inputs (&gt;= K), same number of outputs</dt>
 <dd>For example: sync</dd>
 </dl>
-</blockquote>
+</div></blockquote>
 <p>In the case of a Model: only type A is supported.</p>
 <p>In the case of a Block, we allow all 3.</p>
 <blockquote>
-<dl class="docutils">
+<div><dl class="docutils">
 <dt>class TypeA(Block):</dt>
 <dd>block_config()
 block_input(&#8216;input1&#8217;, &#8216;desc&#8217;)
@@ -102,7 +105,7 @@ block_output(&#8216;output2&#8217;, &#8216;Sum of the signals.&#8217;)
 <dd>block_input_is_variable(&#8216;Signals to be summed.&#8217;, min=K)
 block_output_is_variable(&#8216;Synchronized signals.&#8217;)</dd>
 </dl>
-</blockquote>
+</div></blockquote>
 <p>In the case of a simple block</p>
 
 
@@ -118,7 +121,7 @@ block_output_is_variable(&#8216;Synchronized signals.&#8217;)</dd>
 	
     <div class="footer">
         &copy; Copyright 2010, Andrea Censi.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
 	
 	<script type="text/javascript">

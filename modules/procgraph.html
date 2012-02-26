@@ -3,18 +3,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>procgraph &mdash; procgraph v0.9.0 documentation</title>
+    <title>procgraph &mdash; procgraph 1.1 documentation</title>
+    
     <link rel="stylesheet" href="../static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.9.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +27,7 @@
     <script type="text/javascript" src="../static/underscore.js"></script>
     <script type="text/javascript" src="../static/doctools.js"></script>
     <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="procgraph v0.9.0 documentation" href="../index.html" />
+    <link rel="top" title="procgraph 1.1 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" />
 	 
 
@@ -61,7 +64,7 @@
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>procgraph v0.9.0 documentation</span></a></h1>
+          <span>procgraph 1.1 documentation</span></a></h1>
         <h2 class="heading"><span>procgraph</span></h2>
       </div>
       <div class="topnav">
@@ -78,22 +81,29 @@
 <span class="sd">&#39;&#39;&#39; ProcGraph: what you would get if simulink was written in python </span>
 <span class="sd">    and was actually useful for dealing with log data. &#39;&#39;&#39;</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;0.9.0&#39;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s">&#39;1.1&#39;</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.core.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c"># If true, does not allow .pgc caches</span>
+<span class="n">deny_pgc_cache</span> <span class="o">=</span> <span class="bp">True</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.core.block</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Generator</span>
+<span class="kn">from</span> <span class="nn">.core.exceptions</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.core.model_loader</span> <span class="kn">import</span> <span class="n">pg_add_this_package_models</span>
+<span class="kn">from</span> <span class="nn">.core.block</span> <span class="kn">import</span> <span class="n">Block</span><span class="p">,</span> <span class="n">Generator</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.core.registrar_other</span> <span class="kn">import</span> \
-    <span class="n">register_model_spec</span><span class="p">,</span> <span class="n">register_simple_block</span><span class="p">,</span> <span class="n">simple_block</span>
+<span class="kn">from</span> <span class="nn">.core.model_loader</span> <span class="kn">import</span> <span class="n">pg_add_this_package_models</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.scripts.pg</span> <span class="kn">import</span> <span class="n">pg</span>
+<span class="kn">from</span> <span class="nn">.core.registrar_other</span> <span class="kn">import</span> <span class="p">(</span><span class="n">register_model_spec</span><span class="p">,</span>
+                                    <span class="n">register_simple_block</span><span class="p">,</span> <span class="n">simple_block</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.core.import_magic</span> <span class="kn">import</span> <span class="n">import_magic</span><span class="p">,</span> <span class="n">import_succesful</span>
+<span class="kn">from</span> <span class="nn">.scripts</span> <span class="kn">import</span> <span class="n">pg</span>
 
-<span class="kn">from</span> <span class="nn">procgraph.core.constants</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.core.import_magic</span> <span class="kn">import</span> <span class="n">import_magic</span><span class="p">,</span> <span class="n">import_succesful</span>
+
+<span class="kn">from</span> <span class="nn">.core.constants</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+
+<span class="c"># TODO: parse .4 as 0.4</span>
 </pre></div>
 
       </div>
@@ -108,7 +118,7 @@
 	
     <div class="footer">
         &copy; Copyright 2010, Andrea Censi.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
 	
 	<script type="text/javascript">

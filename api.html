@@ -3,18 +3,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>User API &mdash; procgraph v0.9.0 documentation</title>
+    <title>User API &mdash; procgraph 1.1 documentation</title>
+    
     <link rel="stylesheet" href="static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '',
-        VERSION:     '0.9.0',
+        VERSION:     '1.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +27,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="procgraph v0.9.0 documentation" href="index.html" />
+    <link rel="top" title="procgraph 1.1 documentation" href="index.html" />
 	 
 
 
@@ -60,7 +63,7 @@
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>procgraph v0.9.0 documentation</span></a></h1>
+          <span>procgraph 1.1 documentation</span></a></h1>
         <h2 class="heading"><span>User API</span></h2>
       </div>
       <div class="topnav">
@@ -82,7 +85,14 @@
 <dl class="class">
 <dt id="procgraph.Block">
 <em class="property">class </em><tt class="descclassname">procgraph.</tt><tt class="descname">Block</tt><big>(</big><em>name</em>, <em>config</em>, <em>library</em><big>)</big><a class="headerlink" href="#procgraph.Block" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<dd><p class="rubric">Methods</p>
+<dl class="method">
+<dt id="procgraph.Block.all_input_signals_ready">
+<tt class="descname">all_input_signals_ready</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.all_input_signals_ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if all input signals are ready.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="procgraph.Block.canonicalize_input">
 <tt class="descname">canonicalize_input</tt><big>(</big><em>num_or_id</em><big>)</big><a class="headerlink" href="#procgraph.Block.canonicalize_input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts the signal spec (either string or id) to string
@@ -229,8 +239,13 @@ will default to the maximum of the input signals timestamp.</p>
 <dl class="method">
 <dt id="procgraph.Block.update">
 <tt class="descname">update</tt><big>(</big><big>)</big><a class="headerlink" href="#procgraph.Block.update" title="Permalink to this definition">¶</a></dt>
-<dd><p>Performs the block function.
-Use set_state() for temporary storage.</p>
+<dd><p>Performs the block function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="procgraph.Block.warning">
+<tt class="descname">warning</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#procgraph.Block.warning" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes an info message.</p>
 </dd></dl>
 
 </dd></dl>
@@ -250,7 +265,7 @@ Use set_state() for temporary storage.</p>
 	
     <div class="footer">
         &copy; Copyright 2010, Andrea Censi.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.2.
     </div>
 	
 	<script type="text/javascript">

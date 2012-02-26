@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph.testing.test_multiple_models_params</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph-module.html">Package&nbsp;procgraph</a> ::
+        <a href="procgraph.testing-module.html">Package&nbsp;testing</a> ::
+        Module&nbsp;test_multiple_models_params
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph.testing.test_multiple_models_params-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph.testing.test_multiple_models_params-module.html">Module procgraph.testing.test_multiple_models_params</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package procgraph=procgraph-module.html"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-0', 'procgraph', 'link-0');">procgraph</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Package procgraph.core=procgraph.core-module.html"><a title="procgraph.core" class="py-name" href="#" onclick="return doclink('link-1', 'core', 'link-1');">core</a></tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module procgraph.core.registrar=procgraph.core.registrar-module.html"><a title="procgraph.core.registrar" class="py-name" href="#" onclick="return doclink('link-2', 'registrar', 'link-2');">registrar</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Variable procgraph.core.model_instantiation.default_library=procgraph.core.model_instantiation-module.html#default_library,Variable procgraph.core.model_loader.default_library=procgraph.core.model_loader-module.html#default_library,Variable procgraph.core.registrar.default_library=procgraph.core.registrar-module.html#default_library,Variable procgraph.core.registrar_other.default_library=procgraph.core.registrar_other-module.html#default_library,Variable procgraph.scripts.default_library=procgraph.scripts-module.html#default_library,Variable procgraph.scripts.pg.default_library=procgraph.scripts.pg-module.html#default_library,Variable procgraph.scripts.pgdoc.default_library=procgraph.scripts.pgdoc-module.html#default_library,Variable procgraph.scripts.pgindex.default_library=procgraph.scripts.pgindex-module.html#default_library,Variable procgraph.scripts.pgmain.default_library=procgraph.scripts.pgmain-module.html#default_library,Variable procgraph.testing.test_multiple_models_params.default_library=procgraph.testing.test_multiple_models_params-module.html#default_library,Variable procgraph.testing.utils.default_library=procgraph.testing.utils-module.html#default_library,Variable procgraph_signals.sync_test.default_library=procgraph_signals.sync_test-module.html#default_library"><a title="procgraph.core.model_instantiation.default_library
+procgraph.core.model_loader.default_library
+procgraph.core.registrar.default_library
+procgraph.core.registrar_other.default_library
+procgraph.scripts.default_library
+procgraph.scripts.pg.default_library
+procgraph.scripts.pgdoc.default_library
+procgraph.scripts.pgindex.default_library
+procgraph.scripts.pgmain.default_library
+procgraph.testing.test_multiple_models_params.default_library
+procgraph.testing.utils.default_library
+procgraph_signals.sync_test.default_library" class="py-name" href="#" onclick="return doclink('link-3', 'default_library', 'link-3');">default_library</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class procgraph.core.registrar.Library=procgraph.core.registrar.Library-class.html"><a title="procgraph.core.registrar.Library" class="py-name" href="#" onclick="return doclink('link-4', 'Library', 'link-4');">Library</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-5" class="py-name"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-5', 'procgraph', 'link-0');">procgraph</a></tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="procgraph.core" class="py-name" href="#" onclick="return doclink('link-6', 'core', 'link-1');">core</a></tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module procgraph.core.model_loader=procgraph.core.model_loader-module.html"><a title="procgraph.core.model_loader" class="py-name" href="#" onclick="return doclink('link-7', 'model_loader', 'link-7');">model_loader</a></tt> <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Function procgraph.core.model_loader.model_from_string()=procgraph.core.model_loader-module.html#model_from_string"><a title="procgraph.core.model_loader.model_from_string" class="py-name" href="#" onclick="return doclink('link-8', 'model_from_string', 'link-8');">model_from_string</a></tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module procgraph.testing.utils=procgraph.testing.utils-module.html,Package procgraph.utils=procgraph.utils-module.html"><a title="procgraph.testing.utils
+procgraph.utils" class="py-name" href="#" onclick="return doclink('link-9', 'utils', 'link-9');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-10" class="py-name" targets="Class procgraph.testing.utils.PGTestCase=procgraph.testing.utils.PGTestCase-class.html"><a title="procgraph.testing.utils.PGTestCase" class="py-name" href="#" onclick="return doclink('link-10', 'PGTestCase', 'link-10');">PGTestCase</a></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"># All of these models, when interpreted,</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"># have an output that equals 42</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt id="link-11" class="py-name" targets="Variable procgraph.testing.test_multiple_models_params.examples_42=procgraph.testing.test_multiple_models_params-module.html#examples_42"><a title="procgraph.testing.test_multiple_models_params.examples_42" class="py-name" href="#" onclick="return doclink('link-11', 'examples_42', 'link-11');">examples_42</a></tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">'''</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-string">--- model master</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-string"># first</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-string">|slave my_param=42| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-string">config my_param</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-string">|c1:constant| --&gt; |output name=c|</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-string">c1.value = $my_param</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">'''</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-string">--- model master</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line"><tt class="py-string">|slave my_param=$my_param2| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-string">my_param2 = 42</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-string">config my_param</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"><tt class="py-string">|c1:constant| --&gt; |output name=c|</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-string">c1.value = $my_param</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">'''</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-string">--- model master </tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-string">|s1:slave| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-string">s1.my_param = 42</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-string">config my_param</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-string">|c1:constant| --&gt; |output name=c|</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-string">c1.value = $my_param</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">'''</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-string">--- model master</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-string">my_param2 = 42</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-string">|s1:slave| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-string">s1.my_param = $my_param2</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-string">config my_param</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-string">|c1:constant| --&gt; |output name=c|</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-string">c1.value = $my_param</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">'''</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-string">--- model master </tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-string">config my_param2</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-string">|s1:slave| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-string">s1.my_param = $my_param2</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-string">config my_param</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-string">|c1:constant| --&gt; |output name=c|</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-string">c1.value = $my_param</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-string">'my_param2'</tt><tt class="py-op">:</tt> <tt class="py-number">42</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">''' # Default naming</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-string">--- model master </tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">|slave| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-string">config my_param</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-string">|constant| --&gt; |output name=c|</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-string">constant.value = $my_param</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-string">'slave.my_param'</tt><tt class="py-op">:</tt> <tt class="py-number">42</tt><tt class="py-op">}</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-op">(</tt><tt class="py-string">''' # Default naming -- recursive.</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-string">--- model master </tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-string">output meaning</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-string">|slave| ---&gt; |output name=meaning| </tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-string">--- model slave</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-string">output c</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-string">|constant| --&gt; |output name=c| </tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-string">'''</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-string">'slave.constant.value'</tt><tt class="py-op">:</tt> <tt class="py-number">42</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-op">]</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">  </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"> </tt>
+<a name="ParamsTest"></a><div id="ParamsTest-def"><a name="L127"></a><tt class="py-lineno">127</tt> <a class="py-toggle" href="#" id="ParamsTest-toggle" onclick="return toggle('ParamsTest');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.testing.test_multiple_models_params.ParamsTest-class.html">ParamsTest</a><tt class="py-op">(</tt><tt class="py-base-class">PGTestCase</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParamsTest-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ParamsTest-expanded"><a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">     </tt>
+<a name="ParamsTest.test1"></a><div id="ParamsTest.test1-def"><a name="L129"></a><tt class="py-lineno">129</tt> <a class="py-toggle" href="#" id="ParamsTest.test1-toggle" onclick="return toggle('ParamsTest.test1');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.testing.test_multiple_models_params.ParamsTest-class.html#test1">test1</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ParamsTest.test1-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="ParamsTest.test1-expanded"><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">model_spec</tt><tt class="py-op">,</tt> <tt id="link-12" class="py-name" targets="Variable procgraph.block_utils.textlog.TextLog.config=procgraph.block_utils.textlog.TextLog-class.html#config,Variable procgraph.components.debug_components.clock.Clock.config=procgraph.components.debug_components.clock.Clock-class.html#config,Variable procgraph.components.debug_components.constant.Constant.config=procgraph.components.debug_components.constant.Constant-class.html#config,Variable procgraph.components.debug_components.gain.Gain.config=procgraph.components.debug_components.gain.Gain-class.html#config,Variable procgraph.components.debug_components.identity.Identity.config=procgraph.components.debug_components.identity.Identity-class.html#config,Variable procgraph.components.debug_components.info.Info.config=procgraph.components.debug_components.info.Info-class.html#config,Variable procgraph.components.debug_components.operations.Minus.config=procgraph.components.debug_components.operations.Minus-class.html#config,Variable procgraph.components.debug_components.printc.Print.config=procgraph.components.debug_components.printc.Print-class.html#config,Static Method procgraph.core.block_meta.BlockMetaSugar.config()=procgraph.core.block_meta.BlockMetaSugar-class.html#config,Variable procgraph.core.model.Model.config=procgraph.core.model.Model-class.html#config,Variable procgraph.core.model_io.ModelInput.config=procgraph.core.model_io.ModelInput-class.html#config,Variable procgraph.core.model_io.ModelOutput.config=procgraph.core.model_io.ModelOutput-class.html#config,Variable procgraph.scripts.pgdoc.ModelDoc.config=procgraph.scripts.pgdoc.ModelDoc-class.html#config,Variable procgraph.testing.utils.VerifyBlock.config=procgraph.testing.utils.VerifyBlock-class.html#config,Variable procgraph_foo.example0_simplest_block.BlockSimpleExample.config=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#config,Variable procgraph_hdf.hdfread.HDFread.config=procgraph_hdf.hdfread.HDFread-class.html#config,Variable procgraph_hdf.hdfread_many.HDFread_many.config=procgraph_hdf.hdfread_many.HDFread_many-class.html#config,Variable procgraph_hdf.hdfwrite.HDFwrite.config=procgraph_hdf.hdfwrite.HDFwrite-class.html#config,Variable procgraph_images.blend'.Blend.config=procgraph_images.blend%27.Blend-class.html#config,Variable procgraph_images.border.Border.config=procgraph_images.border.Border-class.html#config,Variable procgraph_images.compose.Compose.config=procgraph_images.compose.Compose-class.html#config,Variable procgraph_images.images_from_dir.FilesFromDir.config=procgraph_images.images_from_dir.FilesFromDir-class.html#config,Variable procgraph_images.imggrid.ImageGrid.config=procgraph_images.imggrid.ImageGrid-class.html#config,Variable procgraph_images.solid'.Solid.config=procgraph_images.solid%27.Solid-class.html#config,Variable procgraph_io_misc.json_misc.AsJSON.config=procgraph_io_misc.json_misc.AsJSON-class.html#config,Variable procgraph_io_misc.pickling.Pickle.config=procgraph_io_misc.pickling.Pickle-class.html#config,Variable procgraph_io_misc.pickling.PickleGroup.config=procgraph_io_misc.pickling.PickleGroup-class.html#config,Variable procgraph_io_misc.pickling.PickleLoad.config=procgraph_io_misc.pickling.PickleLoad-class.html#config,Variable procgraph_io_misc.to_file.ToFile.config=procgraph_io_misc.to_file.ToFile-class.html#config,Variable procgraph_mpl.plot.Plot.config=procgraph_mpl.plot.Plot-class.html#config,Variable procgraph_mplayer.mencoder.MEncoder.config=procgraph_mplayer.mencoder.MEncoder-class.html#config,Variable procgraph_mplayer.mplayer.MPlayer.config=procgraph_mplayer.mplayer.MPlayer-class.html#config,Variable procgraph_pil.text.Text.config=procgraph_pil.text.Text-class.html#config,Variable procgraph_robotics.laser_display.LaserDisplay.config=procgraph_robotics.laser_display.LaserDisplay-class.html#config,Variable procgraph_robotics.laser_dot_display.LaserDotDisplay.config=procgraph_robotics.laser_dot_display.LaserDotDisplay-class.html#config,Variable procgraph_robotics.organic_scale.OrganicScale.config=procgraph_robotics.organic_scale.OrganicScale-class.html#config,Variable procgraph_robotics.pose2velocity.Pose2velocity.config=procgraph_robotics.pose2velocity.Pose2velocity-class.html#config,Variable procgraph_ros.bagread.BagRead.config=procgraph_ros.bagread.BagRead-class.html#config,Variable procgraph_ros.bagwrite.BagWrite.config=procgraph_ros.bagwrite.BagWrite-class.html#config,Variable procgraph_signals.any.Any.config=procgraph_signals.any.Any-class.html#config,Variable procgraph_signals.async.ASync.config=procgraph_signals.async.ASync-class.html#config,Variable procgraph_signals.derivative.ForwardDifference.config=procgraph_signals.derivative.ForwardDifference-class.html#config,Variable procgraph_signals.derivative2.ForwardDifference12.config=procgraph_signals.derivative2.ForwardDifference12-class.html#config,Variable procgraph_signals.extract.Extract.config=procgraph_signals.extract.Extract-class.html#config,Variable procgraph_signals.fps_data_limit.FPSDataLimit.config=procgraph_signals.fps_data_limit.FPSDataLimit-class.html#config,Variable procgraph_signals.fps_limit.FPSLimit.config=procgraph_signals.fps_limit.FPSLimit-class.html#config,Variable procgraph_signals.fps_print.FPSPrint.config=procgraph_signals.fps_print.FPSPrint-class.html#config,Variable procgraph_signals.history.History.config=procgraph_signals.history.History-class.html#config,Variable procgraph_signals.historyt.HistoryT.config=procgraph_signals.historyt.HistoryT-class.html#config,Variable procgraph_signals.join.Join.config=procgraph_signals.join.Join-class.html#config,Variable procgraph_signals.last_n_samples.HistoryN.config=procgraph_signals.last_n_samples.HistoryN-class.html#config,Variable procgraph_signals.low_pass.LowPass.config=procgraph_signals.low_pass.LowPass-class.html#config,Variable procgraph_signals.make_tuple.MakeTuple.config=procgraph_signals.make_tuple.MakeTuple-class.html#config,Variable procgraph_signals.sieve.Sieve.config=procgraph_signals.sieve.Sieve-class.html#config,Variable procgraph_signals.sync.Sync.config=procgraph_signals.sync.Sync-class.html#config,Variable procgraph_signals.sync_test.CheckSync.config=procgraph_signals.sync_test.CheckSync-class.html#config,Variable procgraph_signals.sync_test.LogSim.config=procgraph_signals.sync_test.LogSim-class.html#config,Variable procgraph_signals.wait.Wait.config=procgraph_signals.wait.Wait-class.html#config,Variable procgraph_statistics.expectation.Expectation.config=procgraph_statistics.expectation.Expectation-class.html#config,Variable procgraph_statistics.minimum.Maximum.config=procgraph_statistics.minimum.Maximum-class.html#config,Variable procgraph_statistics.minimum.Minimum.config=procgraph_statistics.minimum.Minimum-class.html#config"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-12', 'config', 'link-12');">config</a></tt> <tt class="py-keyword">in</tt> <tt id="link-13" class="py-name"><a title="procgraph.testing.test_multiple_models_params.examples_42" class="py-name" href="#" onclick="return doclink('link-13', 'examples_42', 'link-11');">examples_42</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line">            <tt class="py-comment"># don't pollute the main library with the block definitions</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">            <tt class="py-name">library</tt> <tt class="py-op">=</tt> <tt id="link-14" class="py-name"><a title="procgraph.core.registrar.Library" class="py-name" href="#" onclick="return doclink('link-14', 'Library', 'link-4');">Library</a></tt><tt class="py-op">(</tt><tt id="link-15" class="py-name"><a title="procgraph.core.model_instantiation.default_library
+procgraph.core.model_loader.default_library
+procgraph.core.registrar.default_library
+procgraph.core.registrar_other.default_library
+procgraph.scripts.default_library
+procgraph.scripts.pg.default_library
+procgraph.scripts.pgdoc.default_library
+procgraph.scripts.pgindex.default_library
+procgraph.scripts.pgmain.default_library
+procgraph.testing.test_multiple_models_params.default_library
+procgraph.testing.utils.default_library
+procgraph_signals.sync_test.default_library" class="py-name" href="#" onclick="return doclink('link-15', 'default_library', 'link-3');">default_library</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">            <tt id="link-16" class="py-name" targets="Module procgraph.core.model=procgraph.core.model-module.html"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-16', 'model', 'link-16');">model</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="procgraph.core.model_loader.model_from_string" class="py-name" href="#" onclick="return doclink('link-17', 'model_from_string', 'link-8');">model_from_string</a></tt><tt class="py-op">(</tt><tt class="py-name">model_spec</tt><tt class="py-op">,</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">                                      <tt id="link-18" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-18', 'config', 'link-12');">config</a></tt><tt class="py-op">=</tt><tt id="link-19" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-19', 'config', 'link-12');">config</a></tt><tt class="py-op">,</tt> <tt class="py-name">library</tt><tt class="py-op">=</tt><tt class="py-name">library</tt><tt class="py-op">)</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">             </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"Trying with '''%s'''"</tt> <tt class="py-op">%</tt> <tt class="py-name">model_spec</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">            <tt id="link-20" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-20', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-21" class="py-name" targets="Method procgraph.block_utils.textlog.TextLog.init()=procgraph.block_utils.textlog.TextLog-class.html#init,Method procgraph.components.debug_components.clock.Clock.init()=procgraph.components.debug_components.clock.Clock-class.html#init,Method procgraph.components.debug_components.info.Info.init()=procgraph.components.debug_components.info.Info-class.html#init,Method procgraph.components.debug_components.operations.Minus.init()=procgraph.components.debug_components.operations.Minus-class.html#init,Method procgraph.core.block.Block.init()=procgraph.core.block.Block-class.html#init,Method procgraph.core.model.Model.init()=procgraph.core.model.Model-class.html#init,Method procgraph.core.model_io.ModelInput.init()=procgraph.core.model_io.ModelInput-class.html#init,Method procgraph.core.model_io.ModelOutput.init()=procgraph.core.model_io.ModelOutput-class.html#init,Method procgraph.testing.utils.VerifyBlock.init()=procgraph.testing.utils.VerifyBlock-class.html#init,Method procgraph_foo.example0_simplest_block.BlockSimpleExample.init()=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#init,Method procgraph_hdf.hdfread.HDFread.init()=procgraph_hdf.hdfread.HDFread-class.html#init,Method procgraph_hdf.hdfread_many.HDFread_many.init()=procgraph_hdf.hdfread_many.HDFread_many-class.html#init,Method procgraph_hdf.hdfwrite.HDFwrite.init()=procgraph_hdf.hdfwrite.HDFwrite-class.html#init,Method procgraph_images.images_from_dir.FilesFromDir.init()=procgraph_images.images_from_dir.FilesFromDir-class.html#init,Method procgraph_io_misc.to_file.ToFile.init()=procgraph_io_misc.to_file.ToFile-class.html#init,Method procgraph_mpl.plot.Plot.init()=procgraph_mpl.plot.Plot-class.html#init,Method procgraph_mplayer.mencoder.MEncoder.init()=procgraph_mplayer.mencoder.MEncoder-class.html#init,Method procgraph_mplayer.mplayer.MPlayer.init()=procgraph_mplayer.mplayer.MPlayer-class.html#init,Method procgraph_pil.text.Text.init()=procgraph_pil.text.Text-class.html#init,Method procgraph_robotics.organic_scale.OrganicScale.init()=procgraph_robotics.organic_scale.OrganicScale-class.html#init,Method procgraph_ros.bagread.BagRead.init()=procgraph_ros.bagread.BagRead-class.html#init,Method procgraph_ros.bagwrite.BagWrite.init()=procgraph_ros.bagwrite.BagWrite-class.html#init,Method procgraph_signals.any.Any.init()=procgraph_signals.any.Any-class.html#init,Method procgraph_signals.async.ASync.init()=procgraph_signals.async.ASync-class.html#init,Method procgraph_signals.fps_data_limit.FPSDataLimit.init()=procgraph_signals.fps_data_limit.FPSDataLimit-class.html#init,Method procgraph_signals.fps_limit.FPSLimit.init()=procgraph_signals.fps_limit.FPSLimit-class.html#init,Method procgraph_signals.fps_print.FPSPrint.init()=procgraph_signals.fps_print.FPSPrint-class.html#init,Method procgraph_signals.history.History.init()=procgraph_signals.history.History-class.html#init,Method procgraph_signals.historyt.HistoryT.init()=procgraph_signals.historyt.HistoryT-class.html#init,Method procgraph_signals.join.Join.init()=procgraph_signals.join.Join-class.html#init,Method procgraph_signals.last_n_samples.HistoryN.init()=procgraph_signals.last_n_samples.HistoryN-class.html#init,Method procgraph_signals.low_pass.LowPass.init()=procgraph_signals.low_pass.LowPass-class.html#init,Method procgraph_signals.sieve.Sieve.init()=procgraph_signals.sieve.Sieve-class.html#init,Method procgraph_signals.sync.Sync.init()=procgraph_signals.sync.Sync-class.html#init,Method procgraph_signals.sync_test.LogSim.init()=procgraph_signals.sync_test.LogSim-class.html#init,Method procgraph_signals.wait.Wait.init()=procgraph_signals.wait.Wait-class.html#init,Method procgraph_statistics.expectation.Expectation.init()=procgraph_statistics.expectation.Expectation-class.html#init,Method procgraph_statistics.minimum.Maximum.init()=procgraph_statistics.minimum.Maximum-class.html#init,Method procgraph_statistics.minimum.Minimum.init()=procgraph_statistics.minimum.Minimum-class.html#init"><a title="procgraph.block_utils.textlog.TextLog.init
+procgraph.components.debug_components.clock.Clock.init
+procgraph.components.debug_components.info.Info.init
+procgraph.components.debug_components.operations.Minus.init
+procgraph.core.block.Block.init
+procgraph.core.model.Model.init
+procgraph.core.model_io.ModelInput.init
+procgraph.core.model_io.ModelOutput.init
+procgraph.testing.utils.VerifyBlock.init
+procgraph_foo.example0_simplest_block.BlockSimpleExample.init
+procgraph_hdf.hdfread.HDFread.init
+procgraph_hdf.hdfread_many.HDFread_many.init
+procgraph_hdf.hdfwrite.HDFwrite.init
+procgraph_images.images_from_dir.FilesFromDir.init
+procgraph_io_misc.to_file.ToFile.init
+procgraph_mpl.plot.Plot.init
+procgraph_mplayer.mencoder.MEncoder.init
+procgraph_mplayer.mplayer.MPlayer.init
+procgraph_pil.text.Text.init
+procgraph_robotics.organic_scale.OrganicScale.init
+procgraph_ros.bagread.BagRead.init
+procgraph_ros.bagwrite.BagWrite.init
+procgraph_signals.any.Any.init
+procgraph_signals.async.ASync.init
+procgraph_signals.fps_data_limit.FPSDataLimit.init
+procgraph_signals.fps_limit.FPSLimit.init
+procgraph_signals.fps_print.FPSPrint.init
+procgraph_signals.history.History.init
+procgraph_signals.historyt.HistoryT.init
+procgraph_signals.join.Join.init
+procgraph_signals.last_n_samples.HistoryN.init
+procgraph_signals.low_pass.LowPass.init
+procgraph_signals.sieve.Sieve.init
+procgraph_signals.sync.Sync.init
+procgraph_signals.sync_test.LogSim.init
+procgraph_signals.wait.Wait.init
+procgraph_statistics.expectation.Expectation.init
+procgraph_statistics.minimum.Maximum.init
+procgraph_statistics.minimum.Minimum.init" class="py-name" href="#" onclick="return doclink('link-21', 'init', 'link-21');">init</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"before"</tt><tt class="py-op">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">            <tt class="py-comment"># at least the constant must be propagated</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">            <tt class="py-keyword">assert</tt> <tt id="link-22" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-22', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-23" class="py-name" targets="Method procgraph.core.model.Model.has_more()=procgraph.core.model.Model-class.html#has_more"><a title="procgraph.core.model.Model.has_more" class="py-name" href="#" onclick="return doclink('link-23', 'has_more', 'link-23');">has_more</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">             </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">            <tt class="py-keyword">while</tt> <tt id="link-24" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-24', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="procgraph.core.model.Model.has_more" class="py-name" href="#" onclick="return doclink('link-25', 'has_more', 'link-23');">has_more</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line">                <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"before iteration"</tt><tt class="py-op">,</tt> <tt id="link-26" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-26', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-27" class="py-name" targets="Method procgraph.core.block.Block.get_output()=procgraph.core.block.Block-class.html#get_output"><a title="procgraph.core.block.Block.get_output" class="py-name" href="#" onclick="return doclink('link-27', 'get_output', 'link-27');">get_output</a></tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">                <tt id="link-28" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-28', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-29" class="py-name" targets="Method procgraph.block_utils.textlog.TextLog.update()=procgraph.block_utils.textlog.TextLog-class.html#update,Method procgraph.components.debug_components.clock.Clock.update()=procgraph.components.debug_components.clock.Clock-class.html#update,Method procgraph.components.debug_components.constant.Constant.update()=procgraph.components.debug_components.constant.Constant-class.html#update,Method procgraph.components.debug_components.gain.Gain.update()=procgraph.components.debug_components.gain.Gain-class.html#update,Method procgraph.components.debug_components.identity.Identity.update()=procgraph.components.debug_components.identity.Identity-class.html#update,Method procgraph.components.debug_components.info.Info.update()=procgraph.components.debug_components.info.Info-class.html#update,Method procgraph.components.debug_components.operations.Minus.update()=procgraph.components.debug_components.operations.Minus-class.html#update,Method procgraph.components.debug_components.printc.Print.update()=procgraph.components.debug_components.printc.Print-class.html#update,Method procgraph.core.block.Block.update()=procgraph.core.block.Block-class.html#update,Method procgraph.core.model.Model.update()=procgraph.core.model.Model-class.html#update,Method procgraph.core.model_io.ModelInput.update()=procgraph.core.model_io.ModelInput-class.html#update,Method procgraph.core.model_io.ModelOutput.update()=procgraph.core.model_io.ModelOutput-class.html#update,Method procgraph_foo.example0_simplest_block.BlockSimpleExample.update()=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#update,Method procgraph_hdf.hdfread.HDFread.update()=procgraph_hdf.hdfread.HDFread-class.html#update,Method procgraph_hdf.hdfread_many.HDFread_many.update()=procgraph_hdf.hdfread_many.HDFread_many-class.html#update,Method procgraph_hdf.hdfwrite.HDFwrite.update()=procgraph_hdf.hdfwrite.HDFwrite-class.html#update,Method procgraph_images.blend'.Blend.update()=procgraph_images.blend%27.Blend-class.html#update,Method procgraph_images.border.Border.update()=procgraph_images.border.Border-class.html#update,Method procgraph_images.compose.Compose.update()=procgraph_images.compose.Compose-class.html#update,Method procgraph_images.images_from_dir.FilesFromDir.update()=procgraph_images.images_from_dir.FilesFromDir-class.html#update,Method procgraph_images.imggrid.ImageGrid.update()=procgraph_images.imggrid.ImageGrid-class.html#update,Method procgraph_images.solid'.Solid.update()=procgraph_images.solid%27.Solid-class.html#update,Method procgraph_io_misc.json_misc.AsJSON.update()=procgraph_io_misc.json_misc.AsJSON-class.html#update,Method procgraph_io_misc.pickling.Pickle.update()=procgraph_io_misc.pickling.Pickle-class.html#update,Method procgraph_io_misc.pickling.PickleGroup.update()=procgraph_io_misc.pickling.PickleGroup-class.html#update,Method procgraph_io_misc.pickling.PickleLoad.update()=procgraph_io_misc.pickling.PickleLoad-class.html#update,Method procgraph_io_misc.to_file.ToFile.update()=procgraph_io_misc.to_file.ToFile-class.html#update,Method procgraph_mpl.plot.Plot.update()=procgraph_mpl.plot.Plot-class.html#update,Method procgraph_mplayer.mencoder.MEncoder.update()=procgraph_mplayer.mencoder.MEncoder-class.html#update,Method procgraph_mplayer.mplayer.MPlayer.update()=procgraph_mplayer.mplayer.MPlayer-class.html#update,Method procgraph_pil.text.Text.update()=procgraph_pil.text.Text-class.html#update,Method procgraph_robotics.laser_display.LaserDisplay.update()=procgraph_robotics.laser_display.LaserDisplay-class.html#update,Method procgraph_robotics.laser_dot_display.LaserDotDisplay.update()=procgraph_robotics.laser_dot_display.LaserDotDisplay-class.html#update,Method procgraph_robotics.organic_scale.OrganicScale.update()=procgraph_robotics.organic_scale.OrganicScale-class.html#update,Method procgraph_robotics.pose2velocity.Pose2velocity.update()=procgraph_robotics.pose2velocity.Pose2velocity-class.html#update,Method procgraph_ros.bagread.BagRead.update()=procgraph_ros.bagread.BagRead-class.html#update,Method procgraph_ros.bagwrite.BagWrite.update()=procgraph_ros.bagwrite.BagWrite-class.html#update,Method procgraph_signals.any.Any.update()=procgraph_signals.any.Any-class.html#update,Method procgraph_signals.async.ASync.update()=procgraph_signals.async.ASync-class.html#update,Method procgraph_signals.derivative.ForwardDifference.update()=procgraph_signals.derivative.ForwardDifference-class.html#update,Method procgraph_signals.derivative2.ForwardDifference12.update()=procgraph_signals.derivative2.ForwardDifference12-class.html#update,Method procgraph_signals.extract.Extract.update()=procgraph_signals.extract.Extract-class.html#update,Method procgraph_signals.fps_data_limit.FPSDataLimit.update()=procgraph_signals.fps_data_limit.FPSDataLimit-class.html#update,Method procgraph_signals.fps_limit.FPSLimit.update()=procgraph_signals.fps_limit.FPSLimit-class.html#update,Method procgraph_signals.fps_print.FPSPrint.update()=procgraph_signals.fps_print.FPSPrint-class.html#update,Method procgraph_signals.history.History.update()=procgraph_signals.history.History-class.html#update,Method procgraph_signals.historyt.HistoryT.update()=procgraph_signals.historyt.HistoryT-class.html#update,Method procgraph_signals.join.Join.update()=procgraph_signals.join.Join-class.html#update,Method procgraph_signals.last_n_samples.HistoryN.update()=procgraph_signals.last_n_samples.HistoryN-class.html#update,Method procgraph_signals.low_pass.LowPass.update()=procgraph_signals.low_pass.LowPass-class.html#update,Method procgraph_signals.make_tuple.MakeTuple.update()=procgraph_signals.make_tuple.MakeTuple-class.html#update,Method procgraph_signals.sieve.Sieve.update()=procgraph_signals.sieve.Sieve-class.html#update,Method procgraph_signals.sync.Sync.update()=procgraph_signals.sync.Sync-class.html#update,Method procgraph_signals.sync_test.CheckSync.update()=procgraph_signals.sync_test.CheckSync-class.html#update,Method procgraph_signals.sync_test.LogSim.update()=procgraph_signals.sync_test.LogSim-class.html#update,Method procgraph_signals.wait.Wait.update()=procgraph_signals.wait.Wait-class.html#update,Method procgraph_statistics.expectation.Expectation.update()=procgraph_statistics.expectation.Expectation-class.html#update,Method procgraph_statistics.minimum.Maximum.update()=procgraph_statistics.minimum.Maximum-class.html#update,Method procgraph_statistics.minimum.Minimum.update()=procgraph_statistics.minimum.Minimum-class.html#update"><a title="procgraph.block_utils.textlog.TextLog.update
+procgraph.components.debug_components.clock.Clock.update
+procgraph.components.debug_components.constant.Constant.update
+procgraph.components.debug_components.gain.Gain.update
+procgraph.components.debug_components.identity.Identity.update
+procgraph.components.debug_components.info.Info.update
+procgraph.components.debug_components.operations.Minus.update
+procgraph.components.debug_components.printc.Print.update
+procgraph.core.block.Block.update
+procgraph.core.model.Model.update
+procgraph.core.model_io.ModelInput.update
+procgraph.core.model_io.ModelOutput.update
+procgraph_foo.example0_simplest_block.BlockSimpleExample.update
+procgraph_hdf.hdfread.HDFread.update
+procgraph_hdf.hdfread_many.HDFread_many.update
+procgraph_hdf.hdfwrite.HDFwrite.update
+procgraph_images.blend'.Blend.update
+procgraph_images.border.Border.update
+procgraph_images.compose.Compose.update
+procgraph_images.images_from_dir.FilesFromDir.update
+procgraph_images.imggrid.ImageGrid.update
+procgraph_images.solid'.Solid.update
+procgraph_io_misc.json_misc.AsJSON.update
+procgraph_io_misc.pickling.Pickle.update
+procgraph_io_misc.pickling.PickleGroup.update
+procgraph_io_misc.pickling.PickleLoad.update
+procgraph_io_misc.to_file.ToFile.update
+procgraph_mpl.plot.Plot.update
+procgraph_mplayer.mencoder.MEncoder.update
+procgraph_mplayer.mplayer.MPlayer.update
+procgraph_pil.text.Text.update
+procgraph_robotics.laser_display.LaserDisplay.update
+procgraph_robotics.laser_dot_display.LaserDotDisplay.update
+procgraph_robotics.organic_scale.OrganicScale.update
+procgraph_robotics.pose2velocity.Pose2velocity.update
+procgraph_ros.bagread.BagRead.update
+procgraph_ros.bagwrite.BagWrite.update
+procgraph_signals.any.Any.update
+procgraph_signals.async.ASync.update
+procgraph_signals.derivative.ForwardDifference.update
+procgraph_signals.derivative2.ForwardDifference12.update
+procgraph_signals.extract.Extract.update
+procgraph_signals.fps_data_limit.FPSDataLimit.update
+procgraph_signals.fps_limit.FPSLimit.update
+procgraph_signals.fps_print.FPSPrint.update
+procgraph_signals.history.History.update
+procgraph_signals.historyt.HistoryT.update
+procgraph_signals.join.Join.update
+procgraph_signals.last_n_samples.HistoryN.update
+procgraph_signals.low_pass.LowPass.update
+procgraph_signals.make_tuple.MakeTuple.update
+procgraph_signals.sieve.Sieve.update
+procgraph_signals.sync.Sync.update
+procgraph_signals.sync_test.CheckSync.update
+procgraph_signals.sync_test.LogSim.update
+procgraph_signals.wait.Wait.update
+procgraph_statistics.expectation.Expectation.update
+procgraph_statistics.minimum.Maximum.update
+procgraph_statistics.minimum.Minimum.update" class="py-name" href="#" onclick="return doclink('link-29', 'update', 'link-29');">update</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line">            <tt id="link-30" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-30', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-31" class="py-name" targets="Method procgraph.core.block.Block.finish()=procgraph.core.block.Block-class.html#finish,Method procgraph.core.model.Model.finish()=procgraph.core.model.Model-class.html#finish,Method procgraph_foo.example0_simplest_block.BlockSimpleExample.finish()=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#finish,Method procgraph_hdf.hdfread.HDFread.finish()=procgraph_hdf.hdfread.HDFread-class.html#finish,Method procgraph_hdf.hdfread_many.HDFread_many.finish()=procgraph_hdf.hdfread_many.HDFread_many-class.html#finish,Method procgraph_hdf.hdfwrite.HDFwrite.finish()=procgraph_hdf.hdfwrite.HDFwrite-class.html#finish,Method procgraph_io_misc.pickling.Pickle.finish()=procgraph_io_misc.pickling.Pickle-class.html#finish,Method procgraph_io_misc.pickling.PickleGroup.finish()=procgraph_io_misc.pickling.PickleGroup-class.html#finish,Method procgraph_mplayer.mencoder.MEncoder.finish()=procgraph_mplayer.mencoder.MEncoder-class.html#finish,Method procgraph_mplayer.mplayer.MPlayer.finish()=procgraph_mplayer.mplayer.MPlayer-class.html#finish,Method procgraph_ros.bagread.BagRead.finish()=procgraph_ros.bagread.BagRead-class.html#finish,Method procgraph_ros.bagwrite.BagWrite.finish()=procgraph_ros.bagwrite.BagWrite-class.html#finish"><a title="procgraph.core.block.Block.finish
+procgraph.core.model.Model.finish
+procgraph_foo.example0_simplest_block.BlockSimpleExample.finish
+procgraph_hdf.hdfread.HDFread.finish
+procgraph_hdf.hdfread_many.HDFread_many.finish
+procgraph_hdf.hdfwrite.HDFwrite.finish
+procgraph_io_misc.pickling.Pickle.finish
+procgraph_io_misc.pickling.PickleGroup.finish
+procgraph_mplayer.mencoder.MEncoder.finish
+procgraph_mplayer.mplayer.MPlayer.finish
+procgraph_ros.bagread.BagRead.finish
+procgraph_ros.bagwrite.BagWrite.finish" class="py-name" href="#" onclick="return doclink('link-31', 'finish', 'link-31');">finish</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">"end"</tt><tt class="py-op">,</tt> <tt id="link-32" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-32', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-33" class="py-name"><a title="procgraph.core.block.Block.get_output" class="py-name" href="#" onclick="return doclink('link-33', 'get_output', 'link-27');">get_output</a></tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">assertEqual</tt><tt class="py-op">(</tt><tt id="link-34" class="py-name"><a title="procgraph.core.model" class="py-name" href="#" onclick="return doclink('link-34', 'model', 'link-16');">model</a></tt><tt class="py-op">.</tt><tt id="link-35" class="py-name"><a title="procgraph.core.block.Block.get_output" class="py-name" href="#" onclick="return doclink('link-35', 'get_output', 'link-27');">get_output</a></tt><tt class="py-op">(</tt><tt class="py-number">0</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-number">42</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:03 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

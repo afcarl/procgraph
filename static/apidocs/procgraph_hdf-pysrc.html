@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph_hdf</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;procgraph_hdf
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph_hdf-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph_hdf-module.html">Package procgraph_hdf</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">''' </tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">    This is a set of blocks to read and write logs in HDF_ format.</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-docstring">    You need the pytables_ package to be installed.</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-docstring">    .. _pytables: http://pytables.org</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt class="py-docstring">     </tt> </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line"><tt class="py-docstring">    .. _HDF: http://en.wikipedia.org/wiki/Hierarchical_Data_Format</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt class="py-docstring">'''</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package procgraph=procgraph-module.html"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-0', 'procgraph', 'link-0');">procgraph</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Function procgraph.core.import_magic.import_succesful()=procgraph.core.import_magic-module.html#import_succesful"><a title="procgraph.core.import_magic.import_succesful" class="py-name" href="#" onclick="return doclink('link-1', 'import_succesful', 'link-1');">import_succesful</a></tt><tt class="py-op">,</tt> <tt id="link-2" class="py-name" targets="Module procgraph.core.import_magic=procgraph.core.import_magic-module.html,Function procgraph.core.import_magic.import_magic()=procgraph.core.import_magic-module.html#import_magic"><a title="procgraph.core.import_magic
+procgraph.core.import_magic.import_magic" class="py-name" href="#" onclick="return doclink('link-2', 'import_magic', 'link-2');">import_magic</a></tt> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable procgraph.scripts.pgdoc.ModuleDoc.procgraph_info=procgraph.scripts.pgdoc.ModuleDoc-class.html#procgraph_info,Variable procgraph_cv.procgraph_info=procgraph_cv-module.html#procgraph_info,Variable procgraph_foo.procgraph_info=procgraph_foo-module.html#procgraph_info,Variable procgraph_hdf.procgraph_info=procgraph_hdf-module.html#procgraph_info,Variable procgraph_io_misc.procgraph_info=procgraph_io_misc-module.html#procgraph_info,Variable procgraph_mpl.procgraph_info=procgraph_mpl-module.html#procgraph_info,Variable procgraph_pil.procgraph_info=procgraph_pil-module.html#procgraph_info,Variable procgraph_robotics.procgraph_info=procgraph_robotics-module.html#procgraph_info,Variable procgraph_ros.procgraph_info=procgraph_ros-module.html#procgraph_info,Variable procgraph_yaml.procgraph_info=procgraph_yaml-module.html#procgraph_info"><a title="procgraph.scripts.pgdoc.ModuleDoc.procgraph_info
+procgraph_cv.procgraph_info
+procgraph_foo.procgraph_info
+procgraph_hdf.procgraph_info
+procgraph_io_misc.procgraph_info
+procgraph_mpl.procgraph_info
+procgraph_pil.procgraph_info
+procgraph_robotics.procgraph_info
+procgraph_ros.procgraph_info
+procgraph_yaml.procgraph_info" class="py-name" href="#" onclick="return doclink('link-3', 'procgraph_info', 'link-3');">procgraph_info</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line">    <tt class="py-comment"># List of python packages </tt> </tt>
+<a name="L15"></a><tt class="py-lineno">15</tt>  <tt class="py-line">    <tt class="py-string">'requires'</tt><tt class="py-op">:</tt> <tt class="py-op">[</tt><tt class="py-string">'tables'</tt><tt class="py-op">]</tt> </tt>
+<a name="L16"></a><tt class="py-lineno">16</tt>  <tt class="py-line"><tt class="py-op">}</tt> </tt>
+<a name="L17"></a><tt class="py-lineno">17</tt>  <tt class="py-line"> </tt>
+<a name="L18"></a><tt class="py-lineno">18</tt>  <tt class="py-line"><tt class="py-name">tables</tt> <tt class="py-op">=</tt> <tt id="link-4" class="py-name"><a title="procgraph.core.import_magic
+procgraph.core.import_magic.import_magic" class="py-name" href="#" onclick="return doclink('link-4', 'import_magic', 'link-2');">import_magic</a></tt><tt class="py-op">(</tt><tt class="py-name">__name__</tt><tt class="py-op">,</tt> <tt class="py-string">'tables'</tt><tt class="py-op">)</tt> </tt>
+<a name="L19"></a><tt class="py-lineno">19</tt>  <tt class="py-line"> </tt>
+<a name="L20"></a><tt class="py-lineno">20</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-5" class="py-name" targets="Module procgraph_hdf.hdfwrite=procgraph_hdf.hdfwrite-module.html"><a title="procgraph_hdf.hdfwrite" class="py-name" href="#" onclick="return doclink('link-5', 'hdfwrite', 'link-5');">hdfwrite</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L21"></a><tt class="py-lineno">21</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Module procgraph_hdf.hdfread=procgraph_hdf.hdfread-module.html"><a title="procgraph_hdf.hdfread" class="py-name" href="#" onclick="return doclink('link-6', 'hdfread', 'link-6');">hdfread</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L22"></a><tt class="py-lineno">22</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Module procgraph_hdf.hdfread_many=procgraph_hdf.hdfread_many-module.html"><a title="procgraph_hdf.hdfread_many" class="py-name" href="#" onclick="return doclink('link-7', 'hdfread_many', 'link-7');">hdfread_many</a></tt> <tt class="py-keyword">import</tt> <tt class="py-op">*</tt> </tt>
+<a name="L23"></a><tt class="py-lineno">23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno">24</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-8" class="py-name"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-8', 'procgraph', 'link-0');">procgraph</a></tt> <tt class="py-keyword">import</tt> <tt id="link-9" class="py-name" targets="Function procgraph.core.model_loader.pg_add_this_package_models()=procgraph.core.model_loader-module.html#pg_add_this_package_models"><a title="procgraph.core.model_loader.pg_add_this_package_models" class="py-name" href="#" onclick="return doclink('link-9', 'pg_add_this_package_models', 'link-9');">pg_add_this_package_models</a></tt> </tt>
+<a name="L25"></a><tt class="py-lineno">25</tt>  <tt class="py-line"><tt id="link-10" class="py-name"><a title="procgraph.core.model_loader.pg_add_this_package_models" class="py-name" href="#" onclick="return doclink('link-10', 'pg_add_this_package_models', 'link-9');">pg_add_this_package_models</a></tt><tt class="py-op">(</tt><tt class="py-name">__file__</tt><tt class="py-op">,</tt> <tt id="link-11" class="py-name" targets="Variable procgraph.__package__=procgraph-module.html#__package__,Variable procgraph.block_utils.__package__=procgraph.block_utils-module.html#__package__,Variable procgraph.block_utils.executables.__package__=procgraph.block_utils.executables-module.html#__package__,Variable procgraph.block_utils.file_io.__package__=procgraph.block_utils.file_io-module.html#__package__,Variable procgraph.block_utils.image_checks.__package__=procgraph.block_utils.image_checks-module.html#__package__,Variable procgraph.block_utils.natsort.__package__=procgraph.block_utils.natsort-module.html#__package__,Variable procgraph.block_utils.textlog.__package__=procgraph.block_utils.textlog-module.html#__package__,Variable procgraph.components.__package__=procgraph.components-module.html#__package__,Variable procgraph.components.debug_components.__package__=procgraph.components.debug_components-module.html#__package__,Variable procgraph.components.debug_components.clock.__package__=procgraph.components.debug_components.clock-module.html#__package__,Variable procgraph.components.debug_components.constant.__package__=procgraph.components.debug_components.constant-module.html#__package__,Variable procgraph.components.debug_components.gain.__package__=procgraph.components.debug_components.gain-module.html#__package__,Variable procgraph.components.debug_components.identity.__package__=procgraph.components.debug_components.identity-module.html#__package__,Variable procgraph.components.debug_components.info.__package__=procgraph.components.debug_components.info-module.html#__package__,Variable procgraph.components.debug_components.operations.__package__=procgraph.components.debug_components.operations-module.html#__package__,Variable procgraph.components.debug_components.printc.__package__=procgraph.components.debug_components.printc-module.html#__package__,Variable procgraph.core.__package__=procgraph.core-module.html#__package__,Variable procgraph.core.block.__package__=procgraph.core.block-module.html#__package__,Variable procgraph.core.block_config.__package__=procgraph.core.block_config-module.html#__package__,Variable procgraph.core.block_meta.__package__=procgraph.core.block_meta-module.html#__package__,Variable procgraph.core.block_sugar.__package__=procgraph.core.block_sugar-module.html#__package__,Variable procgraph.core.constants.__package__=procgraph.core.constants-module.html#__package__,Variable procgraph.core.docstring_parsing.__package__=procgraph.core.docstring_parsing-module.html#__package__,Variable procgraph.core.exceptions.__package__=procgraph.core.exceptions-module.html#__package__,Variable procgraph.core.import_magic.__package__=procgraph.core.import_magic-module.html#__package__,Variable procgraph.core.model.__package__=procgraph.core.model-module.html#__package__,Variable procgraph.core.model_instantiation.__package__=procgraph.core.model_instantiation-module.html#__package__,Variable procgraph.core.model_io.__package__=procgraph.core.model_io-module.html#__package__,Variable procgraph.core.model_loader.__package__=procgraph.core.model_loader-module.html#__package__,Variable procgraph.core.model_stats.__package__=procgraph.core.model_stats-module.html#__package__,Variable procgraph.core.parsing.__package__=procgraph.core.parsing-module.html#__package__,Variable procgraph.core.parsing_elements.__package__=procgraph.core.parsing_elements-module.html#__package__,Variable procgraph.core.registrar.__package__=procgraph.core.registrar-module.html#__package__,Variable procgraph.core.registrar_other.__package__=procgraph.core.registrar_other-module.html#__package__,Variable procgraph.core.visualization.__package__=procgraph.core.visualization-module.html#__package__,Variable procgraph.scripts.__package__=procgraph.scripts-module.html#__package__,Variable procgraph.scripts.pg.__package__=procgraph.scripts.pg-module.html#__package__,Variable procgraph.scripts.pgdoc.__package__=procgraph.scripts.pgdoc-module.html#__package__,Variable procgraph.scripts.pgindex.__package__=procgraph.scripts.pgindex-module.html#__package__,Variable procgraph.scripts.pgmain.__package__=procgraph.scripts.pgmain-module.html#__package__,Variable procgraph.testing.__package__=procgraph.testing-module.html#__package__,Variable procgraph.testing.test_block_meta.__package__=procgraph.testing.test_block_meta-module.html#__package__,Variable procgraph.testing.test_config_semantics.__package__=procgraph.testing.test_config_semantics-module.html#__package__,Variable procgraph.testing.test_config_syntax.__package__=procgraph.testing.test_config_syntax-module.html#__package__,Variable procgraph.testing.test_connections.__package__=procgraph.testing.test_connections-module.html#__package__,Variable procgraph.testing.test_delayed_init.__package__=procgraph.testing.test_delayed_init-module.html#__package__,Variable procgraph.testing.test_docstring_parsing.__package__=procgraph.testing.test_docstring_parsing-module.html#__package__,Variable procgraph.testing.test_dynamicblocks_exec.__package__=procgraph.testing.test_dynamicblocks_exec-module.html#__package__,Variable procgraph.testing.test_dynamicblocks_parsing.__package__=procgraph.testing.test_dynamicblocks_parsing-module.html#__package__,Variable procgraph.testing.test_import_syntax.__package__=procgraph.testing.test_import_syntax-module.html#__package__,Variable procgraph.testing.test_inputoutput_syntax.__package__=procgraph.testing.test_inputoutput_syntax-module.html#__package__,Variable procgraph.testing.test_line_continutations.__package__=procgraph.testing.test_line_continutations-module.html#__package__,Variable procgraph.testing.test_model_input.__package__=procgraph.testing.test_model_input-module.html#__package__,Variable procgraph.testing.test_multiple_models.__package__=procgraph.testing.test_multiple_models-module.html#__package__,Variable procgraph.testing.test_multiple_models_params.__package__=procgraph.testing.test_multiple_models_params-module.html#__package__,Variable procgraph.testing.test_multiple_parsing.__package__=procgraph.testing.test_multiple_parsing-module.html#__package__,Variable procgraph.testing.test_nested.__package__=procgraph.testing.test_nested-module.html#__package__,Variable procgraph.testing.test_parsing.__package__=procgraph.testing.test_parsing-module.html#__package__,Variable procgraph.testing.test_renaming.__package__=procgraph.testing.test_renaming-module.html#__package__,Variable procgraph.testing.test_signal_naming.__package__=procgraph.testing.test_signal_naming-module.html#__package__,Variable procgraph.testing.test_some_exceptions.__package__=procgraph.testing.test_some_exceptions-module.html#__package__,Variable procgraph.testing.test_substitution.__package__=procgraph.testing.test_substitution-module.html#__package__,Variable procgraph.testing.test_values.__package__=procgraph.testing.test_values-module.html#__package__,Variable procgraph.testing.utils.__package__=procgraph.testing.utils-module.html#__package__,Variable procgraph.utils.__package__=procgraph.utils-module.html#__package__,Variable procgraph.utils.calling_ext_program.__package__=procgraph.utils.calling_ext_program-module.html#__package__,Variable procgraph.utils.friendly_paths.__package__=procgraph.utils.friendly_paths-module.html#__package__,Variable procgraph.utils.strings.__package__=procgraph.utils.strings-module.html#__package__,Variable procgraph_cv.__package__=procgraph_cv-module.html#__package__,Variable procgraph_cv.opencv_utils.__package__=procgraph_cv.opencv_utils-module.html#__package__,Variable procgraph_foo.__package__=procgraph_foo-module.html#__package__,Variable procgraph_foo.block_dynamic_example.__package__=procgraph_foo.block_dynamic_example-module.html#__package__,Variable procgraph_foo.block_multi_example.__package__=procgraph_foo.block_multi_example-module.html#__package__,Variable procgraph_foo.example0_simplest_block.__package__=procgraph_foo.example0_simplest_block-module.html#__package__,Variable procgraph_foo.generator_example.__package__=procgraph_foo.generator_example-module.html#__package__,Variable procgraph_foo.simple_blocks.__package__=procgraph_foo.simple_blocks-module.html#__package__,Variable procgraph_hdf.__package__=procgraph_hdf-module.html#__package__,Variable procgraph_hdf.hdfread.__package__=procgraph_hdf.hdfread-module.html#__package__,Variable procgraph_hdf.hdfread_many.__package__=procgraph_hdf.hdfread_many-module.html#__package__,Variable procgraph_hdf.hdfwrite.__package__=procgraph_hdf.hdfwrite-module.html#__package__,Variable procgraph_hdf.tables_cache.__package__=procgraph_hdf.tables_cache-module.html#__package__,Variable procgraph_images.__package__=procgraph_images-module.html#__package__,Variable procgraph_images.blend'.__package__=procgraph_images.blend%27-module.html#__package__,Variable procgraph_images.border.__package__=procgraph_images.border-module.html#__package__,Variable procgraph_images.compose.__package__=procgraph_images.compose-module.html#__package__,Variable procgraph_images.copied_from_reprep.__package__=procgraph_images.copied_from_reprep-module.html#__package__,Variable procgraph_images.crop'.__package__=procgraph_images.crop%27-module.html#__package__,Variable procgraph_images.filters.__package__=procgraph_images.filters-module.html#__package__,Variable procgraph_images.images_from_dir.__package__=procgraph_images.images_from_dir-module.html#__package__,Variable procgraph_images.imggrid.__package__=procgraph_images.imggrid-module.html#__package__,Variable procgraph_images.pad.__package__=procgraph_images.pad-module.html#__package__,Variable procgraph_images.posterize.__package__=procgraph_images.posterize-module.html#__package__,Variable procgraph_images.reshape_rect.__package__=procgraph_images.reshape_rect-module.html#__package__,Variable procgraph_images.reshape_smart.__package__=procgraph_images.reshape_smart-module.html#__package__,Variable procgraph_images.solid'.__package__=procgraph_images.solid%27-module.html#__package__,Variable procgraph_io_misc.__package__=procgraph_io_misc-module.html#__package__,Variable procgraph_io_misc.json_misc.__package__=procgraph_io_misc.json_misc-module.html#__package__,Variable procgraph_io_misc.pickling.__package__=procgraph_io_misc.pickling-module.html#__package__,Variable procgraph_io_misc.to_file.__package__=procgraph_io_misc.to_file-module.html#__package__,Variable procgraph_mpl.__package__=procgraph_mpl-module.html#__package__,Variable procgraph_mpl.fanciness.__package__=procgraph_mpl.fanciness-module.html#__package__,Variable procgraph_mpl.plot.__package__=procgraph_mpl.plot-module.html#__package__,Variable procgraph_mpl.pylab_to_image.__package__=procgraph_mpl.pylab_to_image-module.html#__package__,Variable procgraph_mplayer.__package__=procgraph_mplayer-module.html#__package__,Variable procgraph_mplayer.mencoder.__package__=procgraph_mplayer.mencoder-module.html#__package__,Variable procgraph_mplayer.mp4conversion.__package__=procgraph_mplayer.mp4conversion-module.html#__package__,Variable procgraph_mplayer.mplayer.__package__=procgraph_mplayer.mplayer-module.html#__package__,Variable procgraph_mplayer.scripts.__package__=procgraph_mplayer.scripts-module.html#__package__,Variable procgraph_mplayer.scripts.crop_video.__package__=procgraph_mplayer.scripts.crop_video-module.html#__package__,Variable procgraph_numpy_ops.__package__=procgraph_numpy_ops-module.html#__package__,Variable procgraph_numpy_ops.filters.__package__=procgraph_numpy_ops.filters-module.html#__package__,Variable procgraph_numpy_ops.gradient1d.__package__=procgraph_numpy_ops.gradient1d-module.html#__package__,Variable procgraph_numpy_ops.gradient1d_test.__package__=procgraph_numpy_ops.gradient1d_test-module.html#__package__,Variable procgraph_numpy_ops.smooth1d.__package__=procgraph_numpy_ops.smooth1d-module.html#__package__,Variable procgraph_pil.__package__=procgraph_pil-module.html#__package__,Variable procgraph_pil.imread.__package__=procgraph_pil.imread-module.html#__package__,Variable procgraph_pil.imwrite.__package__=procgraph_pil.imwrite-module.html#__package__,Variable procgraph_pil.pil_conversions.__package__=procgraph_pil.pil_conversions-module.html#__package__,Variable procgraph_pil.pil_operations.__package__=procgraph_pil.pil_operations-module.html#__package__,Variable procgraph_pil.text.__package__=procgraph_pil.text-module.html#__package__,Variable procgraph_robotics.__package__=procgraph_robotics-module.html#__package__,Variable procgraph_robotics.laser_display.__package__=procgraph_robotics.laser_display-module.html#__package__,Variable procgraph_robotics.laser_dot_display.__package__=procgraph_robotics.laser_dot_display-module.html#__package__,Variable procgraph_robotics.misc.__package__=procgraph_robotics.misc-module.html#__package__,Variable procgraph_robotics.organic_scale.__package__=procgraph_robotics.organic_scale-module.html#__package__,Variable procgraph_robotics.pose2velocity.__package__=procgraph_robotics.pose2velocity-module.html#__package__,Variable procgraph_ros.__package__=procgraph_ros-module.html#__package__,Variable procgraph_ros.bagread.__package__=procgraph_ros.bagread-module.html#__package__,Variable procgraph_ros.bagwrite.__package__=procgraph_ros.bagwrite-module.html#__package__,Variable procgraph_ros.conversions.__package__=procgraph_ros.conversions-module.html#__package__,Variable procgraph_signals.__package__=procgraph_signals-module.html#__package__,Variable procgraph_signals.any.__package__=procgraph_signals.any-module.html#__package__,Variable procgraph_signals.async.__package__=procgraph_signals.async-module.html#__package__,Variable procgraph_signals.derivative.__package__=procgraph_signals.derivative-module.html#__package__,Variable procgraph_signals.derivative2.__package__=procgraph_signals.derivative2-module.html#__package__,Variable procgraph_signals.extract.__package__=procgraph_signals.extract-module.html#__package__,Variable procgraph_signals.fps_data_limit.__package__=procgraph_signals.fps_data_limit-module.html#__package__,Variable procgraph_signals.fps_limit.__package__=procgraph_signals.fps_limit-module.html#__package__,Variable procgraph_signals.fps_print.__package__=procgraph_signals.fps_print-module.html#__package__,Variable procgraph_signals.history.__package__=procgraph_signals.history-module.html#__package__,Variable procgraph_signals.historyt.__package__=procgraph_signals.historyt-module.html#__package__,Variable procgraph_signals.join.__package__=procgraph_signals.join-module.html#__package__,Variable procgraph_signals.last_n_samples.__package__=procgraph_signals.last_n_samples-module.html#__package__,Variable procgraph_signals.low_pass.__package__=procgraph_signals.low_pass-module.html#__package__,Variable procgraph_signals.make_tuple.__package__=procgraph_signals.make_tuple-module.html#__package__,Variable procgraph_signals.sieve.__package__=procgraph_signals.sieve-module.html#__package__,Variable procgraph_signals.sync.__package__=procgraph_signals.sync-module.html#__package__,Variable procgraph_signals.sync_test.__package__=procgraph_signals.sync_test-module.html#__package__,Variable procgraph_signals.wait.__package__=procgraph_signals.wait-module.html#__package__,Variable procgraph_statistics.__package__=procgraph_statistics-module.html#__package__,Variable procgraph_statistics.cov2corr.__package__=procgraph_statistics.cov2corr-module.html#__package__,Variable procgraph_statistics.covariance.__package__=procgraph_statistics.covariance-module.html#__package__,Variable procgraph_statistics.expectation.__package__=procgraph_statistics.expectation-module.html#__package__,Variable procgraph_statistics.minimum.__package__=procgraph_statistics.minimum-module.html#__package__,Variable procgraph_statistics.variance.__package__=procgraph_statistics.variance-module.html#__package__,Variable procgraph_yaml.__package__=procgraph_yaml-module.html#__package__,Variable procgraph_yaml.object2yaml.__package__=procgraph_yaml.object2yaml-module.html#__package__,Variable procgraph_yaml.yaml2object'.__package__=procgraph_yaml.yaml2object%27-module.html#__package__"><a title="procgraph.__package__
+procgraph.block_utils.__package__
+procgraph.block_utils.executables.__package__
+procgraph.block_utils.file_io.__package__
+procgraph.block_utils.image_checks.__package__
+procgraph.block_utils.natsort.__package__
+procgraph.block_utils.textlog.__package__
+procgraph.components.__package__
+procgraph.components.debug_components.__package__
+procgraph.components.debug_components.clock.__package__
+procgraph.components.debug_components.constant.__package__
+procgraph.components.debug_components.gain.__package__
+procgraph.components.debug_components.identity.__package__
+procgraph.components.debug_components.info.__package__
+procgraph.components.debug_components.operations.__package__
+procgraph.components.debug_components.printc.__package__
+procgraph.core.__package__
+procgraph.core.block.__package__
+procgraph.core.block_config.__package__
+procgraph.core.block_meta.__package__
+procgraph.core.block_sugar.__package__
+procgraph.core.constants.__package__
+procgraph.core.docstring_parsing.__package__
+procgraph.core.exceptions.__package__
+procgraph.core.import_magic.__package__
+procgraph.core.model.__package__
+procgraph.core.model_instantiation.__package__
+procgraph.core.model_io.__package__
+procgraph.core.model_loader.__package__
+procgraph.core.model_stats.__package__
+procgraph.core.parsing.__package__
+procgraph.core.parsing_elements.__package__
+procgraph.core.registrar.__package__
+procgraph.core.registrar_other.__package__
+procgraph.core.visualization.__package__
+procgraph.scripts.__package__
+procgraph.scripts.pg.__package__
+procgraph.scripts.pgdoc.__package__
+procgraph.scripts.pgindex.__package__
+procgraph.scripts.pgmain.__package__
+procgraph.testing.__package__
+procgraph.testing.test_block_meta.__package__
+procgraph.testing.test_config_semantics.__package__
+procgraph.testing.test_config_syntax.__package__
+procgraph.testing.test_connections.__package__
+procgraph.testing.test_delayed_init.__package__
+procgraph.testing.test_docstring_parsing.__package__
+procgraph.testing.test_dynamicblocks_exec.__package__
+procgraph.testing.test_dynamicblocks_parsing.__package__
+procgraph.testing.test_import_syntax.__package__
+procgraph.testing.test_inputoutput_syntax.__package__
+procgraph.testing.test_line_continutations.__package__
+procgraph.testing.test_model_input.__package__
+procgraph.testing.test_multiple_models.__package__
+procgraph.testing.test_multiple_models_params.__package__
+procgraph.testing.test_multiple_parsing.__package__
+procgraph.testing.test_nested.__package__
+procgraph.testing.test_parsing.__package__
+procgraph.testing.test_renaming.__package__
+procgraph.testing.test_signal_naming.__package__
+procgraph.testing.test_some_exceptions.__package__
+procgraph.testing.test_substitution.__package__
+procgraph.testing.test_values.__package__
+procgraph.testing.utils.__package__
+procgraph.utils.__package__
+procgraph.utils.calling_ext_program.__package__
+procgraph.utils.friendly_paths.__package__
+procgraph.utils.strings.__package__
+procgraph_cv.__package__
+procgraph_cv.opencv_utils.__package__
+procgraph_foo.__package__
+procgraph_foo.block_dynamic_example.__package__
+procgraph_foo.block_multi_example.__package__
+procgraph_foo.example0_simplest_block.__package__
+procgraph_foo.generator_example.__package__
+procgraph_foo.simple_blocks.__package__
+procgraph_hdf.__package__
+procgraph_hdf.hdfread.__package__
+procgraph_hdf.hdfread_many.__package__
+procgraph_hdf.hdfwrite.__package__
+procgraph_hdf.tables_cache.__package__
+procgraph_images.__package__
+procgraph_images.blend'.__package__
+procgraph_images.border.__package__
+procgraph_images.compose.__package__
+procgraph_images.copied_from_reprep.__package__
+procgraph_images.crop'.__package__
+procgraph_images.filters.__package__
+procgraph_images.images_from_dir.__package__
+procgraph_images.imggrid.__package__
+procgraph_images.pad.__package__
+procgraph_images.posterize.__package__
+procgraph_images.reshape_rect.__package__
+procgraph_images.reshape_smart.__package__
+procgraph_images.solid'.__package__
+procgraph_io_misc.__package__
+procgraph_io_misc.json_misc.__package__
+procgraph_io_misc.pickling.__package__
+procgraph_io_misc.to_file.__package__
+procgraph_mpl.__package__
+procgraph_mpl.fanciness.__package__
+procgraph_mpl.plot.__package__
+procgraph_mpl.pylab_to_image.__package__
+procgraph_mplayer.__package__
+procgraph_mplayer.mencoder.__package__
+procgraph_mplayer.mp4conversion.__package__
+procgraph_mplayer.mplayer.__package__
+procgraph_mplayer.scripts.__package__
+procgraph_mplayer.scripts.crop_video.__package__
+procgraph_numpy_ops.__package__
+procgraph_numpy_ops.filters.__package__
+procgraph_numpy_ops.gradient1d.__package__
+procgraph_numpy_ops.gradient1d_test.__package__
+procgraph_numpy_ops.smooth1d.__package__
+procgraph_pil.__package__
+procgraph_pil.imread.__package__
+procgraph_pil.imwrite.__package__
+procgraph_pil.pil_conversions.__package__
+procgraph_pil.pil_operations.__package__
+procgraph_pil.text.__package__
+procgraph_robotics.__package__
+procgraph_robotics.laser_display.__package__
+procgraph_robotics.laser_dot_display.__package__
+procgraph_robotics.misc.__package__
+procgraph_robotics.organic_scale.__package__
+procgraph_robotics.pose2velocity.__package__
+procgraph_ros.__package__
+procgraph_ros.bagread.__package__
+procgraph_ros.bagwrite.__package__
+procgraph_ros.conversions.__package__
+procgraph_signals.__package__
+procgraph_signals.any.__package__
+procgraph_signals.async.__package__
+procgraph_signals.derivative.__package__
+procgraph_signals.derivative2.__package__
+procgraph_signals.extract.__package__
+procgraph_signals.fps_data_limit.__package__
+procgraph_signals.fps_limit.__package__
+procgraph_signals.fps_print.__package__
+procgraph_signals.history.__package__
+procgraph_signals.historyt.__package__
+procgraph_signals.join.__package__
+procgraph_signals.last_n_samples.__package__
+procgraph_signals.low_pass.__package__
+procgraph_signals.make_tuple.__package__
+procgraph_signals.sieve.__package__
+procgraph_signals.sync.__package__
+procgraph_signals.sync_test.__package__
+procgraph_signals.wait.__package__
+procgraph_statistics.__package__
+procgraph_statistics.cov2corr.__package__
+procgraph_statistics.covariance.__package__
+procgraph_statistics.expectation.__package__
+procgraph_statistics.minimum.__package__
+procgraph_statistics.variance.__package__
+procgraph_yaml.__package__
+procgraph_yaml.object2yaml.__package__
+procgraph_yaml.yaml2object'.__package__" class="py-name" href="#" onclick="return doclink('link-11', '__package__', 'link-11');">__package__</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L26"></a><tt class="py-lineno">26</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:04 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

@@ -1,0 +1,794 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph.core.exceptions</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph-module.html">Package&nbsp;procgraph</a> ::
+        <a href="procgraph.core-module.html">Package&nbsp;core</a> ::
+        Module&nbsp;exceptions
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph.core.exceptions-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph.core.exceptions-module.html">Module procgraph.core.exceptions</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"> </tt>
+<a name="PGException"></a><div id="PGException-def"><a name="L3"></a><tt class="py-lineno">  3</tt> <a class="py-toggle" href="#" id="PGException-toggle" onclick="return toggle('PGException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.PGException-class.html">PGException</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PGException-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PGException-expanded"><a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="BlockWriterError"></a><div id="BlockWriterError-def"><a name="L7"></a><tt class="py-lineno">  7</tt> <a class="py-toggle" href="#" id="BlockWriterError-toggle" onclick="return toggle('BlockWriterError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.BlockWriterError-class.html">BlockWriterError</a><tt class="py-op">(</tt><tt class="py-base-class">PGException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BlockWriterError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="BlockWriterError-expanded"><a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line">    <tt class="py-docstring">''' An error by who wrote the block (e.g.: did not define signals).'''</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"> </tt>
+<a name="ModelWriterError"></a><div id="ModelWriterError-def"><a name="L12"></a><tt class="py-lineno"> 12</tt> <a class="py-toggle" href="#" id="ModelWriterError-toggle" onclick="return toggle('ModelWriterError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.ModelWriterError-class.html">ModelWriterError</a><tt class="py-op">(</tt><tt class="py-base-class">PGException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ModelWriterError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ModelWriterError-expanded"><a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">    <tt class="py-docstring">''' An error by who wrote the model, can be either Syntax or Semantic '''</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"> </tt>
+<a name="SemanticError"></a><div id="SemanticError-def"><a name="L17"></a><tt class="py-lineno"> 17</tt> <a class="py-toggle" href="#" id="SemanticError-toggle" onclick="return toggle('SemanticError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.SemanticError-class.html">SemanticError</a><tt class="py-op">(</tt><tt class="py-base-class">ModelWriterError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SemanticError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="SemanticError-expanded"><a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">    <tt class="py-docstring">''' A semantic error by who wrote the model spec.</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-docstring">       (and, as a platypus case, when wrong config is passed.'''</tt> </tt>
+<a name="SemanticError.__init__"></a><div id="SemanticError.__init__-def"><a name="L20"></a><tt class="py-lineno"> 20</tt> <a class="py-toggle" href="#" id="SemanticError.__init__-toggle" onclick="return toggle('SemanticError.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.SemanticError-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">error</tt><tt class="py-op">,</tt> <tt class="py-param">element</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SemanticError.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SemanticError.__init__-expanded"><a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">        <tt class="py-comment"># http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-name">Exception</tt><tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Method procgraph.core.block.Block.__init__()=procgraph.core.block.Block-class.html#__init__,Method procgraph.core.block.Value.__init__()=procgraph.core.block.Value-class.html#__init__,Method procgraph.core.block_meta.BlockConfig.__init__()=procgraph.core.block_meta.BlockConfig-class.html#__init__,Method procgraph.core.block_meta.BlockInput.__init__()=procgraph.core.block_meta.BlockInput-class.html#__init__,Method procgraph.core.block_meta.BlockMeta.__init__()=procgraph.core.block_meta.BlockMeta-class.html#__init__,Method procgraph.core.block_meta.BlockOutput.__init__()=procgraph.core.block_meta.BlockOutput-class.html#__init__,Method procgraph.core.block_sugar.Proxy.__init__()=procgraph.core.block_sugar.Proxy-class.html#__init__,Method procgraph.core.docstring_parsing.Arg.__init__()=procgraph.core.docstring_parsing.Arg-class.html#__init__,Method procgraph.core.docstring_parsing.DocStringInfo.__init__()=procgraph.core.docstring_parsing.DocStringInfo-class.html#__init__,Method procgraph.core.exceptions.BadConfig.__init__()=procgraph.core.exceptions.BadConfig-class.html#__init__,Method procgraph.core.exceptions.BadInput.__init__()=procgraph.core.exceptions.BadInput-class.html#__init__,Method procgraph.core.exceptions.PGSyntaxError.__init__()=procgraph.core.exceptions.PGSyntaxError-class.html#__init__,Method procgraph.core.exceptions.SemanticError.__init__()=procgraph.core.exceptions.SemanticError-class.html#__init__,Method procgraph.core.model.BlockConnection.__init__()=procgraph.core.model.BlockConnection-class.html#__init__,Method procgraph.core.model.Model.__init__()=procgraph.core.model.Model-class.html#__init__,Method procgraph.core.model_loader.ModelSpec.__init__()=procgraph.core.model_loader.ModelSpec-class.html#__init__,Method procgraph.core.model_stats.ExecutionStats.__init__()=procgraph.core.model_stats.ExecutionStats-class.html#__init__,Method procgraph.core.model_stats.Statistics.__init__()=procgraph.core.model_stats.Statistics-class.html#__init__,Method procgraph.core.parsing_elements.Connection.__init__()=procgraph.core.parsing_elements.Connection-class.html#__init__,Method procgraph.core.parsing_elements.ImportStatement.__init__()=procgraph.core.parsing_elements.ImportStatement-class.html#__init__,Method procgraph.core.parsing_elements.ParsedAssignment.__init__()=procgraph.core.parsing_elements.ParsedAssignment-class.html#__init__,Method procgraph.core.parsing_elements.ParsedBlock.__init__()=procgraph.core.parsing_elements.ParsedBlock-class.html#__init__,Method procgraph.core.parsing_elements.ParsedElement.__init__()=procgraph.core.parsing_elements.ParsedElement-class.html#__init__,Method procgraph.core.parsing_elements.ParsedModel.__init__()=procgraph.core.parsing_elements.ParsedModel-class.html#__init__,Method procgraph.core.parsing_elements.ParsedSignal.__init__()=procgraph.core.parsing_elements.ParsedSignal-class.html#__init__,Method procgraph.core.parsing_elements.ParsedSignalList.__init__()=procgraph.core.parsing_elements.ParsedSignalList-class.html#__init__,Method procgraph.core.parsing_elements.VariableReference.__init__()=procgraph.core.parsing_elements.VariableReference-class.html#__init__,Method procgraph.core.parsing_elements.Where.__init__()=procgraph.core.parsing_elements.Where-class.html#__init__,Method procgraph.core.registrar.Library.__init__()=procgraph.core.registrar.Library-class.html#__init__,Method procgraph.utils.calling_ext_program.CmdException.__init__()=procgraph.utils.calling_ext_program.CmdException-class.html#__init__,Method procgraph.utils.calling_ext_program.CmdResult.__init__()=procgraph.utils.calling_ext_program.CmdResult-class.html#__init__,Method procgraph_hdf.tables_cache.OpenFile.__init__()=procgraph_hdf.tables_cache.OpenFile-class.html#__init__"><a title="procgraph.core.block.Block.__init__
+procgraph.core.block.Value.__init__
+procgraph.core.block_meta.BlockConfig.__init__
+procgraph.core.block_meta.BlockInput.__init__
+procgraph.core.block_meta.BlockMeta.__init__
+procgraph.core.block_meta.BlockOutput.__init__
+procgraph.core.block_sugar.Proxy.__init__
+procgraph.core.docstring_parsing.Arg.__init__
+procgraph.core.docstring_parsing.DocStringInfo.__init__
+procgraph.core.exceptions.BadConfig.__init__
+procgraph.core.exceptions.BadInput.__init__
+procgraph.core.exceptions.PGSyntaxError.__init__
+procgraph.core.exceptions.SemanticError.__init__
+procgraph.core.model.BlockConnection.__init__
+procgraph.core.model.Model.__init__
+procgraph.core.model_loader.ModelSpec.__init__
+procgraph.core.model_stats.ExecutionStats.__init__
+procgraph.core.model_stats.Statistics.__init__
+procgraph.core.parsing_elements.Connection.__init__
+procgraph.core.parsing_elements.ImportStatement.__init__
+procgraph.core.parsing_elements.ParsedAssignment.__init__
+procgraph.core.parsing_elements.ParsedBlock.__init__
+procgraph.core.parsing_elements.ParsedElement.__init__
+procgraph.core.parsing_elements.ParsedModel.__init__
+procgraph.core.parsing_elements.ParsedSignal.__init__
+procgraph.core.parsing_elements.ParsedSignalList.__init__
+procgraph.core.parsing_elements.VariableReference.__init__
+procgraph.core.parsing_elements.Where.__init__
+procgraph.core.registrar.Library.__init__
+procgraph.utils.calling_ext_program.CmdException.__init__
+procgraph.utils.calling_ext_program.CmdResult.__init__
+procgraph_hdf.tables_cache.OpenFile.__init__" class="py-name" href="#" onclick="return doclink('link-0', '__init__', 'link-0');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-1" class="py-name" targets="Method procgraph.core.block.Block.error()=procgraph.core.block.Block-class.html#error,Function procgraph.core.visualization.error()=procgraph.core.visualization-module.html#error,Function procgraph_pil.text.error()=procgraph_pil.text-module.html#error"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-1', 'error', 'link-1');">error</a></tt><tt class="py-op">,</tt> <tt class="py-name">element</tt><tt class="py-op">)</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-2', 'error', 'link-1');">error</a></tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-3', 'error', 'link-1');">error</a></tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">element</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">            <tt class="py-keyword">assert</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">element</tt><tt class="py-op">,</tt> <tt class="py-string">'where'</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">element</tt> <tt class="py-op">=</tt> <tt class="py-name">element</tt> </tt>
+</div><a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="SemanticError.__str__"></a><div id="SemanticError.__str__-def"><a name="L29"></a><tt class="py-lineno"> 29</tt> <a class="py-toggle" href="#" id="SemanticError.__str__-toggle" onclick="return toggle('SemanticError.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.SemanticError-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="SemanticError.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="SemanticError.__str__-expanded"><a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-4" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-4', 'error', 'link-1');">error</a></tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">element</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">            <tt class="py-name">s</tt> <tt class="py-op">+=</tt> <tt id="link-5" class="py-name" targets="Function procgraph.core.exceptions.format_where()=procgraph.core.exceptions-module.html#format_where"><a title="procgraph.core.exceptions.format_where" class="py-name" href="#" onclick="return doclink('link-5', 'format_where', 'link-5');">format_where</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">element</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+</div></div><a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="PGSyntaxError"></a><div id="PGSyntaxError-def"><a name="L36"></a><tt class="py-lineno"> 36</tt> <a class="py-toggle" href="#" id="PGSyntaxError-toggle" onclick="return toggle('PGSyntaxError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.PGSyntaxError-class.html">PGSyntaxError</a><tt class="py-op">(</tt><tt class="py-base-class">ModelWriterError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PGSyntaxError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="PGSyntaxError-expanded"><a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">    <tt class="py-docstring">''' A syntactic error by who wrote the model spec.'''</tt> </tt>
+<a name="PGSyntaxError.__init__"></a><div id="PGSyntaxError.__init__-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="PGSyntaxError.__init__-toggle" onclick="return toggle('PGSyntaxError.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.PGSyntaxError-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">error</tt><tt class="py-op">,</tt> <tt class="py-param">where</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PGSyntaxError.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="PGSyntaxError.__init__-expanded"><a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-comment"># http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-name">Exception</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name"><a title="procgraph.core.block.Block.__init__
+procgraph.core.block.Value.__init__
+procgraph.core.block_meta.BlockConfig.__init__
+procgraph.core.block_meta.BlockInput.__init__
+procgraph.core.block_meta.BlockMeta.__init__
+procgraph.core.block_meta.BlockOutput.__init__
+procgraph.core.block_sugar.Proxy.__init__
+procgraph.core.docstring_parsing.Arg.__init__
+procgraph.core.docstring_parsing.DocStringInfo.__init__
+procgraph.core.exceptions.BadConfig.__init__
+procgraph.core.exceptions.BadInput.__init__
+procgraph.core.exceptions.PGSyntaxError.__init__
+procgraph.core.exceptions.SemanticError.__init__
+procgraph.core.model.BlockConnection.__init__
+procgraph.core.model.Model.__init__
+procgraph.core.model_loader.ModelSpec.__init__
+procgraph.core.model_stats.ExecutionStats.__init__
+procgraph.core.model_stats.Statistics.__init__
+procgraph.core.parsing_elements.Connection.__init__
+procgraph.core.parsing_elements.ImportStatement.__init__
+procgraph.core.parsing_elements.ParsedAssignment.__init__
+procgraph.core.parsing_elements.ParsedBlock.__init__
+procgraph.core.parsing_elements.ParsedElement.__init__
+procgraph.core.parsing_elements.ParsedModel.__init__
+procgraph.core.parsing_elements.ParsedSignal.__init__
+procgraph.core.parsing_elements.ParsedSignalList.__init__
+procgraph.core.parsing_elements.VariableReference.__init__
+procgraph.core.parsing_elements.Where.__init__
+procgraph.core.registrar.Library.__init__
+procgraph.utils.calling_ext_program.CmdException.__init__
+procgraph.utils.calling_ext_program.CmdResult.__init__
+procgraph_hdf.tables_cache.OpenFile.__init__" class="py-name" href="#" onclick="return doclink('link-6', '__init__', 'link-0');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-7', 'error', 'link-1');">error</a></tt><tt class="py-op">,</tt> <tt class="py-name">where</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-8', 'error', 'link-1');">error</a></tt> <tt class="py-op">=</tt> <tt id="link-9" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-9', 'error', 'link-1');">error</a></tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">where</tt> <tt class="py-op">=</tt> <tt class="py-name">where</tt> </tt>
+</div><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line"> </tt>
+<a name="PGSyntaxError.__str__"></a><div id="PGSyntaxError.__str__-def"><a name="L45"></a><tt class="py-lineno"> 45</tt> <a class="py-toggle" href="#" id="PGSyntaxError.__str__-toggle" onclick="return toggle('PGSyntaxError.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.PGSyntaxError-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="PGSyntaxError.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="PGSyntaxError.__str__-expanded"><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-10" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-10', 'error', 'link-1');">error</a></tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">+=</tt> <tt class="py-string">"\n\n"</tt> <tt class="py-op">+</tt> <tt id="link-11" class="py-name" targets="Function procgraph.core.exceptions.add_prefix()=procgraph.core.exceptions-module.html#add_prefix"><a title="procgraph.core.exceptions.add_prefix" class="py-name" href="#" onclick="return doclink('link-11', 'add_prefix', 'link-11');">add_prefix</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">where</tt><tt class="py-op">.</tt><tt id="link-12" class="py-name" targets="Method procgraph.core.docstring_parsing.DocStringInfo.__str__()=procgraph.core.docstring_parsing.DocStringInfo-class.html#__str__,Method procgraph.core.exceptions.BadConfig.__str__()=procgraph.core.exceptions.BadConfig-class.html#__str__,Method procgraph.core.exceptions.BadInput.__str__()=procgraph.core.exceptions.BadInput-class.html#__str__,Method procgraph.core.exceptions.PGSyntaxError.__str__()=procgraph.core.exceptions.PGSyntaxError-class.html#__str__,Method procgraph.core.exceptions.SemanticError.__str__()=procgraph.core.exceptions.SemanticError-class.html#__str__,Method procgraph.core.parsing_elements.Where.__str__()=procgraph.core.parsing_elements.Where-class.html#__str__,Method procgraph.utils.calling_ext_program.CmdException.__str__()=procgraph.utils.calling_ext_program.CmdException-class.html#__str__,Method procgraph.utils.calling_ext_program.CmdResult.__str__()=procgraph.utils.calling_ext_program.CmdResult-class.html#__str__"><a title="procgraph.core.docstring_parsing.DocStringInfo.__str__
+procgraph.core.exceptions.BadConfig.__str__
+procgraph.core.exceptions.BadInput.__str__
+procgraph.core.exceptions.PGSyntaxError.__str__
+procgraph.core.exceptions.SemanticError.__str__
+procgraph.core.parsing_elements.Where.__str__
+procgraph.utils.calling_ext_program.CmdException.__str__
+procgraph.utils.calling_ext_program.CmdResult.__str__" class="py-name" href="#" onclick="return doclink('link-12', '__str__', 'link-12');">__str__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">' '</tt><tt class="py-op">)</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+</div></div><a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"> </tt>
+<a name="ModelExecutionError"></a><div id="ModelExecutionError-def"><a name="L51"></a><tt class="py-lineno"> 51</tt> <a class="py-toggle" href="#" id="ModelExecutionError-toggle" onclick="return toggle('ModelExecutionError');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.ModelExecutionError-class.html">ModelExecutionError</a><tt class="py-op">(</tt><tt class="py-base-class">PGException</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="ModelExecutionError-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="ModelExecutionError-expanded"><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt class="py-docstring">''' Runtime errors, including misuse by the user '''</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-keyword">pass</tt> </tt>
+</div><a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="BadInput"></a><div id="BadInput-def"><a name="L56"></a><tt class="py-lineno"> 56</tt> <a class="py-toggle" href="#" id="BadInput-toggle" onclick="return toggle('BadInput');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.BadInput-class.html">BadInput</a><tt class="py-op">(</tt><tt class="py-base-class">ModelExecutionError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BadInput-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="BadInput-expanded"><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-docstring">''' Exception thrown to communicate a problem with one</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-docstring">        of the inputs to the block. '''</tt> </tt>
+<a name="BadInput.__init__"></a><div id="BadInput.__init__-def"><a name="L59"></a><tt class="py-lineno"> 59</tt> <a class="py-toggle" href="#" id="BadInput.__init__-toggle" onclick="return toggle('BadInput.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.BadInput-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">error</tt><tt class="py-op">,</tt> <tt class="py-param">block</tt><tt class="py-op">,</tt> <tt class="py-param">input_signal</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BadInput.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BadInput.__init__-expanded"><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">        <tt class="py-comment"># http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-name">Exception</tt><tt class="py-op">.</tt><tt id="link-13" class="py-name"><a title="procgraph.core.block.Block.__init__
+procgraph.core.block.Value.__init__
+procgraph.core.block_meta.BlockConfig.__init__
+procgraph.core.block_meta.BlockInput.__init__
+procgraph.core.block_meta.BlockMeta.__init__
+procgraph.core.block_meta.BlockOutput.__init__
+procgraph.core.block_sugar.Proxy.__init__
+procgraph.core.docstring_parsing.Arg.__init__
+procgraph.core.docstring_parsing.DocStringInfo.__init__
+procgraph.core.exceptions.BadConfig.__init__
+procgraph.core.exceptions.BadInput.__init__
+procgraph.core.exceptions.PGSyntaxError.__init__
+procgraph.core.exceptions.SemanticError.__init__
+procgraph.core.model.BlockConnection.__init__
+procgraph.core.model.Model.__init__
+procgraph.core.model_loader.ModelSpec.__init__
+procgraph.core.model_stats.ExecutionStats.__init__
+procgraph.core.model_stats.Statistics.__init__
+procgraph.core.parsing_elements.Connection.__init__
+procgraph.core.parsing_elements.ImportStatement.__init__
+procgraph.core.parsing_elements.ParsedAssignment.__init__
+procgraph.core.parsing_elements.ParsedBlock.__init__
+procgraph.core.parsing_elements.ParsedElement.__init__
+procgraph.core.parsing_elements.ParsedModel.__init__
+procgraph.core.parsing_elements.ParsedSignal.__init__
+procgraph.core.parsing_elements.ParsedSignalList.__init__
+procgraph.core.parsing_elements.VariableReference.__init__
+procgraph.core.parsing_elements.Where.__init__
+procgraph.core.registrar.Library.__init__
+procgraph.utils.calling_ext_program.CmdException.__init__
+procgraph.utils.calling_ext_program.CmdResult.__init__
+procgraph_hdf.tables_cache.OpenFile.__init__" class="py-name" href="#" onclick="return doclink('link-13', '__init__', 'link-0');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-14" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-14', 'error', 'link-1');">error</a></tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Module procgraph.core.block=procgraph.core.block-module.html"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-15', 'block', 'link-15');">block</a></tt><tt class="py-op">,</tt> <tt class="py-name">input_signal</tt><tt class="py-op">)</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-16', 'block', 'link-15');">block</a></tt> <tt class="py-op">=</tt> <tt id="link-17" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-17', 'block', 'link-15');">block</a></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-18" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-18', 'error', 'link-1');">error</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-19', 'error', 'link-1');">error</a></tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">input_signal</tt> <tt class="py-op">=</tt> <tt class="py-name">input_signal</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-20" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-20', 'block', 'link-15');">block</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bad_value</tt> <tt class="py-op">=</tt> <tt id="link-21" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-21', 'block', 'link-15');">block</a></tt><tt class="py-op">.</tt><tt id="link-22" class="py-name" targets="Method procgraph.core.block.Block.get_input()=procgraph.core.block.Block-class.html#get_input"><a title="procgraph.core.block.Block.get_input" class="py-name" href="#" onclick="return doclink('link-22', 'get_input', 'link-22');">get_input</a></tt><tt class="py-op">(</tt><tt class="py-name">input_signal</tt><tt class="py-op">)</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bad_value</tt> <tt class="py-op">=</tt> <tt class="py-string">'??? (block not given)'</tt> </tt>
+</div><a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"> </tt>
+<a name="BadInput.__str__"></a><div id="BadInput.__str__-def"><a name="L71"></a><tt class="py-lineno"> 71</tt> <a class="py-toggle" href="#" id="BadInput.__str__-toggle" onclick="return toggle('BadInput.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.BadInput-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BadInput.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BadInput.__str__-expanded"><a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-23" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-23', 'block', 'link-15');">block</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">            <tt id="link-24" class="py-name" targets="Variable procgraph.scripts.pgdoc.ModelDoc.name=procgraph.scripts.pgdoc.ModelDoc-class.html#name,Variable procgraph.scripts.pgdoc.ModuleDoc.name=procgraph.scripts.pgdoc.ModuleDoc-class.html#name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-24', 'name', 'link-24');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-25', 'block', 'link-15');">block</a></tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-26', 'name', 'link-24');">name</a></tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">            <tt id="link-27" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-27', 'name', 'link-24');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'(unknown)'</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-comment"># TODO: add short bad_value</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">"Bad input %r for block %r: %s"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">             <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">input_signal</tt><tt class="py-op">,</tt> <tt id="link-28" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-28', 'name', 'link-24');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-29" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-29', 'error', 'link-1');">error</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">+=</tt> <tt id="link-30" class="py-name"><a title="procgraph.core.exceptions.format_where" class="py-name" href="#" onclick="return doclink('link-30', 'format_where', 'link-5');">format_where</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-31" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-31', 'block', 'link-15');">block</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+</div></div><a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="BadConfig"></a><div id="BadConfig-def"><a name="L84"></a><tt class="py-lineno"> 84</tt> <a class="py-toggle" href="#" id="BadConfig-toggle" onclick="return toggle('BadConfig');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.core.exceptions.BadConfig-class.html">BadConfig</a><tt class="py-op">(</tt><tt class="py-base-class">ModelExecutionError</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BadConfig-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="BadConfig-expanded"><a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">    <tt class="py-docstring">''' Exception thrown to communicate a problem with one</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-docstring">        of the configuration values passed to the block. '''</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"> </tt>
+<a name="BadConfig.__init__"></a><div id="BadConfig.__init__-def"><a name="L88"></a><tt class="py-lineno"> 88</tt> <a class="py-toggle" href="#" id="BadConfig.__init__-toggle" onclick="return toggle('BadConfig.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.BadConfig-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">error</tt><tt class="py-op">,</tt> <tt class="py-param">block</tt><tt class="py-op">,</tt> <tt class="py-param">config</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BadConfig.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BadConfig.__init__-expanded"><a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">Exception</tt><tt class="py-op">.</tt><tt id="link-32" class="py-name"><a title="procgraph.core.block.Block.__init__
+procgraph.core.block.Value.__init__
+procgraph.core.block_meta.BlockConfig.__init__
+procgraph.core.block_meta.BlockInput.__init__
+procgraph.core.block_meta.BlockMeta.__init__
+procgraph.core.block_meta.BlockOutput.__init__
+procgraph.core.block_sugar.Proxy.__init__
+procgraph.core.docstring_parsing.Arg.__init__
+procgraph.core.docstring_parsing.DocStringInfo.__init__
+procgraph.core.exceptions.BadConfig.__init__
+procgraph.core.exceptions.BadInput.__init__
+procgraph.core.exceptions.PGSyntaxError.__init__
+procgraph.core.exceptions.SemanticError.__init__
+procgraph.core.model.BlockConnection.__init__
+procgraph.core.model.Model.__init__
+procgraph.core.model_loader.ModelSpec.__init__
+procgraph.core.model_stats.ExecutionStats.__init__
+procgraph.core.model_stats.Statistics.__init__
+procgraph.core.parsing_elements.Connection.__init__
+procgraph.core.parsing_elements.ImportStatement.__init__
+procgraph.core.parsing_elements.ParsedAssignment.__init__
+procgraph.core.parsing_elements.ParsedBlock.__init__
+procgraph.core.parsing_elements.ParsedElement.__init__
+procgraph.core.parsing_elements.ParsedModel.__init__
+procgraph.core.parsing_elements.ParsedSignal.__init__
+procgraph.core.parsing_elements.ParsedSignalList.__init__
+procgraph.core.parsing_elements.VariableReference.__init__
+procgraph.core.parsing_elements.Where.__init__
+procgraph.core.registrar.Library.__init__
+procgraph.utils.calling_ext_program.CmdException.__init__
+procgraph.utils.calling_ext_program.CmdResult.__init__
+procgraph_hdf.tables_cache.OpenFile.__init__" class="py-name" href="#" onclick="return doclink('link-32', '__init__', 'link-0');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt id="link-33" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-33', 'error', 'link-1');">error</a></tt><tt class="py-op">,</tt> <tt id="link-34" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-34', 'block', 'link-15');">block</a></tt><tt class="py-op">,</tt> <tt id="link-35" class="py-name" targets="Variable procgraph.block_utils.textlog.TextLog.config=procgraph.block_utils.textlog.TextLog-class.html#config,Variable procgraph.components.debug_components.clock.Clock.config=procgraph.components.debug_components.clock.Clock-class.html#config,Variable procgraph.components.debug_components.constant.Constant.config=procgraph.components.debug_components.constant.Constant-class.html#config,Variable procgraph.components.debug_components.gain.Gain.config=procgraph.components.debug_components.gain.Gain-class.html#config,Variable procgraph.components.debug_components.identity.Identity.config=procgraph.components.debug_components.identity.Identity-class.html#config,Variable procgraph.components.debug_components.info.Info.config=procgraph.components.debug_components.info.Info-class.html#config,Variable procgraph.components.debug_components.operations.Minus.config=procgraph.components.debug_components.operations.Minus-class.html#config,Variable procgraph.components.debug_components.printc.Print.config=procgraph.components.debug_components.printc.Print-class.html#config,Static Method procgraph.core.block_meta.BlockMetaSugar.config()=procgraph.core.block_meta.BlockMetaSugar-class.html#config,Variable procgraph.core.model.Model.config=procgraph.core.model.Model-class.html#config,Variable procgraph.core.model_io.ModelInput.config=procgraph.core.model_io.ModelInput-class.html#config,Variable procgraph.core.model_io.ModelOutput.config=procgraph.core.model_io.ModelOutput-class.html#config,Variable procgraph.scripts.pgdoc.ModelDoc.config=procgraph.scripts.pgdoc.ModelDoc-class.html#config,Variable procgraph.testing.utils.VerifyBlock.config=procgraph.testing.utils.VerifyBlock-class.html#config,Variable procgraph_foo.example0_simplest_block.BlockSimpleExample.config=procgraph_foo.example0_simplest_block.BlockSimpleExample-class.html#config,Variable procgraph_hdf.hdfread.HDFread.config=procgraph_hdf.hdfread.HDFread-class.html#config,Variable procgraph_hdf.hdfread_many.HDFread_many.config=procgraph_hdf.hdfread_many.HDFread_many-class.html#config,Variable procgraph_hdf.hdfwrite.HDFwrite.config=procgraph_hdf.hdfwrite.HDFwrite-class.html#config,Variable procgraph_images.blend'.Blend.config=procgraph_images.blend%27.Blend-class.html#config,Variable procgraph_images.border.Border.config=procgraph_images.border.Border-class.html#config,Variable procgraph_images.compose.Compose.config=procgraph_images.compose.Compose-class.html#config,Variable procgraph_images.images_from_dir.FilesFromDir.config=procgraph_images.images_from_dir.FilesFromDir-class.html#config,Variable procgraph_images.imggrid.ImageGrid.config=procgraph_images.imggrid.ImageGrid-class.html#config,Variable procgraph_images.solid'.Solid.config=procgraph_images.solid%27.Solid-class.html#config,Variable procgraph_io_misc.json_misc.AsJSON.config=procgraph_io_misc.json_misc.AsJSON-class.html#config,Variable procgraph_io_misc.pickling.Pickle.config=procgraph_io_misc.pickling.Pickle-class.html#config,Variable procgraph_io_misc.pickling.PickleGroup.config=procgraph_io_misc.pickling.PickleGroup-class.html#config,Variable procgraph_io_misc.pickling.PickleLoad.config=procgraph_io_misc.pickling.PickleLoad-class.html#config,Variable procgraph_io_misc.to_file.ToFile.config=procgraph_io_misc.to_file.ToFile-class.html#config,Variable procgraph_mpl.plot.Plot.config=procgraph_mpl.plot.Plot-class.html#config,Variable procgraph_mplayer.mencoder.MEncoder.config=procgraph_mplayer.mencoder.MEncoder-class.html#config,Variable procgraph_mplayer.mplayer.MPlayer.config=procgraph_mplayer.mplayer.MPlayer-class.html#config,Variable procgraph_pil.text.Text.config=procgraph_pil.text.Text-class.html#config,Variable procgraph_robotics.laser_display.LaserDisplay.config=procgraph_robotics.laser_display.LaserDisplay-class.html#config,Variable procgraph_robotics.laser_dot_display.LaserDotDisplay.config=procgraph_robotics.laser_dot_display.LaserDotDisplay-class.html#config,Variable procgraph_robotics.organic_scale.OrganicScale.config=procgraph_robotics.organic_scale.OrganicScale-class.html#config,Variable procgraph_robotics.pose2velocity.Pose2velocity.config=procgraph_robotics.pose2velocity.Pose2velocity-class.html#config,Variable procgraph_ros.bagread.BagRead.config=procgraph_ros.bagread.BagRead-class.html#config,Variable procgraph_ros.bagwrite.BagWrite.config=procgraph_ros.bagwrite.BagWrite-class.html#config,Variable procgraph_signals.any.Any.config=procgraph_signals.any.Any-class.html#config,Variable procgraph_signals.async.ASync.config=procgraph_signals.async.ASync-class.html#config,Variable procgraph_signals.derivative.ForwardDifference.config=procgraph_signals.derivative.ForwardDifference-class.html#config,Variable procgraph_signals.derivative2.ForwardDifference12.config=procgraph_signals.derivative2.ForwardDifference12-class.html#config,Variable procgraph_signals.extract.Extract.config=procgraph_signals.extract.Extract-class.html#config,Variable procgraph_signals.fps_data_limit.FPSDataLimit.config=procgraph_signals.fps_data_limit.FPSDataLimit-class.html#config,Variable procgraph_signals.fps_limit.FPSLimit.config=procgraph_signals.fps_limit.FPSLimit-class.html#config,Variable procgraph_signals.fps_print.FPSPrint.config=procgraph_signals.fps_print.FPSPrint-class.html#config,Variable procgraph_signals.history.History.config=procgraph_signals.history.History-class.html#config,Variable procgraph_signals.historyt.HistoryT.config=procgraph_signals.historyt.HistoryT-class.html#config,Variable procgraph_signals.join.Join.config=procgraph_signals.join.Join-class.html#config,Variable procgraph_signals.last_n_samples.HistoryN.config=procgraph_signals.last_n_samples.HistoryN-class.html#config,Variable procgraph_signals.low_pass.LowPass.config=procgraph_signals.low_pass.LowPass-class.html#config,Variable procgraph_signals.make_tuple.MakeTuple.config=procgraph_signals.make_tuple.MakeTuple-class.html#config,Variable procgraph_signals.sieve.Sieve.config=procgraph_signals.sieve.Sieve-class.html#config,Variable procgraph_signals.sync.Sync.config=procgraph_signals.sync.Sync-class.html#config,Variable procgraph_signals.sync_test.CheckSync.config=procgraph_signals.sync_test.CheckSync-class.html#config,Variable procgraph_signals.sync_test.LogSim.config=procgraph_signals.sync_test.LogSim-class.html#config,Variable procgraph_signals.wait.Wait.config=procgraph_signals.wait.Wait-class.html#config,Variable procgraph_statistics.expectation.Expectation.config=procgraph_statistics.expectation.Expectation-class.html#config,Variable procgraph_statistics.minimum.Maximum.config=procgraph_statistics.minimum.Maximum-class.html#config,Variable procgraph_statistics.minimum.Minimum.config=procgraph_statistics.minimum.Minimum-class.html#config"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-35', 'config', 'link-35');">config</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-36" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-36', 'config', 'link-35');">config</a></tt> <tt class="py-op">=</tt> <tt id="link-37" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-37', 'config', 'link-35');">config</a></tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-38" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-38', 'error', 'link-1');">error</a></tt> <tt class="py-op">=</tt> <tt id="link-39" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-39', 'error', 'link-1');">error</a></tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-40" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-40', 'block', 'link-15');">block</a></tt> <tt class="py-op">=</tt> <tt id="link-41" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-41', 'block', 'link-15');">block</a></tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bad_value</tt> <tt class="py-op">=</tt> <tt id="link-42" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-42', 'block', 'link-15');">block</a></tt><tt class="py-op">.</tt><tt id="link-43" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-43', 'config', 'link-35');">config</a></tt><tt class="py-op">[</tt><tt id="link-44" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-44', 'config', 'link-35');">config</a></tt><tt class="py-op">]</tt> </tt>
+</div><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="BadConfig.__str__"></a><div id="BadConfig.__str__-def"><a name="L96"></a><tt class="py-lineno"> 96</tt> <a class="py-toggle" href="#" id="BadConfig.__str__-toggle" onclick="return toggle('BadConfig.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions.BadConfig-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="BadConfig.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="BadConfig.__str__-expanded"><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-45" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-45', 'block', 'link-15');">block</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt id="link-46" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-46', 'name', 'link-24');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-47" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-47', 'block', 'link-15');">block</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-48', 'name', 'link-24');">name</a></tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">            <tt id="link-49" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-49', 'name', 'link-24');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-string">'(unknown)'</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">"Bad config %r = %r for block %r: %s"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">             <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="procgraph.block_utils.textlog.TextLog.config
+procgraph.components.debug_components.clock.Clock.config
+procgraph.components.debug_components.constant.Constant.config
+procgraph.components.debug_components.gain.Gain.config
+procgraph.components.debug_components.identity.Identity.config
+procgraph.components.debug_components.info.Info.config
+procgraph.components.debug_components.operations.Minus.config
+procgraph.components.debug_components.printc.Print.config
+procgraph.core.block_meta.BlockMetaSugar.config
+procgraph.core.model.Model.config
+procgraph.core.model_io.ModelInput.config
+procgraph.core.model_io.ModelOutput.config
+procgraph.scripts.pgdoc.ModelDoc.config
+procgraph.testing.utils.VerifyBlock.config
+procgraph_foo.example0_simplest_block.BlockSimpleExample.config
+procgraph_hdf.hdfread.HDFread.config
+procgraph_hdf.hdfread_many.HDFread_many.config
+procgraph_hdf.hdfwrite.HDFwrite.config
+procgraph_images.blend'.Blend.config
+procgraph_images.border.Border.config
+procgraph_images.compose.Compose.config
+procgraph_images.images_from_dir.FilesFromDir.config
+procgraph_images.imggrid.ImageGrid.config
+procgraph_images.solid'.Solid.config
+procgraph_io_misc.json_misc.AsJSON.config
+procgraph_io_misc.pickling.Pickle.config
+procgraph_io_misc.pickling.PickleGroup.config
+procgraph_io_misc.pickling.PickleLoad.config
+procgraph_io_misc.to_file.ToFile.config
+procgraph_mpl.plot.Plot.config
+procgraph_mplayer.mencoder.MEncoder.config
+procgraph_mplayer.mplayer.MPlayer.config
+procgraph_pil.text.Text.config
+procgraph_robotics.laser_display.LaserDisplay.config
+procgraph_robotics.laser_dot_display.LaserDotDisplay.config
+procgraph_robotics.organic_scale.OrganicScale.config
+procgraph_robotics.pose2velocity.Pose2velocity.config
+procgraph_ros.bagread.BagRead.config
+procgraph_ros.bagwrite.BagWrite.config
+procgraph_signals.any.Any.config
+procgraph_signals.async.ASync.config
+procgraph_signals.derivative.ForwardDifference.config
+procgraph_signals.derivative2.ForwardDifference12.config
+procgraph_signals.extract.Extract.config
+procgraph_signals.fps_data_limit.FPSDataLimit.config
+procgraph_signals.fps_limit.FPSLimit.config
+procgraph_signals.fps_print.FPSPrint.config
+procgraph_signals.history.History.config
+procgraph_signals.historyt.HistoryT.config
+procgraph_signals.join.Join.config
+procgraph_signals.last_n_samples.HistoryN.config
+procgraph_signals.low_pass.LowPass.config
+procgraph_signals.make_tuple.MakeTuple.config
+procgraph_signals.sieve.Sieve.config
+procgraph_signals.sync.Sync.config
+procgraph_signals.sync_test.CheckSync.config
+procgraph_signals.sync_test.LogSim.config
+procgraph_signals.wait.Wait.config
+procgraph_statistics.expectation.Expectation.config
+procgraph_statistics.minimum.Maximum.config
+procgraph_statistics.minimum.Minimum.config" class="py-name" href="#" onclick="return doclink('link-50', 'config', 'link-35');">config</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">bad_value</tt><tt class="py-op">,</tt> <tt id="link-51" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-51', 'name', 'link-24');">name</a></tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-52" class="py-name"><a title="procgraph.core.block.Block.error
+procgraph.core.visualization.error
+procgraph_pil.text.error" class="py-name" href="#" onclick="return doclink('link-52', 'error', 'link-1');">error</a></tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-name">s</tt> <tt class="py-op">+=</tt> <tt id="link-53" class="py-name"><a title="procgraph.core.exceptions.format_where" class="py-name" href="#" onclick="return doclink('link-53', 'format_where', 'link-5');">format_where</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-54" class="py-name"><a title="procgraph.core.block" class="py-name" href="#" onclick="return doclink('link-54', 'block', 'link-15');">block</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+</div></div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-comment"># A couple of functions for pretty errors</tt> </tt>
+<a name="aslist"></a><div id="aslist-def"><a name="L109"></a><tt class="py-lineno">109</tt> <a class="py-toggle" href="#" id="aslist-toggle" onclick="return toggle('aslist');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions-module.html#aslist">aslist</a><tt class="py-op">(</tt><tt class="py-param">x</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="aslist-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="aslist-expanded"><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">,</tt> <tt class="py-name">dict</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line">        <tt class="py-name">x</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">x</tt><tt class="py-op">:</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">", "</tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Module procgraph_signals.join=procgraph_signals.join-module.html"><a title="procgraph_signals.join" class="py-name" href="#" onclick="return doclink('link-55', 'join', 'link-55');">join</a></tt><tt class="py-op">(</tt><tt class="py-name">sorted</tt><tt class="py-op">(</tt><tt class="py-name">x</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">"&lt;empty&gt;"</tt> </tt>
+</div><a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"> </tt>
+<a name="x_not_found"></a><div id="x_not_found-def"><a name="L118"></a><tt class="py-lineno">118</tt> <a class="py-toggle" href="#" id="x_not_found-toggle" onclick="return toggle('x_not_found');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions-module.html#x_not_found">x_not_found</a><tt class="py-op">(</tt><tt class="py-param">what</tt><tt class="py-op">,</tt> <tt class="py-param">x</tt><tt class="py-op">,</tt> <tt class="py-param">iterable</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="x_not_found-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="x_not_found-expanded"><a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">    <tt class="py-docstring">''' Shortcut for creating pretty error messages. '''</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">    <tt class="py-comment"># TODO: add guess in case of typos</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-string">'Could not find %s %r. I know %s.'</tt> <tt class="py-op">%</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">            <tt class="py-op">(</tt><tt class="py-name">what</tt><tt class="py-op">,</tt> <tt class="py-name">x</tt><tt class="py-op">,</tt> <tt id="link-56" class="py-name" targets="Function procgraph.core.exceptions.aslist()=procgraph.core.exceptions-module.html#aslist"><a title="procgraph.core.exceptions.aslist" class="py-name" href="#" onclick="return doclink('link-56', 'aslist', 'link-56');">aslist</a></tt><tt class="py-op">(</tt><tt class="py-name">iterable</tt><tt class="py-op">)</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"> </tt>
+<a name="add_prefix"></a><div id="add_prefix-def"><a name="L125"></a><tt class="py-lineno">125</tt> <a class="py-toggle" href="#" id="add_prefix-toggle" onclick="return toggle('add_prefix');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions-module.html#add_prefix">add_prefix</a><tt class="py-op">(</tt><tt class="py-param">s</tt><tt class="py-op">,</tt> <tt class="py-param">prefix</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="add_prefix-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="add_prefix-expanded"><a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">    <tt class="py-name">result</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">l</tt> <tt class="py-keyword">in</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'\n'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-name">result</tt> <tt class="py-op">+=</tt> <tt class="py-name">prefix</tt> <tt class="py-op">+</tt> <tt class="py-name">l</tt> <tt class="py-op">+</tt> <tt class="py-string">'\n'</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">result</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="format_where"></a><div id="format_where-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="format_where-toggle" onclick="return toggle('format_where');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.exceptions-module.html#format_where">format_where</a><tt class="py-op">(</tt><tt class="py-param">element_or_block</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="format_where-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="format_where-expanded"><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt id="link-57" class="py-name" targets="Variable procgraph.core.parsing.e=procgraph.core.parsing-module.html#e"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-57', 'e', 'link-57');">e</a></tt> <tt class="py-op">=</tt> <tt class="py-name">element_or_block</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-58" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-58', 'e', 'link-57');">e</a></tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-59" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-59', 'e', 'link-57');">e</a></tt><tt class="py-op">.</tt><tt class="py-name">where</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-string">"\n\n"</tt> <tt class="py-op">+</tt> <tt id="link-60" class="py-name"><a title="procgraph.core.exceptions.add_prefix" class="py-name" href="#" onclick="return doclink('link-60', 'add_prefix', 'link-11');">add_prefix</a></tt><tt class="py-op">(</tt><tt id="link-61" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-61', 'e', 'link-57');">e</a></tt><tt class="py-op">.</tt><tt class="py-name">where</tt><tt class="py-op">.</tt><tt id="link-62" class="py-name"><a title="procgraph.core.docstring_parsing.DocStringInfo.__str__
+procgraph.core.exceptions.BadConfig.__str__
+procgraph.core.exceptions.BadInput.__str__
+procgraph.core.exceptions.PGSyntaxError.__str__
+procgraph.core.exceptions.SemanticError.__str__
+procgraph.core.parsing_elements.Where.__str__
+procgraph.utils.calling_ext_program.CmdException.__str__
+procgraph.utils.calling_ext_program.CmdResult.__str__" class="py-name" href="#" onclick="return doclink('link-62', '__str__', 'link-12');">__str__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-string">' '</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-string">" (no position given)"</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-string">" (no element/block given)"</tt> </tt>
+</div><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:03 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

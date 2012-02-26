@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph.utils.calling_ext_program</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph-module.html">Package&nbsp;procgraph</a> ::
+        <a href="procgraph.utils-module.html">Package&nbsp;utils</a> ::
+        Module&nbsp;calling_ext_program
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph.utils.calling_ext_program-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph.utils.calling_ext_program-module.html">Module procgraph.utils.calling_ext_program</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Package procgraph=procgraph-module.html"><a title="procgraph" class="py-name" href="#" onclick="return doclink('link-0', 'procgraph', 'link-0');">procgraph</a></tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Module procgraph.testing.utils=procgraph.testing.utils-module.html,Package procgraph.utils=procgraph.utils-module.html"><a title="procgraph.testing.utils
+procgraph.utils" class="py-name" href="#" onclick="return doclink('link-1', 'utils', 'link-1');">utils</a></tt> <tt class="py-keyword">import</tt> <tt id="link-2" class="py-name" targets="Function procgraph.utils.strings.indent()=procgraph.utils.strings-module.html#indent"><a title="procgraph.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-2', 'indent', 'link-2');">indent</a></tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">subprocess</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">tempfile</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-name">__all__</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-string">'system_cmd_result'</tt><tt class="py-op">,</tt> <tt class="py-string">'CmdResult'</tt><tt class="py-op">,</tt> <tt class="py-string">'CmdException'</tt><tt class="py-op">]</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="CmdResult"></a><div id="CmdResult-def"><a name="L10"></a><tt class="py-lineno"> 10</tt> <a class="py-toggle" href="#" id="CmdResult-toggle" onclick="return toggle('CmdResult');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program.CmdResult-class.html">CmdResult</a><tt class="py-op">(</tt><tt class="py-base-class">object</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CmdResult-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CmdResult-expanded"><a name="CmdResult.__init__"></a><div id="CmdResult.__init__-def"><a name="L11"></a><tt class="py-lineno"> 11</tt> <a class="py-toggle" href="#" id="CmdResult.__init__-toggle" onclick="return toggle('CmdResult.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program.CmdResult-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">cwd</tt><tt class="py-op">,</tt> <tt class="py-param">cmd</tt><tt class="py-op">,</tt> <tt class="py-param">ret</tt><tt class="py-op">,</tt> <tt class="py-param">rets</tt><tt class="py-op">,</tt> <tt class="py-param">interrupted</tt><tt class="py-op">,</tt> <tt class="py-param">stdout</tt><tt class="py-op">,</tt> <tt class="py-param">stderr</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CmdResult.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CmdResult.__init__-expanded"><a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cwd</tt> <tt class="py-op">=</tt> <tt class="py-name">cwd</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cmd</tt> <tt class="py-op">=</tt> <tt class="py-name">cmd</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">ret</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">rets</tt> <tt class="py-op">=</tt> <tt class="py-name">rets</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt> <tt class="py-op">=</tt> <tt class="py-name">stdout</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt> <tt class="py-op">=</tt> <tt class="py-name">stderr</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">interrupted</tt> </tt>
+</div><a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"> </tt>
+<a name="CmdResult.__str__"></a><div id="CmdResult.__str__-def"><a name="L20"></a><tt class="py-lineno"> 20</tt> <a class="py-toggle" href="#" id="CmdResult.__str__-toggle" onclick="return toggle('CmdResult.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program.CmdResult-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CmdResult.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CmdResult.__str__-expanded"><a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">        <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'The command: %s\n'</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">               <tt class="py-string">'     in dir: %s\n'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cmd</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">cwd</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">interrupted</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'Was interrupted by the user\n'</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'returned: %s'</tt> <tt class="py-op">%</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">ret</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">rets</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'\n'</tt> <tt class="py-op">+</tt> <tt id="link-3" class="py-name"><a title="procgraph.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-3', 'indent', 'link-2');">indent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">rets</tt><tt class="py-op">,</tt> <tt class="py-string">'error&gt;'</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'\n'</tt> <tt class="py-op">+</tt> <tt id="link-4" class="py-name"><a title="procgraph.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-4', 'indent', 'link-2');">indent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stdout</tt><tt class="py-op">,</tt> <tt class="py-string">'stdout&gt;'</tt><tt class="py-op">)</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">:</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">            <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'\n'</tt> <tt class="py-op">+</tt> <tt id="link-5" class="py-name"><a title="procgraph.utils.strings.indent" class="py-name" href="#" onclick="return doclink('link-5', 'indent', 'link-2');">indent</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> <tt class="py-string">'stderr&gt;'</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">msg</tt> </tt>
+</div></div><a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"> </tt>
+<a name="CmdException"></a><div id="CmdException-def"><a name="L38"></a><tt class="py-lineno"> 38</tt> <a class="py-toggle" href="#" id="CmdException-toggle" onclick="return toggle('CmdException');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program.CmdException-class.html">CmdException</a><tt class="py-op">(</tt><tt class="py-base-class">Exception</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CmdException-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="CmdException-expanded"><a name="CmdException.__init__"></a><div id="CmdException.__init__-def"><a name="L39"></a><tt class="py-lineno"> 39</tt> <a class="py-toggle" href="#" id="CmdException.__init__-toggle" onclick="return toggle('CmdException.__init__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program.CmdException-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">cmd_result</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CmdException.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CmdException.__init__-expanded"><a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-name">Exception</tt><tt class="py-op">.</tt><tt id="link-6" class="py-name" targets="Method procgraph.core.block.Block.__init__()=procgraph.core.block.Block-class.html#__init__,Method procgraph.core.block.Value.__init__()=procgraph.core.block.Value-class.html#__init__,Method procgraph.core.block_meta.BlockConfig.__init__()=procgraph.core.block_meta.BlockConfig-class.html#__init__,Method procgraph.core.block_meta.BlockInput.__init__()=procgraph.core.block_meta.BlockInput-class.html#__init__,Method procgraph.core.block_meta.BlockMeta.__init__()=procgraph.core.block_meta.BlockMeta-class.html#__init__,Method procgraph.core.block_meta.BlockOutput.__init__()=procgraph.core.block_meta.BlockOutput-class.html#__init__,Method procgraph.core.block_sugar.Proxy.__init__()=procgraph.core.block_sugar.Proxy-class.html#__init__,Method procgraph.core.docstring_parsing.Arg.__init__()=procgraph.core.docstring_parsing.Arg-class.html#__init__,Method procgraph.core.docstring_parsing.DocStringInfo.__init__()=procgraph.core.docstring_parsing.DocStringInfo-class.html#__init__,Method procgraph.core.exceptions.BadConfig.__init__()=procgraph.core.exceptions.BadConfig-class.html#__init__,Method procgraph.core.exceptions.BadInput.__init__()=procgraph.core.exceptions.BadInput-class.html#__init__,Method procgraph.core.exceptions.PGSyntaxError.__init__()=procgraph.core.exceptions.PGSyntaxError-class.html#__init__,Method procgraph.core.exceptions.SemanticError.__init__()=procgraph.core.exceptions.SemanticError-class.html#__init__,Method procgraph.core.model.BlockConnection.__init__()=procgraph.core.model.BlockConnection-class.html#__init__,Method procgraph.core.model.Model.__init__()=procgraph.core.model.Model-class.html#__init__,Method procgraph.core.model_loader.ModelSpec.__init__()=procgraph.core.model_loader.ModelSpec-class.html#__init__,Method procgraph.core.model_stats.ExecutionStats.__init__()=procgraph.core.model_stats.ExecutionStats-class.html#__init__,Method procgraph.core.model_stats.Statistics.__init__()=procgraph.core.model_stats.Statistics-class.html#__init__,Method procgraph.core.parsing_elements.Connection.__init__()=procgraph.core.parsing_elements.Connection-class.html#__init__,Method procgraph.core.parsing_elements.ImportStatement.__init__()=procgraph.core.parsing_elements.ImportStatement-class.html#__init__,Method procgraph.core.parsing_elements.ParsedAssignment.__init__()=procgraph.core.parsing_elements.ParsedAssignment-class.html#__init__,Method procgraph.core.parsing_elements.ParsedBlock.__init__()=procgraph.core.parsing_elements.ParsedBlock-class.html#__init__,Method procgraph.core.parsing_elements.ParsedElement.__init__()=procgraph.core.parsing_elements.ParsedElement-class.html#__init__,Method procgraph.core.parsing_elements.ParsedModel.__init__()=procgraph.core.parsing_elements.ParsedModel-class.html#__init__,Method procgraph.core.parsing_elements.ParsedSignal.__init__()=procgraph.core.parsing_elements.ParsedSignal-class.html#__init__,Method procgraph.core.parsing_elements.ParsedSignalList.__init__()=procgraph.core.parsing_elements.ParsedSignalList-class.html#__init__,Method procgraph.core.parsing_elements.VariableReference.__init__()=procgraph.core.parsing_elements.VariableReference-class.html#__init__,Method procgraph.core.parsing_elements.Where.__init__()=procgraph.core.parsing_elements.Where-class.html#__init__,Method procgraph.core.registrar.Library.__init__()=procgraph.core.registrar.Library-class.html#__init__,Method procgraph.utils.calling_ext_program.CmdException.__init__()=procgraph.utils.calling_ext_program.CmdException-class.html#__init__,Method procgraph.utils.calling_ext_program.CmdResult.__init__()=procgraph.utils.calling_ext_program.CmdResult-class.html#__init__,Method procgraph_hdf.tables_cache.OpenFile.__init__()=procgraph_hdf.tables_cache.OpenFile-class.html#__init__"><a title="procgraph.core.block.Block.__init__
+procgraph.core.block.Value.__init__
+procgraph.core.block_meta.BlockConfig.__init__
+procgraph.core.block_meta.BlockInput.__init__
+procgraph.core.block_meta.BlockMeta.__init__
+procgraph.core.block_meta.BlockOutput.__init__
+procgraph.core.block_sugar.Proxy.__init__
+procgraph.core.docstring_parsing.Arg.__init__
+procgraph.core.docstring_parsing.DocStringInfo.__init__
+procgraph.core.exceptions.BadConfig.__init__
+procgraph.core.exceptions.BadInput.__init__
+procgraph.core.exceptions.PGSyntaxError.__init__
+procgraph.core.exceptions.SemanticError.__init__
+procgraph.core.model.BlockConnection.__init__
+procgraph.core.model.Model.__init__
+procgraph.core.model_loader.ModelSpec.__init__
+procgraph.core.model_stats.ExecutionStats.__init__
+procgraph.core.model_stats.Statistics.__init__
+procgraph.core.parsing_elements.Connection.__init__
+procgraph.core.parsing_elements.ImportStatement.__init__
+procgraph.core.parsing_elements.ParsedAssignment.__init__
+procgraph.core.parsing_elements.ParsedBlock.__init__
+procgraph.core.parsing_elements.ParsedElement.__init__
+procgraph.core.parsing_elements.ParsedModel.__init__
+procgraph.core.parsing_elements.ParsedSignal.__init__
+procgraph.core.parsing_elements.ParsedSignalList.__init__
+procgraph.core.parsing_elements.VariableReference.__init__
+procgraph.core.parsing_elements.Where.__init__
+procgraph.core.registrar.Library.__init__
+procgraph.utils.calling_ext_program.CmdException.__init__
+procgraph.utils.calling_ext_program.CmdResult.__init__
+procgraph_hdf.tables_cache.OpenFile.__init__" class="py-name" href="#" onclick="return doclink('link-6', '__init__', 'link-6');">__init__</a></tt><tt class="py-op">(</tt><tt class="py-name">self</tt><tt class="py-op">,</tt> <tt class="py-name">cmd_result</tt><tt class="py-op">)</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">        <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt class="py-name">cmd_result</tt> </tt>
+</div><a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line"> </tt>
+<a name="CmdException.__str__"></a><div id="CmdException.__str__-def"><a name="L43"></a><tt class="py-lineno"> 43</tt> <a class="py-toggle" href="#" id="CmdException.__str__-toggle" onclick="return toggle('CmdException.__str__');">-</a><tt class="py-line">    <tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program.CmdException-class.html#__str__">__str__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="CmdException.__str__-collapsed" style="display:none;" pad="+++" indent="++++++++"></div><div id="CmdException.__str__-expanded"><a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">res</tt><tt class="py-op">.</tt><tt id="link-7" class="py-name" targets="Method procgraph.core.docstring_parsing.DocStringInfo.__str__()=procgraph.core.docstring_parsing.DocStringInfo-class.html#__str__,Method procgraph.core.exceptions.BadConfig.__str__()=procgraph.core.exceptions.BadConfig-class.html#__str__,Method procgraph.core.exceptions.BadInput.__str__()=procgraph.core.exceptions.BadInput-class.html#__str__,Method procgraph.core.exceptions.PGSyntaxError.__str__()=procgraph.core.exceptions.PGSyntaxError-class.html#__str__,Method procgraph.core.exceptions.SemanticError.__str__()=procgraph.core.exceptions.SemanticError-class.html#__str__,Method procgraph.core.parsing_elements.Where.__str__()=procgraph.core.parsing_elements.Where-class.html#__str__,Method procgraph.utils.calling_ext_program.CmdException.__str__()=procgraph.utils.calling_ext_program.CmdException-class.html#__str__,Method procgraph.utils.calling_ext_program.CmdResult.__str__()=procgraph.utils.calling_ext_program.CmdResult-class.html#__str__"><a title="procgraph.core.docstring_parsing.DocStringInfo.__str__
+procgraph.core.exceptions.BadConfig.__str__
+procgraph.core.exceptions.BadInput.__str__
+procgraph.core.exceptions.PGSyntaxError.__str__
+procgraph.core.exceptions.SemanticError.__str__
+procgraph.core.parsing_elements.Where.__str__
+procgraph.utils.calling_ext_program.CmdException.__str__
+procgraph.utils.calling_ext_program.CmdResult.__str__" class="py-name" href="#" onclick="return doclink('link-7', '__str__', 'link-7');">__str__</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="system_cmd_result"></a><div id="system_cmd_result-def"><a name="L47"></a><tt class="py-lineno"> 47</tt> <a class="py-toggle" href="#" id="system_cmd_result-toggle" onclick="return toggle('system_cmd_result');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program-module.html#system_cmd_result">system_cmd_result</a><tt class="py-op">(</tt><tt class="py-param">cwd</tt><tt class="py-op">,</tt> <tt class="py-param">cmd</tt><tt class="py-op">,</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                      <tt class="py-param">display_stdout</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                      <tt class="py-param">display_stderr</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                      <tt class="py-param">raise_on_error</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">,</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                      <tt class="py-param">capture_keyboard_interrupt</tt><tt class="py-op">=</tt><tt class="py-name">False</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="system_cmd_result-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="system_cmd_result-expanded"><a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">    <tt class="py-docstring">''' </tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-docstring">        Returns the structure CmdResult; raises CmdException.</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-docstring">        Also OSError are captured.</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-docstring">        KeyboardInterrupt is passed through unless specified</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">    <tt class="py-name">tmp_stdout</tt> <tt class="py-op">=</tt> <tt class="py-name">tempfile</tt><tt class="py-op">.</tt><tt class="py-name">TemporaryFile</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">    <tt class="py-name">tmp_stderr</tt> <tt class="py-op">=</tt> <tt class="py-name">tempfile</tt><tt class="py-op">.</tt><tt class="py-name">TemporaryFile</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line"> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">    <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">    <tt class="py-name">rets</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line">    <tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-name">stdout</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-keyword">if</tt> <tt class="py-name">display_stdout</tt> <tt class="py-keyword">else</tt> <tt class="py-name">tmp_stdout</tt><tt class="py-op">.</tt><tt class="py-name">fileno</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-name">stderr</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> <tt class="py-keyword">if</tt> <tt class="py-name">display_stderr</tt> <tt class="py-keyword">else</tt> <tt class="py-name">tmp_stderr</tt><tt class="py-op">.</tt><tt class="py-name">fileno</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">        <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">Popen</tt><tt class="py-op">(</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">                <tt id="link-8" class="py-name" targets="Function procgraph.utils.calling_ext_program.cmd2args()=procgraph.utils.calling_ext_program-module.html#cmd2args"><a title="procgraph.utils.calling_ext_program.cmd2args" class="py-name" href="#" onclick="return doclink('link-8', 'cmd2args', 'link-8');">cmd2args</a></tt><tt class="py-op">(</tt><tt class="py-name">cmd</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">                <tt class="py-name">stdin</tt><tt class="py-op">=</tt><tt class="py-name">subprocess</tt><tt class="py-op">.</tt><tt class="py-name">PIPE</tt><tt class="py-op">,</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">                <tt class="py-name">stdout</tt><tt class="py-op">=</tt><tt class="py-name">stdout</tt><tt class="py-op">,</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">                <tt class="py-name">stderr</tt><tt class="py-op">=</tt><tt class="py-name">stderr</tt><tt class="py-op">,</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                <tt class="py-name">cwd</tt><tt class="py-op">=</tt><tt class="py-name">cwd</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-name">p</tt><tt class="py-op">.</tt><tt class="py-name">stdin</tt><tt class="py-op">.</tt><tt class="py-name">close</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">        <tt class="py-name">p</tt><tt class="py-op">.</tt><tt id="link-9" class="py-name" targets="Module procgraph_signals.wait=procgraph_signals.wait-module.html"><a title="procgraph_signals.wait" class="py-name" href="#" onclick="return doclink('link-9', 'wait', 'link-9');">wait</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">        <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-name">p</tt><tt class="py-op">.</tt><tt class="py-name">returncode</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">        <tt class="py-name">rets</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">        <tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">KeyboardInterrupt</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-number">100</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-keyword">except</tt> <tt class="py-name">OSError</tt> <tt class="py-keyword">as</tt> <tt id="link-10" class="py-name" targets="Variable procgraph.core.parsing.e=procgraph.core.parsing-module.html#e"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-10', 'e', 'link-10');">e</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-name">interrupted</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-name">ret</tt> <tt class="py-op">=</tt> <tt class="py-number">200</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">rets</tt> <tt class="py-op">=</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-11" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-11', 'e', 'link-10');">e</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">    <tt class="py-comment"># remember to go back</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">read_all</tt><tt class="py-op">(</tt><tt class="py-param">f</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">        <tt class="py-name">os</tt><tt class="py-op">.</tt><tt class="py-name">lseek</tt><tt class="py-op">(</tt><tt class="py-name">f</tt><tt class="py-op">.</tt><tt class="py-name">fileno</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">,</tt> <tt class="py-number">0</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">f</tt><tt class="py-op">.</tt><tt class="py-name">read</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">    <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name" targets="Class procgraph.utils.calling_ext_program.CmdResult=procgraph.utils.calling_ext_program.CmdResult-class.html"><a title="procgraph.utils.calling_ext_program.CmdResult" class="py-name" href="#" onclick="return doclink('link-12', 'CmdResult', 'link-12');">CmdResult</a></tt><tt class="py-op">(</tt><tt class="py-name">cwd</tt><tt class="py-op">,</tt> <tt class="py-name">cmd</tt><tt class="py-op">,</tt> <tt class="py-name">ret</tt><tt class="py-op">,</tt> <tt class="py-name">rets</tt><tt class="py-op">,</tt> <tt class="py-name">interrupted</tt><tt class="py-op">,</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                    <tt class="py-name">stdout</tt><tt class="py-op">=</tt><tt class="py-name">read_all</tt><tt class="py-op">(</tt><tt class="py-name">tmp_stdout</tt><tt class="py-op">)</tt><tt class="py-op">,</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">                    <tt class="py-name">stderr</tt><tt class="py-op">=</tt><tt class="py-name">read_all</tt><tt class="py-op">(</tt><tt class="py-name">tmp_stderr</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">raise_on_error</tt><tt class="py-op">:</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">res</tt><tt class="py-op">.</tt><tt class="py-name">ret</tt> <tt class="py-op">!=</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-13" class="py-name" targets="Class procgraph.utils.calling_ext_program.CmdException=procgraph.utils.calling_ext_program.CmdException-class.html"><a title="procgraph.utils.calling_ext_program.CmdException" class="py-name" href="#" onclick="return doclink('link-13', 'CmdException', 'link-13');">CmdException</a></tt><tt class="py-op">(</tt><tt class="py-name">res</tt><tt class="py-op">)</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">res</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt>
+<a name="cmd2args"></a><div id="cmd2args-def"><a name="L103"></a><tt class="py-lineno">103</tt> <a class="py-toggle" href="#" id="cmd2args-toggle" onclick="return toggle('cmd2args');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.utils.calling_ext_program-module.html#cmd2args">cmd2args</a><tt class="py-op">(</tt><tt class="py-param">s</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="cmd2args-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="cmd2args-expanded"><a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">    <tt class="py-docstring">''' if s is a list, leave it like that; otherwise split()'''</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">,</tt> <tt class="py-name">list</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line">    <tt class="py-keyword">elif</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">s</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">s</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> <tt class="py-keyword">assert</tt> <tt class="py-name">False</tt> </tt>
+</div><a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-name">cwd</tt> <tt class="py-op">=</tt> <tt class="py-string">'.'</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-name">cmd</tt> <tt class="py-op">=</tt> <tt class="py-string">" "</tt><tt class="py-op">.</tt><tt id="link-14" class="py-name" targets="Module procgraph_signals.join=procgraph_signals.join-module.html"><a title="procgraph_signals.join" class="py-name" href="#" onclick="return doclink('link-14', 'join', 'link-14');">join</a></tt><tt class="py-op">(</tt><tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">argv</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">    <tt class="py-name">cmd</tt> <tt class="py-op">=</tt> <tt class="py-name">cmd</tt><tt class="py-op">.</tt><tt class="py-name">strip</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">cmd</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">'No command given.'</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">            <tt class="py-name">display</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-name">res</tt> <tt class="py-op">=</tt> <tt id="link-15" class="py-name" targets="Function procgraph.utils.calling_ext_program.system_cmd_result()=procgraph.utils.calling_ext_program-module.html#system_cmd_result"><a title="procgraph.utils.calling_ext_program.system_cmd_result" class="py-name" href="#" onclick="return doclink('link-15', 'system_cmd_result', 'link-15');">system_cmd_result</a></tt><tt class="py-op">(</tt><tt class="py-name">cwd</tt><tt class="py-op">,</tt> <tt class="py-name">cmd</tt><tt class="py-op">,</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">                          <tt class="py-name">display_stdout</tt><tt class="py-op">=</tt><tt class="py-name">display</tt><tt class="py-op">,</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">                          <tt class="py-name">display_stderr</tt><tt class="py-op">=</tt><tt class="py-name">display</tt><tt class="py-op">,</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">                          <tt class="py-name">raise_on_error</tt><tt class="py-op">=</tt><tt class="py-name">True</tt><tt class="py-op">)</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">'Succeed: %s'</tt> <tt class="py-op">%</tt> <tt class="py-name">res</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt id="link-16" class="py-name"><a title="procgraph.utils.calling_ext_program.CmdException" class="py-name" href="#" onclick="return doclink('link-16', 'CmdException', 'link-13');">CmdException</a></tt> <tt class="py-keyword">as</tt> <tt id="link-17" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-17', 'e', 'link-10');">e</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">            <tt class="py-keyword">print</tt><tt class="py-op">(</tt><tt class="py-string">'Exception: %s'</tt> <tt class="py-op">%</tt> <tt id="link-18" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-18', 'e', 'link-10');">e</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:05 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

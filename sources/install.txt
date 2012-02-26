@@ -23,9 +23,10 @@ unit tests
 
 It is a good idea to run the unit tests using the command: ::
 
-	$ nosetests -w src
+    $ python setup.py nosetests
 
 (This assume that nose_ is installed.)
+
 
 
 .. _pyparsing: http://pyparsing.wikispaces.com/ 

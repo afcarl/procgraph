@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>procgraph.core.import_magic</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="procgraph-module.html">Package&nbsp;procgraph</a> ::
+        <a href="procgraph.core-module.html">Package&nbsp;core</a> ::
+        Module&nbsp;import_magic
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="procgraph.core.import_magic-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="procgraph.core.import_magic-module.html">Module procgraph.core.import_magic</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">sys</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">types</tt> <tt class="py-keyword">import</tt> <tt class="py-name">ModuleType</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-0" class="py-name" targets="Module procgraph.core.visualization=procgraph.core.visualization-module.html"><a title="procgraph.core.visualization" class="py-name" href="#" onclick="return doclink('link-0', 'visualization', 'link-0');">visualization</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Method procgraph.core.block.Block.debug()=procgraph.core.block.Block-class.html#debug,Function procgraph.core.visualization.debug()=procgraph.core.visualization-module.html#debug"><a title="procgraph.core.block.Block.debug
+procgraph.core.visualization.debug" class="py-name" href="#" onclick="return doclink('link-1', 'debug', 'link-1');">debug</a></tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Module procgraph.core.constants=procgraph.core.constants-module.html"><a title="procgraph.core.constants" class="py-name" href="#" onclick="return doclink('link-2', 'constants', 'link-2');">constants</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Variable procgraph.PROCGRAPH_INFO_VARIABLE=procgraph-module.html#PROCGRAPH_INFO_VARIABLE,Variable procgraph.core.constants.PROCGRAPH_INFO_VARIABLE=procgraph.core.constants-module.html#PROCGRAPH_INFO_VARIABLE,Variable procgraph.core.import_magic.PROCGRAPH_INFO_VARIABLE=procgraph.core.import_magic-module.html#PROCGRAPH_INFO_VARIABLE"><a title="procgraph.PROCGRAPH_INFO_VARIABLE
+procgraph.core.constants.PROCGRAPH_INFO_VARIABLE
+procgraph.core.import_magic.PROCGRAPH_INFO_VARIABLE" class="py-name" href="#" onclick="return doclink('link-3', 'PROCGRAPH_INFO_VARIABLE', 'link-3');">PROCGRAPH_INFO_VARIABLE</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Variable procgraph.REQUIRES=procgraph-module.html#REQUIRES,Variable procgraph.core.constants.REQUIRES=procgraph.core.constants-module.html#REQUIRES,Variable procgraph.core.import_magic.REQUIRES=procgraph.core.import_magic-module.html#REQUIRES"><a title="procgraph.REQUIRES
+procgraph.core.constants.REQUIRES
+procgraph.core.import_magic.REQUIRES" class="py-name" href="#" onclick="return doclink('link-4', 'REQUIRES', 'link-4');">REQUIRES</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Variable procgraph.REQUIRES_PARSED=procgraph-module.html#REQUIRES_PARSED,Variable procgraph.core.constants.REQUIRES_PARSED=procgraph.core.constants-module.html#REQUIRES_PARSED,Variable procgraph.core.import_magic.REQUIRES_PARSED=procgraph.core.import_magic-module.html#REQUIRES_PARSED,Variable procgraph.scripts.pgindex.REQUIRES_PARSED=procgraph.scripts.pgindex-module.html#REQUIRES_PARSED"><a title="procgraph.REQUIRES_PARSED
+procgraph.core.constants.REQUIRES_PARSED
+procgraph.core.import_magic.REQUIRES_PARSED
+procgraph.scripts.pgindex.REQUIRES_PARSED" class="py-name" href="#" onclick="return doclink('link-5', 'REQUIRES_PARSED', 'link-5');">REQUIRES_PARSED</a></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="import_magic"></a><div id="import_magic-def"><a name="L8"></a><tt class="py-lineno">  8</tt> <a class="py-toggle" href="#" id="import_magic-toggle" onclick="return toggle('import_magic');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.import_magic-module.html#import_magic">import_magic</a><tt class="py-op">(</tt><tt class="py-param">module_name</tt><tt class="py-op">,</tt> <tt class="py-param">required</tt><tt class="py-op">,</tt> <tt class="py-param">member</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="import_magic-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="import_magic-expanded"><a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line">    <tt class="py-docstring">''' Equivalent to "from required import member" or "import required".</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-docstring">        Check that it was succesfull with import_succesful(). </tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-docstring">    '''</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">    <tt class="py-name">info_structure</tt> <tt class="py-op">=</tt> <tt id="link-6" class="py-name" targets="Function procgraph.core.import_magic.get_module_info()=procgraph.core.import_magic-module.html#get_module_info"><a title="procgraph.core.import_magic.get_module_info" class="py-name" href="#" onclick="return doclink('link-6', 'get_module_info', 'link-6');">get_module_info</a></tt><tt class="py-op">(</tt><tt class="py-name">module_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">    <tt class="py-comment"># Check that it was mentioned in the structure</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line">    <tt class="py-name">required_base</tt> <tt class="py-op">=</tt> <tt class="py-name">required</tt><tt class="py-op">.</tt><tt class="py-name">split</tt><tt class="py-op">(</tt><tt class="py-string">'.'</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">required_base</tt> <tt class="py-keyword">in</tt> <tt class="py-name">info_structure</tt><tt class="py-op">[</tt><tt id="link-7" class="py-name"><a title="procgraph.REQUIRES_PARSED
+procgraph.core.constants.REQUIRES_PARSED
+procgraph.core.import_magic.REQUIRES_PARSED
+procgraph.scripts.pgindex.REQUIRES_PARSED" class="py-name" href="#" onclick="return doclink('link-7', 'REQUIRES_PARSED', 'link-5');">REQUIRES_PARSED</a></tt><tt class="py-op">]</tt><tt class="py-op">:</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'Please specify that you need %r as a dependency '</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line">                        <tt class="py-string">'in the field %r of the %r structure in module %r.'</tt> <tt class="py-op">%</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">                        <tt class="py-op">(</tt><tt class="py-name">required_base</tt><tt class="py-op">,</tt> <tt id="link-8" class="py-name"><a title="procgraph.REQUIRES
+procgraph.core.constants.REQUIRES
+procgraph.core.import_magic.REQUIRES" class="py-name" href="#" onclick="return doclink('link-8', 'REQUIRES', 'link-4');">REQUIRES</a></tt><tt class="py-op">,</tt> <tt id="link-9" class="py-name"><a title="procgraph.PROCGRAPH_INFO_VARIABLE
+procgraph.core.constants.PROCGRAPH_INFO_VARIABLE
+procgraph.core.import_magic.PROCGRAPH_INFO_VARIABLE" class="py-name" href="#" onclick="return doclink('link-9', 'PROCGRAPH_INFO_VARIABLE', 'link-3');">PROCGRAPH_INFO_VARIABLE</a></tt><tt class="py-op">,</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">                         <tt class="py-name">module_name</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">    <tt class="py-comment"># FIXME: there's a bug in here, should find which base was selected</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">required</tt> <tt class="py-op">==</tt> <tt class="py-name">required_base</tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">        <tt class="py-name">options</tt> <tt class="py-op">=</tt> <tt class="py-name">info_structure</tt><tt class="py-op">[</tt><tt id="link-10" class="py-name"><a title="procgraph.REQUIRES_PARSED
+procgraph.core.constants.REQUIRES_PARSED
+procgraph.core.import_magic.REQUIRES_PARSED
+procgraph.scripts.pgindex.REQUIRES_PARSED" class="py-name" href="#" onclick="return doclink('link-10', 'REQUIRES_PARSED', 'link-5');">REQUIRES_PARSED</a></tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-name">required</tt><tt class="py-op">]</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">        <tt class="py-name">options</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">required</tt><tt class="py-op">]</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">    <tt class="py-name">errors</tt> <tt class="py-op">=</tt> <tt class="py-string">""</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">o</tt> <tt class="py-keyword">in</tt> <tt class="py-name">options</tt><tt class="py-op">:</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">        <tt class="py-keyword">try</tt><tt class="py-op">:</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">            <tt class="py-name">mod</tt> <tt class="py-op">=</tt> <tt class="py-name">__import__</tt><tt class="py-op">(</tt><tt class="py-name">o</tt><tt class="py-op">,</tt> <tt class="py-name">fromlist</tt><tt class="py-op">=</tt><tt class="py-op">[</tt><tt class="py-string">'dummy'</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">member</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">member</tt> <tt class="py-keyword">in</tt> <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">:</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                    <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'No member %r in %r'</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">member</tt><tt class="py-op">,</tt> <tt class="py-name">o</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">mod</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">[</tt><tt class="py-name">member</tt><tt class="py-op">]</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">mod</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">        <tt class="py-keyword">except</tt> <tt class="py-name">Exception</tt> <tt class="py-keyword">as</tt> <tt id="link-11" class="py-name" targets="Variable procgraph.core.parsing.e=procgraph.core.parsing-module.html#e"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-11', 'e', 'link-11');">e</a></tt><tt class="py-op">:</tt> <tt class="py-comment">#@UnusedVariable</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">            <tt class="py-comment"># TODO: show error</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">            <tt class="py-comment">#debug(e)</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">            <tt class="py-name">errors</tt> <tt class="py-op">+=</tt> <tt class="py-string">'\n'</tt> <tt class="py-op">+</tt> <tt class="py-name">str</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="procgraph.core.parsing.e" class="py-name" href="#" onclick="return doclink('link-12', 'e', 'link-11');">e</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">            <tt class="py-keyword">pass</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-comment"># We could not load anything.</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">    <tt class="py-name">warn</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'Could not load dependency %r for %r.\n I will try to continue,'</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">           <tt class="py-string">' but an error might be thrown when %s actually tries to use %r.'</tt> <tt class="py-op">%</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">           <tt class="py-op">(</tt><tt class="py-name">required</tt><tt class="py-op">,</tt> <tt class="py-name">module_name</tt><tt class="py-op">,</tt> <tt class="py-name">module_name</tt><tt class="py-op">,</tt> <tt class="py-name">required</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">False</tt><tt class="py-op">:</tt> <tt class="py-comment"># TODO: think of configuration switch</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">        <tt id="link-13" class="py-name"><a title="procgraph.core.block.Block.debug
+procgraph.core.visualization.debug" class="py-name" href="#" onclick="return doclink('link-13', 'debug', 'link-1');">debug</a></tt><tt class="py-op">(</tt><tt class="py-name">warn</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-name">msg</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-string">'I tried to let you continue, but it seems that module %r really'</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">           <tt class="py-string">' needs %r to work. Sorry! '</tt> <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt class="py-name">module_name</tt><tt class="py-op">,</tt> <tt class="py-name">required</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">    <tt class="py-name">msg</tt> <tt class="py-op">+=</tt> <tt class="py-string">'\nThe error message was:\n%s'</tt> <tt class="py-op">%</tt> <tt class="py-name">errors</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line">    <tt class="py-keyword">class</tt> <tt class="py-def-name">warn_and_throw</tt><tt class="py-op">:</tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">        <tt class="py-keyword">def</tt> <tt class="py-def-name">__getattr__</tt><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">method_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> <tt class="py-comment">#@UnusedVariable</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-name">msg</tt><tt class="py-op">)</tt> </tt>
+</div></div><a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">warn_and_throw</tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"> </tt>
+<a name="get_module_info"></a><div id="get_module_info-def"><a name="L62"></a><tt class="py-lineno"> 62</tt> <a class="py-toggle" href="#" id="get_module_info-toggle" onclick="return toggle('get_module_info');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.import_magic-module.html#get_module_info">get_module_info</a><tt class="py-op">(</tt><tt class="py-param">module_name</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="get_module_info-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="get_module_info-expanded"><a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line">    <tt class="py-comment"># TODO: better Exception?</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">module_name</tt> <tt class="py-keyword">in</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'Please pass  __package__ as argument (got: %r).'</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">                        <tt class="py-op">%</tt> <tt class="py-name">module_name</tt><tt class="py-op">)</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">    <tt id="link-14" class="py-name" targets="Variable procgraph.scripts.pgdoc.ModelDoc.module=procgraph.scripts.pgdoc.ModelDoc-class.html#module,Variable procgraph.scripts.pgdoc.ModuleDoc.module=procgraph.scripts.pgdoc.ModuleDoc-class.html#module"><a title="procgraph.scripts.pgdoc.ModelDoc.module
+procgraph.scripts.pgdoc.ModuleDoc.module" class="py-name" href="#" onclick="return doclink('link-14', 'module', 'link-14');">module</a></tt> <tt class="py-op">=</tt> <tt class="py-name">sys</tt><tt class="py-op">.</tt><tt class="py-name">modules</tt><tt class="py-op">[</tt><tt class="py-name">module_name</tt><tt class="py-op">]</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-15" class="py-name"><a title="procgraph.PROCGRAPH_INFO_VARIABLE
+procgraph.core.constants.PROCGRAPH_INFO_VARIABLE
+procgraph.core.import_magic.PROCGRAPH_INFO_VARIABLE" class="py-name" href="#" onclick="return doclink('link-15', 'PROCGRAPH_INFO_VARIABLE', 'link-3');">PROCGRAPH_INFO_VARIABLE</a></tt> <tt class="py-keyword">in</tt> <tt id="link-16" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.module
+procgraph.scripts.pgdoc.ModuleDoc.module" class="py-name" href="#" onclick="return doclink('link-16', 'module', 'link-14');">module</a></tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">Exception</tt><tt class="py-op">(</tt><tt class="py-string">'Please define the structure %r for module %r. '</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">                        <tt class="py-op">%</tt> <tt class="py-op">(</tt><tt id="link-17" class="py-name"><a title="procgraph.PROCGRAPH_INFO_VARIABLE
+procgraph.core.constants.PROCGRAPH_INFO_VARIABLE
+procgraph.core.import_magic.PROCGRAPH_INFO_VARIABLE" class="py-name" href="#" onclick="return doclink('link-17', 'PROCGRAPH_INFO_VARIABLE', 'link-3');">PROCGRAPH_INFO_VARIABLE</a></tt><tt class="py-op">,</tt> <tt class="py-name">module_name</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt id="link-18" class="py-name" targets="Module procgraph.components.debug_components.info=procgraph.components.debug_components.info-module.html,Method procgraph.core.block.Block.info()=procgraph.core.block.Block-class.html#info,Function procgraph.core.visualization.info()=procgraph.core.visualization-module.html#info,Function procgraph_pil.text.info()=procgraph_pil.text-module.html#info"><a title="procgraph.components.debug_components.info
+procgraph.core.block.Block.info
+procgraph.core.visualization.info
+procgraph_pil.text.info" class="py-name" href="#" onclick="return doclink('link-18', 'info', 'link-18');">info</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.module
+procgraph.scripts.pgdoc.ModuleDoc.module" class="py-name" href="#" onclick="return doclink('link-19', 'module', 'link-14');">module</a></tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">[</tt><tt id="link-20" class="py-name"><a title="procgraph.PROCGRAPH_INFO_VARIABLE
+procgraph.core.constants.PROCGRAPH_INFO_VARIABLE
+procgraph.core.import_magic.PROCGRAPH_INFO_VARIABLE" class="py-name" href="#" onclick="return doclink('link-20', 'PROCGRAPH_INFO_VARIABLE', 'link-3');">PROCGRAPH_INFO_VARIABLE</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line">    <tt class="py-string">''' Returns dict   name -&gt; list of possible modules '''</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">    <tt class="py-name">parsed</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt id="link-21" class="py-name"><a title="procgraph.REQUIRES
+procgraph.core.constants.REQUIRES
+procgraph.core.import_magic.REQUIRES" class="py-name" href="#" onclick="return doclink('link-21', 'REQUIRES', 'link-4');">REQUIRES</a></tt> <tt class="py-keyword">in</tt> <tt id="link-22" class="py-name"><a title="procgraph.components.debug_components.info
+procgraph.core.block.Block.info
+procgraph.core.visualization.info
+procgraph_pil.text.info" class="py-name" href="#" onclick="return doclink('link-22', 'info', 'link-18');">info</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">        <tt class="py-comment">#raise Exception('Please define a field %r in dict %s.%s.' % </tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-comment">#                (REQUIRES, module_name, PROCGRAPH_INFO_VARIABLE))</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">        <tt class="py-keyword">pass</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">    <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">        <tt class="py-name">requires</tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="procgraph.components.debug_components.info
+procgraph.core.block.Block.info
+procgraph.core.visualization.info
+procgraph_pil.text.info" class="py-name" href="#" onclick="return doclink('link-23', 'info', 'link-18');">info</a></tt><tt class="py-op">[</tt><tt id="link-24" class="py-name"><a title="procgraph.REQUIRES
+procgraph.core.constants.REQUIRES
+procgraph.core.import_magic.REQUIRES" class="py-name" href="#" onclick="return doclink('link-24', 'REQUIRES', 'link-4');">REQUIRES</a></tt><tt class="py-op">]</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">r</tt> <tt class="py-keyword">in</tt> <tt class="py-name">requires</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">,</tt> <tt class="py-name">str</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">                <tt class="py-comment"># normal</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">                <tt class="py-name">parsed</tt><tt class="py-op">[</tt><tt class="py-name">r</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-name">r</tt><tt class="py-op">]</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line">                <tt class="py-comment"># TODO: check iterable</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">                <tt id="link-25" class="py-name" targets="Variable procgraph.scripts.pgdoc.ModelDoc.name=procgraph.scripts.pgdoc.ModelDoc-class.html#name,Variable procgraph.scripts.pgdoc.ModuleDoc.name=procgraph.scripts.pgdoc.ModuleDoc-class.html#name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-25', 'name', 'link-25');">name</a></tt> <tt class="py-op">=</tt> <tt class="py-name">r</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                <tt class="py-name">options</tt> <tt class="py-op">=</tt> <tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">r</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">                <tt class="py-comment"># TODO: check options &gt; 0</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">                <tt class="py-name">parsed</tt><tt class="py-op">[</tt><tt id="link-26" class="py-name"><a title="procgraph.scripts.pgdoc.ModelDoc.name
+procgraph.scripts.pgdoc.ModuleDoc.name" class="py-name" href="#" onclick="return doclink('link-26', 'name', 'link-25');">name</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">options</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt id="link-27" class="py-name"><a title="procgraph.components.debug_components.info
+procgraph.core.block.Block.info
+procgraph.core.visualization.info
+procgraph_pil.text.info" class="py-name" href="#" onclick="return doclink('link-27', 'info', 'link-18');">info</a></tt><tt class="py-op">[</tt><tt id="link-28" class="py-name"><a title="procgraph.REQUIRES_PARSED
+procgraph.core.constants.REQUIRES_PARSED
+procgraph.core.import_magic.REQUIRES_PARSED
+procgraph.scripts.pgindex.REQUIRES_PARSED" class="py-name" href="#" onclick="return doclink('link-28', 'REQUIRES_PARSED', 'link-5');">REQUIRES_PARSED</a></tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">parsed</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt id="link-29" class="py-name"><a title="procgraph.components.debug_components.info
+procgraph.core.block.Block.info
+procgraph.core.visualization.info
+procgraph_pil.text.info" class="py-name" href="#" onclick="return doclink('link-29', 'info', 'link-18');">info</a></tt> </tt>
+</div><a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="import_succesful"></a><div id="import_succesful-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="import_succesful-toggle" onclick="return toggle('import_succesful');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="procgraph.core.import_magic-module.html#import_succesful">import_succesful</a><tt class="py-op">(</tt><tt class="py-param">m</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="import_succesful-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="import_succesful-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">m</tt><tt class="py-op">,</tt> <tt class="py-name">ModuleType</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="http://github.com/AndreaCensi/procgraph">ProcGraph</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb 25 23:24:04 2012
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>
