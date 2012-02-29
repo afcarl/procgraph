@@ -20,7 +20,7 @@ class MPlayer(Generator):
     Block.config('quiet', 'If true, suppress stderr messages from mplayer.',
                           default=True)
     Block.config('stats', 'If true, writes some statistics about the '
-                          'remaining time.')
+                          'remaining time.', default=True)
 
     Block.output('video', 'RGB stream as numpy array.')
 
@@ -116,10 +116,13 @@ class MPlayer(Generator):
 
         #self.debug("command line: %s" % " ".join(args))
 
+        self.tmp_stdout = tempfile.TemporaryFile()
+        self.tmp_stderr = tempfile.TemporaryFile()
+
         if self.config.quiet:
             self.process = subprocess.Popen(args,
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE)
+                                    stdout=self.tmp_stdout.fileno(),
+                                    stderr=self.tmp_stderr.fileno())
         else:
             self.process = subprocess.Popen(args)
 
@@ -170,6 +173,8 @@ class MPlayer(Generator):
             return
         if self.state.next_frame is not None:
             return
+
+        # TODO: add display of stderr after timeout
 
         dtype = numpy.dtype(('uint8', self.shape))
         rgbs = numpy.fromfile(self.stream, dtype=dtype, count=1)

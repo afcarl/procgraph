@@ -101,7 +101,7 @@ setup(name='procgraph',
       tests_require=['nose'],
       entry_points={
          'console_scripts': [
-           'pg = procgraph.scripts.pg:main',
+           'pg = procgraph.scripts.pgmain:main',
            'pgdoc = procgraph.scripts.pgdoc:main',
            'pgindex = procgraph.scripts.pgindex:main',
            # some other utils
