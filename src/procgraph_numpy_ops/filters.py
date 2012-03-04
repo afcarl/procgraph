@@ -146,6 +146,10 @@ register_simple_block(lambda x: numpy.max(array(x).flat), 'max',
 register_simple_block(lambda x: numpy.sum(array(x).flat), 'sum',
       doc='Sum over **all** elements. ')
 
+register_simple_block(numpy.sum, 'sum_axis',
+      doc='Sum over the axis. ')
+
+
 register_simple_block(numpy.flipud, 'flipud',
      doc='Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)')
 

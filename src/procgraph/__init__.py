@@ -3,6 +3,11 @@
 
 __version__ = '1.1'
 
+import logging
+logging.basicConfig()
+from logging import getLogger
+logger = getLogger(__name__)
+
 # If true, does not allow .pgc caches
 deny_pgc_cache = True
 

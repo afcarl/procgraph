@@ -4,13 +4,12 @@ from contextlib import contextmanager
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
     check_rgb_or_grayscale)
-from procgraph.utils import friendly_path
+from procgraph.utils import friendly_path, indent
 import numpy
 import os
+import signal
 import subprocess
 import tempfile
-import signal
-from procgraph.utils.strings import indent
 
 
 #"""

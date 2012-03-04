@@ -71,6 +71,8 @@ class Plot(Block):
         # figure gets initialized in update() on the first execution
         self.figure = None
 
+        self.warned = False
+
     def init_figure(self):
         width = self.config.width
         height = self.config.height
@@ -277,7 +279,9 @@ class Plot(Block):
         except:
             msg = ('Could not call tight_layout(); available only on '
                    'Matplotlib >=1.1')
-            self.warning(msg)
+            if not self.warned:
+                self.warning(msg)
+                self.warned = True
 
         plotting = time.clock() - start
 

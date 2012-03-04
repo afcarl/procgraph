@@ -107,6 +107,7 @@ setup(name='procgraph',
            # some other utils
            'pg-video-crop = procgraph_mplayer.scripts.crop_video:main',
            'pg-video-join = procgraph_mplayer.scripts.join_video:main',
+           'pg-video-tomp4 = procgraph_mplayer.scripts.tomp4:main',
         ]
       },
       download_url=('http://github.com/AndreaCensi/procgraph/tarball/%s'
