@@ -150,6 +150,8 @@
 
         <span class="c"># figure gets initialized in update() on the first execution</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">warned</span> <span class="o">=</span> <span class="bp">False</span>
 </div>
 <div class="viewcode-block" id="Plot.init_figure"><a class="viewcode-back" href="../../api/procgraph_mpl.html#procgraph_mpl.plot.Plot.init_figure">[docs]</a>    <span class="k">def</span> <span class="nf">init_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">width</span>
@@ -357,7 +359,9 @@
         <span class="k">except</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;Could not call tight_layout(); available only on &#39;</span>
                    <span class="s">&#39;Matplotlib &gt;=1.1&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">warned</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">warned</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="n">plotting</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">clock</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span>
 

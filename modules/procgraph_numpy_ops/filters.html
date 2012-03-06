@@ -226,6 +226,10 @@
 <span class="n">register_simple_block</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">flat</span><span class="p">),</span> <span class="s">&#39;sum&#39;</span><span class="p">,</span>
       <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Sum over **all** elements. &#39;</span><span class="p">)</span>
 
+<span class="n">register_simple_block</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span> <span class="s">&#39;sum_axis&#39;</span><span class="p">,</span>
+      <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Sum over the axis. &#39;</span><span class="p">)</span>
+
+
 <span class="n">register_simple_block</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">flipud</span><span class="p">,</span> <span class="s">&#39;flipud&#39;</span><span class="p">,</span>
      <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)&#39;</span><span class="p">)</span>
 
