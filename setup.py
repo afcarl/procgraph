@@ -98,7 +98,7 @@ setup(name='procgraph',
         'termcolor'
       ],
       # TODO: add many depedendencies
-      tests_require=['nose'],
+      tests_require=['nose>1.1.2,<2'],
       entry_points={
          'console_scripts': [
            'pg = procgraph.scripts.pgmain:main',

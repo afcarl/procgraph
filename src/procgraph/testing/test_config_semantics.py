@@ -79,11 +79,11 @@ config  a      "well documented param"
 
 class SemanticsTest(PGTestCase):
 
-    @unittest.skip('This is not implemented yet')
+#    @unittest.skip('This is not implemented yet')
 #    @unittest.expectedFailure
-    def testNewExamples(self):
-        for example, config in good_examples_plus:
-            self.check_semantic_ok(example, config=config)
+#    def testNewExamples(self):
+#        for example, config in good_examples_plus:
+#            self.check_semantic_ok(example, config=config)
 
     def testExamples(self):
         for example, config in good_examples:
