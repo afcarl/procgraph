@@ -106,7 +106,8 @@ def cmd2args(s):
         return s
     elif isinstance(s, str):
         return s.split()
-    else: assert False
+    else:
+        assert False
 
 if __name__ == '__main__':
     cwd = '.'

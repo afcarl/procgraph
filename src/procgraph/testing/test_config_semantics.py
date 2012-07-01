@@ -1,5 +1,4 @@
 from .utils import PGTestCase
-import unittest
 
 good_examples = [
 ('''

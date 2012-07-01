@@ -156,7 +156,7 @@ def pg(filename, config,
     ''' 
         Instantiate and run a model. 
     
-        Instantiate a model (filename can be either a file or a known model). 
+        :param filename: either a file or a known model 
     '''
 
     for module in additional_modules:
