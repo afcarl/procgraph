@@ -55,7 +55,7 @@ class Plot(Block):
                  'If true, outputs a RGBA image instead of RGB.',
                  default=False)
 
-    Block.config('tight', 'Uses "tight" option for creating png.',
+    Block.config('tight', 'Uses "tight" option for creating png (Matplotlib>=1.1).',
                  default=False,)
     Block.config('fancy_styles',
                  'A list of fancy styles to apply (%s).' % fancy_styles.keys(),
@@ -276,9 +276,9 @@ class Plot(Block):
         # http://matplotlib.sourceforge.net/users/tight_layout_guide.html
         try:
             pylab.tight_layout()
-        except:
+        except Exception as e:
             msg = ('Could not call tight_layout(); available only on '
-                   'Matplotlib >=1.1')
+                   'Matplotlib >=1.1 (%s)' % e)
             if not self.warned:
                 self.warning(msg)
                 self.warned = True

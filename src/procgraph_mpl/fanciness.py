@@ -37,6 +37,41 @@ def noyticks(pylab):
     pylab.yticks([], [])
 
 
+@style
+def turn_off_right(pylab):
+    ax = pylab.gca()
+    for loc, spine in ax.spines.iteritems():
+        if loc in ['right']:
+            spine.set_color('none') # don't draw spine 
+    ax.yaxis.set_ticks_position('left')
+
+
+@style
+def turn_off_left_right(pylab):
+    ax = pylab.gca()
+    for loc, spine in ax.spines.iteritems():
+        if loc in ['right', 'left']:
+            spine.set_color('none') # don't draw spine 
+    ax.yaxis.set_ticks_position('none')
+
+
+@style
+def turn_off_top(pylab):
+    ax = pylab.gca()
+    for loc, spine in ax.spines.iteritems():
+        if loc in ['top']:
+            spine.set_color('none') # don't draw spine 
+    ax.xaxis.set_ticks_position('bottom')
+
+
+@style
+def spines_outward(pylab, offset=10):
+    ax = pylab.gca()
+    for loc, spine in ax.spines.iteritems():
+        if loc in ['left', 'bottom', 'top', 'right']:
+            spine.set_position(('outward', offset))
+    
+    
 def set_spines_look_A(pylab, outward_offset=10,
                       linewidth=2, markersize=3, markeredgewidth=1):
     ''' 
