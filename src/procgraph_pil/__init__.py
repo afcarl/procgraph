@@ -12,8 +12,8 @@ ImageFont = import_magic(__name__, 'PIL.ImageFont')
 ImageDraw = import_magic(__name__, 'PIL.ImageDraw')
 
 
-from . import pil_operations
-from . import pil_conversions
-from . import text
-from . import imread
-from . import imwrite
+from .pil_operations import *
+from .pil_conversions import * 
+from .text import *
+from .imread import *
+from .imwrite import *
