@@ -1,7 +1,7 @@
 from conf_tools import BadConfig
 from procgraph import Generator, Block
 from procgraph.block_utils import expand
-from procgraph.block_utils.natsort import natsorted
+from procgraph.block_utils.natsort import natsorted, natsort_key, natsort
 import os
 import re
 
@@ -16,7 +16,7 @@ class FilesFromDir(Generator):
     Block.alias('files_from_dir')
     Block.config('dir', 'Directory containing the image files.')
     Block.config('regexp', 'Regular expression for images.',
-                 default='(\w+)_(\d+)\.jpg')
+                 default='(\w+)(\d+)\.(\w+)')
     Block.config('fps', 'Fixed frame per second.', default=20.0)
     Block.output('filename', 'Image filename')
 
@@ -42,6 +42,14 @@ class FilesFromDir(Generator):
                     for f in all_files
                     if re.match(regexp, f)]
 
+        
+        
+        def natural_key(string):
+            """See http://www.codinghorror.com/blog/archives/001018.html"""
+            return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string)]
+
+        selected.sort(key=lambda x: natural_key(os.path.basename(x)))
+#        natsort(selected)
         self.info("Selected %d/%d files." % (len(selected), len(all_files)))
 
         fps = float(self.config.fps)
@@ -49,8 +57,20 @@ class FilesFromDir(Generator):
             raise BadConfig(self, "Invalid fps value %s." % fps, 'fps')
         # tuples (timestamp, filename)
         frames = [(i / fps, f)
-                    for i, f in enumerate(natsorted(selected))]
+                    for i, f in enumerate(selected)]
 
+#        selected = selected[:24]
+#        
+#        print selected
+#        for x in selected:
+#            print x, natsort_key(x), cmp(natsort_key(x), natsort_key(selected[20]))
+#            
+#
+#        raise Exception()
+#        for a, b in frames:
+#            print('%10d %s' % (a, b))
+            
+            
         if not frames:
             raise Exception('No frames found in dir %r.' % dirname)
 

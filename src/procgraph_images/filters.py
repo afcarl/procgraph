@@ -3,6 +3,15 @@ import numpy
 from procgraph import simple_block
 from procgraph.block_utils import assert_rgb_image, assert_gray_image
 
+@simple_block
+def torgb(rgb):
+    nc = rgb.shape[2]
+    if nc == 3:
+        return rgb
+    if nc == 1:
+        return gray2rgb(rgb)
+    if nc == 4:
+        return rgb[:, :, :3]
 
 @simple_block
 def rgb2gray(rgb):
