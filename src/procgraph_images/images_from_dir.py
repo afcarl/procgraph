@@ -1,7 +1,6 @@
 from conf_tools import BadConfig
 from procgraph import Generator, Block
 from procgraph.block_utils import expand
-from procgraph.block_utils.natsort import natsorted, natsort_key, natsort
 import os
 import re
 
