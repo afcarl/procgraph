@@ -112,19 +112,18 @@ class Text(Block):
         for text in self.config.texts:
             text = text.copy()
             if not 'string' in text:
-                raise BadConfig('Missing field "string" in text spec %s.' % \
+                raise BadConfig('Missing field "string" in text spec %s.' % 
                                 text.__repr__(), self, 'texts')
             text['string'] = Text.replace(text['string'], macros)
             p = text['position']
-            if p[0] == 'middle':
-                p[0] = rgb.shape[1] / 2
-            if p[1] == 'middle':
-                p[1] = rgb.shape[0] / 2
-            if p[0] < 0:
-                p[0] = rgb.shape[1] + p[0]
-            if p[1] < 0:
-                p[1] = rgb.shape[0] + p[1]
-
+            
+            # XXX: catch exception, raise BadConfig
+            try:
+                p[0] = get_ver_pos_value(p[0], height=rgb.shape[0])
+                p[1] = get_hor_pos_value(p[1], width=rgb.shape[1])
+            except ValueError as e:
+                raise BadConfig(str(e), text.__repr__(), self, 'texts')
+            
             process_text(draw, text)
 
         out = im.convert("RGB")
@@ -137,11 +136,53 @@ class Text(Block):
         ''' Expand macros in the text. '''
         return s.format(**macros)
 
+def get_hor_pos_value(spec, width):
+    if isinstance(spec, str):
+        valid = ['center', 'left', 'right']
+        if not spec in valid:
+            msg = 'Strange %r: not in %s' % (spec, valid)
+            raise ValueError(msg)
+    else:
+        assert isinstance(spec, int)
+
+    if spec == 'center':
+        return width / 2
+    elif spec == 'left': 
+        return 0
+    elif spec == 'right':
+        return width
+    else:
+        if spec < 0:
+            return width + spec
+        else:
+            return spec
+
+def get_ver_pos_value(spec, height):
+    if isinstance(spec, str):
+        valid = ['middle', 'top', 'bottom']
+        if not spec in valid:
+            msg = 'Strange %r: not in %s' % (spec, valid)
+            raise ValueError(msg)
+    else:
+        assert isinstance(spec, int)
+
+    if spec == 'middle':
+        return height / 2
+    elif spec == 'top': 
+        return 0
+    elif spec == 'bottom':
+        return height
+    else:
+        if spec < 0:
+            return height + spec
+        else:
+            return spec
+    
 
 # cache of fonts
 def find_file(font_name):
     try:
-        #pattern = '*%s*.ttf' % font_name
+        # pattern = '*%s*.ttf' % font_name
         pattern = '%s.ttf' % font_name
         a = subprocess.Popen(['locate', pattern], stdout=subprocess.PIPE)
         lines = a.stdout.read()
@@ -151,7 +192,7 @@ def find_file(font_name):
             error('Cannot find a file matching the pattern %r.' % pattern)
             return None
         guess = options[0]
-        info('Found %d matches for %s, using  "%s".' %
+        info('Found %d matches for %s, using  "%s".' % 
              (len(options), pattern, guess))
         return guess
     except Exception as e:
@@ -191,7 +232,8 @@ def process_text(draw, t):
     font = get_font(fontname, size)
 
     tw, th = font.getsize(string)
-    x, y = position[0], position[1]
+#    x, y = position[0], position[1]
+    y, x = position[0], position[1]
 
     halign = t.get('halign', 'left')
     valign = t.get('valign', 'top')

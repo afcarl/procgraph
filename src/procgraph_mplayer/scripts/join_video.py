@@ -22,7 +22,7 @@ def main():
                       help='Frames per second')
 
     parser.add_option("-p", dest='pattern', type="string",
-                      default='(\w+)(\d+)\.(\w+)',
+                      default='([\w-]+)(\d+)\.(\w+)',
                       help='Pattern')
 
     (options, args) = parser.parse_args()
