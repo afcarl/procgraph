@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 from optparse import OptionParser
 from procgraph import pg, register_model_spec
-import numpy as np
 import os
 
 usage = """
@@ -26,6 +25,8 @@ def main():
                       help='Pattern')
 
     (options, args) = parser.parse_args()
+    if args:
+        raise Exception("Spurious arg: %s" % args)
     
     if options.output is None:
         options.output = os.path.join(options.dirname, 'output.mp4')

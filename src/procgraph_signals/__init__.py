@@ -27,3 +27,4 @@ from .make_tuple import *
 from .any import *
 
 from .async import *
+from .time_slice import *

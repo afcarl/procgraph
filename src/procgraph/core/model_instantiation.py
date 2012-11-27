@@ -77,7 +77,7 @@ def expand_references_in_string(s, function):
         var = m.group(2)
         after = m.group(3)
         sub = function(var)
-        s = before + sub + after
+        s = before + str(sub) + after
 
 
 def create_from_parsing_results(parsed_model, name=None, config={},

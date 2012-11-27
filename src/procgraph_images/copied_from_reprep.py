@@ -157,7 +157,7 @@ def scale(value, min_value=None, max_value=None,
     if value.ndim > 2:
         value = value.squeeze()
 
-    if value.dtype == numpy.dtype('uint8'):
+    if value.dtype == numpy.dtype('uint8') or value.dtype == numpy.dtype('int'):
         value = value.astype('float32')
     #require_shape((gt(0), gt(0)), value)
 

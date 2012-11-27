@@ -48,7 +48,7 @@ def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
                       raise_on_error=False,
-                      capture_keyboard_interrupt=False):
+                      capture_keyboard_interrupt=False):  # @UnusedVariable
     ''' 
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.

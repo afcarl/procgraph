@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from numpy import multiply, array
 
 from procgraph import COMPULSORY, register_simple_block, simple_block
@@ -24,7 +24,7 @@ def astype(a, dtype=COMPULSORY):
 @simple_block
 def take(a, axis=0, indices=COMPULSORY):
     assert indices != COMPULSORY
-    a = numpy.array(a)
+    a = np.array(a)
     indices = list(indices) # parsingresult bug
     axis = int(axis)
     try:
@@ -39,7 +39,7 @@ def outer(a, b):
     ''' 
         Outer product of two vectors.
     
-        This is a wrapper around :py:func:`numpy.multiply.outer`.
+        This is a wrapper around :py:func:`np.multiply.outer`.
         
         :param a: First vector.
         :param b: Second vector.
@@ -73,7 +73,7 @@ def normalize_Linf(x):
         :return: normalized: The same array normalized.
          
     '''
-    return x / numpy.abs(x).max()
+    return x / np.abs(x).max()
 
 
 @simple_block
@@ -84,83 +84,88 @@ def minimum(value, threshold=COMPULSORY):
         :return: Array of same shape.
     '''
     assert threshold != COMPULSORY
-    return numpy.minimum(value, threshold)
+    return np.minimum(value, threshold)
 
 
 @simple_block
 def maximum(value, threshold=COMPULSORY):
     ''' Limits the numpy array to the given threshold. '''
     assert threshold != COMPULSORY
-    return numpy.maximum(value, threshold)
+    return np.maximum(value, threshold)
 
 
 @simple_block
 def norm(value, ord=2): #@ReservedAssignment
     ''' Returns the norm of the vector. '''
-    return numpy.linalg.norm(value, ord)
+    return np.linalg.norm(value, ord)
 
 
 # XXX: not sure the best thing to do
 @simple_block
 def array(value):
     ''' Converts the value to a Numpy array. '''
-    return numpy.array(value)
+    return np.array(value)
 
-register_simple_block(numpy.mean, 'mean', params={'axis': 0},
-      doc='Wrapper around :np:data:`numpy.mean`.')
+@simple_block
+def list2array(value):
+    """ Converts a list of uniform elements to a Numpy array. """
+    return np.array(value, dtype=value[0].dtype)
 
-register_simple_block(numpy.square, 'square',
-      doc='Wrapper around :np:data:`numpy.square`.')
+register_simple_block(np.mean, 'mean', params={'axis': 0},
+      doc='Wrapper around :np:data:`np.mean`.')
 
-register_simple_block(numpy.log, 'log',
-      doc='Wrapper around :np:data:`numpy.log`.')
+register_simple_block(np.square, 'square',
+      doc='Wrapper around :np:data:`np.square`.')
 
-register_simple_block(numpy.abs, 'abs',
-      doc='Wrapper around :np:data:`numpy.absolute`.')
+register_simple_block(np.log, 'log',
+      doc='Wrapper around :np:data:`np.log`.')
 
-register_simple_block(numpy.sign, 'sign',
-      doc='Wrapper around :np:data:`numpy.sign`.')
+register_simple_block(np.abs, 'abs',
+      doc='Wrapper around :np:data:`np.absolute`.')
 
-register_simple_block(numpy.arctan, 'arctan',
-      doc='Wrapper around :np:data:`numpy.arctan`.')
+register_simple_block(np.sign, 'sign',
+      doc='Wrapper around :np:data:`np.sign`.')
 
-register_simple_block(numpy.real, 'real',
-      doc='Wrapper around :np:data:`numpy.real`.')
+register_simple_block(np.arctan, 'arctan',
+      doc='Wrapper around :np:data:`np.arctan`.')
+
+register_simple_block(np.real, 'real',
+      doc='Wrapper around :np:data:`np.real`.')
 
 
-register_simple_block(lambda x, y: numpy.dstack((x, y)), 'dstack',
+register_simple_block(lambda x, y: np.dstack((x, y)), 'dstack',
                       num_inputs=2,
-      doc='Wrapper around :np:data:`numpy.ma.dstack`.')
+      doc='Wrapper around :np:data:`np.ma.dstack`.')
 
-register_simple_block(lambda x, y: numpy.hstack((x, y)), 'hstack',
+register_simple_block(lambda x, y: np.hstack((x, y)), 'hstack',
                       num_inputs=2,
-      doc='Wrapper around :np:data:`numpy.ma.hstack`.')
+      doc='Wrapper around :np:data:`np.ma.hstack`.')
 
-register_simple_block(lambda x, y: numpy.vstack((x, y)), 'vstack',
+register_simple_block(lambda x, y: np.vstack((x, y)), 'vstack',
                       num_inputs=2,
-      doc='Wrapper around :np:data:`numpy.ma.vstack`.')
+      doc='Wrapper around :np:data:`np.ma.vstack`.')
 
-register_simple_block(lambda x: numpy.max(array(x).flat), 'max',
+register_simple_block(lambda x: np.max(array(x).flat), 'max',
       doc='Maximum over **all** elements. ')
 
-register_simple_block(lambda x: numpy.sum(array(x).flat), 'sum',
+register_simple_block(lambda x: np.sum(array(x).flat), 'sum',
       doc='Sum over **all** elements. ')
 
-register_simple_block(numpy.sum, 'sum_axis',
+register_simple_block(np.sum, 'sum_axis',
       doc='Sum over the axis. ')
 
 
-register_simple_block(numpy.flipud, 'flipud',
-     doc='Flips the array up/down (wrapper for :py:func:`numpy.flipud`.)')
+register_simple_block(np.flipud, 'flipud',
+     doc='Flips the array up/down (wrapper for :py:func:`np.flipud`.)')
 
-register_simple_block(numpy.fliplr, 'fliplr',
-     doc='Flips the array left/right (wrapper for :py:func:`numpy.fliplr`.)')
+register_simple_block(np.fliplr, 'fliplr',
+     doc='Flips the array left/right (wrapper for :py:func:`np.fliplr`.)')
 
-register_simple_block(numpy.radians, 'deg2rad',
+register_simple_block(np.radians, 'deg2rad',
     doc='Converts degrees to radians (wrapper around '
-        ':np:data:`numpy.radians`.)')
+        ':np:data:`np.radians`.)')
 
-register_simple_block(numpy.degrees, 'rad2deg',
+register_simple_block(np.degrees, 'rad2deg',
     doc='Converts radians to degrees (wrapper around '
-        ':np:data:`numpy.degrees`.)')
+        ':np:data:`np.degrees`.)')
 
