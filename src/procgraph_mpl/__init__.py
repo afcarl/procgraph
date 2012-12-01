@@ -18,5 +18,9 @@ pylab = import_magic(__name__, 'matplotlib.pylab')
 
 from .pylab_to_image import *
 from .plot import *
+from .plot_generic import *
 
 # TODO: plot should fail for no inputs
+
+from procgraph import pg_add_this_package_models
+pg_add_this_package_models(__file__, __package__)

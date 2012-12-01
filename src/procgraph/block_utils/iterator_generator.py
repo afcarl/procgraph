@@ -1,13 +1,15 @@
 from procgraph import Generator
+from abc import abstractmethod
 
 
 class IteratorGenerator(Generator):
     ''' 
-        This block reads a bag file (ROS logging format).
+
     '''
 
+    @abstractmethod
     def get_iterator(self):
-        """ Must return an iterator yielding timestamp, values """
+        """ Must return an iterator yielding signal, timestamp, values """
         raise Exception('Not implemented')
 
     def init(self):

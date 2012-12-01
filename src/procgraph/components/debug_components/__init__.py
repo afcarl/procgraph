@@ -6,3 +6,4 @@ from . import info
 from . import printc
 from . import gain
 from . import operations
+from . import clock

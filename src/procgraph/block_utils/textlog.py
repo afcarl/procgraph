@@ -60,7 +60,19 @@ class TextLog(Generator):
             # if the line is valid, result_tuple is a tuple
             if result_tuple is not None:
                 # TODO: add explicit check
+                if not isinstance(result_tuple, tuple) or len(result_tuple) != 2:
+                    msg = 'Expected tuple of len 2, got %s' % result_tuple
+                    raise ValueError(msg)
                 self.timestamp, self.values = result_tuple
+                
+                if not isinstance(self.values, list):
+                    msg = 'Expected a list'
+                    raise ValueError(self.values)
+                for x in self.values:
+                    if not isinstance(x, tuple) or len(x) != 2:
+                        msg = 'Expected a tuple name/value'
+                        raise ValueError(self.values)
+                    
                 self.state.line = line + 1
             else:
                 # If the result is None, it means the line did not contain
@@ -69,13 +81,13 @@ class TextLog(Generator):
                 self.read_next_line()
         except Exception as e:
             traceback.print_exc()
-            msg = ("While reading line %s of file %s (='%s'): %s" %
+            msg = ("While reading line %s of file %s (='%s'): %s" % 
                    (line, self.get_config('file'), next_line, e))
             raise ModelExecutionError(msg, self)
 
     def next_data_status(self):
         # TODO: put new interface
-        if self.timestamp is None: # EOF
+        if self.timestamp is None:  # EOF
             return (False, None)
         else:
             return (True, self.timestamp)
