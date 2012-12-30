@@ -41,7 +41,7 @@ def check_link_compatibility_input(previous_block, previous_link):
             s.local_input = i
 
         if not previous_block.is_valid_output_name(s.local_input):
-            msg = ('Could not find output name "%s"(%s) in %s' %
+            msg = ('Could not find output name "%s"(%s) in %s' % 
                     (s.local_input, type(s.local_input), previous_block))
             raise SemanticError(msg, s)
 
@@ -88,7 +88,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         if False:
             debug_main('Creating %s:%s | %s' % (name, parsed_model.name, s))
 
-    #debug_main('config: %s' % config)
+    # debug_main('config: %s' % config)
 
     if library is None:
         library = default_library
@@ -119,7 +119,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         key2element[c.variable] = c
 
     # We collect here all the properties, to use in initialization.
-    all_config = [] # tuple (key, value, parsing_element)
+    all_config = []  # tuple (key, value, parsing_element)
 
     # 1. We put the resolved configuration 
     for key, value in resolved.items():
@@ -134,7 +134,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
         # We make sure we are not overwriting configuration    
         if assignment.key in resolved:
             msg = ('Assignment to %r overwrites a config variable. '
-                   'Perhaps you want to change the default instead?' %
+                   'Perhaps you want to change the default instead?' % 
                     assignment.key)
             raise SemanticError(msg, assignment)
 
@@ -144,7 +144,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
     # from the tuples in all_config.
     properties = {}
     # We keep track of what properties we use
-    used_properties = set() # of strings
+    used_properties = set()  # of strings
     # This instead collects the block_properties
     block_properties = {}  # {str: {str: *}}
 
@@ -180,7 +180,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             return value
 
     # We keep track of the blocks we reference so we can check it later
-    referenced_blocks = [] # list of tuples (block name, parsed_element)
+    referenced_blocks = []  # list of tuples (block name, parsed_element)
     for key, value, element in all_config:
         # if it is of the form  object.property = value
         if '.' in key:
@@ -195,7 +195,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                 #            ' the key.' % (key, value)) 
                 #     raise SemanticError(msg, element)
             referenced_blocks.append((object_, element))
-            block_properties[object_][property_] = value # XX or expand?
+            block_properties[object_][property_] = value  # XX or expand?
         else:
             properties[key] = expand_value(value, element=element)
 
@@ -256,7 +256,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                             raise SemanticError(msg, s)
 
                         if s.name in model.public_signal_names():
-                            msg = ('Public signal name %r already taken.' %
+                            msg = ('Public signal name %r already taken.' % 
                                    s.name)
                             raise SemanticError(msg, s)
 
@@ -312,7 +312,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
                                       library.get_known_blocks())
                     raise SemanticError(msg, element)
 
-                debug('instancing %s:%s config: %s' %
+                debug('instancing %s:%s config: %s' % 
                       (element.name, element.operation, block_config))
 
                 try:
@@ -352,7 +352,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
 
     unused_properties = set(properties.keys()).difference(used_properties)
     if unused_properties:
-        msg = ('Unused properties: %s. (Used: %s.)' %
+        msg = ('Unused properties: %s. (Used: %s.)' % 
                (aslist(unused_properties), aslist(used_properties)))
         if STRICT:
             raise SemanticError(msg, element=parsed_model)
@@ -414,7 +414,7 @@ def define_output_signals(output, block):
         block.define_output_signals_new(names)
 
 
-def define_input_signals(input, block, #@ReservedAssignment
+def define_input_signals(input, block,  # @ReservedAssignment
                          previous_link, previous_block, model):
     # there are two cases: either we define named signals,
     # or we have a generic number of signals
@@ -463,9 +463,13 @@ def define_input_signals(input, block, #@ReservedAssignment
                     name = previous_link.signals[i].local_input
                 else:
                     assert False
+
+                # just in case the thing is repeated
+                # TODO: warn?  if name in names: ...
+                name = find_unique_name(name, names)                
                 names.append(name)
             block.define_input_signals_new(names)
-    else: # the input is not arbitrary
+    else:  # the input is not arbitrary
         # define right away the names, it does not depend 
         # on anything else
         names = [x.name for x in input]
@@ -487,7 +491,7 @@ def define_input_signals(input, block, #@ReservedAssignment
             num_given = len(previous_link.signals)
 
             if num_expected != num_given:
-                msg = ('The block expected %d input signals, got %d.' %
+                msg = ('The block expected %d input signals, got %d.' % 
                       (num_expected, num_given))
                 raise SemanticError(msg, block)
 
@@ -508,9 +512,9 @@ def define_input_signals(input, block, #@ReservedAssignment
             for s in (previous_link.signals):
                 if s.name is None:
                     s.name = "input_%s_for_%s" % (s.local_output, block)
-
+                s_name = find_unique_name(s.name, model.public_signal_names())
                 model.connect(previous_block, s.local_input,
-                                     block, s.local_output, s.name)
+                                     block, s.local_output, s_name)
         else:
             # this is the first block with previous signals
             # this time we need to be careful, because
@@ -524,16 +528,16 @@ def define_input_signals(input, block, #@ReservedAssignment
                 if s.block_name is not None:
                     if not s.block_name in model.name2block:
                         msg = ('Link %s refers to an unknown block %r.'
-                               'Valid blocks: %s.' %
+                               'Valid blocks: %s.' % 
                                (s, s.block_name, aslist(model.name2block)))
                         raise SemanticError(msg, s)
 
                     input_block = model.name2block[s.block_name]
                     if not input_block.is_valid_output_name(s.name):
                         # TODO: make other friendly messages like this
-                        msg = ("This link refers to an unknown output %r. " %
+                        msg = ("This link refers to an unknown output %r. " % 
                                s.name)
-                        msg += ("The known outputs are: %s." %
+                        msg += ("The known outputs are: %s." % 
                                 input_block.get_output_signals_names())
                         # msg += "  link: %s \n" % s
                         # msg += " block: %s \n" % input_block  
@@ -551,13 +555,22 @@ def define_input_signals(input, block, #@ReservedAssignment
                     input_block = defined_signal.block1
                     s.local_input = defined_signal.block1_signal
 
-                # make up a unique name    
-                name = "%s:%s:%s" % (input_block.name,
-                                     s.local_output, block.name)
+                # make up a unique name   
+                name = "%s:%s:%s" % (input_block.name, s.local_output, block.name)
+                name = find_unique_name(name, model.public_signal_names())
+
                 model.connect(input_block, s.local_input,
-                                     block, s.local_output, name)
+                              block, s.local_output, name)
 
-
+def find_unique_name(prefix, existing):
+    name = prefix
+    count = 1
+    while name in existing:
+        count += 1
+        name = '%s%d' % (prefix, count)
+    return name
+        
+         
 def fill_anonymous_link(previous_block):
     # --> [local_input] name [local_output] -->
     names = previous_block.get_output_signals_names()

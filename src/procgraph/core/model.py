@@ -156,8 +156,12 @@ class Model(Generator):
                 public_name):
         ''' Caller should check that the public name is not taken. '''
         assert public_name is not None
-        assert not public_name in self.public_signal_names(), \
-            "%r is already taken" % public_name
+        if public_name in self.public_signal_names():
+            msg = ('The name %r is already present in:\n' % public_name)
+            for s in self.public_signal_names():
+                msg += '- %s\n' % s
+            raise ValueError(msg)
+            
 
         BC = BlockConnection(block1, block1_signal, block2, block2_signal,
                              public_name)

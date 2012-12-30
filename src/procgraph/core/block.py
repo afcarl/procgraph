@@ -109,6 +109,11 @@ class Block(BlockMetaSugar):
                     'list, instead got a %s: %s' %
                     (signals.__class__.__name__, signals))
             raise BlockWriterError(msg)
+        
+        # Make sure unique
+        if len(set(signals)) != len(signals):
+            msg = 'Not unique set of signals names: %s' % signals
+            raise BlockWriterError(msg)
 
         # reset structures
         self.__input_signal_names = []

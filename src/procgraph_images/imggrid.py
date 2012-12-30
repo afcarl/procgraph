@@ -3,7 +3,8 @@ from numpy import ceil, sqrt, zeros
 from procgraph import Block, BadConfig
 from procgraph.block_utils import check_rgb_or_grayscale
 
-from .compose import place_at   # XXX:
+from .compose import place_at  # XXX:
+from procgraph_images.border import image_border
 
 
 class ImageGrid(Block):
@@ -14,6 +15,7 @@ class ImageGrid(Block):
     Block.config('cols', 'Columns in the grid.', default=None)
     Block.config('bgcolor', 'Background color.', default=[0, 0, 0])
 
+    Block.config('pad', 'Padding for each cell', default=0)
     Block.input_is_variable('Images to arrange in a grid.', min=1)
     Block.output('grid', 'Images arranged in a grid.')
 
@@ -48,6 +50,14 @@ class ImageGrid(Block):
             assert 0 <= row < rows
 
             image = self.get_input(i)
+            p = self.config.pad 
+            if p is not None:
+                image = image_border(image,
+                           left=p,
+                           right=p,
+                           top=p,
+                           bottom=p,
+                           color=self.config.bgcolor)
             width = image.shape[1]
             height = image.shape[0]
 
@@ -81,6 +91,17 @@ class ImageGrid(Block):
             image = self.get_input(i)
             x = col_x[col]
             y = row_y[row]
+            
+            # Pad if not right shape
+            extra_hor = col_width[col] - image.shape[1]
+            extra_ver = row_height[row] - image.shape[0]
+            eleft = extra_hor / 2
+            eright = extra_hor - eleft
+            etop = extra_ver / 2
+            ebottom = extra_ver - etop
+            image = image_border(image, left=eleft, right=eright, top=etop,
+                                 bottom=ebottom, color=self.config.bgcolor)
+            
             # TODO: align here
             place_at(canvas, image, x, y)
 
