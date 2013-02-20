@@ -30,8 +30,8 @@ class BagRead(Generator):
         if given_topics:
             topics = given_topics.split(',')
         else:
-            topics = sorted(set([c.topic
-                                 for c in self.bag._get_connections()]))
+            all_topics = [c.topic for c in self.bag._get_connections()]
+            topics = sorted(set(all_topics))
 
         # self.info('Tppics: %s' % topics)    
 
