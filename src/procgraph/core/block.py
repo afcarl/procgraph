@@ -377,7 +377,7 @@ class Generator(Block):
           For example, I'm waiting for the next sensor data. 
           Ask me later. 
           
-        In those cases, we return 
+        In those cases, we return:
         
             (True, timestamp)
             
@@ -386,7 +386,7 @@ class Generator(Block):
             (True, None)
           
         '''
-        raise ValueError('Did not implement this')
+        raise NotImplementedError('"next_data_status" was not implement.')
 
 
 

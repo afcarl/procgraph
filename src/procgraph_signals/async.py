@@ -3,13 +3,13 @@ from procgraph import Block
 
 class ASync(Block):
     ''' 
-  
+      The first signal is the "master".
+      Waits that all signals are perceived once.
+      Then it creates one event every time the master arrives.
     '''
     Block.alias('async')
 
-    Block.input_is_variable(
-                        'Signals to (a)synchronize. The first is the master.',
-                             min=2)
+    Block.input_is_variable('Signals to (a)synchronize. The first is the master.', min=2)
     Block.output_is_variable('Synchronized signals.')
 
     def init(self):

@@ -4,6 +4,17 @@ from procgraph import simple_block
 from procgraph.block_utils import assert_rgb_image, assert_gray_image
 
 @simple_block
+def as_uint8(rgb):
+    res = rgb.astype('uint8')
+    return res
+
+@simple_block
+def as_float32(rgb):
+    res = rgb.astype('float32')
+    return res
+    
+
+@simple_block
 def torgb(rgb):
     nc = rgb.shape[2]
     if nc == 3:

@@ -166,7 +166,7 @@ class Sync(Generator):
                     output_values.append(slave_value)
                 output.insert(0, (master_timestamp, output_values))
 
-    # XXX XXX not really sure here
+        # XXX XXX not really sure here
         # if master has more than one sample, then drop the first one
 
         # if we have something to output, do it 
