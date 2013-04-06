@@ -34,10 +34,12 @@ class Info(Block):
                 s = "%s %s" % (str(val.shape), str(val.dtype))
             else:
                 s = str(val)
+                if len(s) > 40:
+                    s = s[:40]
 
             date = datetime.fromtimestamp(ts).isoformat(' ')[:-4]
             ts = "%.2f" % ts
-            self.debug('%s (%8.2fs) %12s %5d  %s' %
+            self.debug('%s (%8.2fs) %12s %5d  %s' % 
                        (date, friendly, name, self.counter[i], s))
             self.counter[i] += 1
 

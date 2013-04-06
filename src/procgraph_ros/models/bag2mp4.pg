@@ -11,6 +11,12 @@ config out    "Output file"
 
 
 cam -> |ros2rgb| -> rgb
-rgb -> |mencoder file=$out|
+
+# cam -> |info|
+# rgb -> |info|
+
+# Sometimes the message timestamps are screwed up at the beginning
+
+rgb -> |wait n=2| -> |mencoder file=$out|
 
 

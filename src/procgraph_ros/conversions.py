@@ -22,9 +22,6 @@ def ros_scan2python(scan):
 #    print scan.__dict__.keys()
 
 
-@simple_block
-def ros2rgb(msg):
-    return rgb_from_imgmsg(msg)
 
 
 def rgb_from_imgmsg(image):
@@ -41,10 +38,38 @@ import PIL.Image  # @UnresolvedImport
 import numpy
 import roslib  # @UnresolvedImport @UnusedImport
 import rospy  # @UnresolvedImport @UnusedImport
-import sensor_msgs.msg
+import sensor_msgs.msg  # @UnresolvedImport
+from sensor_msgs.msg import CompressedImage  # @UnusedImport @UnresolvedImport
 import struct
 
-  
+@simple_block
+def ros2rgb(msg):
+    # print msg.__class__.__name__ # _sensor_msgs__CompressedImage
+    if 'CompressedImage' in msg.__class__.__name__:
+        # print 'format: %s' % msg.format
+#         if msg.format == 'jpeg':
+#             data = msg.data
+#             
+#             from PIL import ImageFile  # @UnresolvedImport
+#             parser = ImageFile.Parser()
+#             parser.feed(data)
+#             res = parser.close()
+#             print res
+        return rgb_from_pil(pil_from_CompressedImage(msg))
+    else:
+        return rgb_from_imgmsg(msg)
+
+def pil_from_CompressedImage(msg):
+    from PIL import ImageFile  # @UnresolvedImport
+    parser = ImageFile.Parser()
+    parser.feed(msg.data)
+    res = parser.close()            
+    return res 
+
+def rgb_from_pil(im):
+    return np.asarray(im).astype(np.uint8)
+
+
 # Number of channels used by a PIL image mode
 def imgmsg_to_pil(rosimage, encoding_to_mode={
         'mono8' :     'L',

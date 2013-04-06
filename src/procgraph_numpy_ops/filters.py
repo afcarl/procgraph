@@ -25,7 +25,7 @@ def astype(a, dtype=COMPULSORY):
 def take(a, axis=0, indices=COMPULSORY):
     assert indices != COMPULSORY
     a = np.array(a)
-    indices = list(indices) # parsingresult bug
+    indices = list(indices)  # parsingresult bug
     axis = int(axis)
     try:
         return a.take(axis=axis, indices=indices).squeeze()
@@ -95,7 +95,7 @@ def maximum(value, threshold=COMPULSORY):
 
 
 @simple_block
-def norm(value, ord=2): #@ReservedAssignment
+def norm(value, ord=2):  # @ReservedAssignment
     ''' Returns the norm of the vector. '''
     return np.linalg.norm(value, ord)
 
@@ -160,6 +160,10 @@ register_simple_block(np.flipud, 'flipud',
 
 register_simple_block(np.fliplr, 'fliplr',
      doc='Flips the array left/right (wrapper for :py:func:`np.fliplr`.)')
+
+register_simple_block(np.transpose, 'transpose',
+     doc='Tranpose (wrapper for :py:func:`np.transpose`.)')
+
 
 register_simple_block(np.radians, 'deg2rad',
     doc='Converts degrees to radians (wrapper around '

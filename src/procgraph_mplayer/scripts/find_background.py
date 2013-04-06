@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-from optparse import OptionParser
-from procgraph_pil import imread, imwrite
+from contracts import contract
 from itertools import product
+from optparse import OptionParser
+from procgraph_images import TransparentImageAverage
+from procgraph_pil import imread, imwrite
 from reprep import scale
 import numpy as np
-
-from contracts import contract
 import os
-from procgraph_images.alpha.alpha_average import TransparentImageAverage
+
 
 
 usage = """

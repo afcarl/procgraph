@@ -1,11 +1,21 @@
+from procgraph.utils import system_cmd_result, CmdException
 import os
-from procgraph.utils.calling_ext_program import system_cmd_result, CmdException
 
 
 def convert_to_mp4(filename, mp4=None, quiet=True):
-    """ Creates a web-ready mp4 using ffmpeg.
+    """ 
+        Creates a web-ready mp4 using ffmpeg.
     
-        need qtquickstart from 
+        Needs either qtquickstart (from the python package) or qt-quickstart from ffmpeg.
+        
+        On ubuntu 12.04: need 'sudo apt-get install x264 libavcodec-extra-53'
+        to install necessary codecs.
+        You can see a list of supported presets by using: 'x264 --help'.
+    
+        
+        (other packages that might be helpful: # libavdevice-extra-52  libavfilter-extra-0 
+         libavformat-extra-52 libavutil-extra-49 libpostproc-extra-51 libswscale-extra-0)
+       
     """
 
     basename, ext = os.path.splitext(filename)
@@ -31,15 +41,26 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
     if os.path.exists(mp4):
         os.unlink(mp4)
 
+    # Let's detect ffmpeg version
+    res = system_cmd_result('.', ['ffmpeg', '-version'])
+    ffmpeg_version = res.stdout.split('\n')[0]
+    
+    # SVN-r0.5.9-4:0.5.9-0ubuntu0.10.04.3
+    
+    # if 'ubuntu0.10.04.3' in ffmpeg_version:
+    if '0.5' in ffmpeg_version:
+        presets = ['-vpre', 'libx264-default']
+    else:
+        presets = ['-preset', 'medium']
+        
+    # print('Version string: %s' % ffmpeg_version)
+
     cmds = ['ffmpeg', '-y', '-i', filename,
             # TODO: detect whether we can use these presets
             # TODO: make presets configurable
-            '-vcodec', 'libx264',
-            '-vpre',
-            #'libx264-max',
-            'libx264-default',
-#            '-vpre', 'libx264-min',
-            '-crf', '22',
+            '-vcodec', 'libx264']
+    cmds.extend(presets)
+    cmds += ['-crf', '22',
             # '-threads', '1', # limit to one thread
              tmp]
 
@@ -55,8 +76,6 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
         raise
 
     # TODO: check file exists
-
-    system_cmd_result
     names = ['qtfaststart', 'qt-faststart']
     errors = []
     for name in names:
@@ -73,7 +92,7 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
 
     else:
         msg = ('Could not call either of %s. '
-               'The file will not be ready for streaming.\n%s' %
+               'The file will not be ready for streaming.\n%s' % 
                (names, errors))
         os.rename(tmp, mp4)
 

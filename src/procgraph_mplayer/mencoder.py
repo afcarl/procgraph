@@ -12,13 +12,6 @@ import subprocess
 import tempfile
 
 
-#"""
-#sudo apt-get install libavcodec-extra-52 libavdevice-extra-52 
-#libavfilter-extra-0 libavformat-extra-52 libavutil-extra-49 
-#libpostproc-extra-51 libswscale-extra-0
-#
-#"""
-
 
 class MEncoder(Block):
     ''' 
@@ -33,6 +26,16 @@ class MEncoder(Block):
         
         RGBA videos: not working fully. For now it outputs .AVI with 
         mencoder and encoded using png. 
+        
+        
+        On ubuntu 12.04: need 'sudo apt-get install x264 libavcodec-extra-53'
+        to install necessary codecs.
+        You can see a list of supported presets by using: 'x264 --help'.
+        
+        
+        (other packages that might be helpful: # libavdevice-extra-52  libavfilter-extra-0 
+         libavformat-extra-52 libavutil-extra-49 libpostproc-extra-51 libswscale-extra-0)
+        
     '''
     Block.alias('mencoder')
 
@@ -57,10 +60,9 @@ class MEncoder(Block):
                  "post-processed and cropped", default=False)
 
     def init(self):
-#        self.inited = False
         self.process = None
         self.buffer = []
-        self.image_shape = None # Shape of image being encoded
+        self.image_shape = None  # Shape of image being encoded
 
     def update(self):
         check_rgb_or_grayscale(self, 0)
@@ -99,13 +101,13 @@ class MEncoder(Block):
 
         # Format for mencoder's rawvideo "format" option
         if self.ndim == 2:
-            format = 'y8' #@ReservedAssignment
+            format = 'y8'  # @ReservedAssignment
         else:
             if self.shape[2] == 3:
-                format = 'rgb24' #@ReservedAssignment
+                format = 'rgb24'  # @ReservedAssignment
             elif self.shape[2] == 4:
                 # Note: did not try this yet
-                format = 'rgba' #@ReservedAssignment
+                format = 'rgba'  # @ReservedAssignment
                 msg = 'I detected that you are trying to write a transparent'
                 msg += 'video. This does not work well yet (and besides,'
                 msg += 'it is not supported in many applications, like '
@@ -129,7 +131,7 @@ class MEncoder(Block):
             # Check for very wrong results
             if not (3 < fps < 60):
                 self.error('Detected fps is %.2f; this seems strange to me,'
-                           ' so I will use the safe choice fps = %.2f.' %
+                           ' so I will use the safe choice fps = %.2f.' % 
                            (fps, self.config.fps_safe))
                 fps = self.config.fps_safe
         else:
@@ -140,7 +142,7 @@ class MEncoder(Block):
 
         self.filename = expand(self.config.file)
         if os.path.exists(self.filename):
-            self.info('Removing previous version of %s.' %
+            self.info('Removing previous version of %s.' % 
                       friendly_path(self.filename))
             os.unlink(self.filename)
 
@@ -151,7 +153,7 @@ class MEncoder(Block):
 
         make_sure_dir_exists(self.filename)
 
-        self.info('Writing %dx%d %s video stream at %.1f fps to %r.' %
+        self.info('Writing %dx%d %s video stream at %.1f fps to %r.' % 
                   (self.width, self.height, format, fps,
                    friendly_path(self.filename)))
 
@@ -163,16 +165,16 @@ class MEncoder(Block):
 
         out = ['-o', self.tmp_filename]
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
-                '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' %
+                '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' % 
                 (self.width, self.height, fps, format)] + ovc + out
 
-                #'-v', "0", # verbosity level (1 prints stats \r)
+                # '-v', "0", # verbosity level (1 prints stats \r)
 
-        #self.debug('$ %s' % " ".join(args))
+        # self.debug('$ %s' % " ".join(args))
         # Note: mp4 encoding is currently broken in mencoder :-(
         #       so we have to use ffmpeg as a second step.
         # These would be the options to add:
-        #'-of', 'lavf', '-lavfopts', 'format=mp4'
+        # '-of', 'lavf', '-lavfopts', 'format=mp4'
 
         self.tmp_stdout = tempfile.TemporaryFile()
         self.tmp_stderr = tempfile.TemporaryFile()
@@ -201,7 +203,7 @@ class MEncoder(Block):
             return
 
         if self.convert_to_mp4:
-            self.debug('Converting %s to %s' %
+            self.debug('Converting %s to %s' % 
                         (friendly_path(self.tmp_filename),
                          friendly_path(self.filename)))
             convert_to_mp4(self.tmp_filename, self.filename)
@@ -223,9 +225,15 @@ class MEncoder(Block):
 
     def cleanup(self):
         # TODO: remove timestamps
+#         if 'timestamps_filename' in self.__dict__:
+#             if os.path.exists(self.timestamps_filename):
+#                 os.unlink(self.timestamps_filename)
+
         if 'tmp_filename' in self.__dict__:
             if os.path.exists(self.tmp_filename):
                 os.unlink(self.tmp_filename)
+
+
 
         self.cleanup_mencoder()
 
@@ -260,13 +268,13 @@ class MEncoder(Block):
             self.image_shape = image.shape
 
         if self.image_shape != image.shape:
-            msg = ('The image has changed shape, from %s to %s.' %
+            msg = ('The image has changed shape, from %s to %s.' % 
                    (self.image_shape, image.shape))
-            raise Exception(msg) # TODO: badinput
+            raise Exception(msg)  # TODO: badinput
 
         # very important! make sure we are using a reasonable array
         if not image.flags['C_CONTIGUOUS']:
-            image = numpy.ascontiguousarray(image) #@UndefinedVariable
+            image = numpy.ascontiguousarray(image)  # @UndefinedVariable
 
         try:
             if False:
@@ -320,4 +328,4 @@ def timeout(delta=5):
 
 
 def ignore_sigint():
-            signal.signal(signal.SIGINT, signal.SIG_IGN)
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
