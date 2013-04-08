@@ -24,7 +24,7 @@ config wait = 100 "Number of samples to wait before declaring the value valid."
 input x 'Any numpy array'
 output var_x 'Soft variance of ``x``.'
 
-|input name=x| --> |expectation| --> |wait n=$wait| --> Ex
+|input name=x| --> x --> |expectation| --> |wait n=$wait| --> Ex
 
    x, Ex --> |sync| --> |-| --> error 
    

@@ -25,6 +25,9 @@ class MPlayer(Generator):
     Block.output('video', 'RGB stream as numpy array.')
 
     def init(self):
+        if not isinstance(self.config.file, str):
+            raise BadConfig('This should be a string.', self, 'file')
+        
         self.file = expand(self.config.file)
 
         if not os.path.exists(self.file):
@@ -60,28 +63,28 @@ class MPlayer(Generator):
         for line in output.split('\n'):
             if line.startswith('ID_'):
                 key, value = line.split('=', 1)
-                try: # interpret numbers if possible
+                try:  # interpret numbers if possible
                     value = eval(value)
                 except:
                     pass
                 info[key] = value
 
-        #self.debug("Video configuration: %s" % info)
+        # self.debug("Video configuration: %s" % info)
 
         keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT",
                 "ID_VIDEO_FPS", "ID_LENGTH"]
         id_width, id_height, id_fps, id_length = keys
         for k in keys:
             if not k in info:
-                msg = ('Could not find key %r in properties %s.' %
+                msg = ('Could not find key %r in properties %s.' % 
                       (k, sorted(info.keys())))
                 raise ModelExecutionError(msg, self)
 
         if id_length == 0:
             msg = 'I could not find find the length of this movie.'
-            msg += (' I ran:\n\t%s\n and this is the output:\n' %
+            msg += (' I ran:\n\t%s\n and this is the output:\n' % 
                    (" ".join(args), output))
-            self.info(msg) # XXX: use warning
+            self.info(msg)  # XXX: use warning
 
         self.width = info[id_width]
         self.height = info[id_height]
@@ -91,7 +94,7 @@ class MPlayer(Generator):
 
         # TODO: reading non-RGB streams not supported
         self.info('Reading %dx%d @ %.1f fps '
-                  ' (length %ss, approx %d frames), from %s.' %
+                  ' (length %ss, approx %d frames), from %s.' % 
                    (self.width, self.height, self.fps,
                     self.length, self.approx_frames,
                     friendly_path(self.config.file)))
@@ -99,13 +102,13 @@ class MPlayer(Generator):
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
 
-        format = "rgb24" #@ReservedAssignment
+        format = "rgb24"  # @ReservedAssignment
 
         self.temp_dir = tempfile.mkdtemp(prefix='procgraph_fifo_dir')
         self.fifo_name = os.path.join(self.temp_dir, 'mencoder_fifo')
         os.mkfifo(self.fifo_name)
         args = ['mencoder', self.file, '-ovc', 'raw',
-                '-rawvideo', 'w=%d:h=%d:format=%s' %
+                '-rawvideo', 'w=%d:h=%d:format=%s' % 
                     (self.width, self.height, format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
@@ -114,7 +117,7 @@ class MPlayer(Generator):
                 self.fifo_name
                 ]
 
-        #self.debug("command line: %s" % " ".join(args))
+        # self.debug("command line: %s" % " ".join(args))
 
         self.tmp_stdout = tempfile.TemporaryFile()
         self.tmp_stderr = tempfile.TemporaryFile()
@@ -164,7 +167,7 @@ class MPlayer(Generator):
 
     def print_stats(self):
         percentage = 100.0 * self.num_frames_read / self.approx_frames
-        self.info('%6d/%d frames (%4.1f%%) of %s' %
+        self.info('%6d/%d frames (%4.1f%%) of %s' % 
                   (self.num_frames_read, self.approx_frames, percentage,
                    friendly_path(self.file)))
 

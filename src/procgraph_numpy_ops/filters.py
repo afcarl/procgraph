@@ -95,10 +95,19 @@ def maximum(value, threshold=COMPULSORY):
 
 
 @simple_block
-def norm(value, ord=2):  # @ReservedAssignment
-    ''' Returns the norm of the vector. '''
+def norm(value, ord=None):  # @ReservedAssignment
+    ''' Returns the norm of the vector. 
+    
+        ord=None  Frobenius for matrix    2-norm for vectors
+        2         2-norm (largest sing.value)    
+    '''
     return np.linalg.norm(value, ord)
 
+
+@simple_block
+def norm2(value):  # @ReservedAssignment
+    ''' Returns the norm of the vector. '''
+    return np.linalg.norm(value)
 
 # XXX: not sure the best thing to do
 @simple_block

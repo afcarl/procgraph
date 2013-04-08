@@ -21,3 +21,35 @@ class Expectation(Block):
 
         self.state.num_samples += 1
         self.output.Ex = self.state.Ex
+
+
+import numpy as np
+
+class ExpectationNorm(Block):
+    Block.alias('expectation_norm')
+
+    Block.input('x', 'Any numpy array.')
+    Block.output('Ex', 'Expectation of input.')
+
+    def init(self):
+        self.value = None
+        self.mass = None
+        
+    def update(self):
+        x = self.input.x
+        if self.value is None:
+            self.value = x
+            self.weight = np.zeros(x.shape)
+        else:
+            if False:
+                w = np.abs(x - self.last_x)
+            else:
+                w = np.abs(x - self.last_x).sum()
+            self.weight += w
+            self.value += w * x
+            
+            self.weight[self.weight == 0] = np.inf
+            res = self.value / self.weight 
+            self.output.Ex = res
+        self.last_x = x.copy()
+ 

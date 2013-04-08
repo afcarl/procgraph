@@ -18,11 +18,9 @@ def ros2python(msg):
 
 @simple_block
 def ros_scan2python(scan):
+    #    print scan.__dict__.keys()
     return np.array(scan.ranges)
-#    print scan.__dict__.keys()
-
-
-
+    
 
 def rgb_from_imgmsg(image):
     im, _, _ = imgmsg_to_pil(image)
@@ -47,14 +45,14 @@ def ros2rgb(msg):
     # print msg.__class__.__name__ # _sensor_msgs__CompressedImage
     if 'CompressedImage' in msg.__class__.__name__:
         # print 'format: %s' % msg.format
-#         if msg.format == 'jpeg':
-#             data = msg.data
-#             
-#             from PIL import ImageFile  # @UnresolvedImport
-#             parser = ImageFile.Parser()
-#             parser.feed(data)
-#             res = parser.close()
-#             print res
+        # if msg.format == 'jpeg':
+        #     data = msg.data
+        #      
+        #     from PIL import ImageFile  # @UnresolvedImport
+        #     parser = ImageFile.Parser()
+        #     parser.feed(data)
+        #     res = parser.close()
+        #     print res
         return rgb_from_pil(pil_from_CompressedImage(msg))
     else:
         return rgb_from_imgmsg(msg)
@@ -145,7 +143,6 @@ def pil_to_imgmsg(image, encodingmap={'L':'mono8', 'RGB':'rgb8', 'RGBA':'rgba8',
     return rosimage
   
 def numpy_to_imgmsg(image, stamp=None):
-#    print image.shape
     rosimage = sensor_msgs.msg.Image()
     rosimage.height = image.shape[0]
     rosimage.width = image.shape[1]
