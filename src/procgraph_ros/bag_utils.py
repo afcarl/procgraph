@@ -1,6 +1,7 @@
 import subprocess
 import yaml
 import rosbag
+from contracts import contract
    
 
 def rosbag_info(bag):
@@ -30,7 +31,23 @@ def rosbag_info(bag):
 from procgraph import logger as pg_logger
 from rospy import rostime
 
+def read_bag_stats_progress(source, logger, interval=5):
+    from bootstrapping_olympics.utils.in_a_while import InAWhile
 
+    tracker = InAWhile(interval)
+    
+    for topic, msg, t, extra in source:
+        if tracker.its_time():
+            progress = extra['t_percentage']
+            cur_obs = extra['counter']
+            num_obs = '?'  # extra['messages']  # XXX: this is all messages
+            status = ('%4.1f%%  (obs: %4d/%s);  %5.1f fps' % 
+                   (progress, cur_obs, num_obs, tracker.fps()))
+            logger.debug(status)
+        yield topic, msg, t, extra
+
+
+@contract(topics='list(str)')
 def read_bag_stats(bagfile, topics, logger=None):
     """ 
         This yields a dict with: 
