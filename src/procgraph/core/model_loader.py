@@ -12,6 +12,7 @@ from .constants import PATH_ENV_VAR
 from .. import deny_pgc_cache
 
 
+
 class ModelSpec(object):
     ''' Class used to register as a block type '''
 
@@ -73,7 +74,11 @@ def pg_add_this_package_models(filename, assign_to, subdir='models'):
     
     '''
 
-    dirname = os.path.join(os.path.dirname(filename), subdir)
+    if subdir is not None:
+        dirname = os.path.join(os.path.dirname(filename), subdir)
+    else:
+        dirname = os.path.dirname(filename)
+        
     pg_look_for_models(default_library,
                        additional_paths=[dirname],
                        ignore_env=True,
@@ -109,7 +114,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     if not paths:
         if False:
             # TODO: add verbose switch
-            warning("No paths given and environment var %r not defined." %
+            warning("No paths given and environment var %r not defined." % 
                      PATH_ENV_VAR)
 
     # enumerate each sub directory
@@ -119,7 +124,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             # XXX: should I use exception?
             raise Exception('Invalid path %r to search for models. ' % path)
 
-        for root, dirs, files in os.walk(path): #@UnusedVariable
+        for root, dirs, files in os.walk(path):  # @UnusedVariable
             for f in files:
                 if fnmatch.fnmatch(f, '*.pg'):
                     all_files.add((path, os.path.join(root, f)))
@@ -127,6 +132,8 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     for path, f in all_files:
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
+        
+        # logger.debug('Loading models from %r' % f)
 
         # Make sure we use an absolute filename
         f = os.path.realpath(f)
@@ -151,13 +158,13 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
             except Exception as e:
                 debug('Cannot unpickle file %r: %s' % (cache, e))
                 # XXX repeated code 
-                #debug("Parsing %r." % os.path.relpath(f))
+                # debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
 
                 models = parse_model(model_spec, filename=f)
 
         else:
-            #debug("Parsing %r." % os.path.relpath(f))
+            # debug("Parsing %r." % os.path.relpath(f))
             model_spec = open(f).read()
             models = parse_model(model_spec, filename=f)
 
@@ -180,7 +187,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
         for parsed_model in models:
             if library.exists(parsed_model.name):
                 prev = library.name2block[parsed_model.name].parsed_model.where
-                msg = ('Found model %r in file:\n %r, and already in\n %r. ' %
+                msg = ('Found model %r in file:\n %r, and already in\n %r. ' % 
                        (parsed_model.name, f, prev.filename))
                 raise SemanticError(msg, parsed_model)
 
@@ -199,7 +206,7 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
         #  and I do:
         #    pg -d . tutorials.pg
         # This will fail because it will try to read tutorials.pg twice
-        msg = ('I already have registered model %r from %r. ' %
+        msg = ('I already have registered model %r from %r. ' % 
               (parsed_model.name, prev.filename))
         raise SemanticError(msg, parsed_model)
 
