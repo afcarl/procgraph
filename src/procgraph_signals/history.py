@@ -17,23 +17,34 @@ class History(Block):
     Block.output('t', 'Sequence of timestamps.')
 
     def init(self):
-        self.state.x = []
-        self.state.t = []
+        self.history = HistoryInterval(self.config.interval)
 
     def update(self):
         sample = self.get_input(0)
         timestamp = self.get_input_timestamp(0)
 
-        x = self.state.x
-        t = self.state.t
+        self.history.push(timestamp, sample)
+        ts, xs = self.history.get_ts_xs()
+        self.output.x = xs
+        self.output.t = ts
 
-        x.append(sample)
-        t.append(timestamp)
 
-        while abs(t[0] - t[-1]) > self.config.interval:
-            t.pop(0)
-            x.pop(0)
 
-        self.output.x = x
-        self.output.t = t
+class HistoryInterval():
+    def __init__(self, interval):
+        self.interval = interval
+        self.x = []
+        self.t = []
+        
+    def push(self, timestamp, value):
+        
+        self.x.append(value)
+        self.t.append(timestamp)
 
+        while abs(self.t[0] - self.t[-1]) > self.interval:
+            self.t.pop(0)
+            self.x.pop(0)
+
+    def get_ts_xs(self):
+        return list(self.t), list(self.x)
+    
