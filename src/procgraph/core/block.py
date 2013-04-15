@@ -20,7 +20,7 @@ class Value:
 class Block(BlockMetaSugar):
     __metaclass__ = BlockMeta
 
-    def __init__(self, name, config, library): #@UnusedVariable
+    def __init__(self, name, config, library):  # @UnusedVariable
         assert isinstance(name, str), \
             'The block name must be a string, not %s' % name.__class__
 
@@ -56,6 +56,9 @@ class Block(BlockMetaSugar):
 
         # used for debug; hierarchical level
         self.level = 0
+        
+        # used for info_once() and error_once(): messages we already sent
+        self._msgs_written = set()
 
     def init(self):
         ''' Initializes the block.  '''
@@ -106,7 +109,7 @@ class Block(BlockMetaSugar):
     def define_input_signals_new(self, signals):
         if not isinstance(signals, list):
             msg = ('I expect the parameter to define_input_signals() to be a '
-                    'list, instead got a %s: %s' %
+                    'list, instead got a %s: %s' % 
                     (signals.__class__.__name__, signals))
             raise BlockWriterError(msg)
         
@@ -137,8 +140,8 @@ class Block(BlockMetaSugar):
 
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
-            msg = ('I expect the parameter to define_output_signals()' +
-                   ' to be a list, got a %s: %s' %
+            msg = ('I expect the parameter to define_output_signals()' + 
+                   ' to be a list, got a %s: %s' % 
                    (signals.__class__.__name__, signals))
             raise BlockWriterError(msg)
 
@@ -158,7 +161,7 @@ class Block(BlockMetaSugar):
 
     def get_config(self, conf):
         if not conf in self.__config:
-            msg = ('For block %s: could not find parameter %r in config %s.' %
+            msg = ('For block %s: could not find parameter %r in config %s.' % 
                    (self, conf, self.__config))
             raise ModelExecutionError(msg, self)
 
@@ -200,7 +203,7 @@ class Block(BlockMetaSugar):
         ''' Sets an input value. This is used from outside, not 
         from the block. (This is overloaded by Model) '''
         if timestamp is None:
-            msg = ('Setting input %r to %s with None timestamp' %
+            msg = ('Setting input %r to %s with None timestamp' % 
                    (num_or_id, timestamp))
             raise Exception(msg)
         input_struct = self.__get_input_struct(num_or_id)
@@ -340,6 +343,17 @@ class Block(BlockMetaSugar):
 
     def _log_prefix(self):
         return '%s%s:' % ('>' * self.level, self.name)
+
+
+    def info_once(self, msg):
+        if not msg in self._msgs_written:
+            self.info(msg)
+            self._msgs_written.add(msg)
+
+    def error_once(self, msg):
+        if not msg in self._msgs_written:
+            self.error(msg)
+            self._msgs_written.add(msg)
 
     def info(self, s):
         ''' Writes an info message. '''
