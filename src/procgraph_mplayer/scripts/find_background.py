@@ -38,25 +38,28 @@ def main():
 
 
 def get_frame(video, when):
-    # out = os.path.join(tmp_path, 'frame%s.png' % when)
+    # out = join(tmp_path, 'frame%s.png' % when)
     out = 'tmp_frame.png'
     cmd = ("ffmpeg -ss %s -i %s -y -f image2 -vframes 1 %s" % (when, video, out))
     os.system(cmd)
     frame = imread(out)
     return frame
         
+from os.path import dirname, exists, basename, splitext, join
+
 @contract(whens='list[>=3](float)')
-def find_background(video, whens, debug=False):
-    id_video = os.path.splitext(os.path.basename(video))[0]
+def find_background(video, whens, debug=False, tmp_path=None):
+    id_video = splitext(basename(video))[0]
     
-    tmp_path = 'find_background-%s' % id_video
-    if not os.path.exists(tmp_path):
+    if tmp_path is None:
+        tmp_path = join(dirname(video), 'find_background-%s' % id_video)
+    if not exists(tmp_path):
         os.makedirs(tmp_path)
     
     def write_debug(rgb, id_image):
         if debug:
-            f = os.path.join(tmp_path, '%s.png' % id_image)
-            print('Writing %s' % f)
+            f = join(tmp_path, '%s.png' % id_image)
+            # print('Writing %s' % f)
             imwrite(rgb, f)
     
     frames = []
@@ -82,7 +85,7 @@ def find_background(video, whens, debug=False):
     s = np.mean(mm, axis=2)
     write_debug(scale(s), 's')
 
-    print('computing moving stuff')
+    # print('computing moving stuff')
     moving = []
     bgshade = []
     for i in range(n):
@@ -112,7 +115,7 @@ def assemble_transp(rgb, alpha):
     H, W = rgb.shape[0], rgb.shape[1]
     rgba = np.zeros((H, W, 4), dtype='uint8')
     rgba[:, :, 0:3] = rgb[:, :, 0:3]
-    print('alpha range %f - %f' % (np.min(alpha), np.max(alpha)))
+    # print('alpha range %f - %f' % (np.min(alpha), np.max(alpha)))
     alpha = alpha - np.min(alpha)
     alpha = alpha / np.max(alpha)
     alpha = alpha * 255
