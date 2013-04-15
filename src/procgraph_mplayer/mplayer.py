@@ -22,7 +22,14 @@ class MPlayer(Generator):
     Block.config('stats', 'If true, writes some statistics about the '
                           'remaining time.', default=True)
 
+    Block.config('max_duration', 'Maximum length, in seconds, of the output.' 
+                                 'Useful to get a maximum duration.')
+#     Block.config('set_timestamp', 'Use this timestamp as the initial frame. ')
+    
     Block.output('video', 'RGB stream as numpy array.')
+
+    TIMESTAMPS_SUFFIX = ".timestamps"
+
 
     def init(self):
         if not isinstance(self.config.file, str):
@@ -34,7 +41,7 @@ class MPlayer(Generator):
             msg = 'File %r does not exist.' % self.file
             raise BadConfig(msg, self, 'file')
 
-        timestamps_file = self.file + '.timestamps'
+        timestamps_file = self.file + MPlayer.TIMESTAMPS_SUFFIX
         if os.path.exists(timestamps_file):
             self.info('Reading timestamps from %r.' % timestamps_file)
             self.timestamps = open(timestamps_file)
@@ -129,16 +136,28 @@ class MPlayer(Generator):
         else:
             self.process = subprocess.Popen(args)
 
+        self.delta = 1.0 / self.fps
+        
         if not self.timestamps:
-            self.delta = 1.0 / self.fps
+            self.info('No timestamps found; using delta = %.2f (%.2f fps).' 
+                      % (self.delta, self.fps))    
 
         self.stream = open(self.fifo_name, 'r')
 
+        
     def get_next_timestamp(self):
         if self.timestamps:
+            # If reading from files
             l = self.timestamps.readline()
-            if not l:
-                return 0
+            if not l:  
+                # XXX warn if not even one
+                self.error_once('Timestamps were too short; now using incremental.')
+                if self.state.timestamp is not None:
+                    return self.state.timestamp + self.delta
+                else:
+                    # empty file, not even one
+                    self.error_once('Empty timestamp file? Starting at 0.')
+                    return 0
             else:
                 return float(l)
         else:
@@ -167,8 +186,13 @@ class MPlayer(Generator):
 
     def print_stats(self):
         percentage = 100.0 * self.num_frames_read / self.approx_frames
-        self.info('%6d/%d frames (%4.1f%%) of %s' % 
-                  (self.num_frames_read, self.approx_frames, percentage,
+        # this assumes constant fps
+        seconds = self.num_frames_read * self.delta
+        seconds_total = self.approx_frames * self.delta
+        self.info('%6d/%d frames, %.1f/%.1f sec (%4.1f%%) of %s' % 
+                  (self.num_frames_read, self.approx_frames,
+                   seconds, seconds_total,
+                   percentage,
                    friendly_path(self.file)))
 
     def read_next_frame(self):
@@ -188,8 +212,30 @@ class MPlayer(Generator):
         else:
             self.state.next_frame = rgbs[0, :].squeeze()
 
+    def too_long_for_us(self):
+        """ Returns true if max_duration is set and we passed it. """
+        if self.config.max_duration is None:
+            return False
+        
+        # We haven't started yet, so we don't have "delta"
+        if not self.mencoder_started:
+            return False
+        
+        passed = self.num_frames_read * self.delta
+        
+        if passed > self.config.max_duration:
+            self.info_once('Finishing because passed %d frames = %f seconds > duration %f' % 
+                           (self.num_frames_read, passed, self.config.max_duration))
+            return True
+        else:
+            return False
+        
     def next_data_status(self):
+        # The stream has finished
         if self.state.finished:
+            return (False, None)
+        # We passed the limit
+        elif self.too_long_for_us():
             return (False, None)
         else:
             return (True, self.state.timestamp)
