@@ -1,4 +1,3 @@
-# OS X: install from http://ffmpegx.com/download.html
 import subprocess
 import os
 import numpy
@@ -23,7 +22,7 @@ class MPlayer(Generator):
                           'remaining time.', default=True)
 
     Block.config('max_duration', 'Maximum length, in seconds, of the output.' 
-                                 'Useful to get a maximum duration.')
+                                 'Useful to get a maximum duration.', default=None)
 #     Block.config('set_timestamp', 'Use this timestamp as the initial frame. ')
     
     Block.output('video', 'RGB stream as numpy array.')
@@ -181,7 +180,7 @@ class MPlayer(Generator):
 
         if self.config.stats:
             self.num_frames_read += 1
-            if self.num_frames_read % 100 == 0:
+            if self.num_frames_read % 500 == 0:
                 self.print_stats()
 
     def print_stats(self):

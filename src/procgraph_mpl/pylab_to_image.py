@@ -3,6 +3,7 @@ from StringIO import StringIO
 from procgraph_pil import Image
 import numpy
 
+__all__ = ['pylab2rgb']
 
 def pylab2rgb(transparent=False, tight=False):
     ''' Saves and returns the pixels in the current pylab figure. 
@@ -32,7 +33,7 @@ def pylab2rgb(transparent=False, tight=False):
                                   rgb[:, :, 2] == 255)
         alpha = rgba[:, :, 3]
         alpha[white] = 0
-        #alpha[numpy.logical_not(white)] = 110 
+        # alpha[numpy.logical_not(white)] = 110 
         rgba[:, :, 3] = alpha
         return rgba
 

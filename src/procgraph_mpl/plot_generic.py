@@ -42,7 +42,7 @@ class PlotGeneric:
         pylab.figure(self.figure.number)
 
         function(pylab)
-
+        
         # http://matplotlib.sourceforge.net/users/tight_layout_guide.html
         try:
             pylab.tight_layout()
@@ -72,7 +72,11 @@ class PlotGeneric:
         if not self.keep:
             pylab.close(self.figure.number)
             self.figure = None
-
+        else:
+            pass
+#             pylab.cla()
+#             pylab.clf()
+            
         return pixel_data
 
 

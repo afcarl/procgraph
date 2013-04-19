@@ -153,7 +153,7 @@ class MEncoder(Block):
 
         make_sure_dir_exists(self.filename)
 
-        self.info('Writing %dx%d %s video stream at %.1f fps to %r.' % 
+        self.info('Writing %dx%d %s video stream at %.3f fps to %r.' % 
                   (self.width, self.height, format, fps,
                    friendly_path(self.filename)))
 

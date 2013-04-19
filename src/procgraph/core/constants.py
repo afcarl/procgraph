@@ -14,9 +14,13 @@
 STRICT_CHECK_OF_DEFINED_IO = False
 
 
-STRICT = True
+# STRICT = True:
+#
+#  Unused variables trigger error
+#
+STRICT = False
 
-### For the procgraph_info  dictionary:
+# ## For the procgraph_info  dictionary:
 
 # Variable that should be defined 
 PROCGRAPH_INFO_VARIABLE = 'procgraph_info'
@@ -26,7 +30,7 @@ REQUIRES = 'requires'
 REQUIRES_PARSED = 'requires_parsed'
 
 
-### Types of inputs and outputs
+# ## Types of inputs and outputs
 
 # Normal input/output
 FIXED = 'fixed-signal'
@@ -35,7 +39,7 @@ VARIABLE = 'variable-signal'
 # The block will define the signals *after* it has seen the configuration. 
 DEFINED_AT_RUNTIME = 'defined-at-runtime'
 
-### When defining simple blocks
+# ## When defining simple blocks
 # TODO: write documentation on how these work
 COMPULSORY = 'compulsory-param'
 TIMESTAMP = 'timestamp-param'
@@ -44,7 +48,7 @@ TIMESTAMP = 'timestamp-param'
 # not sure this is used anywhere now
 ETERNITY = 'eternity'
 
-### Environment
+# ## Environment
 
 # Environment variable containing colon-separated additional paths to look
 # for modules.

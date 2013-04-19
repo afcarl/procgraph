@@ -16,7 +16,8 @@ if import_succesful(matplotlib):
 
 pylab = import_magic(__name__, 'matplotlib.pylab')
 
-from .pylab_to_image import *
+from .pylab_to_image import pylab2rgb
+from .plot_anim import PlotAnim
 from .plot import *
 from .plot_generic import *
 

@@ -10,7 +10,7 @@ class IteratorGenerator(Generator):
     @abstractmethod
     def get_iterator(self):
         """ Must return an iterator yielding signal, timestamp, values """
-        raise Exception('Not implemented')
+        raise NotImplementedError()
 
     def init(self):
         self.iterator = self.get_iterator()

@@ -4,6 +4,7 @@ from .mp4conversion import *
 from .mencoder import *
 from .mplayer import *
 from .depth_buffer import *
+from .fix_frame_rate import *
 
 procgraph_info = {
     # List of python packages 

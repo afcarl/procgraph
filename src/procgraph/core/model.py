@@ -103,7 +103,7 @@ class Model(Generator):
             self.generators.append(block)
 
         if isinstance(block, ModelInput):
-            block.init() # get the name from config
+            block.init()  # get the name from config
             if not self.is_valid_input_name(block.signal_name):
                 msg = 'Input %r was not defined formally.' % block.signal_name
                 if STRICT_CHECK_OF_DEFINED_IO:
@@ -121,7 +121,7 @@ class Model(Generator):
             self.model_input_ports[block.signal_name] = block
 
         if isinstance(block, ModelOutput):
-            block.init() # get the name from config
+            block.init()  # get the name from config
 
             if not self.is_valid_output_name(block.signal_name):
                 msg = 'Output %r was not defined formally.' % block.signal_name
@@ -136,7 +136,7 @@ class Model(Generator):
                     all_outputs = []
 
                 # XXX: bug: output_signals -> output_signals
-                self.define_output_signals_new(all_outputs +
+                self.define_output_signals_new(all_outputs + 
                                                [block.signal_name])
 
         return block
@@ -179,7 +179,7 @@ class Model(Generator):
         at_least_one = False
         for generator in self.generators:
             status = generator.next_data_status()
-            (has_next, timestamp) = status #@UnusedVariable
+            (has_next, timestamp) = status  # @UnusedVariable
             if has_next:
                 at_least_one = True
                 if timestamp is not None:
@@ -202,13 +202,13 @@ class Model(Generator):
             return True
 
         for generator in self.generators:
-            status = generator.next_data_status() #@UnusedVariable
+            status = generator.next_data_status()  # @UnusedVariable
 
             if not isinstance(status, tuple) or len(status) != 2:
                 msg = ('next_data_status() should return a tuple of len 2, '
                        ' not %r.' % status)
                 raise ModelWriterError(msg, generator)
-            (has_next, timestamp) = status #@UnusedVariable
+            (has_next, timestamp) = status  # @UnusedVariable
             if has_next:
                 return True
 
@@ -251,13 +251,13 @@ class Model(Generator):
             try:
                 block.cleanup()
             except Exception as e:
-                msg += ('Cleanup for %s failed:\n%s\n' %
+                msg += ('Cleanup for %s failed:\n%s\n' % 
                         (block, indent(e, '> ')))
                 blocks_failed.append(block)
         if blocks_failed:
-            s = ('Cleanup for %d blocks failed.\n%s' %
+            s = ('Cleanup for %d blocks failed.\n%s' % 
                  (len(blocks_failed), msg))
-            raise Exception(s) #XXX: which other exception?
+            raise Exception(s)  # XXX: which other exception?
 
     def update(self):
         def debug(s):
@@ -310,7 +310,7 @@ class Model(Generator):
             raise ModelExecutionError(msg, self)
 
         # now we have a block (could be a generator)
-        debug('Updating %s (input ts: %s)' %
+        debug('Updating %s (input ts: %s)' % 
               (block, block.get_input_signals_timestamps()))
 
         # We also time the execution
@@ -326,7 +326,7 @@ class Model(Generator):
             timestamp = max(block.get_input_signals_timestamps())
         elif block.get_output_signals_timestamps():
             timestamp = max(block.get_output_signals_timestamps())
-        else: # for those that don't have input signals
+        else:  # for those that don't have input signals
             timestamp = ETERNITY
 
         self.stats.add(block=block, cpu=cpu, wall=wall,
@@ -337,9 +337,9 @@ class Model(Generator):
             self.blocks_to_update.insert(0, block)
         else:
             # the block updated, propagate
-            debug("  processed %s, ts: %s" %
+            debug("  processed %s, ts: %s" % 
                   (block, block.get_output_signals_timestamps()))
-            debug("  its successors: %s" %
+            debug("  its successors: %s" % 
                   list(self.__get_output_connections(block)))
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
@@ -357,7 +357,7 @@ class Model(Generator):
 
                 if value is not None and this_timestamp is None:
                     msg = ('Strange, value is not None but the timestamp is 0'
-                          ' for output signal %r of block %s.' %
+                          ' for output signal %r of block %s.' % 
                             (block.canonicalize_output(this_signal), block))
                     raise ModelExecutionError(msg, block)
 
@@ -379,7 +379,7 @@ class Model(Generator):
                         self.set_output(other.signal_name,
                                         value, this_timestamp)
                 else:
-                    debug("  Not updated %s because not %s > %s." %
+                    debug("  Not updated %s because not %s > %s." % 
                            (other, this_timestamp, old_timestamp))
 
         # now let's see if we have still work to do
@@ -410,7 +410,7 @@ class Model(Generator):
         return s
 
     def summary(self):
-        info("--- Model: %d blocks, %d connections" %
+        info("--- Model: %d blocks, %d connections" % 
             (len(self.name2block), len(self.name2block_connection)))
         for name, block in self.name2block.items():
             info("- %s: %s" % (name, block))

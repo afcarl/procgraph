@@ -114,10 +114,15 @@ class Text(Block):
             if not 'string' in text:
                 raise BadConfig('Missing field "string" in text spec %s.' % 
                                 text.__repr__(), self, 'texts')
-            text['string'] = Text.replace(text['string'], macros)
+
+            try:
+                text['string'] = Text.replace(text['string'], macros)
+            except KeyError as e:
+                msg = str(e) + '\nAvailable: %s.' % macros.keys()
+                raise BadConfig(msg, self, 'texts')
+
             p = text['position']
             
-            # XXX: catch exception, raise BadConfig
             try:
                 p[0] = get_ver_pos_value(p[0], height=rgb.shape[0])
                 p[1] = get_hor_pos_value(p[1], width=rgb.shape[1])
@@ -135,6 +140,7 @@ class Text(Block):
     def replace(s, macros):
         ''' Expand macros in the text. '''
         return s.format(**macros)
+ 
 
 def get_hor_pos_value(spec, width):
     if isinstance(spec, str):
