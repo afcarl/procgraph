@@ -9,3 +9,7 @@ docs/build/
 .noseids
 src/coverage_information
 clean_pgc.sh
+*.metadata.yaml
+*.metadata.mov
+*.metadata.mp4
+*.mov
