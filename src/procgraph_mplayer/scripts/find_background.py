@@ -7,6 +7,8 @@ from procgraph_pil import imread, imwrite
 from reprep import scale
 import numpy as np
 import os
+from procgraph.utils.calling_ext_program import system_cmd_result
+from procgraph.utils.friendly_paths import friendly_path
 
 
 
@@ -39,16 +41,25 @@ def main():
 
 def get_frame(video, when):
     # out = join(tmp_path, 'frame%s.png' % when)
-    out = 'tmp_frame.png'
-    cmd = ("ffmpeg -ss %s -i %s -y -f image2 -vframes 1 %s" % (when, video, out))
-    os.system(cmd)
+    out = os.path.basename(video) + '.tmp_frame%f.png' % when
+    cmd = ("ffmpeg -ss %s -i %s -y -f image2 -vframes 1 %s" % (when, video, out))    
+    system_cmd_result(cwd='.', cmd=cmd,
+                      display_stdout=False,
+                      display_stderr=False,
+                      raise_on_error=True,
+                      capture_keyboard_interrupt=False)  # @UnusedVariable
+    
     frame = imread(out)
+    os.unlink(out)
     return frame
         
 from os.path import dirname, exists, basename, splitext, join
 
 @contract(whens='list[>=3](float)')
 def find_background(video, whens, debug=False, tmp_path=None):
+    if not os.path.exists(video):
+        msg = 'Filename does not exist: %s' % friendly_path(video) 
+        raise ValueError(msg)
     id_video = splitext(basename(video))[0]
     
     if tmp_path is None:
@@ -56,6 +67,7 @@ def find_background(video, whens, debug=False, tmp_path=None):
     if not exists(tmp_path):
         os.makedirs(tmp_path)
     
+    @contract(rgb='array[HxWx3](uint8)')
     def write_debug(rgb, id_image):
         if debug:
             f = join(tmp_path, '%s.png' % id_image)

@@ -1,3 +1,5 @@
+import traceback
+from procgraph.utils.strings import indent
 
 
 class PGException(Exception):
@@ -49,8 +51,31 @@ class PGSyntaxError(ModelWriterError):
 
 
 class ModelExecutionError(PGException):
-    ''' Runtime errors, including misuse by the user '''
+    ''' 
+        Runtime errors, including misuse by the user.
+    
+    '''
     pass
+
+
+class BadMethodCall(ModelExecutionError):
+    ''' Exception thrown to communicate a problem with one
+        of the configuration values passed to the block. '''
+
+    def __init__(self, method, block, user_exception):
+        self.method = method
+        self.block = block
+        self.user_exception = traceback.format_exc(user_exception)
+        
+ 
+    def __str__(self):
+        s = ('User-thrown exception while calling %s() for block %r. ' 
+             % (self.method, self.block.name))
+        s += '\n' + indent(self.user_exception, '> ') 
+        return s
+
+
+
 
 
 class BadInput(ModelExecutionError):
@@ -75,7 +100,7 @@ class BadInput(ModelExecutionError):
             name = '(unknown)'
 
         # TODO: add short bad_value
-        s = ("Bad input %r for block %r: %s" %
+        s = ("Bad input %r for block %r: %s" % 
              (self.input_signal, name, self.error))
         s += format_where(self.block)
         return s
@@ -99,7 +124,7 @@ class BadConfig(ModelExecutionError):
         else:
             name = '(unknown)'
 
-        s = ("Bad config %r = %r for block %r: %s" %
+        s = ("Bad config %r = %r for block %r: %s" % 
              (self.config, self.bad_value, name, self.error))
         s += format_where(self.block)
         return s
@@ -118,7 +143,7 @@ def aslist(x):
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
     # TODO: add guess in case of typos
-    return ('Could not find %s %r. I know %s.' %
+    return ('Could not find %s %r. I know %s.' % 
             (what, x, aslist(iterable)))
 
 

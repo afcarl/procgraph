@@ -1,12 +1,14 @@
-import subprocess
-import os
-import numpy
-import tempfile
-
 from procgraph import Generator, Block, ModelExecutionError, BadConfig
 from procgraph.block_utils import expand
 from procgraph.utils import friendly_path
 import math
+import numpy
+import os
+import subprocess
+import tempfile
+from procgraph_mplayer.conversions.video_info import pg_video_info
+
+
 
 
 class MPlayer(Generator):
@@ -60,46 +62,17 @@ class MPlayer(Generator):
     def open_mencoder(self):
         self.mencoder_started = True
 
-        # first we identify the video resolution
-        args = ('mplayer -identify -vo null -ao null -frames 0'.split()
-                + [self.file])
-        output = check_output(args)
+        info = pg_video_info(self.file)
 
-        info = {}
-        for line in output.split('\n'):
-            if line.startswith('ID_'):
-                key, value = line.split('=', 1)
-                try:  # interpret numbers if possible
-                    value = eval(value)
-                except:
-                    pass
-                info[key] = value
-
-        # self.debug("Video configuration: %s" % info)
-
-        keys = ["ID_VIDEO_WIDTH", "ID_VIDEO_HEIGHT",
-                "ID_VIDEO_FPS", "ID_LENGTH"]
-        id_width, id_height, id_fps, id_length = keys
-        for k in keys:
-            if not k in info:
-                msg = ('Could not find key %r in properties %s.' % 
-                      (k, sorted(info.keys())))
-                raise ModelExecutionError(msg, self)
-
-        if id_length == 0:
-            msg = 'I could not find find the length of this movie.'
-            msg += (' I ran:\n\t%s\n and this is the output:\n' % 
-                   (" ".join(args), output))
-            self.info(msg)  # XXX: use warning
-
-        self.width = info[id_width]
-        self.height = info[id_height]
-        self.fps = info[id_fps]
-        self.length = info[id_length]
+        self.width = info['width']
+        self.height = info['height']
+        self.fps = info['fps']
+        self.length = info['length']
+        self.state.timestamp = info['timestamp']
         self.approx_frames = int(math.ceil(self.length * self.fps))
 
         # TODO: reading non-RGB streams not supported
-        self.info('Reading %dx%d @ %.1f fps '
+        self.info('Reading %dx%d @ %.3f fps '
                   ' (length %ss, approx %d frames), from %s.' % 
                    (self.width, self.height, self.fps,
                     self.length, self.approx_frames,
@@ -122,8 +95,6 @@ class MPlayer(Generator):
                 '-o',
                 self.fifo_name
                 ]
-
-        # self.debug("command line: %s" % " ".join(args))
 
         self.tmp_stdout = tempfile.TemporaryFile()
         self.tmp_stderr = tempfile.TemporaryFile()

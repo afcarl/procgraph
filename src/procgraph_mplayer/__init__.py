@@ -1,6 +1,6 @@
 ''' Blocks for encoding/decoding video based on MPlayer. '''
 
-from .mp4conversion import *
+from .mp4conversion import convert_to_mp4
 from .mencoder import *
 from .mplayer import *
 from .depth_buffer import *

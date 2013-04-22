@@ -1,16 +1,17 @@
-from . import convert_to_mp4
 from .scripts.crop_video import video_crop
 from contextlib import contextmanager
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
     check_rgb_or_grayscale)
 from procgraph.utils import friendly_path, indent
+
 import numpy
 import os
 import signal
 import subprocess
 import tempfile
-
+from procgraph_mplayer.conversions import pg_video_convert
+# from procgraph_mplayer.mp4conversion import convert_to_mkv
 
 
 class MEncoder(Block):
@@ -48,22 +49,29 @@ class MEncoder(Block):
     Block.config('fps_safe', 'If the frame autodetect gives strange results, '
                              'we use this safe value instead.', default=10)
 
-    Block.config('vcodec', 'Codec to use.', default='mpeg4')
-    Block.config('vbitrate', 'Bitrate -- default is reasonable.',
-                             default=2000000)
     Block.config('quiet', "If True, suppress mencoder's messages",
                  default=True)
     Block.config('timestamps', "If True, also writes <file>.timestamps that"
-        " includes a line with the timestamp for each frame", default=True)
+                               " includes a line with the timestamp for each frame", default=True)
 
     Block.config('crop', "If true, the video will be "
                  "post-processed and cropped", default=False)
+    
+    Block.config('md', 'Metadata for the file.', default={})
 
+    Block.config('container', 'Which container to use; if None, it will be guessed.', default=None)
+    Block.config('vcodec', 'Codec to use. If None, it will be guessed', default=None)
+    Block.config('vcodec_params', 'Codec-depedent params.', default={})
+
+    Block.config('firstpass_bitrate', default=3 * 1000 * 1000)
+    
     def init(self):
         self.process = None
         self.buffer = []
         self.image_shape = None  # Shape of image being encoded
 
+        self.first_frame_timestamp = None
+        
     def update(self):
         check_rgb_or_grayscale(self, 0)
 
@@ -79,6 +87,10 @@ class MEncoder(Block):
             # initialization was succesful
             while self.buffer:
                 timestamp, image = self.buffer.pop(0)
+                
+                if self.first_frame_timestamp is None:
+                    self.first_frame_timestamp = timestamp
+                    
                 self.write_value(timestamp, image)
 
     def try_initialization(self):
@@ -137,8 +149,8 @@ class MEncoder(Block):
         else:
             fps = self.config.fps
 
-        vcodec = self.config.vcodec
-        vbitrate = self.config.vbitrate
+        # firstpass_vcodec = self.config.firstpass_vcodec
+        vbitrate = self.config.firstpass_bitrate
 
         self.filename = expand(self.config.file)
         if os.path.exists(self.filename):
@@ -146,11 +158,10 @@ class MEncoder(Block):
                       friendly_path(self.filename))
             os.unlink(self.filename)
 
-        _, ext = os.path.splitext(self.filename)
+        
 
         self.tmp_filename = '%s-active.avi' % self.filename
-        self.convert_to_mp4 = ext in ['.mp4', '.MP4']
-
+        
         make_sure_dir_exists(self.filename)
 
         self.info('Writing %dx%d %s video stream at %.3f fps to %r.' % 
@@ -161,7 +172,7 @@ class MEncoder(Block):
             ovc = ['-ovc', 'lavc', '-lavcopts', 'vcodec=png']
         else:
             ovc = ['-ovc', 'lavc', '-lavcopts',
-                  'vcodec=%s:vbitrate=%d' % (vcodec, vbitrate)]
+                  'vcodec=%s:vbitrate=%d' % ('mpeg4', vbitrate)]
 
         out = ['-o', self.tmp_filename]
         args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
@@ -196,22 +207,44 @@ class MEncoder(Block):
         if self.config.timestamps:
             self.timestamps_filename = self.filename + '.timestamps'
             self.timestamps_file = open(self.timestamps_filename, 'w')
+ 
+ 
+    def _get_metadata(self):
+        """ Returns the user-given metadata as well as some extra created by us. """
+        metadata = self.config.md
+        # metadata['author'] = 'procgraph'
+        # metadata['show'] = 'procgraph'
+        # metadata['title'] = 'A video by me.'
+        # metadata['comment'] = 'Another video by me.'
+        return metadata
 
+      
     def finish(self):
         if self.process is None:
             self.error('Finish() before starting to encode.')
             return
+        
+        timestamp = self.first_frame_timestamp 
+        metadata = self._get_metadata()
+        container = self.config.container
+        vcodec = self.config.vcodec
+        vcodec_params = self.config.vcodec_params
+        
+        self.info('Transcoding %s' % friendly_path(self.filename))
+        pg_video_convert(self.tmp_filename,
+                         self.filename,
+                         container=container,
+                         vcodec=vcodec,
+                         vcodec_params=vcodec_params,
+                         timestamp=timestamp,
+                         metadata=metadata)
+        
+        if os.path.exists(self.tmp_filename):
+            os.unlink(self.tmp_filename)
 
-        if self.convert_to_mp4:
-            self.debug('Converting %s to %s' % 
-                        (friendly_path(self.tmp_filename),
-                         friendly_path(self.filename)))
-            convert_to_mp4(self.tmp_filename, self.filename)
-
-            if os.path.exists(self.tmp_filename):
-                os.unlink(self.tmp_filename)
-        else:
-            os.rename(self.tmp_filename, self.filename)
+        if True:
+            T = self.first_frame_timestamp
+            os.utime(self.filename, (T, T))
 
         self.info('Finished %s' % friendly_path(self.filename))
 

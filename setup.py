@@ -20,7 +20,7 @@ problems = set()
 for module, info in index['packages'].items():
     for requirement, options in info['requires'].items():
         if not any([is_package_available(op) for op in options]):
-            print("For package %r, dependency %r cannot be satisfied." %
+            print("For package %r, dependency %r cannot be satisfied." % 
 				  (module, requirement))
             missing[requirement] = options
             # XXX: this is slightly incorrect if different packages want
@@ -50,8 +50,8 @@ if missing:
     print('\nI will go ahead and install everything, but you should install the missing \n'
           'packages for maximum functionality. An error will be thrown when you actually \n'
           'try to use the blocks in those packages. \n')
-    #if os.isatty(0):	    
-#	raw_input('             Press any key to continue...')  
+    # if os.isatty(0):	    
+# 	raw_input('             Press any key to continue...')  
     print('\n\n')
 
 # check we are not forgetting new packages that weren't included in the 
@@ -105,7 +105,9 @@ setup(name='procgraph',
            'pgdoc = procgraph.scripts.pgdoc:main',
            'pgindex = procgraph.scripts.pgindex:main',
            # some other utils
-           'pg-video-crop = procgraph_mplayer.scripts.crop_video:main',
+    	   'pg-video-info = procgraph_mplayer.scripts.video_info:main',
+    	   'pg-video-convert = procgraph_mplayer.scripts.video_convert:main',
+	       'pg-video-crop = procgraph_mplayer.scripts.crop_video:main',
            'pg-video-join = procgraph_mplayer.scripts.join_video:main',
            'pg-video-background = procgraph_mplayer.scripts.find_background:main',
            'pg-video-tomp4 = procgraph_mplayer.scripts.tomp4:main',

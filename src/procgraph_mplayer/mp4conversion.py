@@ -1,8 +1,95 @@
 from procgraph.utils import system_cmd_result, CmdException
+from procgraph_mplayer.conversions.containers import do_quickstart
+from procgraph_mplayer.conversions.metadata import get_ffmpeg_metadata_args
+from procgraph_mplayer.conversions.vcodecs import (get_x264_encoder_params,
+    get_prores_encoder_params)
 import os
 
+def validate_args(filename, out, my_ext):
+    """ Returns out """ 
+    
+    basename, _ = os.path.splitext(filename)
 
-def convert_to_mp4(filename, mp4=None, quiet=True):
+    if out is None:
+        out = basename + my_ext
+        
+    if os.path.splitext(out)[1] != my_ext:
+        msg = 'I expect a %r as out (%r)' % (my_ext, out)
+        raise ValueError(msg)
+
+    if os.path.splitext(filename)[1] == my_ext:
+        msg = 'Need a file that does not end in %r (%r)' % (my_ext, filename)
+        raise ValueError(msg)
+    
+    if not os.path.exists(filename):
+        msg = 'Input filename does not exist (%r)' % filename
+        raise ValueError(msg)
+
+    if os.path.exists(out):
+        os.unlink(out)
+        
+    return out
+
+
+
+def convert_to_mov_prores(filename, out=None, quiet=True, profile=3, qv=None, timestamp=None, metadata={}):
+    my_ext = '.mov'    
+    out = validate_args(filename, out, my_ext)
+
+    cmds = ['ffmpeg']
+    cmds += ['-y']
+    cmds += ['-i', filename]
+    cmds += ['-f', 'mov']
+    cmds += ['-an']  # no audio
+    cmds += get_prores_encoder_params(profile, qv)
+    cmds += get_ffmpeg_metadata_args(metadata, timestamp)
+    cmds += [out]
+    
+    try:
+        system_cmd_result('.', cmds,
+                  display_stdout=not quiet,
+                  display_stderr=not quiet,
+                  raise_on_error=True,
+                  capture_keyboard_interrupt=False)
+    except CmdException:
+        if os.path.exists(out):
+            os.unlink(out)
+        raise
+    
+    assert os.path.exists(out)
+
+
+def convert_to_mkv_mp4(filename, out=None, quiet=True, crf=18, preset='medium', timestamp=None, metadata={}):
+    """
+        Converts to a matrioska file with all metadata.
+        
+    """
+    my_ext = '.mkv'
+    out = validate_args(filename, out, my_ext)
+    
+
+    cmds = ['ffmpeg']
+    cmds += ['-y']
+    cmds += ['-i', filename]
+    cmds += get_x264_encoder_params(crf, preset)
+    cmds += get_ffmpeg_metadata_args(metadata, timestamp)
+    cmds += [out]
+    
+    try:
+        system_cmd_result('.', cmds,
+                  display_stdout=not quiet,
+                  display_stderr=not quiet,
+                  raise_on_error=True,
+                  capture_keyboard_interrupt=False)
+    except CmdException:
+        if os.path.exists(out):
+            os.unlink(out)
+        raise
+    
+    assert os.path.exists(out)
+
+    
+def convert_to_mp4(filename, mp4=None, quiet=True, crf=18, preset='medium', timestamp=None, metadata={}):
     """ 
         Creates a web-ready mp4 using ffmpeg.
     
@@ -17,14 +104,20 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
          libavformat-extra-52 libavutil-extra-49 libpostproc-extra-51 libswscale-extra-0)
        
     """
-
-    basename, ext = os.path.splitext(filename)
-    if ext == 'mp4':
-        msg = 'Need a file that does not end in .mp4 (%r)' % filename
+    my_ext = '.mp4'
+    
+    if os.path.splitext(mp4)[1] != my_ext:
+        msg = 'I expect a %r as out (%r)' % (my_ext, mp4)
         raise ValueError(msg)
 
+    if os.path.splitext(filename)[1] == my_ext:
+        msg = 'Need a file that does not end in %r (%r)' % (my_ext, filename)
+        raise ValueError(msg)
+    
+    basename, _ = os.path.splitext(filename)
+
     if mp4 is None:
-        mp4 = basename + '.mp4'
+        mp4 = basename + my_ext
 
     # need .mp4 at the end otherwise ffmpeg gets confused
     tmp = basename + '.mp4.firstpass.mp4'
@@ -41,60 +134,27 @@ def convert_to_mp4(filename, mp4=None, quiet=True):
     if os.path.exists(mp4):
         os.unlink(mp4)
 
-    # Let's detect ffmpeg version
-    res = system_cmd_result('.', ['ffmpeg', '-version'])
-    ffmpeg_version = res.stdout.split('\n')[0]
+    cmds = ['ffmpeg']
+    cmds += ['-y']
+    cmds += ['-i', filename]
+    cmds += get_x264_encoder_params(crf, preset)
+    cmds += get_ffmpeg_metadata_args(metadata, timestamp)
+    cmds += [tmp]
     
-    # SVN-r0.5.9-4:0.5.9-0ubuntu0.10.04.3
+    print cmds
     
-    # if 'ubuntu0.10.04.3' in ffmpeg_version:
-    if '0.5' in ffmpeg_version:
-        presets = ['-vpre', 'libx264-default']
-    else:
-        presets = ['-preset', 'medium']
-        
-    # print('Version string: %s' % ffmpeg_version)
-
-    cmds = ['ffmpeg', '-y', '-i', filename,
-            # TODO: detect whether we can use these presets
-            # TODO: make presets configurable
-            '-vcodec', 'libx264']
-    cmds.extend(presets)
-    cmds += ['-crf', '22',
-            # '-threads', '1', # limit to one thread
-             tmp]
-
     try:
         system_cmd_result('.', cmds,
                   display_stdout=not quiet,
                   display_stderr=not quiet,
                   raise_on_error=True,
                   capture_keyboard_interrupt=False)
-    except CmdException as e:
+    except CmdException:
         if os.path.exists(tmp):
             os.unlink(tmp)
         raise
 
-    # TODO: check file exists
-    names = ['qtfaststart', 'qt-faststart']
-    errors = []
-    for name in names:
-        cmd = [name, tmp, mp4]
-        try:
-            system_cmd_result('.', cmd,
-                      display_stdout=False,
-                      display_stderr=False,
-                      raise_on_error=True,
-                      capture_keyboard_interrupt=False)
-            break
-        except CmdException as e:
-            errors.append(e)
-
-    else:
-        msg = ('Could not call either of %s. '
-               'The file will not be ready for streaming.\n%s' % 
-               (names, errors))
-        os.rename(tmp, mp4)
-
+    do_quickstart(source=tmp, target=mp4)
+    
     if os.path.exists(tmp):
         os.unlink(tmp)

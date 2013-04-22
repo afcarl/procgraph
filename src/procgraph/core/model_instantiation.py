@@ -14,6 +14,7 @@ from .model_io import ModelInput
 from .parsing_elements import (ParsedSignalList, VariableReference,
                                ParsedBlock, ParsedModel, ParsedSignal)
 from .constants import STRICT
+from procgraph.core.exceptions import BadMethodCall, PGException
 
 
 def check_link_compatibility_input(previous_block, previous_link):
@@ -331,8 +332,9 @@ def create_from_parsing_results(parsed_model, name=None, config={},
 
                 define_input_signals(generator.input, block,
                                      previous_link, previous_block, model)
+                
                 define_output_signals(generator.output, block)
-
+                
                 # at this point input/output should be defined
                 assert block.are_input_signals_defined()
                 assert block.are_output_signals_defined()
@@ -390,7 +392,13 @@ def define_output_signals(output, block):
                                     output[0].type == DEFINED_AT_RUNTIME)
 
     if output_is_defined_at_runtime:
-        names = block.get_output_signals()
+        try:
+            names = block.get_output_signals()
+        except PGException:
+            raise
+        except Exception as user_exception:
+            raise BadMethodCall('get_output_signals', block, user_exception)
+        
         if len(set(names)) != len(names):
             msg = ('Repeated signal names in %s.' % names)
             raise SemanticError(msg, block)
@@ -402,8 +410,15 @@ def define_output_signals(output, block):
 
     if output_is_variable:
         # define output signals with the same name as the input signals
-        names = block.get_input_signals_names()
-        # TODO: maybe add a suffix someday
+        
+        try:
+            names = block.get_input_signals_names()
+        except PGException:
+            raise
+        except Exception as user_exception:
+            raise BadMethodCall('get_input_signals_names', block, user_exception)
+
+# TODO: maybe add a suffix someday
         # names = [name + suffix for name in names]
 
         block.define_output_signals_new(names)

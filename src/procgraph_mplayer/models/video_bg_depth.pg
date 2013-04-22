@@ -22,8 +22,9 @@ sub, bg -> |async| -> |alpha_add| -> out
 
 out -> |mencoder file="${out}.depth.result.mp4"|
 
-# Optional
-sub -> |to_rgb| -> |mencoder file="${out}.depth.sub.mp4"|
-line -> |mencoder file="${out}.depth.line.mp4"|
-zbuffer -> |scale| -> |mencoder file="${out}.depth.zbuffer.mp4"|
-rgba_depth -> |to_rgb| -> |mencoder file="${out}.depth.rgba_depth.mp4"|
+
+# Optional debug stuff
+# sub -> |to_rgb| -> |mencoder file="${out}.depth.sub.mp4"|
+# line -> |mencoder file="${out}.depth.line.mp4"|
+# zbuffer -> |scale| -> |mencoder file="${out}.depth.zbuffer.mp4"|
+# rgba_depth -> |to_rgb| -> |mencoder file="${out}.depth.rgba_depth.mp4"|
