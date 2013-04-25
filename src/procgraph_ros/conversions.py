@@ -70,9 +70,9 @@ def rgb_from_pil(im):
 
 # Number of channels used by a PIL image mode
 def imgmsg_to_pil(rosimage, encoding_to_mode={
-        'mono8' :     'L',
-        '8UC1' :      'L',
-        '8UC3' :      'RGB',
+        'mono8':     'L',
+        '8UC1':      'L',
+        '8UC3':      'RGB',
         'rgb8':       'RGB',
         'bgr8':       'RGB',
         'rgba8':      'RGBA',
@@ -132,8 +132,8 @@ def imgmsg_to_pil(rosimage, encoding_to_mode={
             im = PIL.Image.merge('RGB', im.split()[-1::-1])
         return im, data, dimsizes
   
-def pil_to_imgmsg(image, encodingmap={'L':'mono8', 'RGB':'rgb8', 'RGBA':'rgba8', 'YCbCr':'yuv422'},
-                        PILmode_channels={ 'L' : 1, 'RGB' : 3, 'RGBA' : 4, 'YCbCr' : 3 }):
+def pil_to_imgmsg(image, encodingmap={'L': 'mono8', 'RGB': 'rgb8', 'RGBA': 'rgba8', 'YCbCr': 'yuv422'},
+                        PILmode_channels={'L': 1, 'RGB': 3, 'RGBA': 4, 'YCbCr': 3}):
     rosimage = sensor_msgs.msg.Image()
     # adam print 'Channels image.mode: ',PILmode_channels[image.mode]
     rosimage.encoding = encodingmap[image.mode]

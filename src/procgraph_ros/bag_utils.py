@@ -2,6 +2,7 @@ import subprocess
 import yaml
 import rosbag
 from contracts import contract
+from procgraph.utils.inawhile import InAWhile
    
 
 def rosbag_info(bag):
@@ -32,8 +33,6 @@ from procgraph import logger as pg_logger
 from rospy import rostime
 
 def read_bag_stats_progress(source, logger, interval=5):
-    from bootstrapping_olympics.utils.in_a_while import InAWhile
-
     tracker = InAWhile(interval)
     
     for topic, msg, t, extra in source:

@@ -1,4 +1,4 @@
-from procgraph import Generator, Block, ModelExecutionError, BadConfig
+from procgraph import Generator, Block, BadConfig
 from procgraph.block_utils import expand
 from procgraph.utils import friendly_path
 import math
@@ -6,7 +6,7 @@ import numpy
 import os
 import subprocess
 import tempfile
-from procgraph_mplayer.conversions.video_info import pg_video_info
+from .conversions import pg_video_info
 
 
 

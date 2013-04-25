@@ -1,8 +1,7 @@
 from procgraph import Block, Generator
 from rospy.rostime import Time
-import warnings
 from contracts import contract
-from procgraph.core.exceptions import BadConfig
+from procgraph import BadConfig
 
 # warnings.warn('Remove limit')
 
