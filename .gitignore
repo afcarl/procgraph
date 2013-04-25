@@ -13,3 +13,4 @@ clean_pgc.sh
 *.metadata.mov
 *.metadata.mp4
 *.mov
+dist
