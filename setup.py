@@ -67,7 +67,7 @@ def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
-version = 1.5
+version = '1.6dev1'
 
 setup(name='procgraph',
       author="Andrea Censi",
