@@ -77,7 +77,7 @@ def pg_video_convert(filename,
     
     if container == CONTAINER_MP4:
         # do_quickstart(out1, out)
-        warnings.warn('Not sure why')
+        warnings.warn("Not sure why quickstart does not work.")
         os.rename(out1, out)
     else:
         assert out1 == out 
