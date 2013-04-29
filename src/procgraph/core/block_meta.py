@@ -13,13 +13,13 @@ class BlockConfig:
         self.where = where
 
     def __repr__(self):
-        return ('BlockConfig(%r,%r,%r,%r,%r)' %
+        return ('BlockConfig(%r,%r,%r,%r,%r)' % 
                 (self.variable, self.has_default, self.default,
                   self.desc, self.desc_rest))
 
 
 class BlockInput:
-    def __init__(self, type, name, min, max, #@ReservedAssignment
+    def __init__(self, type, name, min, max,  # @ReservedAssignment
                  desc, desc_rest, where):
         self.type = type
         self.name = name
@@ -33,7 +33,7 @@ class BlockInput:
 
 
 class BlockOutput:
-    def __init__(self, type, name, #@ReservedAssignment
+    def __init__(self, type, name,  # @ReservedAssignment
                  desc, desc_rest, where):
         self.type = type
         self.name = name
@@ -57,7 +57,8 @@ def block_config(name, description=None, default='not-given'):
     has_default = default != 'not-given'
     if [x for x in BlockMeta.tmp_config if x.variable == name]:
         cleanup()
-        raise BlockWriterError('Already described config variable %r.' % name)
+        msg = 'Already described config variable %r.' % name
+        raise BlockWriterError(msg)
     BlockMeta.tmp_config.append(BlockConfig(name, has_default, default,
                                             desc, desc_rest, None))
 
@@ -68,22 +69,24 @@ def block_input(name, description=None):
     desc, desc_rest = split_docstring(description)
     if [x for x in BlockMeta.tmp_input if x.name == name]:
         cleanup()
-        raise BlockWriterError('Already described input variable "%s".' % name)
+        msg = 'Already described input variable "%s".' % name
+        raise BlockWriterError(msg)
     if BlockMeta.tmp_input and BlockMeta.tmp_input[-1].type == VARIABLE:
         cleanup()
-        raise BlockWriterError('Cannot mix variable and fixed input.')
+        msg = 'Cannot mix variable and fixed input.'
+        raise BlockWriterError(msg)
     BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None,
                                           desc, desc_rest, None))
 
 
 def block_input_is_variable(description=None,
-                             min=None, max=None): #@ReservedAssignment
+                             min=None, max=None):  # @ReservedAssignment
     assert description is None or isinstance(description, str)
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_input:
         cleanup()
-        raise BlockWriterError('Cannot mix variable and fixed input'
-                               ' or variable with variable.')
+        msg = 'Cannot mix variable and fixed input or variable with variable.'
+        raise BlockWriterError(msg)
     BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max,
                                           desc, desc_rest, None))
 
@@ -94,11 +97,12 @@ def block_output(name, description=None):
     desc, desc_rest = split_docstring(description)
     if [x for x in BlockMeta.tmp_output if x.name == name]:
         cleanup()
-        raise BlockWriterError('Already described output variable "%s".'
-                               % name)
+        msg = 'Already described output variable %r.' % name
+        raise BlockWriterError(msg)
     if BlockMeta.tmp_output and BlockMeta.tmp_output[-1].type == VARIABLE:
         cleanup()
-        raise BlockWriterError('Cannot mix variable and fixed output.')
+        msg = 'Cannot mix variable and fixed output.'
+        raise BlockWriterError(msg)
 
     BlockMeta.tmp_output.append(BlockOutput(FIXED, name,
                                              desc, desc_rest, None))
@@ -110,7 +114,7 @@ def block_output_is_variable(description=None, suffix=None):
     if BlockMeta.tmp_output:
         cleanup()
         raise BlockWriterError('Cannot mix variable and fixed output'
-                      ' or variable with variable. (added already: %s)' %
+                      ' or variable with variable. (added already: %s)' % 
                          (BlockMeta.tmp_output))
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
                                             desc, desc_rest, None))
@@ -143,7 +147,7 @@ class BlockMeta(type):
     tmp_input = []
     tmp_output = []
 
-    def __init__(cls, clsname, bases, clsdict): #@UnusedVariable
+    def __init__(cls, clsname, bases, clsdict):  # @UnusedVariable
         # Do not do this for the superclasses 
         if clsname in ['Generator', 'Block']:
             return
@@ -194,7 +198,7 @@ class BlockMetaSugar(object):
         block_config(*arg, **kwargs)
 
     @staticmethod
-    def input(*arg, **kwargs): #@ReservedAssignment
+    def input(*arg, **kwargs):  # @ReservedAssignment
         block_input(*arg, **kwargs)
 
     @staticmethod
@@ -211,7 +215,7 @@ class BlockMetaSugar(object):
 
     @staticmethod
     def input_is_variable(description=None,
-                          min=None, max=None): #@ReservedAssignment
+                          min=None, max=None):  # @ReservedAssignment
         ''' Declares that this block can accept a variable number
             of inputs. You can specify minimum and maximum number. '''
         block_input_is_variable(description, min, max)
@@ -246,8 +250,8 @@ def trim(docstring):
 
     result = '\n'.join(trimmed)
 
-    #print 'input: """%s"""' % docstring
-    #print 'result: """%s"""' % result
+    # print 'input: """%s"""' % docstring
+    # print 'result: """%s"""' % result
     return result
 
 # TODO: remove space on the right
@@ -263,7 +267,7 @@ def split_docstring(s):
     valid_lines = [l for l in stripped if l]
     if valid_lines:
         for i in range(len(all_lines)):
-            if all_lines[i]: # found first
+            if all_lines[i]:  # found first
                 # join all non-empty lines with the first
                 j = i
                 while j < len(all_lines) - 1 and all_lines[j].strip():
