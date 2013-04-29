@@ -3,7 +3,8 @@ from ...core.block import Block
 
 
 class Minus(Block):
-    ''' Implements the difference of two signals, taking care of overflows. 
+    ''' 
+        Implements the difference of two signals, taking care of overflows. 
     
         Because that is rarely the semantics you want to give them.
     '''
@@ -34,7 +35,7 @@ class Minus(Block):
                 nexti = self.config.cases[dtype_string]
 
                 if not self.warned:
-                    self.info('Warning: promoting signal %r from %r to %r.' %
+                    self.info('Warning: promoting signal %r from %r to %r.' % 
                           (self.canonicalize_input(i),
                            dtype_string, nexti))
                     warned_now = True
