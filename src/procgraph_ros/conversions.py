@@ -21,7 +21,6 @@ def ros_scan2python(scan):
     #    print scan.__dict__.keys()
     return np.array(scan.ranges)
     
-
 def rgb_from_imgmsg(image):
     im, _, _ = imgmsg_to_pil(image)
     pix = np.asarray(im).astype(np.uint8)

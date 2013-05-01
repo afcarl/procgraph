@@ -1,6 +1,5 @@
 import subprocess
 import yaml
-import rosbag
 from contracts import contract
 from procgraph.utils.inawhile import InAWhile
    
@@ -30,7 +29,6 @@ def rosbag_info(bag):
 #       type: brics_actuator/JointPositions
 
 from procgraph import logger as pg_logger
-from rospy import rostime
 
 def read_bag_stats_progress(source, logger, interval=5):
     tracker = InAWhile(interval)
@@ -67,6 +65,8 @@ def read_bag_stats(bagfile, topics, logger=None):
             
     
     """
+    import rosbag  # @UnresolvedImport
+    from rospy import rostime  # @UnresolvedImport
     if logger is None:
         logger = pg_logger
         

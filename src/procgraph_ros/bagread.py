@@ -1,5 +1,5 @@
 from procgraph import Block, Generator
-from rospy.rostime import Time
+
 from contracts import contract
 from procgraph import BadConfig
 
@@ -80,6 +80,7 @@ class BagRead(Generator):
             also sets self.start_stamp, self.end_stamp
             
         """
+        from rospy.rostime import Time  # @UnresolvedImport
         self.info('limit: %r' % limit)
         if limit is not None and limit != 0:
 #             try:

@@ -1,0 +1,6 @@
+--- model cv_capture_demo
+
+|cv_capture| -> rgb
+
+rgb -> |cv_display|
+
