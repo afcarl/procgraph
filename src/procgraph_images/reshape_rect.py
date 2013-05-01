@@ -1,14 +1,19 @@
 from procgraph import simple_block
 import numpy as np
 
+__all__ = ['reshape_rectangular']
+
 
 @simple_block
 def reshape_rectangular(x, tall=True):
     ''' 
-        If x is not 2D already, reshape it to 2D.
-        Allow    
+        If x is not 2D already, reshape it to 2D using the best
+        factorization.    
         
         By default, the output is a "tall" array.
+        
+        Note that if the size of x is a prime number N,
+        the output will be 1 x N.
     '''
     if x.ndim == 2:
         return x
@@ -30,7 +35,7 @@ def get_best_shape(size, tall=True):
 
     divso = sorted(divs, key=score)
 
-    #print('divisors: %s' % divso)
+    # print('divisors: %s' % divso)
     shape = divso[0]
 
     it_is_tall = shape[0] > shape[1]

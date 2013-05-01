@@ -27,7 +27,7 @@ class BagWrite(Block):
     Block.config('file', 'Bag file to write')
 
     def init(self):
-        from ros import rosbag #@UnresolvedImport
+        from ros import rosbag  # @UnresolvedImport
 
         self.info('Writing to bag %r.' % self.config.file)
         make_sure_dir_exists(self.config.file)
@@ -43,7 +43,7 @@ class BagWrite(Block):
         os.rename(self.tmp_file, self.config.file)
 
     def update(self):
-        import rospy #@UnresolvedImport # XXX
+        import rospy 
         signals = self.get_input_signals_names()
 
         for signal in signals:

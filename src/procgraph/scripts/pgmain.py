@@ -8,6 +8,7 @@ from optparse import OptionParser
 import os
 import sys
 import traceback
+from procgraph.core.exceptions import BadMethodCall
 
 
 usage_short = \
@@ -48,12 +49,12 @@ def main():
     parser.disable_interspersed_args()
     additional_modules = []
 
-    def load_module(option, opt_str, value, parser): #@UnusedVariable
+    def load_module(option, opt_str, value, parser):  # @UnusedVariable
         additional_modules.append(value)
 
     additional_directories = []
 
-    def add_directory(option, opt_str, value, parser): #@UnusedVariable
+    def add_directory(option, opt_str, value, parser):  # @UnusedVariable
         additional_directories.append(value)
 
     parser.add_option("-m", dest="module",
@@ -82,7 +83,7 @@ def main():
     (options, args) = parser.parse_args()
 
     # TODO: make an option to display all the known models
-    #if options.debug:
+    # if options.debug:
     #    print "Configuration: %s" % config
     if not args:
         print(usage_short)
@@ -128,7 +129,7 @@ def parse_cmdline_args(args):
             except:
                 value = value_string
 
-        #value = parse_value(value_string)
+        # value = parse_value(value_string)
         config[key] = value
 
     while args:
@@ -170,7 +171,7 @@ def pg(filename, config,
                        additional_paths=additional_directories)
 
     # load standard components
-    import procgraph.components #@UnusedImport
+    import procgraph.components  # @UnusedImport
 
     if library.exists(block_type=filename):
         # XXX w = Where('command line', filename, 0)
@@ -186,7 +187,7 @@ def pg(filename, config,
             inputs = ", ".join([x.name.__repr__()
                                 for x in generator.input])
             msg = ('The model %r has %d input(s) (%s). "pg" can only '
-                   'execute models without inputs.' %
+                   'execute models without inputs.' % 
                   (filename, len(generator.input), inputs))
             # XXX nothing given
             raise SemanticError(msg, generator.input[0])
@@ -208,7 +209,7 @@ def pg(filename, config,
             else:
                 # TODO: add where for command line
                 msg = 'Unknown model or file %r.' % filename
-                raise SemanticError(msg, None) #XXX
+                raise SemanticError(msg, None)  # XXX
 
         # Make sure we use absolute pathnames so that we know the exact 
         # directory
@@ -228,16 +229,20 @@ def pg(filename, config,
         model.init()
 
         while model.has_more():
-            model.update()
+            try:
+                model.update()            
+            except BadMethodCall as e:
+                e.blocks.insert(0, model)
+                raise e
 
             if stats:
                 if count % 50 == 0:
                     model.print_stats()
-                    #debug_memory()
+                    # debug_memory()
 
                 count += 1
 
-        #info('Execution of %s finished quietly.' % model)
+        # info('Execution of %s finished quietly.' % model)
         model.finish()
 
     except KeyboardInterrupt:
@@ -250,7 +255,7 @@ def pg(filename, config,
         error('I will attempt clean-up.')
         raise
     finally:
-        #info('Cleaning up.')    
+        # info('Cleaning up.')    
         model.cleanup()
 
     return model

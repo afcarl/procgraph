@@ -2,6 +2,7 @@ from .timestamps import TIMESTAMP_FIELD, iso_from_timestamp
 from procgraph.utils import system_cmd_result, CmdException
 import os
 import yaml
+from . import logger
 
 
 def get_ffmpeg_metadata_args(md, timestamp):
@@ -40,8 +41,10 @@ def ffmpeg_get_metadata(video):
                   display_stderr=False,
                   raise_on_error=True,
                   capture_keyboard_interrupt=False)
-    except CmdException:
-        raise
+    except CmdException as e:
+        # TODO: be more descriptive
+        logger.debug(e)
+        return {}
     
     lines = res.stdout.split('\n')
     assert lines[0] == ';FFMETADATA1'

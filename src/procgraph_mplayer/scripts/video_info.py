@@ -17,7 +17,7 @@ def video_info_main(args):
 #     parser.add_option("-o", dest='output', type="string",
 #                       help='Output video.')
 
-    (options, args) = parser.parse_args(args)
+    (_, args) = parser.parse_args(args)
 
     if len(args) != 1:
         msg = 'Exactly one argument necessary.'
