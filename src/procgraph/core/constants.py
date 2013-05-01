@@ -42,6 +42,8 @@ DEFINED_AT_RUNTIME = 'defined-at-runtime'
 # ## When defining simple blocks
 # TODO: write documentation on how these work
 COMPULSORY = 'compulsory-param'
+REQUIRED = COMPULSORY
+
 TIMESTAMP = 'timestamp-param'
 
 

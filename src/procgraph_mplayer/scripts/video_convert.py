@@ -17,7 +17,7 @@ def video_convert_main(args):
 #     parser.add_option("-o", dest='output', type="string",
 #                       help='Output video.')
 
-    (options, args) = parser.parse_args(args)
+    (_, args) = parser.parse_args(args)
 
     if len(args) != 2:
         msg = 'Exactly 2 arguments necessary.'

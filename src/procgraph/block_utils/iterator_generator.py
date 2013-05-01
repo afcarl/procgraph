@@ -8,12 +8,11 @@ class IteratorGenerator(Generator):
     '''
 
     @abstractmethod
-    def get_iterator(self):
+    def init_iterator(self):
         """ Must return an iterator yielding signal, timestamp, values """
-        raise NotImplementedError()
 
     def init(self):
-        self.iterator = self.get_iterator()
+        self.iterator = self.init_iterator()
         self._load_next()
 
     def _load_next(self):
@@ -39,4 +38,4 @@ class IteratorGenerator(Generator):
         self.set_output(self.next_signal,
                         value=self.next_value, timestamp=self.next_timestamp)
 
-        self._load_next()
+        self._load_next() 

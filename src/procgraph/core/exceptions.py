@@ -59,22 +59,20 @@ class ModelExecutionError(PGException):
 
 
 class BadMethodCall(ModelExecutionError):
-    ''' Exception thrown to communicate a problem with one
-        of the configuration values passed to the block. '''
 
     def __init__(self, method, block, user_exception):
         self.method = method
-        self.block = block
+        self.blocks = [block]
         self.user_exception = traceback.format_exc(user_exception)
-        
  
     def __str__(self):
-        s = ('User-thrown exception while calling %s() for block %r. ' 
-             % (self.method, self.block.name))
+        block = self.blocks[-1]
+        s = ('User-thrown exception while calling %s() in block %r.' 
+             % (self.method, block.name))
+        for b in self.blocks[::-1]:
+            s += '\n- %s %s' % (b, id(b))
         s += '\n' + indent(self.user_exception, '> ') 
         return s
-
-
 
 
 

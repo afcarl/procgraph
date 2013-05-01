@@ -7,6 +7,7 @@ import logging
 logging.basicConfig()
 from logging import getLogger
 logger = getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # If true, does not allow .pgc caches
 deny_pgc_cache = True

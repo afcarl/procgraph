@@ -8,6 +8,7 @@ from .visualization import debug as debug_main, info, warning
 from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
 from ..utils import indent
 from .model_stats import write_stats
+from procgraph.core.exceptions import BadMethodCall
 
 
 class BlockConnection:
@@ -241,7 +242,13 @@ class Model(Generator):
 
     def finish(self):
         for block in self.name2block.values():
-            block.finish()
+            try:
+                block.finish()
+            except Exception as e:
+                raise BadMethodCall('finish', block, e)
+            except BadMethodCall as e:
+                e.blocks.insert(0, block)
+                raise e
 
     def cleanup(self):
         ''' We try hard to call cleanup() on all the blocks. '''
@@ -260,6 +267,7 @@ class Model(Generator):
             raise Exception(s)  # XXX: which other exception?
 
     def update(self):
+        
         def debug(s):
             if False:
                 debug_main('Model %s | %s' % (self.model_name, s))
@@ -317,7 +325,13 @@ class Model(Generator):
         start_cpu = time.clock()
         start_wall = time.time()
 
-        result = block.update()
+        try:
+            result = block.update()
+        except BadMethodCall as e:
+            e.blocks.insert(0, block)
+            raise e
+        except Exception as e:
+            raise BadMethodCall('update', block, e)
 
         cpu = time.clock() - start_cpu
         wall = time.time() - start_wall
