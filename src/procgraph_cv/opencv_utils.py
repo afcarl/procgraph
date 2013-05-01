@@ -3,11 +3,15 @@ import numpy
 from procgraph import  simple_block
 from procgraph.block_utils  import  check_2d_array
 
-from . import cv
+try:
+    from cv2 import cv  # @UnresolvedImport
+except:
+    pass
 
 
 def numpy_to_cv(numpy_array):
     ''' Converts a HxW or HxWx3 numpy array to OpenCV 'image' '''
+    
     dtype2depth = {
         'uint8': cv.IPL_DEPTH_8U,
         'int8': cv.IPL_DEPTH_8S,
@@ -47,7 +51,7 @@ def cv_to_numpy(im):
         cv.IPL_DEPTH_64F: 'float64',
     }
 
-    #arrdtype = im.depth
+    # arrdtype = im.depth
     a = numpy.fromstring(
          im.tostring(),
          dtype=depth2dtype[im.depth],
