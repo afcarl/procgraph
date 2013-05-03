@@ -2,9 +2,11 @@ import subprocess
 import yaml
 from contracts import contract
 from procgraph.utils.inawhile import InAWhile
+import warnings
    
 
 def rosbag_info(bag):
+    warnings.warn('remove, use the other version')
     stdout = subprocess.Popen(['rosbag', 'info', '--yaml', bag],
                               stdout=subprocess.PIPE).communicate()[0]
     info_dict = yaml.load(stdout)
@@ -31,6 +33,8 @@ def rosbag_info(bag):
 from procgraph import logger as pg_logger
 
 def read_bag_stats_progress(source, logger, interval=5):
+    warnings.warn('remove, use the other version')
+    
     tracker = InAWhile(interval)
     
     for topic, msg, t, extra in source:
@@ -65,6 +69,8 @@ def read_bag_stats(bagfile, topics, logger=None):
             
     
     """
+    warnings.warn('remove, use the other version')
+    
     import rosbag  # @UnresolvedImport
     from rospy import rostime  # @UnresolvedImport
     if logger is None:

@@ -113,9 +113,9 @@ def block_output_is_variable(description=None, suffix=None):
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_output:
         cleanup()
-        raise BlockWriterError('Cannot mix variable and fixed output'
-                      ' or variable with variable. (added already: %s)' % 
-                         (BlockMeta.tmp_output))
+        msg = ('Cannot mix variable and fixed output or variable with variable. '
+              '(added already: %s)' % (BlockMeta.tmp_output))
+        raise BlockWriterError(msg)
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
                                             desc, desc_rest, None))
 

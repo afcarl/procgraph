@@ -24,17 +24,20 @@ def resize(value, width=None, height=None):
         :return: image: The image as a numpy array.
         :rtype: rgb
     '''
-
-    image = Image_from_array(value)
+    H, W = value.shape[:2]
 
     if width is None and height is None:
         raise ValueError('You should pass at least one of width and height.')
 
     if width is None and height is not None:
-        width = (height * image.size[0]) / image.size[1]
+        width = (height * H) / W
     elif height is None and width is not None:
-        height = (width * image.size[1]) / image.size[0]
+        height = (width * W) / H
 
+    if width == H and height == H:
+        return value.copy()
+    
+    image = Image_from_array(value)
     # TODO: RGBA?
     image = image.resize((width, height))
     return np.asarray(image.convert("RGB"))

@@ -20,7 +20,7 @@ class Library:
                 return False
 
     def register(self, block_type, generator):
-        if  self.exists(block_type):
+        if self.exists(block_type):
             raise ValueError('Type %r already registered.' % block_type)
 
         self.name2block[block_type] = generator

@@ -1,19 +1,21 @@
 from procgraph import Block
 
-from cv2 import cv  # @UnresolvedImport
+from . import cv 
 import numpy as np
 import warnings
-from procgraph_cv.conversions import numpy_to_cv
+from .conversions import numpy_to_cv
 
 
 class Display(Block):
-    nimages = 0 
+    Block.alias('cv_display')
+
     
     Block.config('name', default=None)
     Block.config('position', default=None)
     
-    Block.alias('cv_display')
     Block.input('rgb')
+    
+    nimages = 0 
     
     def init(self):
         name = self.config.name

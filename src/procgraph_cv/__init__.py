@@ -12,14 +12,16 @@ procgraph_info = {
 from procgraph import import_magic, import_succesful
 cv = import_magic(__name__, 'cv2', 'cv')
 
-if import_succesful(cv):
-    from .opencv_utils import *
-    from .cv_capture import *
-    from .cv_display import *
-else:
-    print('Could not import CV')
+from .opencv_utils import *
+from .cv_capture import *
+from .cv_display import *
 
-# import opencv_utils
+
+if not import_succesful(cv):
+    from procgraph import logger
+    logger.warn('Could not import CV')
+
+
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)
 

@@ -1,10 +1,10 @@
+from . import cv  # @UnresolvedImport
+from .conversions import cv_to_numpy
 from procgraph import Generator, Block
-
-from cv2 import cv  # @UnresolvedImport
 import time
-from procgraph_cv.conversions import cv_to_numpy
 
-class Capture(Generator):
+
+class CVCapture(Generator):
 
     Block.alias('cv_capture')
     Block.config('cam', default=0)

@@ -37,8 +37,8 @@ class BagRead(Generator):
             topics = sorted(set(all_topics))
 
         self.baginfo = rosbag_info(bagfile)
-        res = resolve_topics(self.baginfo, topics)
-        self.info('Resolving:\n%s' % pformat(res))
+        res, _, asked2resolved = resolve_topics(self.baginfo, topics)
+        self.info('Resolving:\n%s' % pformat(asked2resolved))
         return res
     
     def get_output_signals(self):

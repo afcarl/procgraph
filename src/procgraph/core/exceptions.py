@@ -1,5 +1,7 @@
 import traceback
 from procgraph.utils.strings import indent
+from procgraph.utils.levenshtein_match import levenshtein_best_match
+from contracts import contract
 
 
 class PGException(Exception):
@@ -138,11 +140,15 @@ def aslist(x):
         return "<empty>"
 
 
+@contract(what='str', x='str', returns='str')
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
-    # TODO: add guess in case of typos
-    return ('Could not find %s %r. I know %s.' % 
-            (what, x, aslist(iterable)))
+    options = list(iterable)
+    guess, score = levenshtein_best_match(x, options)
+    
+    msg = ('Could not find %s %r in %d options. (Did you mean %r?)' % 
+            (what, x, len(options), guess))
+    return msg
 
 
 def add_prefix(s, prefix):
