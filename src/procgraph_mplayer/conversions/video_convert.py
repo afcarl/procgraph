@@ -40,10 +40,19 @@ def pg_video_convert(filename,
     logger.info('vcodec: %s' % vcodec)
     logger.info('vcodec_params: %s' % vcodec_params)
 
+    no_audio = True
+
     cmds = ['ffmpeg']
+    
+    # For using aac out
+    # cmds += ['-strict', '-2']
+    
+    
     cmds += ['-y']
     cmds += ['-i', filename]
     
+    if no_audio:
+        cmds += ['-an']
     cmds += VCODECS[vcodec](**vcodec_params)
     
     info = pg_video_info(filename)
@@ -61,6 +70,7 @@ def pg_video_convert(filename,
     else:
         out1 = out
         cmds += [out1]
+    
     
     try:
         system_cmd_result('.', cmds,
