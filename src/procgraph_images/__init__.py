@@ -16,7 +16,7 @@
 
 '''
 
-from . import filters
+from .filters import *
 from . import compose
 from . import imggrid
 from . import border
