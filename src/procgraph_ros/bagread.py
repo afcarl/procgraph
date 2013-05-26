@@ -1,9 +1,11 @@
-from procgraph import Block, Generator
 from contracts import contract
 from procgraph import BadConfig, Block, Generator
 from rosbag_utils import resolve_topics, rosbag_info
 import warnings
 from pprint import pformat
+
+
+__all__ = ['BagRead']
 
 class BagRead(Generator):
     ''' 
