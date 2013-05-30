@@ -1,7 +1,21 @@
 from .pil_conversions import Image_from_array
 from procgraph import simple_block
 import numpy as np
+from procgraph.core.constants import COMPULSORY
 
+__all__ = ['resize']
+
+@simple_block
+def pil_zoom(value, factor=COMPULSORY):
+    """ Zooms by a given factor """
+    # TODO: RGBA?
+    shape = value.shape[:2]
+    shape2 = (int(factor * shape[0]), int(factor * shape[1]))
+    height, width = shape2
+    image = Image_from_array(value) 
+    image = image.resize((width, height))
+    result = np.asarray(image.convert("RGB"))
+    return result
 
 @simple_block
 def resize(value, width=None, height=None):

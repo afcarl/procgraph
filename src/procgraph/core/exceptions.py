@@ -2,6 +2,7 @@ import traceback
 from procgraph.utils.strings import indent
 from procgraph.utils.levenshtein_match import levenshtein_best_match
 from contracts import contract
+from contracts.interface import describe_value
 
 
 class PGException(Exception):
@@ -102,6 +103,10 @@ class BadInput(ModelExecutionError):
         # TODO: add short bad_value
         s = ("Bad input %r for block %r: %s" % 
              (self.input_signal, name, self.error))
+        
+        if self.block is not None:
+            s += '\n value: %s' % describe_value(self.bad_value)
+        
         s += format_where(self.block)
         return s
 

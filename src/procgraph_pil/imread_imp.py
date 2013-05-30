@@ -1,10 +1,9 @@
-import numpy
-
-from procgraph import simple_block
-
 from . import Image
-from procgraph import Block
-from procgraph.core.block import Generator
+from procgraph import Block, Generator, simple_block
+import numpy as np
+
+
+__all__ = ['StaticImage', 'imread']
 
 class StaticImage(Generator):
     Block.alias('static_image')
@@ -15,16 +14,16 @@ class StaticImage(Generator):
         self.done = False
 
     def next_data_status(self):
-        #print('Status')
+        # print('Status')
         if self.done:
-            #print ('Return False, none')
+            # print ('Return False, none')
             return (False, None)
         else:
-            #print ('Return True, none')
-            return (True, 0) # XXX: not sure
+            # print ('Return True, none')
+            return (True, 0)  # XXX: not sure
     
     def update(self):
-        #print('update')
+        # print('update')
         self.set_output('rgb', imread(self.config.file), 0)
         self.done = True
     
@@ -46,6 +45,6 @@ def imread(filename):
         msg = 'Could not open filename "%s": %s' % (filename, e)
         raise Exception(msg)
 
-    data = numpy.array(im)
+    data = np.array(im)
 
     return data

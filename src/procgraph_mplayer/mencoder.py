@@ -2,15 +2,15 @@ from .scripts.crop_video import video_crop
 from contextlib import contextmanager
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
-    check_rgb_or_grayscale)
+    input_check_rgb_or_grayscale)
 from procgraph.utils import friendly_path, indent
-
+from procgraph_mplayer.conversions import pg_video_convert
 import numpy
 import os
 import signal
 import subprocess
 import tempfile
-from procgraph_mplayer.conversions import pg_video_convert
+
 # from procgraph_mplayer.mp4conversion import convert_to_mkv
 
 
@@ -73,7 +73,7 @@ class MEncoder(Block):
         self.first_frame_timestamp = None
         
     def update(self):
-        check_rgb_or_grayscale(self, 0)
+        input_check_rgb_or_grayscale(self, 0)
 
         # Put image in a buffer -- we don't use it right away
         image = self.get_input(0)

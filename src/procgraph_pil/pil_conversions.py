@@ -2,6 +2,7 @@ import numpy
 
 from . import Image
 
+__all__ = ['Image_from_array']
 
 def Image_from_array(a):
     ''' Converts an image in a numpy array to an Image instance.
@@ -9,7 +10,7 @@ def Image_from_array(a):
         Accepts:  h x w x 3  255  rgb  
         Accepts:  h x w x 4  255  rgba '''
 
-    #require_array(a)
+    # require_array(a)
 
     if not a.dtype == 'uint8':
         raise ValueError('I expect dtype to be uint8, got "%s".' % a.dtype)
@@ -33,7 +34,7 @@ def Image_from_array(a):
     else:
         raise ValueError('Unexpected shape "%s".' % str(a.shape))
 
-    #require_shape((gt(0), gt(0), 4), rgba) 
+    # require_shape((gt(0), gt(0), 4), rgba) 
 
     im = Image.frombuffer("RGBA", (width, height), rgba.data,
                            "raw", "RGBA", 0, 1)

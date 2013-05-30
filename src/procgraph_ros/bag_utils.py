@@ -3,13 +3,18 @@ import yaml
 from contracts import contract
 from procgraph.utils.inawhile import InAWhile
 import warnings
-   
+from conf_tools.utils.indent_string import indent
+from procgraph import logger   
 
 def rosbag_info(bag):
     warnings.warn('remove, use the other version')
     stdout = subprocess.Popen(['rosbag', 'info', '--yaml', bag],
                               stdout=subprocess.PIPE).communicate()[0]
-    info_dict = yaml.load(stdout)
+    try:
+        info_dict = yaml.load(stdout)
+    except:
+        logger.error('Could not parse yaml:\n%s' % indent(stdout, '| '))
+        raise
     return info_dict
 # Example output:
 # path: /home/andrea/01-youbot-ros-logs-good/unicornA_base1_2013-04-02-20-37-43.bag

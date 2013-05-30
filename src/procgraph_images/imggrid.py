@@ -1,15 +1,24 @@
-from numpy import ceil, sqrt, zeros
-
-from procgraph import Block, BadConfig
-from procgraph.block_utils import check_rgb_or_grayscale
-
-from .compose import place_at  # XXX:
-from procgraph_images.border import image_border
+from .border import image_border
+from .compose import place_at  
+from .filters import torgb
 from contracts import contract
+from numpy import ceil, sqrt, zeros
+from procgraph import Block, BadConfig
+from procgraph.block_utils import input_check_convertible_to_rgb
+
+
+__all__ = ['ImageGrid', 'make_images_grid']
 
 
 class ImageGrid(Block):
-    ''' A block that creates a larger image by arranging them in a grid. '''
+    '''
+        A block that creates a larger image by arranging them in a grid. 
+        
+        The output is rgb, uint8.
+        
+        Inputs are passed through the "torgb" function.
+    
+    '''
 
     Block.alias('grid')
 
@@ -26,7 +35,7 @@ class ImageGrid(Block):
             if self.get_input(i) is None:
                 # we only go if everything is ready
                 return
-            check_rgb_or_grayscale(self, i)
+            input_check_convertible_to_rgb(self, i)
 
         cols = self.config.cols
 
@@ -35,8 +44,9 @@ class ImageGrid(Block):
 
         images = [self.get_input(i) for i in range(n)]
         
+        images = map(torgb, images)
         canvas = make_images_grid(images,
-                                  cols=self.sols,
+                                  cols=self.config.cols,
                                   pad=self.config.pad,
                                   bgcolor=self.config.bgcolor)
         

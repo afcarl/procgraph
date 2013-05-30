@@ -1,7 +1,7 @@
 from math import ceil
 
 
-class Statistics:
+class Statistics(object):
 
     def __init__(self, block):
         self.block = block
@@ -19,7 +19,7 @@ class Statistics:
         self.delta_num = 0
 
 
-class ExecutionStats:
+class ExecutionStats(object):
 
     def __init__(self):
         self.samples = {}
@@ -89,7 +89,7 @@ def write_stats(samples):
     # sort by percentage
     alls = sorted(list(samples), key=lambda x: (-x.perc_wall))
     min_perc = 3
-    print('--- Statistics (ignoring < %d%%) baseline: %d iterations of %s' %
+    print('--- Statistics (ignoring < %d%%) baseline: %d iterations of %s' % 
           (min_perc, baseline.num, baseline.block))
     for s in alls:
         perc_cpu = ceil(s.perc_cpu * 100)
@@ -107,12 +107,12 @@ def write_stats(samples):
             comment = 'IO '
         else:
             comment = '   '
-        #print ''.join([
-        #'- cpu: %dms (+-%d%%) %02d%% of total; ' % 
+        # print ''.join([
+        # '- cpu: %dms (+-%d%%) %02d%% of total; ' % 
         # (1000 * s.mean_cpu, jitter_cpu, perc_cpu),
-        #'wall: %dms (+-%d%%) %02d%% of total; ' % 
-        #(1000 * s.mean_wall, jitter_wall, perc_wall),
-        #'exec: %02d%% of total' % perc_times])
+        # 'wall: %dms (+-%d%%) %02d%% of total; ' % 
+        # (1000 * s.mean_wall, jitter_wall, perc_wall),
+        # 'exec: %02d%% of total' % perc_times])
 
         if s.mean_delta > 0:
             fps = 1.0 / s.mean_delta

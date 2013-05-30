@@ -4,6 +4,7 @@ from procgraph.block_utils import expand
 import os
 import re
 
+__all__ = ['FilesFromDir']
 
 class FilesFromDir(Generator):
     ''' 
@@ -48,7 +49,7 @@ class FilesFromDir(Generator):
             return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string)]
 
         selected.sort(key=lambda x: natural_key(os.path.basename(x)))
-#        natsort(selected)
+
         self.info("Selected %d/%d files." % (len(selected), len(all_files)))
 
         fps = float(self.config.fps)
@@ -58,18 +59,6 @@ class FilesFromDir(Generator):
         frames = [(i / fps, f)
                     for i, f in enumerate(selected)]
 
-#        selected = selected[:24]
-#        
-#        print selected
-#        for x in selected:
-#            print x, natsort_key(x), cmp(natsort_key(x), natsort_key(selected[20]))
-#            
-#
-#        raise Exception()
-#        for a, b in frames:
-#            print('%10d %s' % (a, b))
-            
-            
         if not frames:
             raise Exception('No frames found in dir %r.' % dirname)
 

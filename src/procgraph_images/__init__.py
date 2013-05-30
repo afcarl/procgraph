@@ -17,16 +17,15 @@
 '''
 
 from .filters import *
-from . import compose
-from . import imggrid
-from . import border
-from . import images_from_dir
-from . import posterize
+from .compose import *
+from .imggrid import * 
+from .images_from_dir import *
+from .posterize import *
 
-from .border import image_border
-from .pad import image_pad
-from .blend import blend
-from .copied_from_reprep import posneg, scale
+from .border import *
+from .pad import *
+from .blend import *
+from .copied_from_reprep import *
 
 from .reshape_smart import *
 from .solid import *
@@ -34,5 +33,5 @@ from .crop import *
 
 from .alpha import *
 
-from . import reshape_rect
+from .reshape_rect import * 
 

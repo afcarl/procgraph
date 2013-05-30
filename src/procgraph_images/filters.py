@@ -1,7 +1,10 @@
-import numpy
-
+from contracts import contract, describe_value
 from procgraph import simple_block
 from procgraph.block_utils import assert_rgb_image, assert_gray_image
+import numpy as np
+from procgraph.block_utils.image_checks import check_convertible_to_rgb
+from procgraph.core.exceptions import BadInput
+
 
 @simple_block
 def as_uint8(rgb):
@@ -15,14 +18,33 @@ def as_float32(rgb):
     
 
 @simple_block
+@contract(returns='array[HxWx3](uint8)')
 def torgb(rgb):
-    nc = rgb.shape[2]
-    if nc == 3:
-        return rgb
-    if nc == 1:
+    """ Converts all image formats to RGB uint8. """
+    
+    try:
+        check_convertible_to_rgb(rgb)
+    except ValueError as e:
+        print describe_value(rgb)
+        raise BadInput(str(e), None, 0)
+    
+    if rgb.ndim == 2:
+        if rgb.dtype == 'float32':
+            rgb = (rgb * 255).astype('uint8')
         return gray2rgb(rgb)
+    
+    nc = rgb.shape[2]
     if nc == 4:
         return rgb[:, :, :3]
+
+    if nc == 3:
+        if rgb.dtype == 'float32':
+            return (rgb * 255).astype('uint8')
+        elif rgb.dtype == 'uint8':
+            return rgb
+        else:
+            msg = 'Expected image format: %s' % describe_value(rgb)
+            raise ValueError(msg)
 
 @simple_block
 def rgb2gray(rgb):
@@ -48,7 +70,8 @@ def rgb2gray(rgb):
 
 @simple_block
 def gray2rgb(gray):
-    ''' Converts a H x W grayscale into a H x W x 3 RGB image 
+    ''' 
+        Converts a H x W grayscale into a H x W x 3 RGB image 
         by replicating the gray channel over R,G,B. 
         
         :param gray: grayscale
@@ -59,7 +82,7 @@ def gray2rgb(gray):
     '''
     assert_gray_image(gray, 'input to rgb2grayscale')
 
-    rgb = numpy.zeros((gray.shape[0], gray.shape[1], 3), dtype='uint8')
+    rgb = np.zeros((gray.shape[0], gray.shape[1], 3), dtype='uint8')
     for i in range(3):
         rgb[:, :, i] = gray
     return rgb

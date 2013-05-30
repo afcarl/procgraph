@@ -1,6 +1,7 @@
 from procgraph import Generator
 from abc import abstractmethod
 
+__all__ = ['IteratorGenerator']
 
 class IteratorGenerator(Generator):
     ''' 

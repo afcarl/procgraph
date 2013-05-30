@@ -30,6 +30,8 @@ class Minus(Block):
 
         warned_now = False
         for i in [0, 1]:
+            if inputs[i] is None:
+                return
             dtype_string = str(inputs[i].dtype)
             if dtype_string in self.config.cases:
                 nexti = self.config.cases[dtype_string]
