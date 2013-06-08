@@ -149,7 +149,10 @@ def aslist(x):
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
     options = list(iterable)
-    guess, score = levenshtein_best_match(x, options)
+    if not options:
+        msg = 'Could not find %s %r; no options available.' % (what, x)
+        return msg
+    guess, _ = levenshtein_best_match(x, options)
     
     msg = ('Could not find %s %r in %d options. (Did you mean %r?)' % 
             (what, x, len(options), guess))
