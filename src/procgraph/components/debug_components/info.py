@@ -3,6 +3,7 @@ import numpy
 from procgraph import Block
 from datetime import datetime
 
+__all__ = ['Info']
 
 class Info(Block):
     ''' 
@@ -26,6 +27,10 @@ class Info(Block):
             name = self.canonicalize_input(i)
             val = self.get_input(i)
             ts = self.get_input_timestamp(i)
+            
+            if ts is None:
+                continue
+            
             if not i in self.first:
                 self.first[i] = ts
                 self.counter[i] = 0

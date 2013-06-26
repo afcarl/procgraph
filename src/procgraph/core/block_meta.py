@@ -1,5 +1,6 @@
 from .exceptions import BlockWriterError, ModelWriterError
 from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
+from contracts import ContractsMeta
 
 
 class BlockConfig:
@@ -141,13 +142,14 @@ def cleanup():
     BlockMeta.aliases = []
 
 
-class BlockMeta(type):
+class BlockMeta(ContractsMeta):
     aliases = []
     tmp_config = []
     tmp_input = []
     tmp_output = []
 
-    def __init__(cls, clsname, bases, clsdict):  # @UnusedVariable
+    def __init__(cls, clsname, bases, clsdict):  # @UnusedVariable @NoSelf
+        ContractsMeta.__init__(cls, clsname, bases, clsdict)
         # Do not do this for the superclasses 
         if clsname in ['Generator', 'Block']:
             return
