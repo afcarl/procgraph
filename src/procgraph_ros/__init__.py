@@ -22,7 +22,7 @@ rosbag = import_magic(__name__, 'ros', 'rosbag')
 
 from .bagread import BagRead
 from .bagwrite import BagWrite
-from .conversions import ros2python
+from .conversions import *
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)

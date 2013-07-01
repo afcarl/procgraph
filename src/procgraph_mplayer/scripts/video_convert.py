@@ -2,8 +2,8 @@
 from optparse import OptionParser
 from procgraph import logger
 from procgraph.utils import wrap_script_entry_point
-from procgraph_mplayer.conversions.video_info import pg_video_info
 from pprint import pformat
+from procgraph_mplayer.conversions.video_convert import pg_video_convert
 
 
 usage = """
@@ -26,7 +26,7 @@ def video_convert_main(args):
     filename1 = args[0]
     filename2 = args[1]
     
-    info = pg_video_info(filename1, filename2)
+    info = pg_video_convert(filename1, filename2)
 
     print pformat(info)
     

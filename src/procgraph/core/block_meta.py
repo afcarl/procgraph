@@ -1,5 +1,6 @@
 from .exceptions import BlockWriterError, ModelWriterError
 from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
+from contracts import ContractsMeta
 
 
 class BlockConfig:
@@ -113,9 +114,9 @@ def block_output_is_variable(description=None, suffix=None):
     desc, desc_rest = split_docstring(description)
     if BlockMeta.tmp_output:
         cleanup()
-        raise BlockWriterError('Cannot mix variable and fixed output'
-                      ' or variable with variable. (added already: %s)' % 
-                         (BlockMeta.tmp_output))
+        msg = ('Cannot mix variable and fixed output or variable with variable. '
+              '(added already: %s)' % (BlockMeta.tmp_output))
+        raise BlockWriterError(msg)
     BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
                                             desc, desc_rest, None))
 
@@ -141,13 +142,14 @@ def cleanup():
     BlockMeta.aliases = []
 
 
-class BlockMeta(type):
+class BlockMeta(ContractsMeta):
     aliases = []
     tmp_config = []
     tmp_input = []
     tmp_output = []
 
-    def __init__(cls, clsname, bases, clsdict):  # @UnusedVariable
+    def __init__(cls, clsname, bases, clsdict):  # @UnusedVariable @NoSelf
+        ContractsMeta.__init__(cls, clsname, bases, clsdict)
         # Do not do this for the superclasses 
         if clsname in ['Generator', 'Block']:
             return

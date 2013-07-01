@@ -27,14 +27,16 @@ def make_generic(name, inputs, num_outputs,
         else:
             annotations = DocStringInfo(docstring)
     except Exception as e:
-        #print('Malformed annotation for %r: %s' % (operation, e))
-        #print docstring
+        # print('Malformed annotation for %r: %s' % (operation, e))
+        # print docstring
         raise
 
     def get_param_annotation(key):
         if key in annotations.params:
             arg = annotations.params[key]
             description = arg.desc
+            if description is None:
+                description = ""
             if arg.type is not None:
                 description += ' (%s)' % arg.type
 
@@ -49,7 +51,7 @@ def make_generic(name, inputs, num_outputs,
         defined_in = None
 
         # XXX: does it work this way?
-        __doc__ = docstring #@ReservedAssignment
+        __doc__ = docstring  # @ReservedAssignment
         my_operation = operation
 
         for key, value in parameters.items():
@@ -70,6 +72,8 @@ def make_generic(name, inputs, num_outputs,
             if i < len(annotations.returns):
                 arg = annotations.returns[i]
                 description = arg.desc
+                if description is None:
+                    description = ""
                 if arg.type is not None:
                     description += ' (%s)' % arg.type
                 tokens = description.split(':')
@@ -100,7 +104,7 @@ def make_generic(name, inputs, num_outputs,
             # in the block reference for them.
             except (BadInput, BadConfig) as e:
                 e.block = self
-                raise
+                raise e
 
             if num_outputs == 1:
                 self.set_output(0, result)
@@ -134,7 +138,7 @@ def simple_block(alias=None, num_outputs=1):
             mod = inspect.getmodule(frm[0])
             defined_in = mod.__name__
 
-            #print("Registering %s: %s (with params %s %s)" % 
+            # print("Registering %s: %s (with params %s %s)" % 
             #      (defined_in, function, alias, num_outputs))
             register_simple_block(function, name=alias,
                                   num_outputs=num_outputs,
@@ -161,7 +165,7 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
         config = dict([(args_with_default[i], defaults[i])
                         for i in range(num_defaults)])
         inputs = args_no_argument
-    except Exception as e: #@UnusedVariable
+    except Exception as e:  # @UnusedVariable
         # TODO: add switch to show this
         # print "Does not work with %s: %s " % (function, e)
         config = params

@@ -1,5 +1,8 @@
 import traceback
 from procgraph.utils.strings import indent
+from procgraph.utils.levenshtein_match import levenshtein_best_match
+from contracts import contract
+from contracts.interface import describe_value
 
 
 class PGException(Exception):
@@ -100,6 +103,10 @@ class BadInput(ModelExecutionError):
         # TODO: add short bad_value
         s = ("Bad input %r for block %r: %s" % 
              (self.input_signal, name, self.error))
+        
+        if self.block is not None:
+            s += '\n value: %s' % describe_value(self.bad_value)
+        
         s += format_where(self.block)
         return s
 
@@ -138,11 +145,18 @@ def aslist(x):
         return "<empty>"
 
 
+@contract(what='str', x='str', returns='str')
 def x_not_found(what, x, iterable):
     ''' Shortcut for creating pretty error messages. '''
-    # TODO: add guess in case of typos
-    return ('Could not find %s %r. I know %s.' % 
-            (what, x, aslist(iterable)))
+    options = list(iterable)
+    if not options:
+        msg = 'Could not find %s %r; no options available.' % (what, x)
+        return msg
+    guess, _ = levenshtein_best_match(x, options)
+    
+    msg = ('Could not find %s %r in %d options. (Did you mean %r?)' % 
+            (what, x, len(options), guess))
+    return msg
 
 
 def add_prefix(s, prefix):

@@ -6,6 +6,7 @@ import subprocess
 import os
 import numpy
 
+__all__ = ['Text']
 
 def info(s):
     info_main('procgraph_pil/text: %s' % s)
@@ -238,8 +239,7 @@ def process_text(draw, t):
     font = get_font(fontname, size)
 
     tw, th = font.getsize(string)
-#    x, y = position[0], position[1]
-    y, x = position[0], position[1]
+    y, x = position[0], position[1]  # order is good
 
     halign = t.get('halign', 'left')
     valign = t.get('valign', 'top')

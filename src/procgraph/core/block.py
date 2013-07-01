@@ -7,7 +7,7 @@ from .block_config import resolve_config
 NOT_READY = None
 
 
-class Value:
+class Value(object):
     '''
         timestamp = ETERNITY     constant
         timestamp = NOT_READY = (None)         signal not ready 
@@ -216,7 +216,10 @@ class Block(BlockMetaSugar):
         return input_struct.value
 
     def get_input_timestamp(self, num_or_id):
-        ''' Gets the timestamp of an input signal. '''
+        ''' 
+            Gets the timestamp of an input signal (None if it 
+            has never been received).
+        '''
         input_struct = self.__get_input_struct(num_or_id)
         return input_struct.timestamp
 

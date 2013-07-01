@@ -1,14 +1,24 @@
+from .border import image_border
+from .compose import place_at  
+from .filters import torgb
+from contracts import contract
 from numpy import ceil, sqrt, zeros
-
 from procgraph import Block, BadConfig
-from procgraph.block_utils import check_rgb_or_grayscale
+from procgraph.block_utils import input_check_convertible_to_rgb
 
-from .compose import place_at  # XXX:
-from procgraph_images.border import image_border
+
+__all__ = ['ImageGrid', 'make_images_grid']
 
 
 class ImageGrid(Block):
-    ''' A block that creates a larger image by arranging them in a grid. '''
+    '''
+        A block that creates a larger image by arranging them in a grid. 
+        
+        The output is rgb, uint8.
+        
+        Inputs are passed through the "torgb" function.
+    
+    '''
 
     Block.alias('grid')
 
@@ -25,87 +35,98 @@ class ImageGrid(Block):
             if self.get_input(i) is None:
                 # we only go if everything is ready
                 return
-            check_rgb_or_grayscale(self, i)
+            input_check_convertible_to_rgb(self, i)
 
         cols = self.config.cols
 
-        if cols is None:
-            cols = int(ceil(sqrt(n)))
-
-        if not isinstance(cols, int):
+        if cols is not None and not isinstance(cols, int):
             raise BadConfig('Expected an integer.', self, 'cols')
 
-        rows = int(ceil(n * 1.0 / cols))
-
-        assert cols > 0 and rows > 0
-        assert n <= cols * rows
-
-        # find width and height for the grid 
-        col_width = zeros(cols, dtype='int32')
-        row_height = zeros(rows, dtype='int32')
-        for i in range(n):
-            col = i % cols
-            row = (i - i % cols) / cols
-            assert 0 <= col < cols
-            assert 0 <= row < rows
-
-            image = self.get_input(i)
-            p = self.config.pad 
-            if p is not None:
-                image = image_border(image,
-                           left=p,
-                           right=p,
-                           top=p,
-                           bottom=p,
-                           color=self.config.bgcolor)
-            width = image.shape[1]
-            height = image.shape[0]
-
-            col_width[col] = max(width, col_width[col])
-            row_height[row] = max(height, row_height[row])
-
-        canvas_width = sum(col_width)
-        canvas_height = sum(row_height)
-
-        # find position for each col and row
-        col_x = zeros(cols, dtype='int32')
-        for col in range(1, cols):
-            col_x[col] = col_x[col - 1] + col_width[col - 1]
-
-        assert(canvas_width == col_x[-1] + col_width[-1])
-
-        row_y = zeros(rows, dtype='int32')
-        for row in range(1, rows):
-            row_y[row] = row_y[row - 1] + row_height[row - 1]
-        assert(canvas_height == row_y[-1] + row_height[-1])
-
-        canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
-        for k in range(3):
-            canvas[:, :, k] = self.config.bgcolor[k] * 255
-
-        for i in range(n):
-            col = i % cols
-            row = (i - i % cols) / cols
-            assert 0 <= col < cols
-            assert 0 <= row < rows
-            image = self.get_input(i)
-            x = col_x[col]
-            y = row_y[row]
-            
-            # Pad if not right shape
-            extra_hor = col_width[col] - image.shape[1]
-            extra_ver = row_height[row] - image.shape[0]
-            eleft = extra_hor / 2
-            eright = extra_hor - eleft
-            etop = extra_ver / 2
-            ebottom = extra_ver - etop
-            image = image_border(image, left=eleft, right=eright, top=etop,
-                                 bottom=ebottom, color=self.config.bgcolor)
-            
-            # TODO: align here
-            place_at(canvas, image, x, y)
-
+        images = [self.get_input(i) for i in range(n)]
+        
+        images = map(torgb, images)
+        canvas = make_images_grid(images,
+                                  cols=self.config.cols,
+                                  pad=self.config.pad,
+                                  bgcolor=self.config.bgcolor)
+        
         self.set_output(0, canvas)
 
 
 
+@contract(images='list[>=1](array)')
+def make_images_grid(images, cols=None, pad=0, bgcolor=[1, 1, 1]):
+    n = len(images)
+    if cols is None:
+        cols = int(ceil(sqrt(n)))
+
+    rows = int(ceil(n * 1.0 / cols))
+
+    assert cols > 0 and rows > 0
+    assert n <= cols * rows
+
+    # find width and height for the grid 
+    col_width = zeros(cols, dtype='int32')
+    row_height = zeros(rows, dtype='int32')
+    for i in range(n):
+        image = images[i]
+        col = i % cols
+        row = (i - i % cols) / cols
+        assert 0 <= col < cols
+        assert 0 <= row < rows
+
+        if pad > 0:
+            image = image_border(image,
+                       left=pad,
+                       right=pad,
+                       top=pad,
+                       bottom=pad,
+                       color=bgcolor)
+        width = image.shape[1]
+        height = image.shape[0]
+
+        col_width[col] = max(width, col_width[col])
+        row_height[row] = max(height, row_height[row])
+
+    canvas_width = sum(col_width)
+    canvas_height = sum(row_height)
+
+    # find position for each col and row
+    col_x = zeros(cols, dtype='int32')
+    for col in range(1, cols):
+        col_x[col] = col_x[col - 1] + col_width[col - 1]
+
+    assert(canvas_width == col_x[-1] + col_width[-1])
+
+    row_y = zeros(rows, dtype='int32')
+    for row in range(1, rows):
+        row_y[row] = row_y[row - 1] + row_height[row - 1]
+    assert(canvas_height == row_y[-1] + row_height[-1])
+
+    canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
+    for k in range(3):
+        canvas[:, :, k] = bgcolor[k] * 255
+
+    for i in range(n):
+        col = i % cols
+        row = (i - i % cols) / cols
+        assert 0 <= col < cols
+        assert 0 <= row < rows
+        image = images[i]
+        x = col_x[col]
+        y = row_y[row]
+        
+        # Pad if not right shape
+        extra_hor = col_width[col] - image.shape[1]
+        extra_ver = row_height[row] - image.shape[0]
+        eleft = extra_hor / 2
+        eright = extra_hor - eleft
+        etop = extra_ver / 2
+        ebottom = extra_ver - etop
+        image = image_border(image, left=eleft, right=eright, top=etop,
+                             bottom=ebottom, color=bgcolor)
+        
+        # TODO: align here
+        place_at(canvas, image, x, y)
+
+    return canvas

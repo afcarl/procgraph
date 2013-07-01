@@ -22,9 +22,8 @@ class Library:
     def register(self, block_type, generator):
         if self.exists(block_type):
             msg = 'Type %r already registered.' % block_type
-            print self.name2block[block_type]
             raise ValueError(msg)
-
+            
         self.name2block[block_type] = generator
 
     def instance(self, block_type, name, config, library=None):

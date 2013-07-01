@@ -1,9 +1,21 @@
-import numpy as np
-
-from procgraph import simple_block
-
 from .pil_conversions import Image_from_array
+from procgraph import simple_block
+import numpy as np
+from procgraph.core.constants import COMPULSORY
 
+__all__ = ['resize']
+
+@simple_block
+def pil_zoom(value, factor=COMPULSORY):
+    """ Zooms by a given factor """
+    # TODO: RGBA?
+    shape = value.shape[:2]
+    shape2 = (int(factor * shape[0]), int(factor * shape[1]))
+    height, width = shape2
+    image = Image_from_array(value) 
+    image = image.resize((width, height))
+    result = np.asarray(image.convert("RGB"))
+    return result
 
 @simple_block
 def resize(value, width=None, height=None):
@@ -24,19 +36,30 @@ def resize(value, width=None, height=None):
         :return: image: The image as a numpy array.
         :rtype: rgb
     '''
-
-    image = Image_from_array(value)
+    H, W = value.shape[:2]
 
     if width is None and height is None:
-        raise ValueError('You should pass at least one of width and height.')
+        msg = 'You should pass at least one of width or height.'
+        raise ValueError(msg)
 
     if width is None and height is not None:
-        width = (height * image.size[0]) / image.size[1]
+        width = (height * H) / W
     elif height is None and width is not None:
-        height = (width * image.size[1]) / image.size[0]
+        height = (width * W) / H
 
+    if width == W and height == H:
+        # print('want: %s have: %s -- No resize necessary' % (value.shape, (width, height)))
+        return value.copy()
+    
+    image = Image_from_array(value)
     # TODO: RGBA?
     image = image.resize((width, height))
-    return np.asarray(image.convert("RGB"))
+    result = np.asarray(image.convert("RGB"))
+
+    assert result.shape[0] == height
+    assert result.shape[1] == width
+        
+    return result
+
 
 
