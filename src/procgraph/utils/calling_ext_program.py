@@ -18,7 +18,6 @@ class CmdResult(object):
         self.interrupted = interrupted
 
     def __str__(self):
-
         msg = ('The command: %s\n'
                '     in dir: %s\n' % (self.cmd, self.cwd))
 
@@ -48,11 +47,14 @@ def system_cmd_result(cwd, cmd,
                       display_stdout=False,
                       display_stderr=False,
                       raise_on_error=False,
+                      write_stdin='',
                       capture_keyboard_interrupt=False):  # @UnusedVariable
     ''' 
         Returns the structure CmdResult; raises CmdException.
         Also OSError are captured.
         KeyboardInterrupt is passed through unless specified
+        
+        :param write_stdin: A string to write to the process.
     '''
     tmp_stdout = tempfile.TemporaryFile()
     tmp_stderr = tempfile.TemporaryFile()
@@ -71,6 +73,9 @@ def system_cmd_result(cwd, cmd,
                 stderr=stderr,
                 cwd=cwd)
 
+        if write_stdin != '':
+            p.stdin.write(write_stdin)
+            p.stdin.flush()
         p.stdin.close()
         p.wait()
         ret = p.returncode

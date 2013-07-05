@@ -1,8 +1,11 @@
 from procgraph import Block
 import os
-from astatsa.mean_covariance.mean_cov import MeanCovariance
-from compmake.utils.safe_pickle import safe_pickle_load, safe_pickle_dump
+from compmake.utils import safe_pickle_load, safe_pickle_dump
+import warnings
 
+warnings.warn('remove below dipendence on boot_agents')
+
+__all__ = ['CovarianceRemember']
 
 
 class CovarianceRemember(Block):
@@ -19,6 +22,7 @@ class CovarianceRemember(Block):
             self.info('Loading state from filename %r' % filename)
             self.state = safe_pickle_load(filename)
         else:
+            from boot_agents.utils.mean_covariance import MeanCovariance
             self.state = MeanCovariance()
     
     def update(self):
