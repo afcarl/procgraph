@@ -1,7 +1,6 @@
+from .containers import CONTAINER_MOV, CONTAINER_MKV, CONTAINER_MP4
 from contracts import contract
 from procgraph.utils.calling_ext_program import system_cmd_result
-from procgraph_mplayer.conversions.containers import CONTAINER_MOV, \
-    CONTAINER_MKV, CONTAINER_MP4
 
 VCODEC_X264 = 'x264'
 VCODEC_PRORES = 'prores'
@@ -28,7 +27,7 @@ def get_x264_encoder_params(crf=18, preset='medium'):
     # SVN-r0.5.9-4:0.5.9-0ubuntu0.10.04.3
     
     # if 'ubuntu0.10.04.3' in ffmpeg_version:
-    if '0.5' in ffmpeg_version:
+    if '0.5' in ffmpeg_version:  # or '0.8.6' in ffmpeg_version:
         cmds += ['-vpre', 'libx264-default']
     else:
         cmds += ['-preset', preset]

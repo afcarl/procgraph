@@ -47,7 +47,6 @@ def pg_video_convert(filename,
     # For using aac out
     # cmds += ['-strict', '-2']
     
-    
     cmds += ['-y']
     cmds += ['-i', filename]
     
