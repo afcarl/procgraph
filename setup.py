@@ -95,7 +95,9 @@ setup(name='procgraph',
       install_requires=[
         'pyparsing',
         'setproctitle',
-        'termcolor'
+        'termcolor',
+        'SystemCmd',
+        'PyContracts'
       ],
       # TODO: add many depedendencies
       tests_require=['nose>1.1.2,<2'],
