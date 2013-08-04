@@ -1,9 +1,8 @@
 from contracts import contract, describe_value
-from procgraph import simple_block
-from procgraph.block_utils import assert_rgb_image, assert_gray_image
+from procgraph import BadInput, simple_block
+from procgraph.block_utils import (assert_rgb_image, assert_gray_image,
+    check_convertible_to_rgb)
 import numpy as np
-from procgraph.block_utils.image_checks import check_convertible_to_rgb
-from procgraph.core.exceptions import BadInput
 
 
 @simple_block

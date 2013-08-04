@@ -1,8 +1,8 @@
-from procgraph.utils import system_cmd_result, CmdException
-from procgraph_mplayer.conversions.containers import do_quickstart
-from procgraph_mplayer.conversions.metadata import get_ffmpeg_metadata_args
-from procgraph_mplayer.conversions.vcodecs import (get_x264_encoder_params,
+from .conversions.containers import do_quickstart
+from .conversions.metadata import get_ffmpeg_metadata_args
+from .conversions.vcodecs import (get_x264_encoder_params,
     get_prores_encoder_params)
+from system_cmd import system_cmd_result, CmdException
 import os
 
 def validate_args(filename, out, my_ext):
