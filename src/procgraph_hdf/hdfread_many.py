@@ -1,13 +1,15 @@
+from hdflog import (PROCGRAPH_LOG_GROUP, check_is_procgraph_log,
+    tc_open_for_reading, tc_close)
+from procgraph import Block, Generator, BadConfig
 import glob
 import numpy
-import os
 import operator
+import os
 
-from procgraph import Block, Generator, BadConfig
 
-from .tables_cache import tc_open_for_reading, tc_close
-from .hdfwrite import PROCGRAPH_LOG_GROUP
-from .hdfread import check_is_procgraph_log
+
+
+__all__ = ['HDFread_many']
 
 
 class HDFread_many(Generator):
@@ -174,7 +176,7 @@ class HDFread_many(Generator):
 
                 T = str(T)
                 index = str(index).rjust(len(T))
-                self.status('Read %.0f%% (%s/%s) of %r (tracking signal %r).' %
+                self.status('Read %.0f%% (%s/%s) of %r (tracking signal %r).' % 
                             (percentage, index, T,
                              os.path.basename(self.current_log[0].filename),
                              next_signal))

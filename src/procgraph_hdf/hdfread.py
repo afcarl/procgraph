@@ -2,15 +2,9 @@ import operator
 
 from procgraph  import Block, Generator, BadConfig
 
-from .tables_cache import tc_open_for_reading, tc_close
-from .hdfwrite import PROCGRAPH_LOG_GROUP
 import numpy
+from hdflog.tables_cache import tc_close
 
-
-def check_is_procgraph_log(hf):
-    if not PROCGRAPH_LOG_GROUP in hf.root:
-        raise Exception('File %r does not appear to be a procgraph HDF'
-                        ' log: %r' % (hf.filename, hf))
     # TODO: check there is at least one signal
 
 # TODO: respect original order
@@ -33,24 +27,19 @@ class HDFread(Generator):
                  default=False)
 
     def get_output_signals(self):
-        self.hf = tc_open_for_reading(self.config.file)
-        check_is_procgraph_log(self.hf)
-
-        self.log_group = self.hf.root._f_getChild(PROCGRAPH_LOG_GROUP)
-        # todo: make sure we get the order
-        all_signals = list(self.log_group._v_children)
-
+        self.reader = self.config.file 
+        all_signals = self.reader.get_all_signals()
+        
         if self.config.signals is None:
             self.signals = all_signals
         else:
-            self.signals = []
             signal_list = filter(lambda x: x, self.config.signals.split(','))
             if not signal_list:
                 msg = 'Bad format: %r.' % self.config.signals
                 raise BadConfig(msg, self, 'signals')
             for s in signal_list:
                 if not s in all_signals:
-                    msg = ('Signal %r not present in log (available: %r)' %
+                    msg = ('Signal %r not present in log (available: %r)' % 
                             (s, all_signals))
                     raise BadConfig(msg, self, 'signals')
                 self.signals.append(s)
@@ -126,7 +115,7 @@ class HDFread(Generator):
             percentage = index * 100.0 / T
             T = str(T)
             index = str(index).rjust(len(T))
-            self.debug('%s read %.0f%% (%s/%s) (tracking signal %r).' %
+            self.debug('%s read %.0f%% (%s/%s) (tracking signal %r).' % 
                         (self.config.file, percentage, index, T, signal))
 
     def finish(self):

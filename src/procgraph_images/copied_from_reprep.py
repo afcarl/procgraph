@@ -41,7 +41,7 @@ def skim_top_and_bottom(a, percent=COMPULSORY):
 
 
 @simple_block
-def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
+def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5], zero_color=[1.0, 1.0, 1.0]):
     """ 
         Converts a 2D float value to a RGB representation, where
         red is positive, blue is negative, white is zero.
@@ -74,7 +74,7 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
         value = value.astype('float32')
 
     if len(value.shape) != 2:
-        raise Exception('I expected a H x W image, got shape %s.' %
+        raise Exception('I expected a H x W image, got shape %s.' % 
                         str(value.shape))
 
     isfinite = numpy.isfinite(value)
@@ -90,8 +90,9 @@ def posneg(value, max_value=None, skim=0, nan_color=[0.5, 0.5, 0.5]):
         max_value = numpy.max(abs_value)
 
         if max_value == 0:
-        #    raise ValueError('You asked to normalize a matrix which is all 0')
             result = zeros((value.shape[0], value.shape[1], 3), dtype='uint8')
+            for i in range(3):
+                result[:, :, i] = zero_color[i] * 255
             return result
 
     assert numpy.isfinite(max_value)
@@ -148,24 +149,24 @@ def scale(value, min_value=None, max_value=None,
         :rtype: array[HxWx3](uint8)
 
     """
-    #Raises :py:class:`.ValueError` if min_value == max_value
+    # Raises :py:class:`.ValueError` if min_value == max_value
 
     check_2d_array(value, 'input to scale()')
 
-    #assert_finite(value)
+    # assert_finite(value)
     value = value.copy()
     if value.ndim > 2:
         value = value.squeeze()
 
     if value.dtype == numpy.dtype('uint8') or value.dtype == numpy.dtype('int'):
         value = value.astype('float32')
-    #require_shape((gt(0), gt(0)), value)
+    # require_shape((gt(0), gt(0)), value)
 
     min_color = numpy.array(min_color)
     max_color = numpy.array(max_color)
     nan_color = numpy.array(nan_color)
-    #require_shape((3,), min_color)
-    #require_shape((3,), max_color)
+    # require_shape((3,), min_color)
+    # require_shape((3,), max_color)
 
     isnan = numpy.logical_not(numpy.isfinite(value))
 

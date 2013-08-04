@@ -41,7 +41,7 @@ class Info(Block):
                 s = str(val)
                 if len(s) > 40:
                     s = s[:40]
-
+            s = s.replace('\n', '|')
             date = datetime.fromtimestamp(ts).isoformat(' ')[:-4]
             ts = "%.2f" % ts
             self.debug('%s (%8.2fs) %12s %5d  %s' % 
