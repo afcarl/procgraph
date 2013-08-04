@@ -12,7 +12,7 @@ from procgraph import import_succesful, import_magic
 
 procgraph_info = {
     # List of python packages 
-    'requires': ['tables']
+    'requires': ['tables', 'hdflogs']
 }
 
 tables = import_magic(__name__, 'tables')
