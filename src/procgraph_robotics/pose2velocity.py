@@ -56,3 +56,25 @@ output omega    "Angular velocity (rad/s)"
     
 """)
 
+
+register_model_spec("""
+--- model commands_from_SE2
+''' Computes the velocity commands from the odometry data. '''
+
+input pose "Odometry as an element of SE2."
+
+output commands "Estimated commands as an array ``[vx,vy,omega]``."
+output vx       "Linear velocity, forward (m/s)"
+output vy       "Linear velocity, side (m/s)"
+output omega    "Angular velocity (rad/s)"
+ 
+|input name=pose| --> |last_n_samples n=2| --> |pose2vel_| --> commands 
+
+    commands          -->          |output name=commands|
+    commands --> |extract index=0| --> |output name=vx|
+    commands --> |extract index=1| --> |output name=vy|
+    commands --> |extract index=2| --> |output name=omega|
+    
+""")
+
+        

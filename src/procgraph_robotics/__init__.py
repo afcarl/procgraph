@@ -22,3 +22,4 @@ from . import laser_display
 from . import laser_dot_display
 from . import organic_scale
 from . import misc
+from . import pose2velocity_b

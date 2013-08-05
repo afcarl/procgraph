@@ -1,8 +1,10 @@
-import math
 from numpy import array, linspace, sin, cos
-
-from procgraph  import Block, BadInput
+from procgraph import Block, BadInput
 from procgraph_mpl import pylab2rgb, pylab
+import math
+
+
+__all__ = ['LaserDotDisplay']
 
 
 class LaserDotDisplay(Block):
