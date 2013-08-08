@@ -1,43 +1,14 @@
+from ..utils import indent
+from .block import Block, Generator
+from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
+from .exceptions import (BadMethodCall, SemanticError, ModelExecutionError,
+    ModelWriterError)
+from .model_io import ModelInput, ModelOutput
+from .model_stats import ExecutionStats, write_stats
+from .visualization import debug as debug_main, info, warning
 import time
 
-from .exceptions import SemanticError, ModelExecutionError, ModelWriterError
-from .block import Block, Generator
-from .model_io import ModelInput, ModelOutput
-from .model_stats import ExecutionStats
-from .visualization import debug as debug_main, info, warning
-from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
-from ..utils import indent
-from .model_stats import write_stats
-from procgraph.core.exceptions import BadMethodCall
-
-
-class BlockConnection:
-    def __init__(self, block1, block1_signal, block2, block2_signal,
-                       public_name=None):
-        assert isinstance(block1, Block)
-        assert block1_signal is not None
-        assert block2 is None or isinstance(block2, Block)
-
-        self.block1 = block1
-        self.block1_signal = block1_signal
-        self.block2 = block2
-        self.block2_signal = block2_signal
-        self.public_name = public_name
-
-    def __repr__(self):
-        s = 'Connection('
-        s += self.block1.name
-        s += '.%s' % self.block1_signal
-
-        s += ' --> '
-        if self.block2:
-            s += self.block2.name
-            s += '.%s' % self.block2_signal
-        else:
-            s += '?.?'
-        s += ')'
-
-        return s
+__all__ = ['Model'] 
 
 
 class Model(Generator):
@@ -261,6 +232,7 @@ class Model(Generator):
                 msg += ('Cleanup for %s failed:\n%s\n' % 
                         (block, indent(e, '> ')))
                 blocks_failed.append(block)
+                
         if blocks_failed:
             s = ('Cleanup for %d blocks failed.\n%s' % 
                  (len(blocks_failed), msg))
@@ -448,3 +420,33 @@ class Model(Generator):
                   if not isinstance(b, Model)]
         all_samples.extend(leaves)
         return all_samples
+
+
+
+class BlockConnection:
+    def __init__(self, block1, block1_signal, block2, block2_signal,
+                       public_name=None):
+        assert isinstance(block1, Block)
+        assert block1_signal is not None
+        assert block2 is None or isinstance(block2, Block)
+
+        self.block1 = block1
+        self.block1_signal = block1_signal
+        self.block2 = block2
+        self.block2_signal = block2_signal
+        self.public_name = public_name
+
+    def __repr__(self):
+        s = 'Connection('
+        s += self.block1.name
+        s += '.%s' % self.block1_signal
+
+        s += ' --> '
+        if self.block2:
+            s += self.block2.name
+            s += '.%s' % self.block2_signal
+        else:
+            s += '?.?'
+        s += ')'
+
+        return s

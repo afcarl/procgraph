@@ -7,16 +7,6 @@ from .block_config import resolve_config
 NOT_READY = None
 
 
-class Value(object):
-    '''
-        timestamp = ETERNITY     constant
-        timestamp = NOT_READY = (None)         signal not ready 
-    '''
-    def __init__(self, value, timestamp):
-        self.value = value
-        self.timestamp = timestamp
-
-
 class Block(BlockMetaSugar):
     __metaclass__ = BlockMeta
 
@@ -238,7 +228,7 @@ class Block(BlockMetaSugar):
             input signal. 
         '''
         if not self.is_valid_input_name(num_or_id):
-            msg = 'Unknown output name %r.' % str(num_or_id)
+            msg = 'Unknown input name %r.' % str(num_or_id)
             raise ModelWriterError(msg, self)
 
         if isinstance(num_or_id, str):
@@ -406,4 +396,13 @@ class Generator(Block):
         raise NotImplementedError('"next_data_status" was not implement.')
 
 
+
+class Value(object):
+    '''
+        timestamp = ETERNITY     constant
+        timestamp = NOT_READY = (None)         signal not ready 
+    '''
+    def __init__(self, value, timestamp):
+        self.value = value
+        self.timestamp = timestamp
 

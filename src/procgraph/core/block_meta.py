@@ -117,8 +117,8 @@ def block_output_is_variable(description=None, suffix=None):
         msg = ('Cannot mix variable and fixed output or variable with variable. '
               '(added already: %s)' % (BlockMeta.tmp_output))
         raise BlockWriterError(msg)
-    BlockMeta.tmp_output.append(BlockOutput(VARIABLE, suffix,
-                                            desc, desc_rest, None))
+    bo = BlockOutput(VARIABLE, suffix, desc, desc_rest, None)
+    BlockMeta.tmp_output.append(bo)
 
 
 def block_output_is_defined_at_runtime(description=None):

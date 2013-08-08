@@ -1,5 +1,6 @@
 from procgraph import Block
 
+__all__ = ['Wait']
 
 class Wait(Block):
     ''' 

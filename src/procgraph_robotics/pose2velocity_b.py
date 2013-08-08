@@ -1,10 +1,6 @@
-from abc import abstractmethod
-from contracts import describe_value, contract
 from geometry import SE2
 from itertools import tee, izip
 from procgraph import Block
-from types import GeneratorType
-from procgraph.block_utils.iterator_generator import IteratorGenerator
 
 
 class se2_from_SE2_seq(Block):

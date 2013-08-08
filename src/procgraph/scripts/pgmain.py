@@ -1,14 +1,12 @@
 from ..core.constants import PATH_ENV_VAR
-from ..core.exceptions import PGException, SemanticError
-from ..core.model_loader import (model_from_string, pg_look_for_models,
-    ModelSpec)
+from ..core.exceptions import BadMethodCall, PGException, SemanticError
+from ..core.model_loader import model_from_string, pg_look_for_models, ModelSpec
 from ..core.registrar import default_library, Library
 from ..core.visualization import error, info
 from optparse import OptionParser
 import os
 import sys
 import traceback
-from procgraph.core.exceptions import BadMethodCall
 
 
 usage_short = \
