@@ -315,8 +315,7 @@ class Model(Generator):
         else:  # for those that don't have input signals
             timestamp = ETERNITY
 
-        self.stats.add(block=block, cpu=cpu, wall=wall,
-                       timestamp=timestamp)
+        self.stats.add(block=block, cpu=cpu, wall=wall, timestamp=timestamp)
 
         # if the update is not finished, we put it back in the queue
         if result == block.UPDATE_NOT_FINISHED:
@@ -335,7 +334,7 @@ class Model(Generator):
                     debug(" ignoring dummy connection %s" % connection)
                     continue
                 other_signal = connection.block2_signal
-                old_timestamp = other.get_input_timestamp(other_signal)
+                
                 this_signal = connection.block1_signal
                 this_timestamp = block.get_output_timestamp(this_signal)
 
@@ -351,7 +350,12 @@ class Model(Generator):
                 if this_timestamp is None:
                     continue
 
-                if old_timestamp is None or this_timestamp > old_timestamp:
+                
+                to_update = ((not other.input_signal_ready(other_signal)) or
+                             (this_timestamp > other.get_input_timestamp(other_signal))) 
+                
+                # if old_timestamp is None or this_timestamp > old_timestamp:
+                if to_update:
                     debug('  then waking up %s' % other)
 
                     other.from_outside_set_input(other_signal, value,
@@ -365,8 +369,9 @@ class Model(Generator):
                         self.set_output(other.signal_name,
                                         value, this_timestamp)
                 else:
-                    debug("  Not updated %s because not %s > %s." % 
-                           (other, this_timestamp, old_timestamp))
+                    pass
+#                     debug("  Not updated %s because not %s > %s." % 
+#                            (other, this_timestamp, old_timestamp))
 
         # now let's see if we have still work to do
         # this step is important when the model is inside another one

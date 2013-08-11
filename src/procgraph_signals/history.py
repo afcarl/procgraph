@@ -1,5 +1,6 @@
 from procgraph import Block
 
+__all__ = ['History']
 
 class History(Block):
     ''' 
@@ -29,8 +30,7 @@ class History(Block):
         self.output.t = ts
 
 
-
-class HistoryInterval():
+class HistoryInterval(object):
     def __init__(self, interval):
         self.interval = interval
         self.x = []

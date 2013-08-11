@@ -30,11 +30,11 @@ class ImageGrid(Block):
     Block.output('grid', 'Images arranged in a grid.')
 
     def update(self):
+        if not self.all_input_signals_ready():
+            return
+
         n = self.num_input_signals()
         for i in range(n):
-            if self.get_input(i) is None:
-                # we only go if everything is ready
-                return
             input_check_convertible_to_rgb(self, i)
 
         cols = self.config.cols

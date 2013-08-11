@@ -15,14 +15,11 @@ class AllReady(Block):
 
     
     def update(self):
-        n = self.num_input_signals()
-#         ts = [self.get_input_timestamp(i) for i in range(n)]
-#         self.debug('ts: %s' % ts)
-        values = [self.get_input(i) for i in range(n)]
-        if None in values:
-#             self.debug('waiting...')
+        if not self.all_input_signals_ready():
             return
         
         for i in range(self.num_input_signals()):
-            self.set_output(i, self.get_input(i), self.get_input_timestamp(i))
+            if self.input_update_available(i):
+                t, value = self.get_input_ts_and_value(i)
+                self.set_output(i, value, t)
 

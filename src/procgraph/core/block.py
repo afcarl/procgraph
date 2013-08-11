@@ -1,11 +1,15 @@
-from .exceptions import BlockWriterError, ModelWriterError, ModelExecutionError
-from .block_sugar import InputProxy, OutputProxy, StateProxy, ConfigProxy
-from .block_meta import BlockMeta, BlockMetaSugar
 from .block_config import resolve_config
+from .block_meta import BlockMeta, BlockMetaSugar
+from .block_sugar import InputProxy, OutputProxy, StateProxy, ConfigProxy
+from .exceptions import BlockWriterError, ModelWriterError, ModelExecutionError
+from contracts import contract, new_contract
+
+__all__ = ['Block', 'NOT_READY', 'Generator']
 
 
 NOT_READY = None
 
+new_contract('num_or_id', 'int|str')
 
 class Block(BlockMetaSugar):
     __metaclass__ = BlockMeta
@@ -49,6 +53,10 @@ class Block(BlockMetaSugar):
         
         # used for info_once() and error_once(): messages we already sent
         self._msgs_written = set()
+
+
+        # Used by input_update_available()
+        self._input_update_available_last = {}
 
     def init(self):
         ''' Initializes the block.  '''
@@ -121,13 +129,47 @@ class Block(BlockMetaSugar):
             self.__input_signal_name2id[str(s)] = i
             self.__input_signals.append(Value(None, NOT_READY))
 
+    @contract(returns='bool')
     def all_input_signals_ready(self):
         ''' Returns True if all input signals are ready. '''
         for value in self.__input_signals:
             if value.timestamp == NOT_READY:
                 return False
         return True
+    
+    @contract(signal='num_or_id', returns='bool')
+    def input_signal_ready(self, signal):
+        """ 
+            Return True if the signal is ready, meaning that we have
+            at least one value. 
+        """
+        return self.__get_input_struct(signal).timestamp != NOT_READY 
 
+
+    @contract(signal='num_or_id', returns='bool')
+    def input_update_available(self, signal):
+        """ 
+            Return True if the signal was updated since the last
+            time this function was called with the same argument.
+        """
+        
+        if not self.input_signal_ready(signal):
+            return False
+        current = self.get_input_timestamp(signal)
+        track = self._input_update_available_last
+        
+        if not signal in track:
+            track[signal] = current 
+            return True
+        
+        last_seen = track[signal]
+        
+        update_available = last_seen != current
+        
+        track[signal] = current
+        
+        return update_available 
+          
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
             msg = ('I expect the parameter to define_output_signals()' + 
@@ -195,34 +237,59 @@ class Block(BlockMetaSugar):
         if timestamp is None:
             msg = ('Setting input %r to %s with None timestamp' % 
                    (num_or_id, timestamp))
-            raise Exception(msg)
+            raise ValueError(msg)
         input_struct = self.__get_input_struct(num_or_id)
         input_struct.value = value
         input_struct.timestamp = timestamp
 
+
+    @contract(returns='tuple(float, *)')
+    def get_input_ts_and_value(self, num_or_id):
+        ''' Gets the timestamp and value of an input signal. '''
+        if not self.input_signal_ready(num_or_id):
+            msg = 'Cannot get_input_ts_and_value(%r): input not ready.' % num_or_id
+            raise ValueError(msg)
+
+        input_struct = self.__get_input_struct(num_or_id)
+        value = input_struct.value
+        ts = input_struct.timestamp
+        return ts, value
+        
+    @contract(num_or_id='num_or_id')
     def get_input(self, num_or_id):
         ''' Gets the value of an input signal. '''
+        if not self.input_signal_ready(num_or_id):
+            msg = 'Cannot get_input(%r): input not ready.' % num_or_id
+            raise ValueError(msg)
+
         input_struct = self.__get_input_struct(num_or_id)
         return input_struct.value
 
+    @contract(num_or_id='num_or_id')
     def get_input_timestamp(self, num_or_id):
         ''' 
             Gets the timestamp of an input signal (None if it 
             has never been received).
         '''
+        if not self.input_signal_ready(num_or_id):
+            msg = 'Cannot get_input_timestamp(%r): input not ready.' % num_or_id
+            raise ValueError(msg)
         input_struct = self.__get_input_struct(num_or_id)
         return input_struct.timestamp
 
+    @contract(num_or_id='num_or_id')
     def get_output_timestamp(self, num_or_id):
         ''' Gets the timestamp of an output signal. '''
         output_struct = self.__get_output_struct(num_or_id)
         return output_struct.timestamp
 
+    @contract(num_or_id='num_or_id')
     def get_output(self, num_or_id):
         ''' Gets the value of an output signal. '''
         output_struct = self.__get_output_struct(num_or_id)
         return output_struct.value
 
+    @contract(num_or_id='num_or_id')
     def __get_input_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given 
             input signal. 
@@ -236,6 +303,7 @@ class Block(BlockMetaSugar):
             num_or_id = self.__input_signal_name2id[num_or_id]
         return self.__input_signals[num_or_id]
 
+    @contract(num_or_id='num_or_id')
     def __get_output_struct(self, num_or_id):
         ''' Returns a reference to the Value structure of the given 
             output signal. 
@@ -249,6 +317,7 @@ class Block(BlockMetaSugar):
             num_or_id = self.__output_signal_name2id[num_or_id]
         return self.__output_signals[num_or_id]
 
+    @contract(num_or_id='num_or_id')
     def is_valid_input_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
             for one of the signals. '''
@@ -261,6 +330,7 @@ class Block(BlockMetaSugar):
             return num_or_id < len(self.__input_signals)
         raise ValueError('Invalid input name %r' % num_or_id)
 
+    @contract(num_or_id='num_or_id')
     def canonicalize_input(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
             (useful because more user-friendly). '''
@@ -272,6 +342,7 @@ class Block(BlockMetaSugar):
             return self.__input_signal_names[num_or_id]
         raise ValueError('Invalid input name %r' % num_or_id)
 
+    @contract(num_or_id='num_or_id')
     def is_valid_output_name(self, num_or_id):
         ''' Checks that num_or_id (string or int) is a valid handle
             for one of the signals. '''
@@ -284,6 +355,7 @@ class Block(BlockMetaSugar):
             return num_or_id < len(self.__output_signals)
         raise ValueError('Invalid output name %r' % num_or_id)
 
+    @contract(num_or_id='num_or_id')
     def canonicalize_output(self, num_or_id):
         ''' Converts the signal spec (either string or id) to string
             (useful because more user-friendly). '''

@@ -1,17 +1,16 @@
+from .conversions import pg_video_convert
 from .scripts.crop_video import video_crop
 from contextlib import contextmanager
 from procgraph import Block
 from procgraph.block_utils import (expand, make_sure_dir_exists,
     input_check_rgb_or_grayscale)
 from procgraph.utils import friendly_path, indent
-from procgraph_mplayer.conversions import pg_video_convert
 import numpy
 import os
 import signal
 import subprocess
 import tempfile
 
-# from procgraph_mplayer.mp4conversion import convert_to_mkv
 
 
 class MEncoder(Block):
@@ -221,7 +220,9 @@ class MEncoder(Block):
       
     def finish(self):
         if self.process is None:
-            self.error('Finish() before starting to encode.')
+            msg = 'Finish() before starting to encode.'
+            self.error(msg)
+            raise Exception(msg)
             return
         
         timestamp = self.first_frame_timestamp 
