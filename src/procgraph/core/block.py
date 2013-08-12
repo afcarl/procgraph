@@ -143,7 +143,7 @@ class Block(BlockMetaSugar):
             Return True if the signal is ready, meaning that we have
             at least one value. 
         """
-        return self.__get_input_struct(signal).timestamp != NOT_READY 
+        return bool(self.__get_input_struct(signal).timestamp != NOT_READY) 
 
 
     @contract(signal='num_or_id', returns='bool')
@@ -168,7 +168,7 @@ class Block(BlockMetaSugar):
         
         track[signal] = current
         
-        return update_available 
+        return bool(update_available) 
           
     def define_output_signals_new(self, signals):
         if not isinstance(signals, list):
