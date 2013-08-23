@@ -28,7 +28,7 @@ from .blend import *
 from .copied_from_reprep import *
 
 from .reshape_smart import *
-from .solid import *
+from .solid_imp import *
 from .crop import *
 
 from .alpha import *

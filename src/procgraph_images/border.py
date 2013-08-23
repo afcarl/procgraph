@@ -1,7 +1,9 @@
-import numpy as np
-
 from procgraph import Block
 from procgraph.block_utils import check_rgb
+import numpy as np
+
+
+__all__ = ['Border', 'rgb_pad', 'image_border']
 
 
 class Border(Block):
@@ -11,7 +13,7 @@ class Border(Block):
     Block.input('rgb', 'Input image.')
     Block.output('rgb', 'Image with borders added around.')
     Block.config('color', 'border color (0-1 rgb)', default=[0, 0, 0])
-    Block.config('width', default=0)
+    Block.config('width', default=1)
     Block.config('left', 'pixel length for left border', default=None)
     Block.config('right', 'pixel length for right border', default=None)
     Block.config('top', 'pixel length for top border', default=None)

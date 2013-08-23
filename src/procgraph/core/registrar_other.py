@@ -8,6 +8,7 @@ from .model_loader import add_models_to_library
 from .docstring_parsing import parse_docstring_annotations, DocStringInfo
 from .constants import COMPULSORY, TIMESTAMP
 from .exceptions import BadConfig, BadInput
+from procgraph.core.constants import NO_OUTPUT
 
 
 def make_generic(name, inputs, num_outputs,
@@ -106,11 +107,14 @@ def make_generic(name, inputs, num_outputs,
                 e.block = self
                 raise e
 
-            if num_outputs == 1:
-                self.set_output(0, result)
-            else:
-                for i in range(num_outputs):
-                    self.set_output(i, result[i])
+            no_out = isinstance(result, str) and str == NO_OUTPUT
+
+            if not no_out:
+                if num_outputs == 1:
+                    self.set_output(0, result)
+                else:
+                    for i in range(num_outputs):
+                        self.set_output(i, result[i])
 
     return GenericOperation
 

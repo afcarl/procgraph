@@ -30,6 +30,10 @@ class ImageGrid(Block):
     Block.output('grid', 'Images arranged in a grid.')
 
     def update(self):
+        if not self.all_input_signals_ready():
+            self.info('Not all signals are ready.')
+            return
+        
         n = self.num_input_signals()
         for i in range(n):
             if self.get_input(i) is None:

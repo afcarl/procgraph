@@ -1,14 +1,13 @@
+from ..utils import indent
+from .block import Block, Generator
+from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
+from .exceptions import (BadMethodCall, SemanticError, ModelExecutionError,
+    ModelWriterError)
+from .model_io import ModelInput, ModelOutput
+from .model_stats import ExecutionStats, write_stats
+from .visualization import debug as debug_main, info, warning
 import time
 
-from .exceptions import SemanticError, ModelExecutionError, ModelWriterError
-from .block import Block, Generator
-from .model_io import ModelInput, ModelOutput
-from .model_stats import ExecutionStats
-from .visualization import debug as debug_main, info, warning
-from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
-from ..utils import indent
-from .model_stats import write_stats
-from procgraph.core.exceptions import BadMethodCall
 
 
 class BlockConnection:
@@ -268,6 +267,7 @@ class Model(Generator):
 
     def update(self):
         
+        # Turn on debug here
         def debug(s):
             if False:
                 debug_main('Model %s | %s' % (self.model_name, s))

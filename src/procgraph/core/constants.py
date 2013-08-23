@@ -44,6 +44,9 @@ DEFINED_AT_RUNTIME = 'defined-at-runtime'
 COMPULSORY = 'compulsory-param'
 REQUIRED = COMPULSORY
 
+# if the result is this value, no output is generated
+NO_OUTPUT = 'no-output-generated'
+
 TIMESTAMP = 'timestamp-param'
 
 
