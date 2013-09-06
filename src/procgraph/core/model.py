@@ -240,6 +240,7 @@ class Model(Generator):
 
     def update(self):
         
+        # Turn on debug here
         def debug(s):
             if False:
                 debug_main('Model %s | %s' % (self.model_name, s))
@@ -427,8 +428,7 @@ class Model(Generator):
         return all_samples
 
 
-
-class BlockConnection:
+class BlockConnection(object):
     def __init__(self, block1, block1_signal, block2, block2_signal,
                        public_name=None):
         assert isinstance(block1, Block)

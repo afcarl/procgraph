@@ -1,12 +1,13 @@
 from . import pylab, pylab2rgb
+from .fanciness import fancy_styles
+from numpy.ma.testutils import assert_equal
 from procgraph import Block, BadInput, BadConfig
+from procgraph_images import image_pad
 import numpy
 import time
-from procgraph_images import image_pad
-from numpy.ma.testutils import assert_equal
 
-from .fanciness import fancy_styles
 
+__all__ = ['Plot']
 
 class Plot(Block):
     ''' 
@@ -86,10 +87,10 @@ class Plot(Block):
                                    figsize=(width / 100.0, height / 100.0))
         # TODO: is there a better way?
         # left, bottom, right, top
-        #borders = [0.15, 0.15, 0.03, 0.05]
-        #w = 1 - borders[0] - borders[2]
+        # borders = [0.15, 0.15, 0.03, 0.05]
+        # w = 1 - borders[0] - borders[2]
         # h = 1 - borders[1] - borders[3]
-        #self.axes = pylab.axes([borders[0], borders[1], w, h])
+        # self.axes = pylab.axes([borders[0], borders[1], w, h])
         self.axes = pylab.axes()
         self.figure.add_axes(self.axes)
 
@@ -118,13 +119,13 @@ class Plot(Block):
         # TODO: check type
         for style in self.config.fancy_styles:
             if not style in fancy_styles:
-                error = ('Cannot find style %r in %s' %
+                error = ('Cannot find style %r in %s' % 
                          (style, fancy_styles.keys()))
                 raise  BadConfig(error, self, 'style')
             function = fancy_styles[style]
             function(pylab)
 
-    def plot_one(self, id, x, y, format): #@ReservedAssignment
+    def plot_one(self, id, x, y, format):  # @ReservedAssignment
         assert isinstance(x, numpy.ndarray)
         assert isinstance(y, numpy.ndarray)
         assert len(x.shape) <= 1
@@ -159,7 +160,7 @@ class Plot(Block):
             self.limits[2] = min(self.limits[2], min(y))
             self.limits[3] = max(self.limits[3], max(y))
 
-        #self.limits = map(float, self.limits)
+        # self.limits = map(float, self.limits)
     def update(self):
         self.limits = None
 
@@ -180,7 +181,7 @@ class Plot(Block):
             elif isinstance(value, tuple):
                 if len(value) != 2:
                     raise BadInput(
-                                'Expected tuple of length 2 instead of %d.' %
+                                'Expected tuple of length 2 instead of %d.' % 
                                    len(value), self, i)
 
                 xo = value[0]
@@ -203,7 +204,7 @@ class Plot(Block):
                                    self, i)
 
                 if len(x) != y.shape[0]:
-                    raise BadInput('Incompatible dimensions x: %s, y: %s' %
+                    raise BadInput('Incompatible dimensions x: %s, y: %s' % 
                                    (str(x.shape), str(y.shape)))
                 # TODO: check x unidimensional (T)
                 # TODO: check y compatible dimensions (T x N) 
@@ -256,6 +257,10 @@ class Plot(Block):
                                     'y_min or y_max.', self, 'symmetric')
 
                 M = max(abs(self.limits[2:4]))
+                if 'dottedzero' in self.config.fancy_styles:
+                    a = pylab.axis()
+                    pylab.plot([a[0], a[1]], [0, 0], '--')
+
                 self.limits[2] = -M
                 self.limits[3] = M
 
@@ -295,7 +300,7 @@ class Plot(Block):
         shape = pixel_data.shape[0:2]
         shape_expected = (self.config.height, self.config.width)
         if shape != shape_expected:
-            msg = ('pylab2rgb() returned size %s instead of %s.' %
+            msg = ('pylab2rgb() returned size %s instead of %s.' % 
                 (shape, shape_expected))
             msg += ' I will pad the image with white.'
             self.warning(msg)
@@ -307,7 +312,7 @@ class Plot(Block):
 
         if False:
             # 30 49 30 before
-            print("plotting: %dms    reading: %dms" %
+            print("plotting: %dms    reading: %dms" % 
                   (plotting * 1000, reading * 1000))
 
         self.output.rgb = pixel_data

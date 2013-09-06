@@ -32,7 +32,7 @@ class ImageGrid(Block):
     def update(self):
         if not self.all_input_signals_ready():
             return
-
+        
         n = self.num_input_signals()
         for i in range(n):
             input_check_convertible_to_rgb(self, i)
