@@ -2,6 +2,23 @@ from geometry import SE2
 from itertools import tee, izip
 from procgraph import Block
 
+class SE2_relative_pose(Block):
+    """ Lets the first pose be the identity """
+    Block.input('pose')
+    Block.output('rel_pose')
+    
+    def init(self):
+        self.state.pose0 = None
+    
+    def update(self):
+        pose = self.input.pose
+        if self.state.pose0 is None:
+            self.state.pose0 = pose
+            
+        rel_pose = SE2.multiply(SE2.inverse(self.state.pose0), pose)
+        
+        self.output.rel_pose = rel_pose
+    
 
 class se2_from_SE2_seq(Block):
     ''' Block used by :ref:`block:pose2commands`. '''
