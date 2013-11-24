@@ -46,7 +46,8 @@ config fps
 
 |files_from_dir dir=$dirname regexp=$pattern| -->file
 #file --> |print|
-file --> |imread| --> |torgb| --> rgb
+file --> |imread_rgb| --> rgb
+#file --> |imread| --> |torgb| --> rgb
 
 
 rgb --> |mencoder quiet=1 file=$output timestamps=0 fps=$fps|
