@@ -213,6 +213,7 @@ class BlockMetaSugar(object):
 
     @staticmethod
     def output_is_defined_at_runtime(description=None):
+        """ If this is used, then one must implement get_output_signals() """
         block_output_is_defined_at_runtime(description)
 
     @staticmethod

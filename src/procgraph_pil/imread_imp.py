@@ -31,7 +31,8 @@ class StaticImage(Generator):
 @simple_block
 def imread(filename):
     ''' 
-        Reads an image from a file.
+        Reads an image from a file into a numpy array. This can have
+        different dtypes according to whether it's RGB, grayscale, RGBA, etc.
         
         :param filename: Image filename.
         :type filename: string
@@ -43,8 +44,38 @@ def imread(filename):
         im = Image.open(filename)
     except Exception as e:
         msg = 'Could not open filename "%s": %s' % (filename, e)
-        raise Exception(msg)
+        raise ValueError(msg)
 
     data = np.array(im)
 
     return data
+
+
+@simple_block
+def imread_rgb(filename):
+    '''
+        Reads an image from a file using PIL and converts to an RGB array.
+        
+        :param filename: Filename
+        :type filename: str
+        
+        :return: A numpy array.
+        :rtype: ``array[HxWx3](uint8)``
+         
+    '''
+
+    try:
+        im = Image.open(filename)
+    except Exception as e:
+        msg = 'Could not open filename "%s": %s' % (filename, e)
+        raise ValueError(msg)
+
+    im = im.convert('RGB')
+    data = np.array(im)
+    # print filename, data.shape, data.dtype
+
+    assert data.ndim == 3
+    assert data.dtype == np.uint8
+
+    return data
+

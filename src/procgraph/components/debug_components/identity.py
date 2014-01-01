@@ -1,5 +1,7 @@
 from procgraph import Block
 
+__all__ = ['Identity']
+
 
 class Identity(Block):
     ''' 

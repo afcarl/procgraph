@@ -2,6 +2,7 @@ import numpy as np
 from procgraph import Block
 from contracts import contract
 
+
 class DepthBuffer(Block):
     
     Block.alias('depth_buffer')

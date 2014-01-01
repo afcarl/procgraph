@@ -1,5 +1,4 @@
-from conf_tools import BadConfig
-from procgraph import Generator, Block
+from procgraph import Generator, Block, BadConfig
 from procgraph.block_utils import expand
 import os
 import re
@@ -16,7 +15,8 @@ class FilesFromDir(Generator):
     Block.alias('files_from_dir')
     Block.config('dir', 'Directory containing the image files.')
     Block.config('regexp', 'Regular expression for images.',
-                 default='(\w+)(\d+)\.(\w+)')
+#                  default='(\w+)(\d+)\.(\w+)')
+                default='.+\.(png|jpg)')
     Block.config('fps', 'Fixed frame per second.', default=20.0)
     Block.output('filename', 'Image filename')
 
@@ -25,11 +25,11 @@ class FilesFromDir(Generator):
         dirname = expand(dirname)
 
         if not os.path.exists(dirname):
-            raise BadConfig(self, 'Not existent directory %r.' % dirname,
+            raise BadConfig('Not existent directory %r.' % dirname, self,
                             'dir')
 
         if not os.path.isdir(dirname):
-            raise BadConfig(self, 'The file %r is not a directory.' % dirname,
+            raise BadConfig('The file %r is not a directory.' % dirname, self,
                             'dir')
 
         regexp = self.config.regexp
@@ -42,8 +42,6 @@ class FilesFromDir(Generator):
                     for f in all_files
                     if re.match(regexp, f)]
 
-        
-        
         def natural_key(string):
             """See http://www.codinghorror.com/blog/archives/001018.html"""
             return [int(s) if s.isdigit() else s for s in re.split(r'(\d+)', string)]
