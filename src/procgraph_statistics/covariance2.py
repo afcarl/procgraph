@@ -1,6 +1,6 @@
 from procgraph import Block
 import os
-from compmake.utils import safe_pickle_load, safe_pickle_dump
+from procgraph.utils import safe_pickle_load, safe_pickle_dump
 import warnings
 
 warnings.warn('remove below dipendence on boot_agents')
