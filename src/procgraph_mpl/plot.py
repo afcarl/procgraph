@@ -259,7 +259,7 @@ class Plot(Block):
                 M = max(abs(self.limits[2:4]))
                 if 'dottedzero' in self.config.fancy_styles:
                     a = pylab.axis()
-                    pylab.plot([a[0], a[1]], [0, 0], '--')
+                    pylab.plot([a[0], a[1]], [0, 0], 'k--')
 
                 self.limits[2] = -M
                 self.limits[3] = M
