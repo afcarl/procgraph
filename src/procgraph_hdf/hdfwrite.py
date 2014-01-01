@@ -43,7 +43,8 @@ class HDFwrite(Block):
     def update(self):
         signals = self.get_input_signals_names()
         for signal in signals:
-            self.log_signal(signal)
+            if self.input_signal_ready(signal):
+                self.log_signal(signal)
 
     def log_signal(self, signal):
         timestamp = self.get_input_timestamp(signal)

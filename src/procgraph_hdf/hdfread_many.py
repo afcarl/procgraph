@@ -7,8 +7,6 @@ import operator
 import os
 
 
-
-
 __all__ = ['HDFread_many']
 
 
