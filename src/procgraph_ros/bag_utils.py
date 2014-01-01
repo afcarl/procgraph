@@ -3,7 +3,7 @@ import yaml
 from contracts import contract
 from procgraph.utils.inawhile import InAWhile
 import warnings
-from conf_tools.utils.indent_string import indent
+from contracts.utils import indent
 from procgraph import logger   
 
 def rosbag_info(bag):

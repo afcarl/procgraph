@@ -11,18 +11,20 @@
 
 procgraph_info = {
     # List of python packages 
-    'requires': ['ros']
+    'requires': ['ros', 'rosbag_utils']
 }
 
 
 # Smart dependency importing
-from procgraph import import_magic
+from procgraph import import_magic, import_succesful
+
 rosbag = import_magic(__name__, 'ros', 'rosbag')
+rosbag_utils = import_magic(__name__, 'rosbag_utils')
 
-
-from .bagread import BagRead
-from .bagwrite import BagWrite
-from .conversions import *
+if import_succesful(rosbag_utils):
+    from .bagread import BagRead
+    from .bagwrite import BagWrite
+    from .conversions import *
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)

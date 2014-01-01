@@ -16,10 +16,12 @@ procgraph_info = {
 }
 
 tables = import_magic(__name__, 'tables')
+hdflogs = import_magic(__name__, 'hdflogs')
 
-from .hdfwrite import *
-from .hdfread import *
-from .hdfread_many import *
+if import_succesful(hdflogs):
+    from .hdfwrite import *
+    from .hdfread import *
+    from .hdfread_many import *
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)
