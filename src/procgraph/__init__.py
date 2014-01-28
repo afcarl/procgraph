@@ -28,5 +28,5 @@ from .core.import_magic import import_magic, import_succesful
 from .core.constants import *
 
 
-
+from .components import *
 # TODO: parse .4 as 0.4

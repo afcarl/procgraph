@@ -1,9 +1,12 @@
 from. import logger
+import os
+
+from contracts import contract
+
+from procgraph.utils import system_cmd_result, CmdException
+
 from .metadata import read_extra_metadata_for, ffmpeg_get_metadata
 from .timestamps import TIMESTAMP_FIELD, timestamp_from_iso
-from contracts import contract
-from procgraph.utils import system_cmd_result, CmdException
-import os
 
 
 @contract(returns='dict(str:*)')
@@ -33,7 +36,7 @@ def pg_video_info(filename):
     
     precise = info['metadata'].get(TIMESTAMP_FIELD, None)
     if precise is None:
-        logger.info('No precise timestamp found')
+        logger.info('No precise timestamp found for %s' % filename)
         timestamp = os.path.getmtime(filename)
     else:
         timestamp = timestamp_from_iso(precise)
