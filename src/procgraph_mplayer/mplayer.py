@@ -1,14 +1,15 @@
-from procgraph import Generator, Block, BadConfig
-from procgraph.block_utils import expand
-from procgraph.utils import friendly_path
 import math
-import numpy
 import os
 import subprocess
 import tempfile
+
+import numpy
+
+from procgraph import Generator, Block, BadConfig
+from procgraph.block_utils import expand
+from procgraph.utils import friendly_path
+
 from .conversions import pg_video_info
-
-
 
 
 class MPlayer(Generator):
@@ -25,7 +26,6 @@ class MPlayer(Generator):
 
     Block.config('max_duration', 'Maximum length, in seconds, of the output.' 
                                  'Useful to get a maximum duration.', default=None)
-#     Block.config('set_timestamp', 'Use this timestamp as the initial frame. ')
     
     Block.output('video', 'RGB stream as numpy array.')
 
@@ -68,7 +68,7 @@ class MPlayer(Generator):
         self.height = info['height']
         self.fps = info['fps']
         self.length = info['length']
-        self.state.timestamp = info['timestamp']
+#         self.state.timestamp = info['timestamp']
         self.approx_frames = int(math.ceil(self.length * self.fps))
 
         # TODO: reading non-RGB streams not supported
@@ -129,6 +129,7 @@ class MPlayer(Generator):
                     self.error_once('Empty timestamp file? Starting at 0.')
                     return 0
             else:
+#                 print 'next=%s' % float(l)
                 return float(l)
         else:
             if self.state.timestamp is None:
@@ -141,6 +142,7 @@ class MPlayer(Generator):
             self.open_mencoder()
             self.read_next_frame()
 
+#         print('setting timestamp to %s' % self.state.timestamp)
         self.set_output(0,
                         value=self.state.next_frame,
                         timestamp=self.state.timestamp)
