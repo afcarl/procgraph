@@ -1,5 +1,9 @@
-from . import image_border
 from numpy.ma.testutils import assert_equal
+
+from .border import image_border
+
+
+__all__ = ['image_pad']
 
 
 def image_pad(pixel_data, expected_shape, bgcolor=[1, 1, 1]):

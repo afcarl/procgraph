@@ -1,5 +1,4 @@
 from . import pylab, pylab2rgb
-from procgraph_images import image_pad
 from numpy.ma.testutils import assert_equal
 import warnings
 
@@ -57,6 +56,8 @@ class PlotGeneric:
         # if tight is True 
         pixel_data = pylab2rgb(transparent=self.transparent, tight=self.tight)
 
+        from procgraph_images import image_pad # need here otherwise circular
+    
         # So we check and compensate
         shape = pixel_data.shape[0:2]
         shape_expected = (self.height, self.width)
