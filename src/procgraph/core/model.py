@@ -174,6 +174,7 @@ class Model(Generator):
             return True
 
         for generator in self.generators:
+            # print('checking %s' % generator)
             status = generator.next_data_status()  # @UnusedVariable
 
             if not isinstance(status, tuple) or len(status) != 2:
@@ -240,7 +241,7 @@ class Model(Generator):
 
     def update(self):
         
-        # Turn on debug here
+        # Turn on debugging here
         def debug(s):
             if False:
                 debug_main('Model %s | %s' % (self.model_name, s))
@@ -330,9 +331,10 @@ class Model(Generator):
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
                 other = connection.block2
+                debug("  - considering connection %s to %s" % (connection, other))
                 # Don't include dummy connection
                 if other is None:
-                    debug(" ignoring dummy connection %s" % connection)
+                    debug("   ignoring dummy connection %s" % connection)
                     continue
                 other_signal = connection.block2_signal
                 
@@ -349,12 +351,13 @@ class Model(Generator):
 
                 # Ignore if this signal wasn't updated yet
                 if this_timestamp is None:
+                    debug("   ignoring because timestamp is None")
                     continue
-
                 
                 to_update = ((not other.input_signal_ready(other_signal)) or
                              (this_timestamp > other.get_input_timestamp(other_signal))) 
                 
+
                 # if old_timestamp is None or this_timestamp > old_timestamp:
                 if to_update:
                     debug('  then waking up %s' % other)
@@ -370,9 +373,8 @@ class Model(Generator):
                         self.set_output(other.signal_name,
                                         value, this_timestamp)
                 else:
-                    pass
-#                     debug("  Not updated %s because not %s > %s." % 
-#                            (other, this_timestamp, old_timestamp))
+                    debug("   not updated %s because not %s > %s." %
+                           (other, this_timestamp, other.get_input_timestamp(other_signal)))
 
         # now let's see if we have still work to do
         # this step is important when the model is inside another one

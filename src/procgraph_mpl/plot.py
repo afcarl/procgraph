@@ -4,10 +4,15 @@ import numpy
 from numpy.ma.testutils import assert_equal
 
 from procgraph import Block, BadInput, BadConfig
+<<<<<<< HEAD
 from procgraph_images import image_pad
 
 from . import pylab, pylab2rgb
 from .fanciness import fancy_styles
+=======
+import numpy
+import time
+>>>>>>> origin/env_fault
 
 
 __all__ = [
@@ -304,6 +309,8 @@ class Plot(Block):
         # So we check and compensate
         shape = pixel_data.shape[0:2]
         shape_expected = (self.config.height, self.config.width)
+        from procgraph_images import image_pad # need here, otherwise circular
+
         if shape != shape_expected:
             msg = ('pylab2rgb() returned size %s instead of %s.' % 
                 (shape, shape_expected))

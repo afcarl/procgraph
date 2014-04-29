@@ -1,8 +1,10 @@
+from contracts import contract, new_contract
+
 from .block_config import resolve_config
 from .block_meta import BlockMeta, BlockMetaSugar
 from .block_sugar import InputProxy, OutputProxy, StateProxy, ConfigProxy
 from .exceptions import BlockWriterError, ModelWriterError, ModelExecutionError
-from contracts import contract, new_contract
+
 
 __all__ = ['Block', 'NOT_READY', 'Generator']
 
@@ -137,13 +139,15 @@ class Block(BlockMetaSugar):
                 return False
         return True
     
-    @contract(signal='num_or_id', returns='bool')
+#     @contract(signal='num_or_id', returns='bool')
     def input_signal_ready(self, signal):
         """ 
             Return True if the signal is ready, meaning that we have
             at least one value. 
         """
-        return bool(self.__get_input_struct(signal).timestamp != NOT_READY) 
+        res = bool(self.__get_input_struct(signal).timestamp != NOT_READY)
+        # print('ready? %s %s' % (signal, res))
+        return res
 
 
     @contract(signal='num_or_id', returns='bool')
