@@ -1,13 +1,18 @@
-from . import pylab, pylab2rgb
-from .fanciness import fancy_styles
-from numpy.ma.testutils import assert_equal
-from procgraph import Block, BadInput, BadConfig
-from procgraph_images import image_pad
-import numpy
 import time
 
+import numpy
+from numpy.ma.testutils import assert_equal
 
-__all__ = ['Plot']
+from procgraph import Block, BadInput, BadConfig
+from procgraph_images import image_pad
+
+from . import pylab, pylab2rgb
+from .fanciness import fancy_styles
+
+
+__all__ = [
+    'Plot',
+]
 
 class Plot(Block):
     ''' 

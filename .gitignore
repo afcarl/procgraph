@@ -14,3 +14,4 @@ clean_pgc.sh
 *.metadata.mp4
 *.mov
 dist
+src/procgraph_mpl/examples/bounce.mp4.timestamps
