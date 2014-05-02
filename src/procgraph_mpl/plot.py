@@ -4,16 +4,13 @@ import numpy
 from numpy.ma.testutils import assert_equal
 
 from procgraph import Block, BadInput, BadConfig
-<<<<<<< HEAD
+
 from procgraph_images import image_pad
 
 from . import pylab, pylab2rgb
 from .fanciness import fancy_styles
-=======
 import numpy
 import time
->>>>>>> origin/env_fault
-
 
 __all__ = [
     'Plot',
