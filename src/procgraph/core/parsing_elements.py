@@ -4,6 +4,7 @@ from pyparsing import lineno, col
 from .block_meta import split_docstring, BlockInput, BlockOutput, BlockConfig
 from .exceptions import SemanticError, x_not_found
 from .constants import FIXED
+import warnings
 
 
 class Where:
@@ -178,7 +179,7 @@ def output_from_tokens(tokens):
 
     desc, desc_rest = split_docstring(docstring)
 
-    return BlockOutput(FIXED, name, desc, desc_rest, None)
+    return BlockOutput(FIXED, name, desc, desc_rest, None, dtype=None)
 
 
 def input_from_tokens(tokens):
@@ -186,7 +187,8 @@ def input_from_tokens(tokens):
     docstring = tokens.get('docstring', None)
 
     desc, desc_rest = split_docstring(docstring)
-    return BlockInput(FIXED, name, None, None, desc, desc_rest, None)
+    warnings.warn('Add dtype here')
+    return BlockInput(FIXED, name, None, None, desc, desc_rest, None, dtype=None)
 
 
 class Connection(ParsedElement):
@@ -279,7 +281,9 @@ class ParsedModel(ParsedElement):
                     block.config['name'] = "in%d" % len(self.input)
                     bi = BlockInput(type=FIXED, name=block.config['name'],
                                 min=None, max=None,
-                                desc=None, desc_rest=None, where=block.where)
+                                desc=None, desc_rest=None, where=block.where,
+                                dtype=None)
+                    warnings.warn('check dtype')
                     # TODO add warning
                     self.input.append(bi)
                 else:

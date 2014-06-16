@@ -1,6 +1,10 @@
-from geometry import SE2
 from itertools import tee, izip
+
+from geometry import SE2
+from geometry.poses import linear_angular_from_se2
+import numpy as np
 from procgraph import Block
+
 
 class SE2_relative_pose(Block):
     """ Lets the first pose be the identity """
@@ -21,11 +25,37 @@ class SE2_relative_pose(Block):
     
 
 class se2_from_SE2_seq(Block):
-    ''' Block used by :ref:`block:pose2commands`. '''
+    ''' Computes velocity in se2 given poses in SE2. '''
     Block.alias('se2_from_SE2_seq')
 
-    Block.input('pose', 'Pose as an element of SE2')
-    Block.output('velocity', 'Velocity as an element of se(2).')
+    Block.input('pose', 'Pose as an element of SE2',
+                dtype=SE2)
+    Block.output('velocity', 
+                 'Velocity as an element of se(2).',
+                 dtype=np.dtype(('float', (3, 3))))
+
+    def init(self):
+        self.state.prev = None
+
+    def update(self):
+        q2 = self.get_input(0)
+        t2 = self.get_input_timestamp(0)
+
+        if self.state.prev is not None:
+            t1, q1 = self.state.prev
+            vel = velocity_from_poses(t1, q1, t2, q2)
+            self.set_output(0, vel, timestamp=t2)
+
+        self.state.prev = t2, q2
+
+class vel_from_SE2_seq(Block):
+    ''' Computes velocity in se2 represented as vx,vy,omega
+        from a sequence of poses in SE2. '''
+    Block.alias('vel_from_SE2_seq')
+
+    Block.input('pose', 'Pose as an element of SE2', dtype=SE2)
+    Block.output('velocity', 'Velocity as vx,vy,omega.',
+                 dtype=np.dtype(('float', 3)))
 
     def init(self):
         self.state.prev = None
@@ -37,11 +67,14 @@ class se2_from_SE2_seq(Block):
         if self.state.prev is not None:
             t1, q1 = self.state.prev
             vel = velocity_from_poses(t1, q1, t2, q2)
-            self.set_output(0, vel, timestamp=t2)
+
+            # Convertion from se2 to R3
+            v, omega = linear_angular_from_se2(vel)
+            out = np.array([v[0], v[1], omega])
+
+            self.set_output(0, out, timestamp=t2)
             
         self.state.prev = t2, q2
-        
-
 
 def pose_difference(poses, S=SE2):
     """ poses: sequence of (timestamp, pose) """ 

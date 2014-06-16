@@ -24,6 +24,8 @@ def pg_video_info(filename):
                         
             extra_mencoder_info
                 
+        Tries to read precise timestamp from metadata; otherwise 
+        it tries from the .timestamps file; otherwise from the file's mtime.
     """
 
     info = mplayer_identify(filename)
@@ -36,11 +38,22 @@ def pg_video_info(filename):
     
     precise = info['metadata'].get(TIMESTAMP_FIELD, None)
     if precise is None:
-        logger.info('No precise timestamp found for %s' % filename)
+        # logger.info('No precise timestamp in metadata found for %s' % filename)
         timestamp = os.path.getmtime(filename)
     else:
+        # logger.info('Precise timestamp found for %s' % filename)
         timestamp = timestamp_from_iso(precise)
         
+    timestamps = filename + '.timestamps'
+    if os.path.exists(timestamps):
+        # logger.info('Reading timestamps from %r.' % timestamps)
+        f = open(timestamps)
+        line = f.readline()
+        # print('frist line: %s' % line)
+        timestamp = float(line)
+        # print('timestamp: %s' % timestamp)
+
+
     info['timestamp'] = timestamp
     
     return info

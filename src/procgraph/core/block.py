@@ -55,8 +55,6 @@ class Block(BlockMetaSugar):
         
         # used for info_once() and error_once(): messages we already sent
         self._msgs_written = set()
-
-
         # Used by input_update_available()
         self._input_update_available_last = {}
 

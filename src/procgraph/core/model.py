@@ -1,3 +1,5 @@
+import time
+
 from ..utils import indent
 from .block import Block, Generator
 from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
@@ -6,7 +8,7 @@ from .exceptions import (BadMethodCall, SemanticError, ModelExecutionError,
 from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats, write_stats
 from .visualization import debug as debug_main, info, warning
-import time
+
 
 __all__ = ['Model'] 
 
@@ -205,6 +207,7 @@ class Model(Generator):
                 self.blocks_to_update.append(block)
 
     def init(self):
+        print('Initing model')
         assert not self._already_inited, 'The block has already been init()ed.'
         self._already_inited = True
         for block in self.name2block.values():

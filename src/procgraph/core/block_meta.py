@@ -1,9 +1,10 @@
-from .exceptions import BlockWriterError, ModelWriterError
-from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
 from contracts import ContractsMeta
 
+from .constants import FIXED, VARIABLE, DEFINED_AT_RUNTIME
+from .exceptions import BlockWriterError, ModelWriterError
 
-class BlockConfig:
+
+class BlockConfig(object):
     def __init__(self, variable, has_default, default, desc, desc_rest,
                  where=None):
         self.variable = variable
@@ -19,28 +20,30 @@ class BlockConfig:
                   self.desc, self.desc_rest))
 
 
-class BlockInput:
+class BlockInput(object):
     def __init__(self, type, name, min, max,  # @ReservedAssignment
-                 desc, desc_rest, where):
-        self.type = type
+                 desc, desc_rest, where, dtype):
+        self.type = type  # FIXED, VARIABLE, DEFINED_AT_RUNTIME
         self.name = name
         self.min = min
         self.max = max
         self.desc = desc
         self.desc_rest = desc_rest
         self.where = where
+        self.dtype = dtype
 
     # TODO: add repr
 
 
-class BlockOutput:
+class BlockOutput(object):
     def __init__(self, type, name,  # @ReservedAssignment
-                 desc, desc_rest, where):
-        self.type = type
+                 desc, desc_rest, where, dtype):
+        self.type = type  # FIXED, VARIABLE, DEFINED_AT_RUNTIME
         self.name = name
         self.desc = desc
         self.desc_rest = desc_rest
         self.where = where
+        self.dtype = dtype
 
     def __repr__(self):
         return "BlockOutput(%s,%s)" % (self.type, self.name)
@@ -64,7 +67,7 @@ def block_config(name, description=None, default='not-given'):
                                             desc, desc_rest, None))
 
 
-def block_input(name, description=None):
+def block_input(name, description=None, dtype=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str)
     desc, desc_rest = split_docstring(description)
@@ -77,7 +80,7 @@ def block_input(name, description=None):
         msg = 'Cannot mix variable and fixed input.'
         raise BlockWriterError(msg)
     BlockMeta.tmp_input.append(BlockInput(FIXED, name, None, None,
-                                          desc, desc_rest, None))
+                                          desc, desc_rest, None, dtype=None))
 
 
 def block_input_is_variable(description=None,
@@ -89,10 +92,10 @@ def block_input_is_variable(description=None,
         msg = 'Cannot mix variable and fixed input or variable with variable.'
         raise BlockWriterError(msg)
     BlockMeta.tmp_input.append(BlockInput(VARIABLE, None, min, max,
-                                          desc, desc_rest, None))
+                                          desc, desc_rest, None, dtype=None))
 
 
-def block_output(name, description=None):
+def block_output(name, description=None, dtype=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str)
     desc, desc_rest = split_docstring(description)
@@ -106,7 +109,7 @@ def block_output(name, description=None):
         raise BlockWriterError(msg)
 
     BlockMeta.tmp_output.append(BlockOutput(FIXED, name,
-                                             desc, desc_rest, None))
+                                             desc, desc_rest, None, dtype=dtype))
 
 
 def block_output_is_variable(description=None, suffix=None):
@@ -117,7 +120,7 @@ def block_output_is_variable(description=None, suffix=None):
         msg = ('Cannot mix variable and fixed output or variable with variable. '
               '(added already: %s)' % (BlockMeta.tmp_output))
         raise BlockWriterError(msg)
-    bo = BlockOutput(VARIABLE, suffix, desc, desc_rest, None)
+    bo = BlockOutput(VARIABLE, suffix, desc, desc_rest, None, dtype=None)
     BlockMeta.tmp_output.append(bo)
 
 
@@ -130,7 +133,7 @@ def block_output_is_defined_at_runtime(description=None):
                             ' or variable with variable. (added already: %s)'
                                % (BlockMeta.tmp_output))
     BlockMeta.tmp_output.append(BlockOutput(DEFINED_AT_RUNTIME, None,
-                                            desc, desc_rest, None))
+                                            desc, desc_rest, None, dtype=None))
 
 
 def cleanup():

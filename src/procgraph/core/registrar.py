@@ -1,6 +1,6 @@
 
 
-class Library:
+class Library(object):
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -31,6 +31,7 @@ class Library:
             library = self
         generator = self.get_generator_for_block_type(block_type)
         block = generator(name=name, config=config, library=library)
+        block.__dict__['generator'] = generator
         return block
 
     def get_generator_for_block_type(self, block_type):
