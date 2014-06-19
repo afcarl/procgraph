@@ -1,5 +1,10 @@
 
-class PlotAnim:
+__all__ = [
+           'PlotAnim',
+]
+
+
+class PlotAnim(object):
     
     def __init__(self):
         self.handle_line = {}

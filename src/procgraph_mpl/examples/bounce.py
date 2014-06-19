@@ -1,6 +1,11 @@
+import numpy as np
 from procgraph import Block
 from procgraph_mpl.plot_generic import PlotGeneric
-import numpy as np
+
+
+__all__ = [
+    'Bounce',
+]
 
 class Bounce(Block):
     

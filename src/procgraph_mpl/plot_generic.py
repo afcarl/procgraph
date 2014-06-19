@@ -1,9 +1,15 @@
-from . import pylab, pylab2rgb
-from numpy.ma.testutils import assert_equal
 import warnings
 
+from numpy.ma.testutils import assert_equal
 
-class PlotGeneric:
+from procgraph_images import image_pad
+
+from . import pylab, pylab2rgb
+
+__all__ = ['PlotGeneric']
+
+
+class PlotGeneric(object):
     ''' 
         Produces images using matplotlib. Good for custom animation.
     '''

@@ -1,9 +1,15 @@
-from . import pylab
 from StringIO import StringIO
-from procgraph_pil import Image
+
 import numpy
 
+from procgraph_pil import Image
+
+from . import pylab
+
+
 __all__ = ['pylab2rgb']
+
+
 
 def pylab2rgb(transparent=False, tight=False):
     ''' Saves and returns the pixels in the current pylab figure. 

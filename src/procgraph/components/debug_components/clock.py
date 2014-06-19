@@ -8,7 +8,7 @@ class Clock(Generator):
     Block.config('length', 'Total interval', default=None)
     
     def init(self):
-        self.state.clock = 0
+        self.state.clock = 0.0
 
     def update(self):
         self.set_output('clock', self.state.clock, timestamp=self.state.clock)

@@ -1,6 +1,9 @@
 import os
+
 from procgraph.utils import system_cmd_result, CmdException
+
 from . import logger
+
 
 CONTAINER_MP4 = 'mp4'
 CONTAINER_MOV = 'mov'
@@ -29,9 +32,10 @@ def do_quickstart(source, target):
     for name in names:
         cmd = [name, source, target]
         try:
+
             system_cmd_result('.', cmd,
-                      display_stdout=False,
-                      display_stderr=False,
+                      display_stdout=True,
+                      display_stderr=True,
                       raise_on_error=True,
                       capture_keyboard_interrupt=False)
             break

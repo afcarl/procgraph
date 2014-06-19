@@ -1,13 +1,18 @@
+import os
+
+from contracts import contract
+
+from procgraph import logger
+from procgraph.utils import system_cmd_result, CmdException
+
 from .containers import (CONTAINERS, supports_full_metadata, guess_container,
     CONTAINER_MP4, do_quickstart)
 from .metadata import get_ffmpeg_metadata_args, write_extra_metadata_for
 from .vcodecs import VCODECS, guess_vcodec
 from .video_info import pg_video_info
-from contracts import contract
-from procgraph import logger
-from procgraph.utils import system_cmd_result, CmdException
-import os
-import warnings
+
+
+__all__ = ['pg_video_convert']
 
 
 @contract(timestamp='None|float', metadata='dict', vcodec_params='dict')
@@ -22,9 +27,11 @@ def pg_video_convert(filename,
     """
         Converts a video file (e.g. an AVI) to another format.
         
-        It makes sure to write information to preserve timestamp and the given metadata.
+        It makes sure to write information to preserve timestamp 
+        and the given metadata.
         
-        One can then be guaranteed to access this data using the pg_info_video() function. 
+        One can then be guaranteed to access this data using 
+        the pg_info_video() function. 
     """
     logger.info('pg_video_convert:\n<- %s\n-> %s' % (filename, out))
     
@@ -85,9 +92,10 @@ def pg_video_convert(filename,
     assert os.path.exists(out1)
     
     if container == CONTAINER_MP4:
-        # do_quickstart(out1, out)
-        warnings.warn("Not sure why quickstart does not work.")
-        os.rename(out1, out)
+        do_quickstart(out1, out)
+        os.remove(out1)
+        # warnings.warn("Not sure why quickstart does not work.")
+        # os.rename(out1, out)
     else:
         assert out1 == out 
         
