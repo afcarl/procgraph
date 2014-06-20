@@ -1,7 +1,6 @@
 from itertools import tee, izip
 
-from geometry import SE2
-from geometry.poses import linear_angular_from_se2
+from geometry import SE2, SE3, se3, linear_angular_from_se2
 import numpy as np
 from procgraph import Block
 
@@ -66,7 +65,7 @@ class vel_from_SE2_seq(Block):
         
         if self.state.prev is not None:
             t1, q1 = self.state.prev
-            vel = velocity_from_poses(t1, q1, t2, q2)
+            vel = velocity_from_poses(t1, q1, t2, q2, S=SE2)
 
             # Convertion from se2 to R3
             v, omega = linear_angular_from_se2(vel)
@@ -75,6 +74,31 @@ class vel_from_SE2_seq(Block):
             self.set_output(0, out, timestamp=t2)
             
         self.state.prev = t2, q2
+
+class vel_from_SE3_seq(Block):
+    ''' Computes velocity in se3 represented as vx,vy,vz,w1,w2,w3
+        from a sequence of poses in SE3. '''
+    Block.alias('vel_from_SE3_seq')
+
+    Block.input('pose', 'Pose as an element of SE3', dtype=SE3)
+    Block.output('velocity', 'Velocity as vx,vy,vz,w1,w2,w3',
+                 dtype=np.dtype(('float', 6)))
+
+    def init(self):
+        self.state.prev = None
+
+    def update(self):
+        q2 = self.get_input(0)
+        t2 = self.get_input_timestamp(0)
+
+        if self.state.prev is not None:
+            t1, q1 = self.state.prev
+            vel = velocity_from_poses(t1, q1, t2, q2, S=SE3)
+            out = se3.vector_from_algebra(vel)
+            self.set_output(0, out, timestamp=t2)
+
+        self.state.prev = t2, q2
+
 
 def pose_difference(poses, S=SE2):
     """ poses: sequence of (timestamp, pose) """ 

@@ -207,7 +207,6 @@ class Model(Generator):
                 self.blocks_to_update.append(block)
 
     def init(self):
-        print('Initing model')
         assert not self._already_inited, 'The block has already been init()ed.'
         self._already_inited = True
         for block in self.name2block.values():

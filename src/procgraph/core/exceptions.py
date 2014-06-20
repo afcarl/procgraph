@@ -3,6 +3,7 @@ from procgraph.utils.strings import indent
 from procgraph.utils.levenshtein_match import levenshtein_best_match
 from contracts import contract
 from contracts.interface import describe_value
+import string
 
 
 class PGException(Exception):
@@ -34,7 +35,7 @@ class SemanticError(ModelWriterError):
     def __str__(self):
         s = self.error
         if self.element is not None:
-            s += format_where(self.element)
+            s += '\n' + format_where(self.element)
         return s
 
 
@@ -53,12 +54,31 @@ class PGSyntaxError(ModelWriterError):
         return s
 
 
+class ModelInstantionError(SemanticError):
+    pass
+
+
 class ModelExecutionError(PGException):
     ''' 
         Runtime errors, including misuse by the user.
     
     '''
-    pass
+    # XXX: code is repeated above
+    def __init__(self, error, element=None):
+        # http://web.archiveorange.com/archive/v/jbUwzgEaecaPQftfkITO
+        Exception.__init__(self, error, element)
+        
+        self.error = error
+        if element is not None:
+            assert hasattr(element, 'where')
+        self.element = element
+
+
+    def __str__(self):
+        s = string.strip(self.error)
+        if self.element is not None:
+            s += format_where(self.element)
+        return string.strip(s)
 
 
 class BadMethodCall(ModelExecutionError):

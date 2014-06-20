@@ -1,13 +1,14 @@
 import sys
+import warnings
+
 from pyparsing import lineno, col
 
 from .block_meta import split_docstring, BlockInput, BlockOutput, BlockConfig
-from .exceptions import SemanticError, x_not_found
 from .constants import FIXED
-import warnings
+from .exceptions import SemanticError, x_not_found
 
 
-class Where:
+class Where():
     ''' An object of this class represents a place in a file. 
     
     All parsed elements contain a reference to a :py:class:`Where` object
@@ -170,7 +171,8 @@ def config_from_tokens(tokens):
     default = tokens.get('default', None)
     docstring = tokens.get('docstring', None)
     desc, desc_rest = split_docstring(docstring)
-    return BlockConfig(variable, has_default, default, desc, desc_rest, None)
+    # TODO: dtype for BlockConfig
+    return BlockConfig(variable, has_default, default, desc, desc_rest, where=None, dtype=None)
 
 
 def output_from_tokens(tokens):
@@ -271,7 +273,9 @@ class ParsedModel(ParsedElement):
                     # so we add it (with warning)
                     bi = BlockInput(type=FIXED, name=input_name,
                                 min=None, max=None,
-                                desc=None, desc_rest=None, where=block.where)
+                                desc=None, desc_rest=None, where=block.where,
+                                dtype=None)
+                    # TODO: dtype for BlockInput
                     self.input.append(bi)
             else:
                 # we don't have a name

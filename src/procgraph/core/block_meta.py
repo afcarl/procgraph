@@ -5,7 +5,7 @@ from .exceptions import BlockWriterError, ModelWriterError
 
 
 class BlockConfig(object):
-    def __init__(self, variable, has_default, default, desc, desc_rest,
+    def __init__(self, variable, has_default, default, desc, desc_rest, dtype,
                  where=None):
         self.variable = variable
         self.has_default = has_default
@@ -13,6 +13,7 @@ class BlockConfig(object):
         self.desc = desc
         self.desc_rest = desc_rest
         self.where = where
+        self.dtype = dtype
 
     def __repr__(self):
         return ('BlockConfig(%r,%r,%r,%r,%r)' % 
@@ -54,7 +55,7 @@ def block_alias(name):
     BlockMeta.aliases.append(name)
 
 
-def block_config(name, description=None, default='not-given'):
+def block_config(name, description=None, default='not-given', dtype=None):
     assert isinstance(name, str)
     assert description is None or isinstance(description, str)
     desc, desc_rest = split_docstring(description)
@@ -64,7 +65,7 @@ def block_config(name, description=None, default='not-given'):
         msg = 'Already described config variable %r.' % name
         raise BlockWriterError(msg)
     BlockMeta.tmp_config.append(BlockConfig(name, has_default, default,
-                                            desc, desc_rest, None))
+                                            desc, desc_rest, dtype=dtype, where=None))
 
 
 def block_input(name, description=None, dtype=None):

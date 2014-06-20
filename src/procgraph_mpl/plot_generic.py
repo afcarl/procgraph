@@ -2,8 +2,6 @@ import warnings
 
 from numpy.ma.testutils import assert_equal
 
-from procgraph_images import image_pad
-
 from . import pylab, pylab2rgb
 
 __all__ = ['PlotGeneric']

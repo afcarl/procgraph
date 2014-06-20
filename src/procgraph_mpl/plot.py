@@ -1,16 +1,13 @@
 import time
 
-import numpy
 from numpy.ma.testutils import assert_equal
 
+import numpy as np
 from procgraph import Block, BadInput, BadConfig
-
-from procgraph_images import image_pad
 
 from . import pylab, pylab2rgb
 from .fanciness import fancy_styles
-import numpy
-import time
+
 
 __all__ = [
     'Plot',
@@ -133,8 +130,8 @@ class Plot(Block):
             function(pylab)
 
     def plot_one(self, id, x, y, format):  # @ReservedAssignment
-        assert isinstance(x, numpy.ndarray)
-        assert isinstance(y, numpy.ndarray)
+        assert isinstance(x, np.ndarray)
+        assert isinstance(y, np.ndarray)
         assert len(x.shape) <= 1
         assert len(y.shape) <= 1
         assert len(x) == len(y)
@@ -160,7 +157,7 @@ class Plot(Block):
         self.lengths[id] = len(x)
 
         if self.limits is None:
-            self.limits = numpy.array([min(x), max(x), min(y), max(y)])
+            self.limits = np.array([min(x), max(x), min(y), max(y)])
         else:
             self.limits[0] = min(self.limits[0], min(x))
             self.limits[1] = max(self.limits[1], max(x))
@@ -197,8 +194,8 @@ class Plot(Block):
                 if xo is None or yo is None:
                     raise BadInput('Invalid members of tuple', self, i)
 
-                x = numpy.array(xo)
-                y = numpy.array(yo)
+                x = np.array(xo)
+                y = np.array(yo)
 
                 # X must be one-dimensional
                 if len(x.shape) > 1:
@@ -217,16 +214,16 @@ class Plot(Block):
                 # TODO: check y compatible dimensions (T x N) 
 
             else:
-                y = numpy.array(value)
+                y = np.array(value)
                 if len(y.shape) > 2:
                     raise BadInput('Bad shape for y vector %s.' % str(y.shape),
                                    self, i)
 
                 if len(y.shape) == 1:
-                    x = numpy.array(range(len(y)))
+                    x = np.array(range(len(y)))
                 else:
                     assert(len(y.shape) == 2)
-                    x = numpy.array(range(y.shape[1]))
+                    x = np.array(range(y.shape[1]))
 
             if len(x) <= 1:
                 continue

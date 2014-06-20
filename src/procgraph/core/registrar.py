@@ -1,3 +1,10 @@
+import traceback
+
+from contracts.interface import describe_type
+from contracts.utils import indent
+
+
+__all__ = ['Library']
 
 
 class Library(object):
@@ -27,10 +34,25 @@ class Library(object):
         self.name2block[block_type] = generator
 
     def instance(self, block_type, name, config, library=None):
+        from procgraph.core.exceptions import ModelInstantionError, SemanticError
         if library is None:
             library = self
         generator = self.get_generator_for_block_type(block_type)
-        block = generator(name=name, config=config, library=library)
+        try:
+            block = generator(name=name, config=config, library=library)
+        except Exception as e:
+            msg = 'Could not instance block from generator.\n'
+            msg += '        name: %s  \n' % name
+            msg += '      config: %s  \n' % config
+            msg += '   generator: %s  \n' % generator
+            msg += '     of type: %s  \n' % describe_type(generator)
+            msg += 'Because of this exception:\n'
+            if isinstance(e, (SemanticError, ModelInstantionError)):
+                msg += indent('%s' % e, '| ')
+            else:
+                msg += indent('%s\n%s' % (e, traceback.format_exc(e)), '| ')
+            raise ModelInstantionError(msg)  # TODO: use Procgraph own exception
+
         block.__dict__['generator'] = generator
         return block
 

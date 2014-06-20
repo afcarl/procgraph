@@ -1,7 +1,15 @@
-from procgraph import Generator
 from abc import abstractmethod
-from contracts import describe_value, contract
+import string
+import traceback
 from types import GeneratorType
+
+from contracts import describe_value, contract
+from contracts.interface import describe_type
+from contracts.utils import indent
+
+from procgraph import Generator
+from procgraph import ModelExecutionError
+
 
 __all__ = ['IteratorGenerator']
 
@@ -14,7 +22,7 @@ class IteratorGenerator(Generator):
     @contract(returns=GeneratorType)
     def init_iterator(self):
         """ Must return an iterator yielding signal, timestamp, value """
-        raise NotImplemented
+        pass
     
     def init(self):
         self.iterator = self.init_iterator()
@@ -25,11 +33,29 @@ class IteratorGenerator(Generator):
 
     def _load_next(self):
         try:
-            signal, timestamp, value = self.iterator.next()
+            try:
+                res = self.iterator.next()
+                if not isinstance(res, tuple):
+                    msg = 'Expected tuple (signal, timestamp, value), obtained %s' % describe_type(res)
+                    raise ValueError(msg)
+                if not len(res) == 3:
+                    raise ValueError('Required len 3 tuple; obtained %d.' % len(res))
+                signal, timestamp, value = res
+            except StopIteration:
+                raise
+            except Exception as e:
+                msg = 'Could not call next() on user-given iterator.\n'
+                msg += '   iterator: %s\n' % str(self.iterator)
+                msg += '    of type: %s\n' % describe_type(self.iterator)
+                msg += 'because of this error:\n'
+                msg += indent(string.strip('%s\n%s' % (e, traceback.format_exc(e))), '| ')
+                raise ModelExecutionError(msg, self)
+
             if not isinstance(signal, (str, int)):
                 msg = ('Expected a string or number for the signal, got %s' % 
                        describe_value(signal))
                 raise ValueError(msg)
+
             if not isinstance(timestamp, float):
                 msg = ('Expected a number for the timestamp, got %s' % 
                        describe_value(timestamp))
