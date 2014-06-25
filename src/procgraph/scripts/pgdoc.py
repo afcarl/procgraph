@@ -1,17 +1,17 @@
-import sys
-import os
 from collections import namedtuple
 from optparse import OptionParser
+import os
+import sys
 
-from ..core.model_loader import  ModelSpec
-from ..core.registrar import default_library
 from ..core.block import Block
 from ..core.block_meta import (split_docstring, FIXED, VARIABLE,
                               DEFINED_AT_RUNTIME)
 from ..core.import_magic import get_module_info
+from ..core.model_loader import  ModelSpec
+from ..core.registrar import default_library
+
 
 # TODO: make it possible to document simple functions 
-
 type_block = 'block'
 type_model = 'model'
 type_simple_block = 'simple_block'

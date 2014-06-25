@@ -3,6 +3,8 @@ from .exceptions import aslist, SemanticError
 from .visualization import semantic_warning
 
 
+__all__ = ['resolve_config']
+
 def resolve_config(list_of_config, given_config, block, STRICT=True):
     '''
         Checks that the configuration passed is coherent with the definition.

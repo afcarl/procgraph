@@ -2,17 +2,17 @@ import inspect
 import types
 
 from .block import Block
-from .registrar import default_library
-from .model_loader import add_models_to_library
-
-from .docstring_parsing import parse_docstring_annotations, DocStringInfo
 from .constants import COMPULSORY, TIMESTAMP
+from .constants import NO_OUTPUT
+from .docstring_parsing import parse_docstring_annotations, DocStringInfo
 from .exceptions import BadConfig, BadInput
-from procgraph.core.constants import NO_OUTPUT
+from .model_loader import add_models_to_library
+from .registrar import default_library
 
 
 def make_generic(name, inputs, num_outputs,
                  operation, params={}, docs=None):
+    # XXX: This is not pickable
     # make a copy
     parameters = dict(params)
 

@@ -1,6 +1,8 @@
 from procgraph import Block, ETERNITY
 
 
+__all__ = ['Constant']
+
 class Constant(Block):
     ''' Output a numerical constant that never changes.
     

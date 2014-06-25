@@ -30,3 +30,6 @@ Plotting
 ========
 
 Accumulate and plot history: ::
+
+    commands -> |historyt interval=100| --> |plot width=$width height=200| -> commands_rgb
+    

@@ -3,8 +3,7 @@ import string
 import traceback
 from types import GeneratorType
 
-from contracts import describe_value, contract
-from contracts.interface import describe_type
+from contracts import describe_type, describe_value, contract
 from contracts.utils import indent
 
 from procgraph import Generator

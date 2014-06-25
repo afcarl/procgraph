@@ -1,9 +1,9 @@
-import traceback
-from procgraph.utils.strings import indent
-from procgraph.utils.levenshtein_match import levenshtein_best_match
-from contracts import contract
-from contracts.interface import describe_value
 import string
+import traceback
+
+from contracts import contract, describe_value
+
+from procgraph.utils import indent, levenshtein_best_match
 
 
 class PGException(Exception):

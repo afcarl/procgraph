@@ -1,6 +1,6 @@
 import traceback
 
-from contracts.interface import describe_type
+from contracts import describe_type
 from contracts.utils import indent
 
 

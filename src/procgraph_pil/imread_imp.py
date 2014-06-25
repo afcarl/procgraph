@@ -1,4 +1,4 @@
-from . import Image
+# from . import Image
 from procgraph import Block, Generator, simple_block
 import numpy as np
 
@@ -40,6 +40,7 @@ def imread(filename):
         :return: image: The image as a numpy array.
         :rtype: image
     '''
+    from . import Image
     try:
         im = Image.open(filename)
     except Exception as e:
@@ -63,7 +64,7 @@ def imread_rgb(filename):
         :rtype: ``array[HxWx3](uint8)``
          
     '''
-
+    from . import Image
     try:
         im = Image.open(filename)
     except Exception as e:

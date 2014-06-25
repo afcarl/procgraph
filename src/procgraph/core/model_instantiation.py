@@ -1,20 +1,20 @@
+from copy import deepcopy
 import os
 import re
 import sys
-from copy import deepcopy
+
 from pyparsing import ParseResults
 
-from .exceptions import SemanticError, x_not_found, aslist
-from .registrar import default_library
-from .model import Model
-from .visualization import debug as debug_main, semantic_warning, info
 from .block_config import resolve_config
 from .block_meta import VARIABLE, DEFINED_AT_RUNTIME
+from .constants import STRICT
+from .exceptions import BadMethodCall, PGException, SemanticError, x_not_found, aslist
+from .model import Model
 from .model_io import ModelInput
 from .parsing_elements import (ParsedSignalList, VariableReference,
                                ParsedBlock, ParsedModel, ParsedSignal)
-from .constants import STRICT
-from procgraph.core.exceptions import BadMethodCall, PGException
+from .registrar import default_library
+from .visualization import debug as debug_main, semantic_warning, info
 
 
 def check_link_compatibility_input(previous_block, previous_link):

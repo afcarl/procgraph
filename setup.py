@@ -97,7 +97,8 @@ setup(name='procgraph',
         'setproctitle',
         'termcolor',
         'SystemCmd',
-        'PyContracts'
+        'PyContracts',
+        'qtfaststart'
       ],
       # TODO: add many depedendencies
       tests_require=['nose>1.1.2,<2'],

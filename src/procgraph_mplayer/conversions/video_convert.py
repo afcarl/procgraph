@@ -92,6 +92,7 @@ def pg_video_convert(filename,
     assert os.path.exists(out1)
     
     if container == CONTAINER_MP4:
+
         do_quickstart(out1, out)
         os.remove(out1)
         # warnings.warn("Not sure why quickstart does not work.")
@@ -99,6 +100,9 @@ def pg_video_convert(filename,
     else:
         assert out1 == out 
         
+    if not os.path.exists(out):
+        logger.error('Something is wrong, path does not exist.\nPath: %s' % out)
+
     if not supports_full_metadata(container):
         write_extra_metadata_for(out, metadata)
         

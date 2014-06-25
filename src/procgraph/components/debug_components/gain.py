@@ -1,5 +1,6 @@
 from procgraph import Block
 
+__all__ = ['Gain']
 
 class Gain(Block):
     ''' A simple example of a gain block. '''

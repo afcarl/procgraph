@@ -1,6 +1,8 @@
 import operator
 
 
+__all__ = ['levenshtein', 'levenshtein_best_match']
+
 # http://hetland.org/coding/python/levenshtein.py
 def levenshtein(a, b):
     "Calculates the Levenshtein distance between a and b."

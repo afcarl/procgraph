@@ -1,5 +1,6 @@
 from procgraph import Generator, Block
 
+__all__ = ['Clock']
 
 class Clock(Generator):
     Block.alias('clock')
