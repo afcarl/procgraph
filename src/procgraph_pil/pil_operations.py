@@ -1,7 +1,9 @@
-from .pil_conversions import Image_from_array
-from procgraph import simple_block
 import numpy as np
-from procgraph.core.constants import COMPULSORY
+from procgraph import COMPULSORY
+from procgraph import simple_block
+
+from .pil_conversions import Image_from_array
+
 
 __all__ = ['resize']
 

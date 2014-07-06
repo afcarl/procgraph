@@ -1,5 +1,7 @@
-from .pil_conversions import Image_from_array
 from procgraph import simple_block, COMPULSORY
+
+from .pil_conversions import Image_from_array
+
 
 __all__ = ['imwrite']
 

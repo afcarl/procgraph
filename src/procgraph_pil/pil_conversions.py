@@ -1,6 +1,5 @@
-import numpy
+import numpy as np
 
-from . import Image
 
 __all__ = ['Image_from_array']
 
@@ -17,7 +16,7 @@ def Image_from_array(a):
 
     if len(a.shape) == 2:
         height, width = a.shape
-        rgba = numpy.zeros((height, width, 4), dtype='uint8')
+        rgba = np.zeros((height, width, 4), dtype='uint8')
         rgba[:, :, 0] = a
         rgba[:, :, 1] = a
         rgba[:, :, 2] = a
@@ -25,7 +24,7 @@ def Image_from_array(a):
     elif len(a.shape) == 3:
         height, width = a.shape[0:2]
         depth = a.shape[2]
-        rgba = numpy.zeros((height, width, 4), dtype='uint8')
+        rgba = np.zeros((height, width, 4), dtype='uint8')
         if not depth in [3, 4]:
             raise ValueError('Unexpected shape "%s".' % str(a.shape))
         rgba[:, :, 0:depth] = a[:, :, 0:depth]
@@ -35,7 +34,7 @@ def Image_from_array(a):
         raise ValueError('Unexpected shape "%s".' % str(a.shape))
 
     # require_shape((gt(0), gt(0), 4), rgba) 
-
+    from . import Image
     im = Image.frombuffer("RGBA", (width, height), rgba.data,
                            "raw", "RGBA", 0, 1)
     return im

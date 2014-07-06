@@ -1,6 +1,5 @@
-# from . import Image
-from procgraph import Block, Generator, simple_block
 import numpy as np
+from procgraph import Block, Generator, simple_block
 
 
 __all__ = ['StaticImage', 'imread']

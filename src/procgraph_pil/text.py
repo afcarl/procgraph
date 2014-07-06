@@ -1,10 +1,13 @@
-from . import ImageDraw, ImageFont
-from .pil_conversions import Image_from_array
+import os
+import subprocess
+
+import numpy
+
 from procgraph import Block, BadConfig, ETERNITY
 from procgraph.core.visualization import info as info_main, error as error_main
-import subprocess
-import os
-import numpy
+
+from .pil_conversions import Image_from_array
+
 
 __all__ = ['Text']
 
@@ -103,6 +106,7 @@ class Text(Block):
 
         rgb = self.input.rgb
         im = Image_from_array(rgb)
+        from . import ImageDraw
         draw = ImageDraw.Draw(im)
 
         # {string: "raw image", position: [10,30], halign: left, 
@@ -211,6 +215,8 @@ fonts = {}
 
 
 def get_font(name, size):
+    from . import ImageFont
+
     key = (name, size)
     if not key in fonts:
         filename = name + '.ttf'

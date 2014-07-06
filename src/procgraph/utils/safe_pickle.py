@@ -1,12 +1,16 @@
-from .safe_write import safe_write, safe_read
-from .debug_pickler import find_pickling_error
 from contracts import describe_type
+
 import cPickle as pickle
+
+from .debug_pickler import find_pickling_error
+from .safe_write import safe_write, safe_read
+
 
 __all__ = ['safe_pickle_dump', 'safe_pickle_load']
 
 
 def safe_pickle_dump(value, filename, protocol=pickle.HIGHEST_PROTOCOL, **safe_write_options):
+    from procgraph import logger
     with safe_write(filename, **safe_write_options) as f:
         try:
             pickle.dump(value, f, protocol)
