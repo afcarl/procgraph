@@ -1,6 +1,5 @@
 from numpy import array, linspace, sin, cos
 from procgraph import Block, BadInput
-from procgraph_mpl import pylab2rgb, pylab
 import math
 
 
@@ -35,6 +34,7 @@ class LaserDotDisplay(Block):
 
     def update(self):
         y = array(self.input.readings_dot)
+        from procgraph_mpl import pylab2rgb, pylab
 
         if max(abs(y)) > 1:
             raise BadInput('I expect an input normalized in the [-1,1] range;'

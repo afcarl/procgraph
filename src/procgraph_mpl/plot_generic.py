@@ -2,7 +2,7 @@ import warnings
 
 from numpy.ma.testutils import assert_equal
 
-from . import pylab, pylab2rgb
+
 
 __all__ = ['PlotGeneric']
 
@@ -23,6 +23,8 @@ class PlotGeneric(object):
 
     def init_figure(self):
         # TODO: remove from here
+        from . import pylab, pylab2rgb
+        
         pylab.rc('xtick', labelsize=8)
         pylab.rc('ytick', labelsize=8)
 
@@ -41,7 +43,9 @@ class PlotGeneric(object):
         """ function(pylab) """
         if self.figure is None:
             self.init_figure()
-
+            
+        from . import pylab, pylab2rgb
+        
         pylab.figure(self.figure.number)
 
         function(pylab)

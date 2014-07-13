@@ -1,10 +1,6 @@
-from StringIO import StringIO
-
-import numpy
-
-from procgraph_pil import Image
-
 from . import pylab
+from StringIO import StringIO
+import numpy as np
 
 
 __all__ = ['pylab2rgb']
@@ -26,15 +22,17 @@ def pylab2rgb(transparent=False, tight=False):
     else:
         pylab.savefig(imgdata, format='png')
 
+    from procgraph_pil import Image
+
     imgdata.seek(0)
     im = Image.open(imgdata)
     if not transparent:
         im = im.convert("RGB")
-    rgb = numpy.asarray(im)
+    rgb = np.asarray(im)
 
     if transparent:
         rgba = rgb.copy()
-        white = numpy.logical_and(rgb[:, :, 0] == 255,
+        white = np.logical_and(rgb[:, :, 0] == 255,
                                   rgb[:, :, 1] == 255,
                                   rgb[:, :, 2] == 255)
         alpha = rgba[:, :, 3]

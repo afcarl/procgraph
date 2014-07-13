@@ -22,7 +22,7 @@ class CovarianceRemember(Block):
             self.info('Loading state from filename %r' % filename)
             self.state = safe_pickle_load(filename)
         else:
-            from boot_agents.utils.mean_covariance import MeanCovariance
+            from astatsa.mean_covariance import MeanCovariance
             self.state = MeanCovariance()
     
     def update(self):

@@ -1,9 +1,9 @@
-from numpy import array, linspace, sin, cos, minimum, \
-    nonzero, logical_not, maximum
+from numpy import (array, cos, linspace, logical_not, maximum, minimum, nonzero, 
+    sin)
+from procgraph import BadInput, Block
 
-from procgraph  import Block, BadInput
-from procgraph_mpl import pylab2rgb, pylab
 
+__all__ = ['LaserDisplay']
 
 class LaserDisplay(Block):
     ''' Produces a plot of a range-finder scan. 
@@ -38,6 +38,9 @@ class LaserDisplay(Block):
         if len(readings.shape) > 1:
             msg = 'Expected flat array, got shape %s' % str(readings.shape)
             raise BadInput(msg, self, 0)
+
+        from procgraph_mpl import pylab, pylab2rgb
+
 
         f = pylab.figure(frameon=False,
                         figsize=(self.config.width / 100.0,

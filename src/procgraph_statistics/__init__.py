@@ -3,6 +3,13 @@
 
 '''
 
+
+procgraph_info = {
+    # List of python packages 
+    'requires': ['astatsa']
+}
+
+
 from . import expectation
 from . import variance
 from . import covariance

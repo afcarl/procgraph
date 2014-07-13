@@ -1,8 +1,8 @@
-import numpy as np
 from procgraph import Block
 from procgraph.core.registrar_other import register_model_spec
 from procgraph.scripts.pgmain import pg
-from procgraph_mpl.plot_generic import PlotGeneric
+import numpy as np
+
 
 
 __all__ = ['pg_quick_animation']
@@ -25,6 +25,8 @@ class GenericPlot(Block):
     Block.output('rgb')
 
     def init(self):
+        from procgraph_mpl import PlotGeneric
+        
         self.plot_generic = PlotGeneric(width=self.config.width,
                                         height=self.config.height,
                                         transparent=self.config.transparent,
