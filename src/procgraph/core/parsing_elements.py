@@ -319,7 +319,7 @@ class ParsedModel(ParsedElement):
                     # we have a name, and no output was specified,
                     # so we add it (with warning)
                     bo = BlockOutput(type=FIXED, name=output_name,
-                                desc=None, desc_rest=None, where=block.where)
+                                desc=None, desc_rest=None, where=block.where, dtype=None)
                     # TODO add warning
                     self.output.append(bo)
             else:
@@ -329,7 +329,7 @@ class ParsedModel(ParsedElement):
                 if not outputs_defined:
                     block.config['name'] = "out%d" % len(self.output)
                     bo = BlockOutput(type=FIXED, name=block.config['name'],
-                                desc=None, desc_rest=None, where=block.where)
+                                desc=None, desc_rest=None, where=block.where, dtype=None)
                     self.output.append(bo)
                 else:
                     # if exactly 1 output is specified, use that
