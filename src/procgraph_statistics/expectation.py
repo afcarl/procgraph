@@ -1,4 +1,5 @@
 from procgraph import Block
+import numpy as np
 
 
 class Expectation(Block):
@@ -23,7 +24,6 @@ class Expectation(Block):
         self.output.Ex = self.state.Ex
 
 
-import numpy as np
 
 class ExpectationNorm(Block):
     Block.alias('expectation_norm')

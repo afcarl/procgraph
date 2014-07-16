@@ -1,9 +1,6 @@
 from procgraph import Block
+from procgraph.utils import safe_pickle_dump, safe_pickle_load
 import os
-from procgraph.utils import safe_pickle_load, safe_pickle_dump
-import warnings
-
-warnings.warn('remove below dipendence on boot_agents')
 
 __all__ = ['CovarianceRemember']
 

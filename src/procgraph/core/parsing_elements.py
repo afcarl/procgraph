@@ -189,7 +189,6 @@ def input_from_tokens(tokens):
     docstring = tokens.get('docstring', None)
 
     desc, desc_rest = split_docstring(docstring)
-    warnings.warn('Add dtype here')
     return BlockInput(FIXED, name, None, None, desc, desc_rest, None, dtype=None)
 
 
