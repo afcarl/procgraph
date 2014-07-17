@@ -1,6 +1,6 @@
 from contracts import contract
 from procgraph import BadConfig, Block, Generator
-from rosbag_utils import resolve_topics, rosbag_info
+from rosbag_utils import resolve_topics, rosbag_info_cached
 import warnings
 from pprint import pformat
 
@@ -38,7 +38,7 @@ class BagRead(Generator):
             all_topics = [c.topic for c in self.bag._get_connections()]
             topics = sorted(set(all_topics))
 
-        self.baginfo = rosbag_info(bagfile)
+        self.baginfo = rosbag_info_cached(bagfile)
         res, _, asked2resolved = resolve_topics(self.baginfo, topics)
         self.info('Resolving:\n%s' % pformat(asked2resolved))
         return res
