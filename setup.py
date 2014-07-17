@@ -71,7 +71,7 @@ version = '1.6dev1'
 
 setup(name='procgraph',
       author="Andrea Censi",
-      author_email="andrea@cds.caltech.edu",
+      author_email="censi@mit.edu",
       url='http://andreacensi.github.com/procgraph/',
 
       description='ProcGraph ("processing graph") is a Python library '
