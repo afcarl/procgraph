@@ -15,7 +15,7 @@ from .video_info import pg_video_info
 __all__ = ['pg_video_convert']
 
 
-@contract(timestamp='None|float', metadata='dict', vcodec_params='dict')
+@contract(timestamp='None|float|int', metadata='dict', vcodec_params='dict')
 def pg_video_convert(filename,
                      out,
                      quiet=True,
@@ -66,6 +66,8 @@ def pg_video_convert(filename,
     
     if timestamp is None:
         timestamp = info['timestamp']
+    else:
+        timestamp = float(timestamp)
         
     cmds += get_ffmpeg_metadata_args(metadata, timestamp)
     # cmds += ['-f', container]
