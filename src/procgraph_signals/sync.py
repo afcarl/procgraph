@@ -1,9 +1,10 @@
-from procgraph  import Block, Generator
 from collections import namedtuple
-from procgraph.core.constants import ETERNITY
+from procgraph import Block, ETERNITY, Generator
 
 
-__all__ = ['Sync']
+__all__ = [
+    'Sync',
+]
 
 
 Sample = namedtuple('Sample', 'timestamp value')
