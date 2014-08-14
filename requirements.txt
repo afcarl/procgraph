@@ -1,0 +1,6 @@
+pyparsing
+setproctitle
+termcolor
+SystemCmd
+PyContracts
+qtfaststart
