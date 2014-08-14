@@ -2,5 +2,5 @@ pyparsing
 setproctitle
 termcolor
 SystemCmd
-PyContracts
+-e git+https://github.com/AndreaCensi/contracts.git@env_fault#egg=PyContracts
 qtfaststart
