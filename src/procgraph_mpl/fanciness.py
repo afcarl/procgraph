@@ -114,7 +114,11 @@ def set_spines_look_A(pylab, outward_offset=10,
         l.set_markersize(markersize)
         l.set_markeredgewidth(markeredgewidth)
 
-    ax.get_frame().set_linewidth(linewidth)
+    try:
+        ax.get_frame().set_linewidth(linewidth)
+    except BaseException as e:
+        print('set_linewidth() not working in matplotlib 1.3.1')
+        print(e)
 
 
 
