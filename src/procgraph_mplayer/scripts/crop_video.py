@@ -71,9 +71,7 @@ rgb2 --> |mencoder quiet=1 file=$output timestamps=0|
                           left=crop_left, right=crop_right,
                           video=filename, output=output))
 
-
-def get_motion_mask(filename):
-    register_model_spec("""
+register_model_spec("""
 --- model movie_stats
 config video 'video'
 output rgb_min
@@ -85,6 +83,8 @@ rgb --> |minimum_over_time| --> |output name=rgb_min|
 rgb --> |maximum_over_time| --> |output name=rgb_max|
     
     """)
+def get_motion_mask(filename):
+
     model = pg('movie_stats', dict(video=filename))
     rgb_min = model.get_output('rgb_min')
     rgb_max = model.get_output('rgb_max')
