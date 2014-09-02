@@ -254,7 +254,6 @@ class MEncoder(Block):
             base, ext = os.path.splitext(self.filename)
             cropped = '%s-crop%s' % (base, ext)
             video_crop(self.filename, cropped)
-            os.unlink(self.filename)
             os.rename(cropped, self.filename)
 
     def cleanup(self):
