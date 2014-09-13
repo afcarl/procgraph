@@ -88,15 +88,7 @@ def turn_off_bottom_and_top(pylab):
 
 
 
-    
-def set_spines_look_A(pylab, outward_offset=10,
-                      linewidth=2, markersize=3, markeredgewidth=1):
-    ''' 
-        Taken from 
-        http://matplotlib.sourceforge.net/examples/pylab_examples
-        /spine_placement_demo.html
-    '''
-
+def set_spines_outward(pylab, outward_offset=10):
     ax = pylab.gca()
     for loc, spine in ax.spines.iteritems():
         if loc in ['left', 'bottom']:
@@ -109,6 +101,17 @@ def set_spines_look_A(pylab, outward_offset=10,
     # turn off ticks where there is no spine
     ax.xaxis.set_ticks_position('bottom')
     ax.yaxis.set_ticks_position('left')
+
+    
+def set_spines_look_A(pylab, outward_offset=10,
+                      linewidth=2, markersize=3, markeredgewidth=1):
+    ''' 
+        Taken from 
+        http://matplotlib.sourceforge.net/examples/pylab_examples
+        /spine_placement_demo.html
+    '''
+    set_spines_outward(pylab, outward_offset=outward_offset)
+    ax = pylab.gca()
 
     for l in ax.get_xticklines() + ax.get_yticklines():
         l.set_markersize(markersize)

@@ -4,7 +4,7 @@ import re
 Arg = namedtuple('Arg', 'name type')
 
 
-class Arg:
+class Arg(object):
     def __init__(self, desc=None, type=None): #@ReservedAssignment
         if desc is not None:
             desc = desc.strip()
@@ -21,7 +21,7 @@ class Arg:
         return "Arg(%r,%r)" % (self.desc, self.type)
 
 
-class DocStringInfo:
+class DocStringInfo(object):
     def __init__(self, docstring=None, params={}, returns=[]):
         self.docstring = docstring
         self.params = params
