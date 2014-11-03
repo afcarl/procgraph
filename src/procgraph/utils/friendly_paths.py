@@ -30,7 +30,9 @@ def friendly_path(path, use_environment=True):
 
         for k, v in envs.items():
             if v:
-                rules.append(('$%s' % k, v))
+                if v and v[-1] == '/':
+                    v = v[:-1]
+                rules.append(('${%s}' % k, v))
 
     # apply longest first
     rules.sort(key=lambda x: (-len(x[1])))
@@ -57,7 +59,6 @@ def friendly_path(path, use_environment=True):
     # print('Converted %s  => %s' % (original, result))
 
     return result
-
 
 def replace_variables(path, rules):
     for k, v in rules:

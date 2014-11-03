@@ -1,4 +1,3 @@
-from. import logger
 import os
 
 from contracts import contract

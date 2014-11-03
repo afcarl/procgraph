@@ -6,9 +6,12 @@ def crop(rgb, left=0, right=0, top=0, bottom=0):
     ''' Crops an image by the given values'''
 
     #print('Cropping %s' % (str(rgb.shape)))
-    rgb2 = rgb[top:-bottom, left:-right, :]
+    height = rgb.shape[0]
+    width = rgb.shape[1]
+    rgb2 = rgb[top:(height-bottom), left:(width-right), :]
 
-    #print('cropping %s -> %s' % (str(rgb.shape), str(rgb2.shape)))
+    
+#     print('cropping %s -> %s' % (str(rgb.shape), str(rgb2.shape)))
 
 #    if left > 0:
 #        rgb = rgb[:, left:, :]

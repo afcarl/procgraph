@@ -36,7 +36,12 @@ def main():
 
 
 def join_video(output, dirname, pattern, fps):
-
+    """ 
+        Note that the pattern is a Python regex:
+        
+        pg-video-join -d anim-simple/ -p '.*.png' -o anim-simple-collate.mp4 --fps 1 
+        
+    """
     register_model_spec("""
 --- model join_video_helper
 config output

@@ -171,7 +171,7 @@ def register_simple_block(function, name=None, num_inputs=1, num_outputs=1,
         inputs = args_no_argument
     except Exception as e:  # @UnusedVariable
         # TODO: add switch to show this
-        # print "Does not work with %s: %s " % (function, e)
+#         print("Does not work with %s: %s " % (function, e))
         config = params
         inputs = [str(i) for i in range(num_inputs)]
 

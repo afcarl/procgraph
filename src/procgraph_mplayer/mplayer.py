@@ -10,6 +10,7 @@ from procgraph.block_utils import expand
 from procgraph.utils import friendly_path
 
 from .conversions import pg_video_info
+from contracts.main import check
 
 
 class MPlayer(Generator):
@@ -68,7 +69,10 @@ class MPlayer(Generator):
         self.height = info['height']
         self.fps = info['fps']
         self.length = info['length']
-#         self.state.timestamp = info['timestamp']
+        check('float|int', self.length)
+        check('float|int', self.fps)
+        self.info('length: %r' % self.length)
+        self.info('fps: %r' % self.fps)
         self.approx_frames = int(math.ceil(self.length * self.fps))
 
         # TODO: reading non-RGB streams not supported
@@ -157,7 +161,10 @@ class MPlayer(Generator):
                 self.print_stats()
 
     def print_stats(self):
-        percentage = 100.0 * self.num_frames_read / self.approx_frames
+        if self.approx_frames != 0:
+            percentage = 100.0 * self.num_frames_read / self.approx_frames
+        else:
+            percentage = 0
         # this assumes constant fps
         seconds = self.num_frames_read * self.delta
         seconds_total = self.approx_frames * self.delta
