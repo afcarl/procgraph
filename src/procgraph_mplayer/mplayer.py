@@ -49,7 +49,7 @@ class MPlayer(Generator):
             self.timestamps = open(timestamps_file)
         else:
             self.timestamps = None
-            self.info('Will use fps for timestamps.')
+            #self.info('Will use fps for timestamps.')
 
         self.mencoder_started = False
 
@@ -71,8 +71,8 @@ class MPlayer(Generator):
         self.length = info['length']
         check('float|int', self.length)
         check('float|int', self.fps)
-        self.info('length: %r' % self.length)
-        self.info('fps: %r' % self.fps)
+        #self.info('length: %r' % self.length)
+        #self.info('fps: %r' % self.fps)
         self.approx_frames = int(math.ceil(self.length * self.fps))
 
         # TODO: reading non-RGB streams not supported

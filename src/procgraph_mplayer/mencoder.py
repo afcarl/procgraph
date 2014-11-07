@@ -76,6 +76,7 @@ class MEncoder(Block):
 
         # Put image in a buffer -- we don't use it right away
         image = self.get_input(0)
+        
         timestamp = self.get_input_timestamp(0)
         self.buffer.append((timestamp, image))
 
@@ -265,7 +266,6 @@ class MEncoder(Block):
         if 'tmp_filename' in self.__dict__:
             if os.path.exists(self.tmp_filename):
                 os.unlink(self.tmp_filename)
-
 
 
         self.cleanup_mencoder()

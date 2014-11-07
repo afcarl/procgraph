@@ -103,19 +103,25 @@ def input_check_rgb_or_grayscale(block, input):  # @ReservedAssignment
     input_check_numpy_array(block, input)
 
     if image.dtype != 'uint8':
-        raise BadInput('Expected an image, got an array %s %s.' % 
-                            (str(image.shape), image.dtype), block, input)
+        msg = ('Expected an image, got an array %s %s.' % 
+                (str(image.shape), image.dtype))
+        raise BadInput(msg, block, input)
+    
     shape = image.shape
     if len(shape) == 3:
         depth = shape[2]
         if not depth in [3, 4]:
-            raise BadInput('Bad shape for image: %s' % str(shape),
-                           block, input)
+            msg = 'Bad shape for image: %s' % str(shape)
+            raise BadInput(msg, block, input)
     elif len(shape) == 2:
         pass
     else:
-        raise BadInput('Bad shape for image: %s' % str(shape), block, input)
+        msg = 'Bad shape for image: %s' % str(shape)
+        raise BadInput(msg, block, input)
 
+    if shape[0] == 0 or shape[1] == 0:
+        msg = 'Image with zero width or height: %s' % (str(shape))
+        raise BadInput(msg, block, input)
 
 def check_rgb(block, input):  # @ReservedAssignment
     ''' Checks that the selected input is either  a RGB image.

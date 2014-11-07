@@ -6,6 +6,7 @@ from procgraph.utils import system_cmd_result, CmdException
 
 from .metadata import read_extra_metadata_for, ffmpeg_get_metadata
 from .timestamps import TIMESTAMP_FIELD, timestamp_from_iso
+from contracts.utils import raise_wrapped
 
 
 @contract(returns='dict(str:*)')
@@ -76,40 +77,44 @@ def mplayer_identify(filename):
 
     args = ('mplayer -identify -vo null -ao null -frames 0'.split()
             + [filename])
-
+    
     try:
-        res = system_cmd_result('.', args,
-                  display_stdout=False,
-                  display_stderr=False,
-                  raise_on_error=True,
-                  capture_keyboard_interrupt=False)
-    except CmdException:
-        raise
-        
-    output = res.stdout
-
-    info = {}
-    for line in output.split('\n'):
-        if line.startswith('ID_'):
-            key, value = line.split('=', 1)
-            try:  # interpret numbers if possible
-                value = eval(value)
-            except:
-                pass
-            info[key] = value
-
-
-    for k in keys:
-        if not k in info:
-            msg = ('Could not find key %r in properties %s.' % 
-                  (k, sorted(info.keys())))
+        try:
+            res = system_cmd_result('.', args,
+                      display_stdout=False,
+                      display_stderr=False,
+                      raise_on_error=True,
+                      capture_keyboard_interrupt=False)
+        except CmdException:
+            raise
+            
+        output = res.stdout
+    
+        info = {}
+        for line in output.split('\n'):
+            if line.startswith('ID_'):
+                key, value = line.split('=', 1)
+                try:  # interpret numbers if possible
+                    value = eval(value)
+                except:
+                    pass
+                info[key] = value
+    
+    
+        for k in keys:
+            if not k in info:
+                msg = ('Could not find key %r in properties %s.' % 
+                      (k, sorted(info.keys())))
+                raise Exception(msg)
+    
+        if id_length == 0:
+            msg = 'I could not find find the length of this video.'
+            msg += (' I ran:\n\t%s\n and this is the output:\n' % 
+                   (" ".join(args), output))
             raise Exception(msg)
-
-    if id_length == 0:
-        msg = 'I could not find find the length of this movie.'
-        msg += (' I ran:\n\t%s\n and this is the output:\n' % 
-               (" ".join(args), output))
-        raise Exception(msg)
+    except Exception as e:
+        raise_wrapped(Exception, e, "Could not identify movie", 
+                      filename=filename)
 
     res = {}
     res['width'] = info[id_width]
