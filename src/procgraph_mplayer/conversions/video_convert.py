@@ -1,15 +1,12 @@
-import os
-
-from contracts import contract
-
-from procgraph import logger
-from procgraph.utils import system_cmd_result, CmdException
-
-from .containers import (CONTAINERS, supports_full_metadata, guess_container,
-    CONTAINER_MP4, do_quickstart)
+from .containers import (CONTAINERS, CONTAINER_MP4, do_quickstart, 
+    guess_container, supports_full_metadata)
 from .metadata import get_ffmpeg_metadata_args, write_extra_metadata_for
 from .vcodecs import VCODECS, guess_vcodec
 from .video_info import pg_video_info
+from contracts import contract
+from procgraph import logger
+from procgraph.utils import CmdException, system_cmd_result
+import os
 
 
 __all__ = ['pg_video_convert']

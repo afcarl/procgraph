@@ -149,10 +149,13 @@ class Text(Block):
 
 def get_hor_pos_value(spec, width):
     if isinstance(spec, str):
-        valid = ['center', 'left', 'right']
-        if not spec in valid:
-            msg = 'Strange %r: not in %s' % (spec, valid)
-            raise ValueError(msg)
+        if is_fraction(spec):
+            return get_fraction(spec, width)
+        else:
+            valid = ['center', 'left', 'right']
+            if not spec in valid:
+                msg = 'Strange %r: not in %s' % (spec, valid)
+                raise ValueError(msg)
     else:
         assert isinstance(spec, int)
 
@@ -168,12 +171,24 @@ def get_hor_pos_value(spec, width):
         else:
             return spec
 
+def is_fraction(spec):
+    return isinstance(spec, str) and spec[-1] == '%'
+
+def get_fraction(spec, L):
+    if not is_fraction(spec):
+        raise ValueError(spec)
+    f = float(spec[:-1])
+    return int(f/100.0*L)
+    
 def get_ver_pos_value(spec, height):
     if isinstance(spec, str):
-        valid = ['middle', 'top', 'bottom']
-        if not spec in valid:
-            msg = 'Strange %r: not in %s' % (spec, valid)
-            raise ValueError(msg)
+        if is_fraction(spec):
+            return get_fraction(spec, height)
+        else:
+            valid = ['middle', 'top', 'bottom']
+            if not spec in valid:
+                msg = 'Strange %r: not in %s' % (spec, valid)
+                raise ValueError(msg)
     else:
         assert isinstance(spec, int)
 
@@ -276,3 +291,87 @@ def process_text(draw, t):
     draw.text([x, y], string, fill=color, font=font)
 
 
+def draw_text_on_img(rgb, string, position,
+                     color='#aaaaaa',
+                     bg=None,
+                     fontsize=None,
+                     height=None,
+                     width=None,
+                     fontname='Arial',
+                     halign='left', valign='top'):
+                     
+    im = Image_from_array(rgb)
+    from . import ImageDraw
+    draw = ImageDraw.Draw(im)
+
+     
+    position[0] = get_ver_pos_value(position[0], height=rgb.shape[0])
+    position[1] = get_hor_pos_value(position[1], width=rgb.shape[1])
+
+    n = sum([fontsize is not None, 
+             height is not None, 
+             width is not None])
+    if n != 1:
+        msg = 'Need exactly one of fontsize, height, width (got %d)' % n
+        raise ValueError(msg)
+        
+    if fontsize is not None:
+        if is_fraction(fontsize):
+            fontsize = get_fraction(fontsize, rgb.shape[0])
+        font = get_font(fontname, fontsize)
+
+    else:
+        test_scale = 100
+        font0 = get_font(fontname, test_scale)
+        tw0, th0 = font0.getsize(string)
+            
+        if height is not None:
+            if is_fraction(height):
+                height = get_fraction(height, rgb.shape[0])
+            print('height: %s' % height)
+            scale = height *1.0 / th0
+
+        if width is not None:
+            if is_fraction(width):
+                width = get_fraction(width, rgb.shape[1])
+
+            print('width: %s' % width)
+            scale = width *1.0 / tw0
+        
+        print('scale: %s' % scale)
+            
+        font = get_font(fontname, int(test_scale * scale))
+
+    
+
+    tw, th = font.getsize(string)
+    y, x = position[0], position[1]  # order is good
+
+    if halign == 'left':
+        pass
+    elif halign == 'right':
+        x -= tw
+    elif halign == 'center':
+        x -= tw / 2
+    else:
+        print('Unknown horizontal-align key %s' % halign)
+
+    if valign == 'top':
+        pass
+    elif valign == 'bottom':
+        y -= th
+    elif valign == 'middle':
+        y -= th / 2
+    else:
+        print('Unknown vertical-align key %s' % valign)
+
+    if bg:
+        for a in [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
+                   [-1, +1], [1, 1], [1, -1]]:
+            draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
+
+    draw.text([x, y], string, fill=color, font=font)
+
+    out = im.convert("RGB")
+    pixel_data = numpy.asarray(out)
+    return pixel_data

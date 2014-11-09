@@ -14,7 +14,8 @@ class BagRead(Generator):
     Block.alias('bagread')
     Block.output_is_defined_at_runtime('The signals read from the log.')
     Block.config('file', 'Bag file to read')
-    Block.config('limit', 'Limit in seconds on how much data we want. (0=no limit)', default=0)
+    Block.config('limit', 'Limit in seconds on how much data we want. (0=no limit)', 
+                            default=0)
     Block.config('topics', 'Which signals to output (and in what order). '
                  'Should be a comma-separated list. If you do not specify it '
                  '(or if empty) it will be all signals.',
