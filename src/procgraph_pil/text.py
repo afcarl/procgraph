@@ -7,6 +7,8 @@ from procgraph import Block, BadConfig, ETERNITY
 from procgraph.core.visualization import info as info_main, error as error_main
 
 from .pil_conversions import Image_from_array
+from contracts import contract
+from procgraph_pil.pil_format_paragraph import format_paragraph
 
 
 __all__ = ['Text']
@@ -240,6 +242,7 @@ def get_font(name, size):
             name = find_file(name)
             if name is None:
                 error('Could not find %r anywhere, using default font' % name)
+                # XXX: need to specify font
                 fonts[key] = ImageFont.load_default()
             else:
                 fonts[key] = ImageFont.truetype(name, size)
@@ -290,24 +293,31 @@ def process_text(draw, t):
 
     draw.text([x, y], string, fill=color, font=font)
 
-
+@contract(rgb='array[HxWx4]')
 def draw_text_on_img(rgb, string, position,
-                     color='#aaaaaa',
+                     color='#aaaaaaff',
                      bg=None,
                      fontsize=None,
                      height=None,
                      width=None,
                      fontname='Arial',
-                     halign='left', valign='top'):
+                     line_width='100%',
+                     line_scale=1.1,
+                     halign='left', 
+                     valign='top'):
                      
     im = Image_from_array(rgb)
     from . import ImageDraw
     draw = ImageDraw.Draw(im)
 
-     
     position[0] = get_ver_pos_value(position[0], height=rgb.shape[0])
     position[1] = get_hor_pos_value(position[1], width=rgb.shape[1])
 
+        
+    if is_fraction(line_width):
+        line_width = get_fraction(line_width, rgb.shape[1])
+            
+        
     n = sum([fontsize is not None, 
              height is not None, 
              width is not None])
@@ -319,34 +329,61 @@ def draw_text_on_img(rgb, string, position,
         if is_fraction(fontsize):
             fontsize = get_fraction(fontsize, rgb.shape[0])
         font = get_font(fontname, fontsize)
-
     else:
         test_scale = 100
         font0 = get_font(fontname, test_scale)
-        tw0, th0 = font0.getsize(string)
+        _, (tw0, th0) = format_paragraph(text=string, font=font0, 
+                                            line_width=100000, 
+                                            line_scale=line_scale)
+        
             
         if height is not None:
             if is_fraction(height):
                 height = get_fraction(height, rgb.shape[0])
-            print('height: %s' % height)
+            #print('height: %s' % height)
             scale = height *1.0 / th0
 
         if width is not None:
             if is_fraction(width):
                 width = get_fraction(width, rgb.shape[1])
 
-            print('width: %s' % width)
+            #print('width: %s' % width)
             scale = width *1.0 / tw0
         
-        print('scale: %s' % scale)
+        #print('scale: %s' % scale)
             
         font = get_font(fontname, int(test_scale * scale))
-
     
+         
+    #print('font: %s' % str(font))
+    tokens, (th, tw) = format_paragraph(text=string, font=font, 
+                                        line_width=line_width, 
+                                        line_scale=line_scale)
+    
+    base = get_basepoint(p0=position, tw=tw, th=th, 
+                         halign=halign, valign=valign)
+    #print('basepoint: %s' % str(base))
+    for t in tokens:
+        #print(t)
+        draw_token(draw=draw, t=t, base=base, bg=bg, font=font, color=color) 
 
-    tw, th = font.getsize(string)
-    y, x = position[0], position[1]  # order is good
+    out = im.convert("RGBA")
+    pixel_data = numpy.asarray(out)
+    return pixel_data
 
+def draw_token(draw, t, base, bg, font, color):
+    x = t.position[1] + base[1]
+    y = t.position[0] + base[0]
+    string = t.text
+    if bg:
+        for a in [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
+                   [-1, +1], [1, 1], [1, -1]]:
+            draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
+
+    draw.text([x, y], string, fill=color, font=font)
+
+def get_basepoint(p0, tw, th, halign, valign):
+    y, x = p0
     if halign == 'left':
         pass
     elif halign == 'right':
@@ -364,14 +401,4 @@ def draw_text_on_img(rgb, string, position,
         y -= th / 2
     else:
         print('Unknown vertical-align key %s' % valign)
-
-    if bg:
-        for a in [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
-                   [-1, +1], [1, 1], [1, -1]]:
-            draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
-
-    draw.text([x, y], string, fill=color, font=font)
-
-    out = im.convert("RGB")
-    pixel_data = numpy.asarray(out)
-    return pixel_data
+    return y, x
