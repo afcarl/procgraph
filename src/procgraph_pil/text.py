@@ -183,6 +183,7 @@ def get_fraction(spec, L):
     return int(f/100.0*L)
     
 def get_ver_pos_value(spec, height):
+    # Draws the string at the given position. The position gives the upper left corner of the text.
     if isinstance(spec, str):
         if is_fraction(spec):
             return get_fraction(spec, height)
@@ -211,7 +212,7 @@ def get_ver_pos_value(spec, height):
 def find_file(font_name):
     try:
         # pattern = '*%s*.ttf' % font_name
-        pattern = '%s.ttf' % font_name
+        pattern = font_name
         a = subprocess.Popen(['locate', pattern], stdout=subprocess.PIPE)
         lines = a.stdout.read()
         options = lines.split('\n')
@@ -232,26 +233,41 @@ fonts = {}
 
 
 def get_font(name, size):
-    from . import ImageFont
-
+    
     key = (name, size)
-    if not key in fonts:
-        filename = name + '.ttf'
-        if not os.path.exists(filename):
-            info('Could not find file %r, trying "locate"...' % filename)
-            name = find_file(name)
-            if name is None:
-                error('Could not find %r anywhere, using default font' % name)
-                # XXX: need to specify font
-                fonts[key] = ImageFont.load_default()
-            else:
-                fonts[key] = ImageFont.truetype(name, size)
-        else:
-            info('Using font in file %s' % filename)
-            fonts[key] = ImageFont.truetype(filename, size)
-
-    return fonts[key]
-
+    # cached 
+    if key in fonts:
+        return fonts[key]
+    
+    options = [name, 'FreeSans', 'Arial']
+    
+    errors = []
+    for o in options:
+        try:
+            res = get_font_try(o, size)
+            fonts[key] = res
+            return res
+        except KeyError as e:
+            errors.append(e)
+                    
+    msg = 'Could not find any of the fonts %r' % options
+    raise ValueError(msg)
+    
+def get_font_try(name, size):
+    from . import ImageFont
+    name = name.replace(' ', '')
+    filename = name
+    if not filename.endswith('.ttf'):
+        filename += '.ttf'
+    if os.path.exists(filename):
+        return ImageFont.truetype(filename, size)
+    else:
+        found = find_file(filename)
+        if found is None:
+            msg =  'Could not find %r anywhere.' % filename
+            raise KeyError(msg)
+        info('Found %r using "locate".' % filename)
+        return ImageFont.truetype(found, size)
 
 def process_text(draw, t):
     position = t['position']
@@ -302,7 +318,7 @@ def draw_text_on_img(rgb, string, position,
                      width=None,
                      fontname='Arial',
                      line_width='100%',
-                     line_scale=1.1,
+                     line_scale=1.5,
                      halign='left', 
                      valign='top'):
                      
@@ -313,6 +329,7 @@ def draw_text_on_img(rgb, string, position,
     position[0] = get_ver_pos_value(position[0], height=rgb.shape[0])
     position[1] = get_hor_pos_value(position[1], width=rgb.shape[1])
 
+    print('Using line width %r (shape %r) ' % (line_width ,rgb.shape))
         
     if is_fraction(line_width):
         line_width = get_fraction(line_width, rgb.shape[1])
@@ -332,37 +349,44 @@ def draw_text_on_img(rgb, string, position,
     else:
         test_scale = 100
         font0 = get_font(fontname, test_scale)
-        _, (tw0, th0) = format_paragraph(text=string, font=font0, 
+        _, (th0, tw0) = format_paragraph(text=string, font=font0, 
                                             line_width=100000, 
                                             line_scale=line_scale)
-        
+
+        print('size using test_scale =%s -> h %s w %s' % (test_scale, th0, tw0))
             
         if height is not None:
             if is_fraction(height):
                 height = get_fraction(height, rgb.shape[0])
             #print('height: %s' % height)
-            scale = height *1.0 / th0
+            scale = height * 1.0 / th0
 
         if width is not None:
             if is_fraction(width):
                 width = get_fraction(width, rgb.shape[1])
 
             #print('width: %s' % width)
-            scale = width *1.0 / tw0
+            scale = width * 1.0 / tw0
         
-        #print('scale: %s' % scale)
-            
-        font = get_font(fontname, int(test_scale * scale))
-    
+        use_size = int(test_scale * scale)
+        print('scale: %s' % scale)
+        print('use_size: %s' % use_size)
+        font = get_font(fontname, use_size)
          
+        _, (th1, tw1) = format_paragraph(text=string, font=font, 
+                                            line_width=100000, 
+                                            line_scale=line_scale)
+        print('now: h %s w %s ' % (th1,tw1))
+         
+    
     #print('font: %s' % str(font))
     tokens, (th, tw) = format_paragraph(text=string, font=font, 
                                         line_width=line_width, 
                                         line_scale=line_scale)
-    
+    print('th, tw: %s' % str((th,tw)))
     base = get_basepoint(p0=position, tw=tw, th=th, 
                          halign=halign, valign=valign)
-    #print('basepoint: %s' % str(base))
+    print('basepoint: %s' % str(base))
     for t in tokens:
         #print(t)
         draw_token(draw=draw, t=t, base=base, bg=bg, font=font, color=color) 
@@ -372,14 +396,22 @@ def draw_text_on_img(rgb, string, position,
     return pixel_data
 
 def draw_token(draw, t, base, bg, font, color):
+    
     x = t.position[1] + base[1]
     y = t.position[0] + base[0]
+    
+    #print('drawing at y=%.2f x=%.2f token %r' % (y,x,t.text))
     string = t.text
     if bg:
         for a in [[-1, 0], [1, 0], [0, 1], [0, -1], [-1, -1],
                    [-1, +1], [1, 1], [1, -1]]:
             draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
 
+    w, h = font.getsize(string)    
+#     draw.rectangle(((0,0),(w,h)), fill="white", outline = "blue")
+    #print('token %r -> size h %s w %s ' % (t, h ,w ))
+    #draw.text([0, 0], string, fill="#000000", font=font)
+    
     draw.text([x, y], string, fill=color, font=font)
 
 def get_basepoint(p0, tw, th, halign, valign):

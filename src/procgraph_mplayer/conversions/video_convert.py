@@ -24,6 +24,13 @@ def pg_video_convert(filename,
     """
         Converts a video file (e.g. an AVI) to another format.
         
+        
+        container: one of "mkv", "mp4", "mov"
+        
+        vcodec : vcodec params with defaults
+        'prores': profile=3, qv=None
+        'x264': crf=18, preset='medium'
+        
         It makes sure to write information to preserve timestamp 
         and the given metadata.
         
@@ -56,6 +63,7 @@ def pg_video_convert(filename,
     
     if no_audio:
         cmds += ['-an']
+        
     cmds += VCODECS[vcodec](**vcodec_params)
     
     info = pg_video_info(filename)

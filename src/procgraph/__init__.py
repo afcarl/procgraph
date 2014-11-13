@@ -6,7 +6,7 @@ __version__ = '1.6dev1'
 import logging
 logging.basicConfig()
 from logging import getLogger
-logger = getLogger(__name__)
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # If true, does not allow .pgc caches
@@ -30,4 +30,3 @@ from .core.constants import *
 from .block_utils import IteratorGenerator
 
 from .components import *
-# TODO: parse .4 as 0.4

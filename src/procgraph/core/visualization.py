@@ -86,43 +86,75 @@ color_debug = dict(color='magenta')
 
 
 # TODO: use logging
-def warning(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, **color_warning))
+if False:
+        
+    def warning(string):
+        write_message(string, lambda x: 'pg: ' + colored(x, **color_warning))
+    
+    
+    def error(string):
+        write_message(string, lambda x: 'pg: ' + colored(x, **color_error))
+    
+    
+    def user_error(string):
+        write_message(string, lambda x: 'pg: ' + colored(x, **color_user_error))
+    
+    
+    def info(string):
+        write_message(string, lambda x: 'pg: ' + colored(x, **color_info))
+    
+    
+    def debug(string):
+        write_message(string, lambda x: 'pg: ' + colored(x, **color_debug))
+        
+        
+    
+    def write_message(string, formatting):
+        
+        sys.stdout.flush()
+        string = str(string)
+    
+        #clean_console_line(sys.stderr)
+        lines = string.split('\n')
+        if len(lines) == 1:
+            sys.stderr.write(formatting(lines[0]) + '\n')
+        else:
+            for i, l in enumerate(lines): #@UnusedVariable
+                #if i == 1: 
+                #    l = '- ' + l
+                #else:
+                #    l = '  ' + l
+                sys.stderr.write(formatting(l) + '\n')
+    
+        sys.stderr.flush()
+
+else:
+    
+    prefix = ''
+    from procgraph import logger
+    def warning(string):
+        fmt = lambda x: prefix + colored(x, **color_warning)
+        logger.warning(fmt(string)) 
+    
+    def error(string):
+        fmt = lambda x: prefix + colored(x, **color_error)
+        logger.error(fmt(string)) 
+
+    def user_error(string):
+        fmt = lambda x: prefix + colored(x, **color_user_error)
+        logger.error(fmt(string)) 
+    
+    def info(string):
+        fmt = lambda x: prefix + colored(x, **color_info)
+        logger.info(fmt(string)) 
+
+    def debug(string):
+        fmt = lambda x: prefix + colored(x, **color_debug)
+        logger.info(fmt(string)) 
+     
 
 
-def error(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, **color_error))
 
-
-def user_error(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, **color_user_error))
-
-
-def info(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, **color_info))
-
-
-def debug(string):
-    write_message(string, lambda x: 'pg: ' + colored(x, **color_debug))
-
-
-def write_message(string, formatting):
-    sys.stdout.flush()
-    string = str(string)
-
-    #clean_console_line(sys.stderr)
-    lines = string.split('\n')
-    if len(lines) == 1:
-        sys.stderr.write(formatting(lines[0]) + '\n')
-    else:
-        for i, l in enumerate(lines): #@UnusedVariable
-            #if i == 1: 
-            #    l = '- ' + l
-            #else:
-            #    l = '  ' + l
-            sys.stderr.write(formatting(l) + '\n')
-
-    sys.stderr.flush()
 
 
 def semantic_warning(error, element):
