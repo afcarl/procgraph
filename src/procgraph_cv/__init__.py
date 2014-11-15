@@ -18,8 +18,9 @@ from .cv_display import *
 
 
 if not import_succesful(cv):
-    from procgraph import logger
-    logger.warn('Could not import CV')
+    if False:
+        from procgraph import logger
+        logger.warn('Could not import CV')
 
 
 from procgraph import pg_add_this_package_models

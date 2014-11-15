@@ -194,7 +194,11 @@ def register_block(block_class, name=None):
     default_library.register(name, block_class)
 
 
+already = set()
 def register_model_spec(model_spec, defined_in=None):
+    if model_spec in already:
+        return
+    already.add(model_spec)
     if defined_in is None:
         frm = inspect.stack()[1]
         mod = inspect.getmodule(frm[0])

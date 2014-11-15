@@ -66,7 +66,7 @@ def pg_video_convert(filename,
         
     cmds += VCODECS[vcodec](**vcodec_params)
     
-    info = pg_video_info(filename)
+    info = pg_video_info(filename, intolerant=False)
     info['metadata'].update(metadata) 
     
     if timestamp is None:
@@ -99,7 +99,6 @@ def pg_video_convert(filename,
     assert os.path.exists(out1)
     
     if container == CONTAINER_MP4:
-
         do_quickstart(out1, out)
         os.remove(out1)
         # warnings.warn("Not sure why quickstart does not work.")

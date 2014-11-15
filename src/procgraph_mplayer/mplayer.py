@@ -63,16 +63,19 @@ class MPlayer(Generator):
     def open_mencoder(self):
         self.mencoder_started = True
 
-        info = pg_video_info(self.file)
+        info = pg_video_info(self.file, intolerant=True)
 
         self.width = info['width']
         self.height = info['height']
+        
         self.fps = info['fps']
         self.length = info['length']
+        
+        
         check('float|int', self.length)
         check('float|int', self.fps)
-        #self.info('length: %r' % self.length)
-        #self.info('fps: %r' % self.fps)
+        self.info('length: %r' % self.length)
+        self.info('fps: %r' % self.fps)
         self.approx_frames = int(math.ceil(self.length * self.fps))
 
         # TODO: reading non-RGB streams not supported
@@ -85,14 +88,14 @@ class MPlayer(Generator):
         self.shape = (self.height, self.width, 3)
         self.dtype = 'uint8'
 
-        format = "rgb24"  # @ReservedAssignment
+        pixel_format = "rgb24" 
 
         self.temp_dir = tempfile.mkdtemp(prefix='procgraph_fifo_dir')
         self.fifo_name = os.path.join(self.temp_dir, 'mencoder_fifo')
         os.mkfifo(self.fifo_name)
         args = ['mencoder', self.file, '-ovc', 'raw',
                 '-rawvideo', 'w=%d:h=%d:format=%s' % 
-                    (self.width, self.height, format),
+                    (self.width, self.height, pixel_format),
                 '-of', 'rawvideo',
                 '-vf', 'format=rgb24',
                 '-nosound',
@@ -113,8 +116,9 @@ class MPlayer(Generator):
         self.delta = 1.0 / self.fps
         
         if not self.timestamps:
-            self.info('No timestamps found; using delta = %.2f (%.2f fps).' 
-                      % (self.delta, self.fps))    
+            msg = ('No timestamps found; using delta = %.2f (%.2f fps).' 
+                      % (self.delta, self.fps))
+            self.info(msg)    
 
         self.stream = open(self.fifo_name, 'r')
 
@@ -133,7 +137,6 @@ class MPlayer(Generator):
                     self.error_once('Empty timestamp file? Starting at 0.')
                     return 0
             else:
-#                 print 'next=%s' % float(l)
                 return float(l)
         else:
             if self.state.timestamp is None:
@@ -146,7 +149,6 @@ class MPlayer(Generator):
             self.open_mencoder()
             self.read_next_frame()
 
-#         print('setting timestamp to %s' % self.state.timestamp)
         self.set_output(0,
                         value=self.state.next_frame,
                         timestamp=self.state.timestamp)
@@ -221,7 +223,6 @@ class MPlayer(Generator):
 
     def finish(self):
         # TODO: make sure process is closed?
-
         if os.path.exists(self.fifo_name):
             os.unlink(self.fifo_name)
         if os.path.exists(self.temp_dir):
