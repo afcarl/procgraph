@@ -84,6 +84,7 @@ def mplayer_identify(filename, intolerant=True):
             + [filename])
     
     try:
+        
         try:
             res = system_cmd_result('.', args,
                       display_stdout=False,
@@ -91,10 +92,8 @@ def mplayer_identify(filename, intolerant=True):
                       raise_on_error=True,
                       capture_keyboard_interrupt=False)
         except CmdException:
-            raise
-            
+            raise 
         
-    
     except Exception as e:
         raise_wrapped(Exception, e, "Could not identify movie", 
                       filename=filename)
@@ -121,10 +120,9 @@ def parse_mplayer_info_output(output, intolerant=True):
                 value = eval(value)
             except:
                 pass
-            if key in value:
+            if key in info:
                 print('overriding %r=%r from %r' % (key,value,info[key]))
             info[key] = value
-
 
     for k in keys:
         if not k in info:
@@ -135,7 +133,6 @@ def parse_mplayer_info_output(output, intolerant=True):
     if id_length == 0:
         msg = 'I could not find find the length of this video.' 
         raise Exception(msg)
-    
     
     res = {}
     res['width'] = info[id_width]
