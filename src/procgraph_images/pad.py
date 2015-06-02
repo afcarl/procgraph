@@ -29,3 +29,5 @@ def image_pad(pixel_data, expected_shape, bgcolor=[1, 1, 1]):
     assert_equal(new_image.shape[0:2], expected_shape)
 
     return new_image
+
+
