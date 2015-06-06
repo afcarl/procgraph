@@ -8,7 +8,8 @@ from . import logger
 CONTAINER_MP4 = 'mp4'
 CONTAINER_MOV = 'mov'
 CONTAINER_MKV = 'mkv'
-CONTAINERS = [CONTAINER_MOV, CONTAINER_MP4, CONTAINER_MKV]
+CONTAINER_AVI = 'avi'
+CONTAINERS = [CONTAINER_MOV, CONTAINER_MP4, CONTAINER_MKV, CONTAINER_AVI]
 
 def supports_full_metadata(container):
     return container in [CONTAINER_MKV] 
@@ -17,9 +18,12 @@ def supports_full_metadata(container):
 def guess_container(filename):    
     _, ext = os.path.splitext(filename)
     ext = ext.lower()
-    choices = {'.mp4': CONTAINER_MP4,
-               '.mkv': CONTAINER_MKV,
-               '.mov': CONTAINER_MOV}
+    choices = {
+       '.mp4': CONTAINER_MP4,
+       '.mkv': CONTAINER_MKV,
+       '.mov': CONTAINER_MOV,
+       '.avi': CONTAINER_AVI,
+   }
     if not ext in choices:
         raise ValueError(ext)
     return choices[ext]

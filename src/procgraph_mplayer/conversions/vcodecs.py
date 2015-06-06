@@ -1,6 +1,7 @@
 from .containers import CONTAINER_MOV, CONTAINER_MKV, CONTAINER_MP4
 from contracts import contract
 from procgraph.utils.calling_ext_program import system_cmd_result
+from procgraph_mplayer.conversions.containers import CONTAINER_AVI
 
 VCODEC_X264 = 'x264'
 VCODEC_PRORES = 'prores'
@@ -47,7 +48,8 @@ def guess_vcodec(container):
     choices = {
         CONTAINER_MP4: (VCODEC_X264, dict()),
         CONTAINER_MKV: (VCODEC_X264, dict()),
-        CONTAINER_MOV: (VCODEC_PRORES, dict())
+        CONTAINER_MOV: (VCODEC_PRORES, dict()),
+        CONTAINER_AVI: (VCODEC_X264, dict()),  # XXX: not sure
     }
     return choices[container]
     

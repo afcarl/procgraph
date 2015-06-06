@@ -60,7 +60,7 @@ class MEncoder(Block):
 
     Block.config('container', 'Which container to use; if None, it will be guessed.', default=None)
     Block.config('vcodec', 'Codec to use. If None, it will be guessed', default=None)
-    Block.config('vcodec_params', 'Codec-depedent params.', default={})
+    Block.config('vcodec_params', 'Codec-dependent params.', default={})
 
     Block.config('firstpass_bitrate', default=3 * 1000 * 1000)
     
