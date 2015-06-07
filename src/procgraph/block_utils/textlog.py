@@ -2,6 +2,9 @@ from procgraph import Generator, Block, ModelExecutionError, BadConfig
 import os
 import traceback
 
+__all__ = [
+    'TextLog',
+]
 
 class TextLog(Generator):
     ''' 

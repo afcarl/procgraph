@@ -10,7 +10,9 @@ from procgraph import Generator
 from procgraph import ModelExecutionError
 
 
-__all__ = ['IteratorGenerator']
+__all__ = [
+    'IteratorGenerator',
+]
 
 class IteratorGenerator(Generator):
     ''' 

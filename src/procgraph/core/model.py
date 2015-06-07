@@ -294,8 +294,8 @@ class Model(Generator):
             raise ModelExecutionError(msg, self)
 
         # now we have a block (could be a generator)
-        debug('Updating %s (input ts: %s)' % 
-              (block, block.get_input_signals_timestamps()))
+#        debug('Updating %s (input ts: %s)' %
+#              (block, block.get_input_signals_timestamps()))
 
         # We also time the execution
         start_cpu = time.clock()
@@ -326,17 +326,16 @@ class Model(Generator):
             self.blocks_to_update.insert(0, block)
         else:
             # the block updated, propagate
-            debug("  processed %s, ts: %s" % 
-                  (block, block.get_output_signals_timestamps()))
-            debug("  its successors: %s" % 
-                  list(self.__get_output_connections(block)))
+            # debug("  processed %s, ts: %s" % (block, block.get_output_signals_timestamps()))
+            # debug("  its successors: %s" % list(self.__get_output_connections(block)))
+
             # check if the output signals were updated
             for connection in self.__get_output_connections(block):
                 other = connection.block2
-                debug("  - considering connection %s to %s" % (connection, other))
+                # debug("  - considering connection %s to %s" % (connection, other))
                 # Don't include dummy connection
                 if other is None:
-                    debug("   ignoring dummy connection %s" % connection)
+                    # debug("   ignoring dummy connection %s" % connection)
                     continue
                 other_signal = connection.block2_signal
                 
@@ -353,7 +352,7 @@ class Model(Generator):
 
                 # Ignore if this signal wasn't updated yet
                 if this_timestamp is None:
-                    debug("   ignoring because timestamp is None")
+                    # debug("   ignoring because timestamp is None")
                     continue
                 
                 to_update = ((not other.input_signal_ready(other_signal)) or
@@ -362,7 +361,7 @@ class Model(Generator):
 
                 # if old_timestamp is None or this_timestamp > old_timestamp:
                 if to_update:
-                    debug('  then waking up %s' % other)
+                    # debug('  then waking up %s' % other)
 
                     other.from_outside_set_input(other_signal, value,
                                                  this_timestamp)
@@ -375,8 +374,9 @@ class Model(Generator):
                         self.set_output(other.signal_name,
                                         value, this_timestamp)
                 else:
-                    debug("   not updated %s because not %s > %s." %
-                           (other, this_timestamp, other.get_input_timestamp(other_signal)))
+                    # debug("   not updated %s because not %s > %s." %
+                    #       (other, this_timestamp, other.get_input_timestamp(other_signal)))
+                    pass
 
         # now let's see if we have still work to do
         # this step is important when the model is inside another one

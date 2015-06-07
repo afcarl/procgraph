@@ -22,7 +22,7 @@ class HDFwrite(Block):
          time         (float64 timestamp)
          value        (the datatype of the signal)
          
-    If a signal changes datatype, then an error is thrown.
+    If a signal changes datatype, then an exception is raised.
     
     '''
 
@@ -43,7 +43,7 @@ class HDFwrite(Block):
     def update(self):
         signals = self.get_input_signals_names()
         for signal in signals:
-            if self.input_signal_ready(signal):
+            if self.input_update_available(signal):
                 self.log_signal(signal)
 
     def log_signal(self, signal):

@@ -12,6 +12,8 @@ import subprocess
 import tempfile
 
 
+__all__ = ['MEncoder']
+
 
 class MEncoder(Block):
     ''' 
@@ -21,20 +23,11 @@ class MEncoder(Block):
         your version of mencoder.
         
         MP4 output: currently it works by creating a .AVI with mencoder
-        and then converting to MP4 using ffmpeg (MP4 support for mencoder
-        is currently --- Feb'12 --- broken).
+        and then converting to MP4 using ffmpeg.
         
         RGBA videos: not working fully. For now it outputs .AVI with 
         mencoder and encoded using png. 
         
-        
-        On ubuntu 12.04: need 'sudo apt-get install x264 libavcodec-extra-53'
-        to install necessary codecs.
-        You can see a list of supported presets by using: 'x264 --help'.
-        
-        
-        (other packages that might be helpful: # libavdevice-extra-52  libavfilter-extra-0 
-         libavformat-extra-52 libavutil-extra-49 libpostproc-extra-51 libswscale-extra-0)
         
     '''
     Block.alias('mencoder')
@@ -71,6 +64,13 @@ class MEncoder(Block):
 
         self.first_frame_timestamp = None
         
+        from .programs_existence import check_programs_existence
+
+        self.programs = check_programs_existence(programs=['mencoder', 'ffmpeg'])
+
+        for p in self.programs:
+            self.info('Using %13s = %s' % (p, self.programs[p]))
+
     def update(self):
         input_check_rgb_or_grayscale(self, 0)
 
@@ -175,9 +175,13 @@ class MEncoder(Block):
                   'vcodec=%s:vbitrate=%d' % ('mpeg4', vbitrate)]
 
         out = ['-o', self.tmp_filename]
-        args = ['mencoder', '/dev/stdin', '-demuxer', 'rawvideo',
+        args = [
+                self.programs['mencoder'],
+                '/dev/stdin',
+                '-demuxer', 'rawvideo',
                 '-rawvideo', 'w=%d:h=%d:fps=%f:format=%s' % 
-                (self.width, self.height, fps, format)] + ovc + out
+                (self.width, self.height, fps, format)
+        ] + ovc + out
 
                 # '-v', "0", # verbosity level (1 prints stats \r)
 
@@ -207,8 +211,7 @@ class MEncoder(Block):
         if self.config.timestamps:
             self.timestamps_filename = self.filename + '.timestamps'
             self.timestamps_file = open(self.timestamps_filename, 'w')
- 
- 
+
     def _get_metadata(self):
         """ Returns the user-given metadata as well as some extra created by us. """
         metadata = self.config.md
@@ -218,7 +221,6 @@ class MEncoder(Block):
         # metadata['comment'] = 'Another video by me.'
         return metadata
 
-      
     def finish(self):
         if self.process is None:
             msg = 'Finish() before starting to encode.'

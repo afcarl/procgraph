@@ -33,6 +33,11 @@ def take(a, axis=0, indices=COMPULSORY):
         raise Exception('take(axis=%s,indices=%s) failed on array '
                         'with shape %s: %s' % (axis, indices, a.shape, e))
 
+@simple_block
+def sub(a, f=COMPULSORY):
+    """ Takes a field """
+    return a[f]
+
 
 @simple_block
 def outer(a, b):

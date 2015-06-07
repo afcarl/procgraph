@@ -6,7 +6,11 @@ from .block_sugar import InputProxy, OutputProxy, StateProxy, ConfigProxy
 from .exceptions import BlockWriterError, ModelWriterError, ModelExecutionError
 
 
-__all__ = ['Block', 'NOT_READY', 'Generator']
+__all__ = [
+    'Block',
+    'NOT_READY',
+    'Generator',
+]
 
 
 NOT_READY = None
@@ -153,6 +157,8 @@ class Block(BlockMetaSugar):
         """ 
             Return True if the signal was updated since the last
             time this function was called with the same argument.
+            
+            Returns False if it's not ready.
         """
         
         if not self.input_signal_ready(signal):
@@ -355,7 +361,8 @@ class Block(BlockMetaSugar):
             return num_or_id in self.__output_signal_name2id
         if isinstance(num_or_id, type(0)):
             return num_or_id < len(self.__output_signals)
-        raise ValueError('Invalid output name %r' % num_or_id)
+
+        raise ValueError('Invalid output type %r' % num_or_id)
 
     @contract(num_or_id='num_or_id')
     def canonicalize_output(self, num_or_id):
@@ -375,7 +382,7 @@ class Block(BlockMetaSugar):
 
     def get_input_signals_timestamps(self):
         ''' Returns a list of the input signals timestamps. '''
-        return [x.timestamp for x in  self.__input_signals]
+        return [x.timestamp for x in self.__input_signals]
 
     def get_input_signals_values(self):
         ''' Returns a list of the input signals values. '''

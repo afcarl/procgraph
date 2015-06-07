@@ -1,17 +1,17 @@
+from .conversions import pg_video_info
+from contracts.main import check
+from procgraph import BadConfig, Block, Generator
+from procgraph.block_utils import expand
+from procgraph.utils import friendly_path
+from procgraph_mplayer.programs_existence import check_programs_existence
 import math
+import numpy
 import os
 import subprocess
 import tempfile
 
-import numpy
 
-from procgraph import Generator, Block, BadConfig
-from procgraph.block_utils import expand
-from procgraph.utils import friendly_path
-
-from .conversions import pg_video_info
-from contracts.main import check
-
+__all__ = ['MPlayer']
 
 class MPlayer(Generator):
     ''' Decodes a video stream. '''
@@ -34,6 +34,11 @@ class MPlayer(Generator):
 
 
     def init(self):
+        self.programs = check_programs_existence(programs=['mencoder'])
+
+        for p in self.programs:
+            self.info('Using %13s = %s' % (p, self.programs[p]))
+
         if not isinstance(self.config.file, str):
             raise BadConfig('This should be a string.', self, 'file')
         
@@ -93,15 +98,18 @@ class MPlayer(Generator):
         self.temp_dir = tempfile.mkdtemp(prefix='procgraph_fifo_dir')
         self.fifo_name = os.path.join(self.temp_dir, 'mencoder_fifo')
         os.mkfifo(self.fifo_name)
-        args = ['mencoder', self.file, '-ovc', 'raw',
-                '-rawvideo', 'w=%d:h=%d:format=%s' % 
-                    (self.width, self.height, pixel_format),
-                '-of', 'rawvideo',
-                '-vf', 'format=rgb24',
-                '-nosound',
-                '-o',
-                self.fifo_name
-                ]
+        args = [
+            self.programs['mencoder'],
+            self.file,
+            '-ovc', 'raw',
+            '-rawvideo', 'w=%d:h=%d:format=%s' %
+                (self.width, self.height, pixel_format),
+            '-of', 'rawvideo',
+            '-vf', 'format=rgb24',
+            '-nosound',
+            '-o',
+            self.fifo_name
+        ]
 
         self.tmp_stdout = tempfile.TemporaryFile()
         self.tmp_stderr = tempfile.TemporaryFile()
@@ -228,37 +236,37 @@ class MPlayer(Generator):
         if os.path.exists(self.temp_dir):
             os.rmdir(self.temp_dir)
 
-
-# backported from 2.7
-def check_output(*popenargs, **kwargs):
-    """
-    Run command with arguments and return its output as a byte string.
-
-    If the exit code was non-zero it raises a CalledProcessError.  The
-    CalledProcessError object will have the return code in the returncode
-    attribute and output in the output attribute.
-
-    The arguments are the same as for the Popen constructor.  Example:
-
-    >>> check_output(["ls", "-l", "/dev/null"])
-    'crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null\n'
-
-    The stdout argument is not allowed as it is used internally.
-    To capture standard error in the result, use stderr=STDOUT.
-
-    >>> check_output(["/bin/sh", "-c",
-    ...               "ls -l non_existent_file ; exit 0"],
-    ...              stderr=STDOUT)
-    'ls: non_existent_file: No such file or directory\n'
-    """
-    if 'stdout' in kwargs:
-        raise ValueError('stdout argument not allowed, it will be overridden.')
-    process = subprocess.Popen(stdout=subprocess.PIPE, *popenargs, **kwargs)
-    output, unused_err = process.communicate()
-    retcode = process.poll()
-    if retcode:
-        cmd = kwargs.get("args")
-        if cmd is None:
-            cmd = popenargs[0]
-        raise subprocess.CalledProcessError(retcode, cmd, output=output)
-    return output
+#
+# # backported from 2.7
+# def check_output(*popenargs, **kwargs):
+#     """
+#     Run command with arguments and return its output as a byte string.
+#
+#     If the exit code was non-zero it raises a CalledProcessError.  The
+#     CalledProcessError object will have the return code in the returncode
+#     attribute and output in the output attribute.
+#
+#     The arguments are the same as for the Popen constructor.  Example:
+#
+#     >>> check_output(["ls", "-l", "/dev/null"])
+#     'crw-rw-rw- 1 root root 1, 3 Oct 18  2007 /dev/null\n'
+#
+#     The stdout argument is not allowed as it is used internally.
+#     To capture standard error in the result, use stderr=STDOUT.
+#
+#     >>> check_output(["/bin/sh", "-c",
+#     ...               "ls -l non_existent_file ; exit 0"],
+#     ...              stderr=STDOUT)
+#     'ls: non_existent_file: No such file or directory\n'
+#     """
+#     if 'stdout' in kwargs:
+#         raise ValueError('stdout argument not allowed, it will be overridden.')
+#     process = subprocess.Popen(stdout=subprocess.PIPE, *popenargs, **kwargs)
+#     output, unused_err = process.communicate()
+#     retcode = process.poll()
+#     if retcode:
+#         cmd = kwargs.get("args")
+#         if cmd is None:
+#             cmd = popenargs[0]
+#         raise subprocess.CalledProcessError(retcode, cmd, output=output)
+#     return output
