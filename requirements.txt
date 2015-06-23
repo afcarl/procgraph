@@ -1,3 +1,4 @@
+yaml
 pyparsing
 setproctitle
 termcolor
