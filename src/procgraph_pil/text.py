@@ -13,14 +13,6 @@ from procgraph_pil.pil_format_paragraph import format_paragraph
 
 __all__ = ['Text']
 
-def info(s):
-    info_main('procgraph_pil/text: %s' % s)
-
-
-def error(s):
-    error_main('procgraph_pil/text: %s' % s)
-
-
 class Text(Block):
     ''' This block provides text overlays over an image. 
     
@@ -207,6 +199,15 @@ def get_ver_pos_value(spec, height):
         else:
             return spec
     
+
+
+def info(s):
+    info_main('procgraph_pil/text: %s' % s)
+
+
+def error(s):
+    error_main('procgraph_pil/text: %s' % s)
+
 
 # cache of fonts
 def find_file(font_name):
@@ -407,7 +408,7 @@ def draw_token(draw, t, base, bg, font, color):
                    [-1, +1], [1, 1], [1, -1]]:
             draw.text([x + a[0], y + a[1]], string, fill=bg, font=font)
 
-    w, h = font.getsize(string)    
+    # w, h = font.getsize(string)
 #     draw.rectangle(((0,0),(w,h)), fill="white", outline = "blue")
     #print('token %r -> size h %s w %s ' % (t, h ,w ))
     #draw.text([0, 0], string, fill="#000000", font=font)

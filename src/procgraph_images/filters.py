@@ -1,9 +1,7 @@
 from contracts import contract, describe_value
 from procgraph import BadInput, simple_block
-from procgraph.block_utils import (assert_rgb_image, assert_gray_image,
-    check_convertible_to_rgb)
+from procgraph.block_utils import assert_gray_image, assert_rgb_image
 import numpy as np
-
 
 @simple_block
 def as_uint8(rgb):
@@ -15,6 +13,12 @@ def as_float32(rgb):
     res = rgb.astype('float32')
     return res
     
+    
+@simple_block
+@contract(x='array[HxW](>=0, <=255)', returns='array[HxW](>=0, <=1)')
+def range_01_from_255(x):
+    """ Divides by 255. """
+    return x / 255.0
 
 @simple_block
 @contract(returns='array[HxWx3](uint8)')
@@ -22,13 +26,18 @@ def torgb(rgb):
     """ Converts all image formats to RGB uint8. """
     
     try:
-        check_convertible_to_rgb(rgb)
+        # check_convertible_to_rgb(rgb)
+        pass
     except ValueError as e:
-        print describe_value(rgb)
         raise BadInput(str(e), None, 0)
     
     if rgb.ndim == 2:
         if rgb.dtype == 'float32':
+            m = np.amin(rgb)
+            M = np.amax(rgb)
+            if m < 0 or M > 1:
+                msg = 'If float, I assume range [0,1]; found [%s, %s].' % (m, M)
+                raise ValueError(msg)
             rgb = (rgb * 255).astype('uint8')
         return gray2rgb(rgb)
     

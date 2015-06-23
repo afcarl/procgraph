@@ -149,8 +149,14 @@ class MEncoder(Block):
         else:
             fps = self.config.fps
 
-        # firstpass_vcodec = self.config.firstpass_vcodec
-        vbitrate = self.config.firstpass_bitrate
+        # adapt the bitrate to the size of the image
+        vbitrate0 = self.config.firstpass_bitrate
+        shape0 = (640, 480)
+
+        n1 = self.width * self.height
+        n0 = shape0[0] * shape0[1]
+        vbitrate = vbitrate0 * n1 / n0
+        self.info('Using bitrate %r' % vbitrate)
 
         self.filename = expand(self.config.file)
         if os.path.exists(self.filename):

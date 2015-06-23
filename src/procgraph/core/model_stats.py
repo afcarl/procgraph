@@ -1,5 +1,11 @@
+from collections import defaultdict
+from contracts import contract
 from math import ceil
+import warnings
 
+__all__ = [
+    'ExecutionStats',
+]
 
 class Statistics(object):
 
@@ -23,9 +29,90 @@ class ExecutionStats(object):
 
     def __init__(self):
         self.samples = {}
+        
+        self.connection2samples = defaultdict(lambda: [])
+        self.block2samples = defaultdict(lambda:[])
+        
+    @contract(connection='isinstance(BlockConnection)')
+    def add_connection_sample(self, connection, value, timestamp):
+        from .model import BlockConnection
+        assert isinstance(connection, BlockConnection)
+        warnings.warn('Size computation disabled due to speed')
+        if self.connection2samples[connection]:
+            s = self.connection2samples[connection][0]['size']
+        else:
+            import cPickle as pickle
+            s = len(pickle.dumps(value))
+        sample = dict(timestamp=float(timestamp), size=s)
+        self.connection2samples[connection].append(sample)
 
+    def add_signal_sample(self, block, cpu, wall, timestamp):
+        sample = dict(timestamp=float(timestamp), cpu=cpu, wall=wall)
+        self.block2samples[block].append(sample)
+    
+
+    def get_all(self):
+        def summarize(values):
+            perc = [5, 25, 50, 75, 95]
+            import numpy as np
+            x = map(float, np.percentile(values, perc))
+            return dict(zip(perc, x))
+
+        def summarize_samples(samples):
+            res = {}
+            fields = list(samples[0].keys())
+            for f in fields:
+                values = [s[f] for s in samples]
+                res[f] = summarize(values)
+            return res
+
+        res = {}
+        res['blocks'] = {}
+        from procgraph.core.model import Model
+
+        for block, samples in self.block2samples.items():
+            if not isinstance(block, Model):
+                res['blocks'][block.name] = dict(stats=summarize_samples(samples))
+
+        res['signals'] = []
+        for connection, samples in self.connection2samples.items():
+            stats = summarize_samples(samples)
+            v = {'stats': stats,
+                     'block1':connection.block1.name,
+                     'block1_signal':connection.block1_signal,
+            }
+
+
+
+            if isinstance(connection.block2, Model):
+                # if connected to a model, we are really connecting to the input
+                block2_inputblock = connection.block2.model_input_ports[connection.block2_signal]
+                block2_inputblock_name = '%s.%s' % (connection.block2.name, block2_inputblock.name)
+                v['block2_signal'] = connection.block2_signal
+                v['block2'] = block2_inputblock_name
+            else:
+                v['block2_signal'] = connection.block2_signal
+                v['block2'] = connection.block2.name
+
+            if isinstance(connection.block1, Model):
+                # if connected to a model, we are really connecting to the input
+                block1_inputblock = connection.block1.model_output_ports[connection.block1_signal]
+                block1_inputblock_name = '%s.%s' % (connection.block1.name, block1_inputblock.name)
+                v['block1_signal'] = connection.block1_signal
+                v['block1'] = block1_inputblock_name
+            else:
+                v['block1_signal'] = connection.block1_signal
+                v['block1'] = connection.block1.name
+            res['signals'].append(v)
+        return res
+        
+        
+    #### Old interface
+        
     def add(self, block, cpu, wall, timestamp):
         # weird wall/cpu behavior when suspending the process
+        self.add_signal_sample(block,cpu,wall,timestamp)
+        
         if wall < 0:
             wall = 1
         if cpu < 0:

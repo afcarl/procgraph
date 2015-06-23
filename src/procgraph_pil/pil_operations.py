@@ -19,6 +19,7 @@ def pil_zoom(value, factor=COMPULSORY):
     result = np.asarray(image.convert("RGB"))
     return result
 
+
 @simple_block
 def resize(value, width=None, height=None):
     ''' 

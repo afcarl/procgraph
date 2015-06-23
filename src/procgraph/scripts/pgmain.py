@@ -1,12 +1,15 @@
 from ..core.constants import PATH_ENV_VAR
 from ..core.exceptions import BadMethodCall, PGException, SemanticError
-from ..core.model_loader import model_from_string, pg_look_for_models, ModelSpec
-from ..core.registrar import default_library, Library
+from ..core.model import Model
+from ..core.model_loader import ModelSpec, model_from_string, pg_look_for_models
+from ..core.registrar import Library, default_library
 from ..core.visualization import error, info
+from contracts import contract
 from optparse import OptionParser
 import os
 import sys
 import traceback
+import yaml
 
 
 usage_short = \
@@ -148,14 +151,27 @@ def parse_cmdline_args(args):
 
     return config
 
-
+@contract(filename='str',
+          stats='bool',
+          nocache='bool',
+          stats_display_interval='None|int,>0',
+          additional_directories='list(str)',
+          additional_modules='list(str)',
+          config='dict(str:*)',
+          returns=Model)
 def pg(filename, config,
-       debug=False, nocache=False, stats=False,
-       additional_directories=[], additional_modules=[]):
+       debug=False,
+       nocache=False,
+       stats=False,
+       stats_display_interval=100,
+       additional_directories=[],
+       additional_modules=[]):
     ''' 
         Instantiate and run a model. 
     
-        :param filename: either a file or a known model 
+        :param filename: either a file or a known model
+        
+        :param stats_display_interval: how many iterations to display stats.
     '''
 
     for module in additional_modules:
@@ -233,10 +249,13 @@ def pg(filename, config,
                 e.blocks.insert(0, model)
                 raise e
 
-            if stats:
-                if count % 50 == 0:
+            if stats and stats_display_interval is not None:
+                if count % stats_display_interval == 0:
+                    s = model.stats_get_all()
+                    y = yaml.dump(s)
+                    with open('stats.yaml', 'w') as f:
+                        f.write(y)
                     model.print_stats()
-                    # debug_memory()
 
                 count += 1
 
@@ -258,6 +277,3 @@ def pg(filename, config,
 
     return model
 
-
-def debug_memory():
-    pass

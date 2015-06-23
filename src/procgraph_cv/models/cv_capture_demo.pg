@@ -1,3 +1,4 @@
+# run like this:  pg -m "procgraph_cv" cv_capture_demo
 --- model cv_capture_demo
 
 |cv_capture| -> rgb

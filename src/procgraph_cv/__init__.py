@@ -15,6 +15,7 @@ cv = import_magic(__name__, 'cv2', 'cv')
 from .opencv_utils import *
 from .cv_capture import *
 from .cv_display import *
+from .detection import *
 
 
 if not import_succesful(cv):

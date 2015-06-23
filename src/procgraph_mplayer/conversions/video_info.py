@@ -121,7 +121,8 @@ def parse_mplayer_info_output(output, intolerant=True):
             except:
                 pass
             if key in info:
-                print('overriding %r=%r from %r' % (key,value,info[key]))
+                # print('overriding %r=%r from %r' % (key,value,info[key]))
+                pass
             info[key] = value
 
     for k in keys:

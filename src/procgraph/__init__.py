@@ -1,7 +1,7 @@
 ''' ProcGraph: what you would get if simulink was written in python 
     and was actually useful for dealing with log data. '''
 
-__version__ = '1.6dev1'
+__version__ = '1.7'
 
 import logging
 logging.basicConfig()

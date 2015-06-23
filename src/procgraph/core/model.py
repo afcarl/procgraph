@@ -8,6 +8,7 @@ from .exceptions import (BadMethodCall, SemanticError, ModelExecutionError,
 from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats, write_stats
 from .visualization import debug as debug_main, info, warning
+import warnings
 
 
 __all__ = ['Model'] 
@@ -58,8 +59,10 @@ class Model(Generator):
 
         self.reset_execution()
 
-        # hash signal name -> Block for blocks of type ModelInput
+        # dict signal name -> Block for blocks of type ModelInput
         self.model_input_ports = {}
+        # dict signal name -> Block for blocks of type ModelInput
+        self.model_output_ports = {}
 
         self.stats = ExecutionStats()
 
@@ -112,6 +115,8 @@ class Model(Generator):
                 # XXX: bug: output_signals -> output_signals
                 self.define_output_signals_new(all_outputs + 
                                                [block.signal_name])
+
+            self.model_output_ports[block.signal_name] = block
 
         return block
 
@@ -243,6 +248,11 @@ class Model(Generator):
 
     def update(self):
         
+        do_stats = True
+
+        if do_stats:
+            warnings.warn('Performance much reduced due to stats.')
+
         # Turn on debugging here
         def debug(s):
             if False:
@@ -319,7 +329,8 @@ class Model(Generator):
         else:  # for those that don't have input signals
             timestamp = ETERNITY
 
-        self.stats.add(block=block, cpu=cpu, wall=wall, timestamp=timestamp)
+        if do_stats:
+            self.stats.add(block=block, cpu=cpu, wall=wall, timestamp=timestamp)
 
         # if the update is not finished, we put it back in the queue
         if result == block.UPDATE_NOT_FINISHED:
@@ -358,8 +369,6 @@ class Model(Generator):
                 to_update = ((not other.input_signal_ready(other_signal)) or
                              (this_timestamp > other.get_input_timestamp(other_signal))) 
                 
-
-                # if old_timestamp is None or this_timestamp > old_timestamp:
                 if to_update:
                     # debug('  then waking up %s' % other)
 
@@ -368,6 +377,12 @@ class Model(Generator):
 
                     if not other in self.blocks_to_update:
                         self.blocks_to_update.append(other)
+
+                    if do_stats:
+                        self.stats.add_connection_sample(connection=connection,
+                                                 value=value,
+                                                 timestamp=float(this_timestamp))
+
 
                     # If this is an output port, update the model
                     if isinstance(other, ModelOutput):
@@ -430,6 +445,27 @@ class Model(Generator):
                   if not isinstance(b, Model)]
         all_samples.extend(leaves)
         return all_samples
+
+    def stats_get_all(self):
+        """ Returns a structure for all stats recursively. """
+        s = self.stats.get_all()
+        for block in self.name2block.values():
+            if isinstance(block, Model):
+                block_stats = block.stats_get_all()
+                block_blocks = block_stats['blocks']
+                for bname, x in block_blocks.items():
+                    s['blocks']['%s.%s' % (block.name, bname)] = x
+
+                block_signals = block_stats['signals']
+                for signal in block_signals:
+                    s2 = signal.copy()
+                    s2['block1'] = '%s.%s' % (block.name, s2['block1'])
+
+                    s2['block2'] = '%s.%s' % (block.name, s2['block2'])
+                    s['signals'].append(s2)
+
+
+        return s
 
 
 class BlockConnection(object):
