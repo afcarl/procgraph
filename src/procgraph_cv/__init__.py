@@ -11,6 +11,7 @@ procgraph_info = {
 
 from procgraph import import_magic, import_succesful
 cv = import_magic(__name__, 'cv2', 'cv')
+np = import_magic(__name__, 'numpy')
 
 from .opencv_utils import *
 from .cv_capture import *

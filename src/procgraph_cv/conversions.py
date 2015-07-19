@@ -1,5 +1,6 @@
 from . import cv
-import numpy as np
+from . import np
+
 
 def numpy_to_cv(numpy_array):
     ''' Converts a HxW or HxWx3 numpy array to OpenCV 'image' '''
