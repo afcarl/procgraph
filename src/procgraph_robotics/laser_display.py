@@ -1,3 +1,4 @@
+
 from numpy import (array, cos, linspace, logical_not, maximum, minimum, nonzero, 
     sin)
 from procgraph import BadInput, Block

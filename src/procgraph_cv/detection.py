@@ -1,8 +1,8 @@
 from procgraph.core.registrar_other import simple_block
-import numpy as np
+# import numpy as np
 # from . import cv as cv2
-from procgraph_cv.conversions import numpy_to_cv
-from reprep.graphics.zoom import rgb_zoom
+# from procgraph_cv.conversions import numpy_to_cv
+# from reprep.graphics.zoom import rgb_zoom
 from contracts import contract
 from procgraph_images.filters import torgb
 

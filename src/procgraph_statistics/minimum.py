@@ -1,6 +1,5 @@
 from procgraph import Block
-import numpy as np
-
+from . import np  # @PydevCodeAnalysisIgnore
 
 class Minimum(Block):
     ''' Computes the minimum of a signal over time. '''

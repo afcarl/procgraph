@@ -1,10 +1,7 @@
-from procgraph import Block
-
-from . import cv 
-import numpy as np
-import warnings
+from . import cv, np
 from .conversions import numpy_to_cv
-
+from procgraph import Block
+import warnings
 
 class Display(Block):
     Block.alias('cv_display')

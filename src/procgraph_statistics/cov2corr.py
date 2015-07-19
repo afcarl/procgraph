@@ -1,4 +1,3 @@
-from numpy import multiply, sqrt
 
 from procgraph import simple_block
 
@@ -14,6 +13,8 @@ def cov2corr(covariance, zero_diagonal=True):
     :return: correlation: The exctracted correlation.
     
     '''
+    from numpy import multiply, sqrt
+
     # TODO: add checks
     outer = multiply.outer
 

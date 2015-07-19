@@ -1,6 +1,5 @@
+from . import np  # @PydevCodeAnalysisIgnore
 from procgraph import Block
-import numpy as np
-
 
 class Expectation(Block):
     ''' Computes the sample expectation of a signal. '''
