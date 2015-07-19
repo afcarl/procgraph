@@ -61,6 +61,7 @@ class ExecutionStats(object):
     def get_all(self):
         def summarize(values):
             perc = [5, 25, 50, 75, 95]
+
             import numpy as np
             x = map(float, np.percentile(values, perc))
             return dict(zip(perc, x))

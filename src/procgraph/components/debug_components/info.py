@@ -1,5 +1,3 @@
-import numpy
-
 from procgraph import Block
 from datetime import datetime
 
@@ -35,12 +33,12 @@ class Info(Block):
                 self.first[i] = ts
                 self.counter[i] = 0
             friendly = ts - self.first[i]
-            if isinstance(val, numpy.ndarray):
-                s = "%s %s" % (str(val.shape), str(val.dtype))
-            else:
-                s = str(val)
-                if len(s) > 40:
-                    s = s[:40]
+#             if isinstance(val, numpy.ndarray):
+#                 s = "%s %s" % (str(val.shape), str(val.dtype))
+#             else:
+            s = str(val)
+            if len(s) > 40:
+                s = s[:40]
             s = s.replace('\n', '|')
             date = datetime.fromtimestamp(ts).isoformat(' ')[:-4]
             ts = "%.2f" % ts
