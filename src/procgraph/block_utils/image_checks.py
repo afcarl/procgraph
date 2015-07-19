@@ -1,4 +1,3 @@
-import numpy
 
 from ..core.exceptions import BadInput
 from contracts.interface import describe_value
@@ -6,8 +5,10 @@ from contracts.interface import describe_value
 
 # TODO: make naming uniform
 def check_2d_array(value, name=None):
+    import numpy as np
+
     ''' Checks that we have 2D numpy array '''
-    if not isinstance(value, numpy.ndarray):
+    if not isinstance(value, np.ndarray):
         raise BadInput('Expected 2d array, got %s.' % value.__class__.__name__,
                        None, name)
 
@@ -17,7 +18,8 @@ def check_2d_array(value, name=None):
 
 
 def assert_rgb_image(image, name=None):
-    if not isinstance(image, numpy.ndarray):
+    import numpy as np
+    if not isinstance(image, np.ndarray):
         raise BadInput('Expected RGB image for %r, got %s.' % 
                        (name, image.__class__.__name__),
                         None, name)
@@ -32,7 +34,8 @@ def assert_rgb_image(image, name=None):
 
 
 def assert_gray_image(image, name=None):
-    if not isinstance(image, numpy.ndarray):
+    import numpy as np
+    if not isinstance(image, np.ndarray):
         raise BadInput('Expected a grayscale image for %r, got %s.' % 
                        (name, image.__class__.__name__), None, name)
 
@@ -48,7 +51,8 @@ def assert_gray_image(image, name=None):
 
 
 def check_numpy_array(value):
-    if not isinstance(value, numpy.ndarray):
+    import numpy as np
+    if not isinstance(value, np.ndarray):
         msg = 'Expected array: %s' % describe_value(value)
         raise ValueError(msg)
 
@@ -129,7 +133,8 @@ def check_rgb(block, input):  # @ReservedAssignment
         Raises BadInput if it is not. 
     '''
     image = block.get_input(input)
-    if not isinstance(image, numpy.ndarray):
+    import numpy as np
+    if not isinstance(image, np.ndarray):
         raise BadInput('Expected RGB, this is not even a '
             'numpy array: %s' % image.__class__.__name__, block, input)
     if image.dtype != 'uint8':
