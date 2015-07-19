@@ -23,7 +23,12 @@ examples = [
 """,
 """ # only  identity
    |input name=x| -> |identity| -> |g1:gain| -> y -> |output name=y|
-"""]
+""",
+""" 
+   (x) -> |g1:gain| -> (y)
+""",
+
+]
 
 
 class PipelineTest(PGTestCase):

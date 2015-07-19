@@ -8,7 +8,8 @@ good_examples = [
 
 --- model slave1
 
-|input name=x| -> |output name=y|
+# |input name=x| -> |output name=y|
+(x) -> (y)
 
 --- model slave2
 

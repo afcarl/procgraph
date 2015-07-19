@@ -134,6 +134,9 @@ class ParsedSignal(ParsedElement):
 class ParsedBlock(ParsedElement):
     def __init__(self, name, operation, config):
         ParsedElement.__init__(self)
+        if operation in ['input', 'output']:
+            if not isinstance(config.get("name"), str):
+                raise ValueError("Invalid port name %r." % name)
         self.name = name
         self.operation = operation
         self.config = config
@@ -148,6 +151,21 @@ class ParsedBlock(ParsedElement):
         config = tokens.get('config', {})
         name = tokens.get('name', None)
         return ParsedBlock(name, blocktype, config)
+
+def parse_input_port(tokens):
+    blocktype = 'input'
+    port_name = tokens.get("port_name")
+    assert isinstance(port_name, str)
+    config = dict(name=port_name)
+    name = None
+    return ParsedBlock(name, blocktype, config)
+
+def parse_output_port(tokens):
+    blocktype = 'output'
+    port_name = tokens.get("port_name")
+    config = dict(name=port_name)
+    name = None
+    return ParsedBlock(name, blocktype, config)
 
 
 class ParsedAssignment(ParsedElement):
@@ -251,6 +269,9 @@ class ParsedModel(ParsedElement):
             lambda x: isinstance(x, ParsedBlock) and x.operation == 'input'))
         output_blocks = list(look_for_blocks(
             lambda x: isinstance(x, ParsedBlock) and x.operation == 'output'))
+
+        print input_blocks
+        print output_blocks
 
         for block in input_blocks:
             inputs_defined = [x.name for x in self.input]

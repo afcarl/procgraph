@@ -73,7 +73,34 @@ come va"""
 g1.in = "ci\\"a/o"
 """,
 # underscores 
-" |output name=x_old|  "
+" |output name=x_old|  ",
+
+# new syntax: allow whitespace
+
+"""
+|a| -> |b| \ 
+-> |c|
+""",
+"""
+|a| -> |b| -> 
+    -> |c|
+""",
+
+"""
+|a| -> |b|  
+    -> |c|
+""",
+
+" (in) -> |a| ",
+" (in) -> in ",
+
+" a -> |a| -> (out) ",
+" |a| -> (out) ",
+" a -> (out) ",
+" (in) -> |a| -> (out) ",
+
+
+
 
 
 ]

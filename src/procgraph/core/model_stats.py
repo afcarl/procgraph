@@ -1,8 +1,8 @@
 from collections import defaultdict
 from contracts import contract
 from math import ceil
-import warnings
 from procgraph.core.constants import ETERNITY
+import warnings
 
 __all__ = [
     'ExecutionStats',

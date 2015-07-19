@@ -1,4 +1,5 @@
 from pyparsing import ParserElement
+from procgraph.core.parsing_elements import parse_input_port, parse_output_port
 # Enable memoization; much faster, but we can't use
 # parse actions with side effects.
 ParserElement.enablePackrat()
@@ -126,6 +127,7 @@ def parse_value(string, filename=None):
 
 
 def create_model_grammar():
+
     # We pass a "where" object to the constructors
     def wrap(constructor):
         def from_tokens(string, location, tokens):
@@ -136,6 +138,7 @@ def create_model_grammar():
         return from_tokens
 
     arrow = S(Regex(r'-+>'))
+    newline = S(lineEnd)
 
     # (don't put '.' at the beginning)
     qualified_name = Combine(good_name + '.' + (integer | good_name))
@@ -168,10 +171,18 @@ def create_model_grammar():
              block_type("blocktype") +
              O(parameter_list("config")) +
              S("|"))
-
     block.setParseAction(wrap(ParsedBlock.from_tokens))
 
-    between = arrow + O(signals + arrow)
+    input_port = S("(") + block_name("port_name") + S(")")
+    output_port = S("(") + block_name("port_name") + S(")")
+    output_port.setParseAction(wrap(parse_output_port))
+    input_port.setParseAction(wrap(parse_input_port))
+
+
+    between1 = arrow + O(signals + arrow)
+    between2 = arrow + S(newline + arrow) + O(signals + arrow)
+    between3 = newline + arrow + O(signals + arrow)
+    between = between3 | between2 | between1
 
     # Different patterns
     arrow_arrow = (signals +
@@ -179,12 +190,17 @@ def create_model_grammar():
                    O(block + ZeroOrMore(between + block)) +
                    arrow +
                    signals)
-    source = block + ZeroOrMore(between + block) + arrow + signals
-    sink = signals + arrow + block + ZeroOrMore(between + block)
+    source = (input_port | block) + ZeroOrMore(between + block) + arrow + signals
+    sink = signals + arrow + ZeroOrMore(block + between) + (block | output_port)
     source_sink = block + ZeroOrMore(between + block)
+    source_sink2 = input_port + ZeroOrMore(between + block)
+    # |a| -> (out)
+    source_sink3 = ZeroOrMore(block + between) + output_port
+    # (in) -> |a| -> (out)
+    source_sink4 = input_port + between + ZeroOrMore(block + between) + output_port
 
     # all of those are called a "connection"
-    connection = arrow_arrow | sink | source | source_sink # order matters
+    connection = arrow_arrow ^ sink ^ source ^ source_sink ^ source_sink2 ^ source_sink3 ^ source_sink4
 
     connection.setParseAction(wrap(Connection.from_tokens))
 
@@ -211,7 +227,7 @@ def create_model_grammar():
     output = S('output') + good_name('name') + O(quoted('docstring'))
     output.setParseAction(wrap(output_from_tokens))
 
-    newline = S(lineEnd)
+
 
     docs = S(ZeroOrMore(multi_quoted + OneOrMore(newline)))
 
