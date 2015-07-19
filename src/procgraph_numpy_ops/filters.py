@@ -2,6 +2,7 @@ import numpy as np
 from numpy import multiply, array
 
 from procgraph import COMPULSORY, register_simple_block, simple_block
+from procgraph.core.block import Block
 
 
 @simple_block
@@ -79,6 +80,7 @@ def normalize_Linf(x):
          
     '''
     return x / np.abs(x).max()
+
 
 
 @simple_block
@@ -186,5 +188,23 @@ register_simple_block(np.radians, 'deg2rad',
 register_simple_block(np.degrees, 'rad2deg',
     doc='Converts radians to degrees (wrapper around '
         ':np:data:`np.degrees`.)')
+
+
+
+class HSplit(Block):
+    ''' Splits an array along the first axis. '''
+
+    Block.alias('hsplit')
+
+    Block.input('value')
+
+    Block.output('half1')
+    Block.output('half2')
+
+    def update(self):
+        value = self.input.value
+        h = value.shape[0] / 2
+        self.output.half1 = value[0:h, ...]
+        self.output.half2 = value[h:, ...]
 
  

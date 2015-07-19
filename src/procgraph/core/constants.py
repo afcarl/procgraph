@@ -8,6 +8,7 @@
     some way.
     
 '''
+from contracts import new_contract
 
 
 # If true, consider an error if a model's input is not defined formally.
@@ -58,5 +59,11 @@ ETERNITY = 'eternity'
 # Environment variable containing colon-separated additional paths to look
 # for modules.
 PATH_ENV_VAR = 'PROCGRAPH_PATH'
+
+@new_contract
+def pg_timestamp_or_eternity(x):
+    """ Either x is a float or x is equal to ETERNITY
+        (ETERNITY = min R) """
+    return x == ETERNITY or isinstance(x, float)
 
 

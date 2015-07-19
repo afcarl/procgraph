@@ -381,7 +381,7 @@ class Model(Generator):
                     if do_stats:
                         self.stats.add_connection_sample(connection=connection,
                                                  value=value,
-                                                 timestamp=float(this_timestamp))
+                                                 timestamp=this_timestamp)
 
 
                     # If this is an output port, update the model

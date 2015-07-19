@@ -31,13 +31,14 @@ def ros_scan2python(scan):
 # http://nullege.com/codes/show/src%40c%40m%40cmu-ros-pkg-HEAD%40trunk%40posedetectiondb%40src%40ParseMessages.py/75/sensor_msgs.msg.Image/python
 # 
  
-import PIL.Image  # @UnresolvedImport
-import numpy
-import roslib  # @UnresolvedImport @UnusedImport
-import rospy  # @UnresolvedImport @UnusedImport
-import sensor_msgs.msg  # @UnresolvedImport
-from sensor_msgs.msg import CompressedImage  # @UnusedImport @UnresolvedImport
-import struct
+# import PIL.Image  # @UnresolvedImport
+# import numpy
+# import roslib  # @UnresolvedImport @UnusedImport
+# import rospy  # @UnresolvedImport @UnusedImport
+# import sensor_msgs.msg  # @UnresolvedImport
+# from sensor_msgs.msg import CompressedImage  # @UnusedImport @UnresolvedImport
+# import struct
+
 #
 # @simple_block
 # def ros2rgb(msg):

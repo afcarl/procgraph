@@ -2,6 +2,7 @@ from collections import defaultdict
 from contracts import contract
 from math import ceil
 import warnings
+from procgraph.core.constants import ETERNITY
 
 __all__ = [
     'ExecutionStats',
@@ -33,8 +34,14 @@ class ExecutionStats(object):
         self.connection2samples = defaultdict(lambda: [])
         self.block2samples = defaultdict(lambda:[])
         
-    @contract(connection='isinstance(BlockConnection)')
+    @contract(connection='isinstance(BlockConnection)',
+              timestamp='pg_timestamp_or_eternity')
     def add_connection_sample(self, connection, value, timestamp):
+        if timestamp == ETERNITY:
+            timestamp = 0.0
+        else:
+            timestamp = float(timestamp)
+
         from .model import BlockConnection
         assert isinstance(connection, BlockConnection)
         warnings.warn('Size computation disabled due to speed')
@@ -46,11 +53,11 @@ class ExecutionStats(object):
         sample = dict(timestamp=float(timestamp), size=s)
         self.connection2samples[connection].append(sample)
 
+    @contract(timestamp='pg_timestamp_or_eternity')
     def add_signal_sample(self, block, cpu, wall, timestamp):
-        sample = dict(timestamp=float(timestamp), cpu=cpu, wall=wall)
+        sample = dict(timestamp=timestamp, cpu=cpu, wall=wall)
         self.block2samples[block].append(sample)
     
-
     def get_all(self):
         def summarize(values):
             perc = [5, 25, 50, 75, 95]
