@@ -23,7 +23,7 @@ class PlotGeneric(object):
 
     def init_figure(self):
         # TODO: remove from here
-        from . import pylab, pylab2rgb
+        from . import pylab
         
         pylab.rc('xtick', labelsize=8)
         pylab.rc('ytick', labelsize=8)

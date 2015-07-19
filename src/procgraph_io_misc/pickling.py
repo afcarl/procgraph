@@ -1,8 +1,6 @@
-import cPickle as pickle
-
-from procgraph import Block 
+from procgraph import Block, ETERNITY
 from procgraph.block_utils import make_sure_dir_exists
-from procgraph.core.constants import ETERNITY
+import cPickle as pickle
 
 
 class Pickle(Block):

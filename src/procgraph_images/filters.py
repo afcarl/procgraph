@@ -1,7 +1,7 @@
 from contracts import contract, describe_value
 from procgraph import BadInput, simple_block
 from procgraph.block_utils import assert_gray_image, assert_rgb_image
-import numpy as np
+from . import np
 
 @simple_block
 def as_uint8(rgb):

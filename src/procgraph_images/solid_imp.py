@@ -1,5 +1,5 @@
-from procgraph import Block, ETERNITY
 from . import np
+from procgraph import Block, ETERNITY
 import warnings
 
 
