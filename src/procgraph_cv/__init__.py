@@ -5,11 +5,11 @@
 
 procgraph_info = {
     # List of python packages 
-    'requires': [('cv2', ('cv2',))]
+    'requires': [('cv2', ('cv2',)), 'numpy']
 }
 
 
-from procgraph import import_magic, import_succesful
+from procgraph import import_magic, import_successful
 cv = import_magic(__name__, 'cv2', 'cv')
 np = import_magic(__name__, 'numpy')
 
@@ -19,7 +19,7 @@ from .cv_display import *
 from .detection import *
 
 
-if not import_succesful(cv):
+if not import_successful(cv):
     if False:
         from procgraph import logger
         logger.warn('Could not import CV')

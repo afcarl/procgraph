@@ -96,8 +96,7 @@ def get_module_info(module_name):
 
     return info
 
-
-def import_succesful(m):
+def import_successful(m):
     return isinstance(m, ModuleType)
 
-
+import_succesful = import_successful  # oops, typo

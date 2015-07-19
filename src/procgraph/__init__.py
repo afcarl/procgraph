@@ -1,4 +1,4 @@
-''' ProcGraph: what you would get if simulink was written in python 
+''' ProcGraph: what you would get if Simulink was written in python 
     and was actually useful for dealing with log data. '''
 
 __version__ = '1.7'
@@ -23,7 +23,7 @@ from .core.registrar_other import (register_model_spec,
 
 from .scripts import pg
 
-from .core.import_magic import import_magic, import_succesful
+from .core.import_magic import import_magic, import_succesful, import_successful
 
 from .core.constants import *
 
