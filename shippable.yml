@@ -7,7 +7,10 @@ python:
   # - 3.3
   # - 3.4
   # - pypy
-  
+
+before_install:  
+  - pip install --quiet --use-mirrors numpy cython
+
 install:
   - pip install -r requirements.txt
 
