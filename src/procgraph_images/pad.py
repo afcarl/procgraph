@@ -1,4 +1,3 @@
-from numpy.ma.testutils import assert_equal
 
 from .border import image_border
 
@@ -26,7 +25,7 @@ def image_pad(pixel_data, expected_shape, bgcolor=[1, 1, 1]):
     new_image = image_border(rgb=pixel_data, color=bgcolor,
                  left=left, right=right, top=top, bottom=bottom)
 
-    assert_equal(new_image.shape[0:2], expected_shape)
+    # assert_equal(new_image.shape[0:2], expected_shape)
 
     return new_image
 

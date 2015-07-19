@@ -1,5 +1,5 @@
 from procgraph import simple_block
-import numpy as np
+from . import np
 
 __all__ = ['reshape_rectangular']
 

@@ -15,6 +15,9 @@
         |input| -> |rgb2gray| -> |gray2rgb| -> |output| 
 
 '''
+from procgraph import import_magic, import_successful
+np = import_magic(__name__, 'numpy')
+
 
 from .filters import *
 from .compose import *

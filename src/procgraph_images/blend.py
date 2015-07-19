@@ -1,4 +1,4 @@
-import numpy
+from . import np
 
 from procgraph import Block
 
@@ -19,7 +19,7 @@ def to_rgba(rgb):
         rgba = rgb.copy()
         return rgba
 
-    rgba = numpy.ndarray((rgb.shape[0], rgb.shape[1], 4), dtype='uint8')
+    rgba = np.ndarray((rgb.shape[0], rgb.shape[1], 4), dtype='uint8')
     rgba[:, :, 0] = rgb[:, :, 0]
     rgba[:, :, 1] = rgb[:, :, 1]
     rgba[:, :, 2] = rgb[:, :, 2]
@@ -45,7 +45,7 @@ def blend(a, b):
     weight_b = alpha_b / 255.0
     weight_a = -weight_b + 1
 
-    result = numpy.ndarray(shape=(a.shape[0], a.shape[1], 4), dtype='uint8')
+    result = np.ndarray(shape=(a.shape[0], a.shape[1], 4), dtype='uint8')
 
     for i in [0, 1, 2]:
         result[:, :, i] = a[:, :, i] * weight_a + b[:, :, i] * weight_b

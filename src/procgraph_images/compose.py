@@ -1,17 +1,9 @@
-import numpy
+from . import np
 
 from procgraph import Block
 from procgraph.block_utils  import assert_rgb_image
 
 
-def place_at(canvas, image, xpix, ypix):
-    #print canvas.shape, image.shape
-    xsize = min(canvas.shape[1] - xpix, image.shape[1])
-    ysize = min(canvas.shape[0] - ypix, image.shape[0])
-    if len(image.shape) == 2:
-        image = image.reshape((image.shape[0], image.shape[1], 1))
-    canvas[ypix:(ypix + ysize), xpix:(xpix + xsize), 0:3] = \
-        image[0:ysize, 0:xsize, :]
 
 
 class Compose(Block):
@@ -40,7 +32,7 @@ class Compose(Block):
         width = self.get_config('width')
         height = self.get_config('height')
 
-        canvas = numpy.zeros((height, width, 3), dtype='uint8')
+        canvas = np.zeros((height, width, 3), dtype='uint8')
 
         positions = self.get_config('positions')
 
@@ -64,5 +56,13 @@ class Compose(Block):
 
 
 
+def place_at(canvas, image, xpix, ypix):
+    # print canvas.shape, image.shape
+    xsize = min(canvas.shape[1] - xpix, image.shape[1])
+    ysize = min(canvas.shape[0] - ypix, image.shape[0])
+    if len(image.shape) == 2:
+        image = image.reshape((image.shape[0], image.shape[1], 1))
+    canvas[ypix:(ypix + ysize), xpix:(xpix + xsize), 0:3] = \
+        image[0:ysize, 0:xsize, :]
 
 

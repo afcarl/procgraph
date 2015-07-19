@@ -1,6 +1,6 @@
 from procgraph import Block
 from procgraph.block_utils import check_rgb
-import numpy as np
+from . import np
 
 
 __all__ = ['Border', 'rgb_pad', 'image_border']

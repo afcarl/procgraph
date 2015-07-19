@@ -1,4 +1,4 @@
-import numpy
+from . import np
 
 from procgraph import simple_block
 from procgraph.block_utils import assert_rgb_image
@@ -20,7 +20,7 @@ def posterize(rgb, levels=2):
     '''
     assert_rgb_image(rgb, 'input to rgb2grayscale')
 
-    result = numpy.zeros(shape=rgb.shape, dtype='uint8')
+    result = np.zeros(shape=rgb.shape, dtype='uint8')
     for i in range(3):
         channel = rgb[:, :, i].squeeze()
         result[:, :, i] = posterize_channel(channel, levels)
@@ -44,15 +44,15 @@ def posterize_channel(chan, levels):
 
     assert levels > 1
     # Get the limits
-    perc = numpy.linspace(0, 255.0, levels + 1)
+    perc = np.linspace(0, 255.0, levels + 1)
     assert len(perc) == levels + 1
 
-    result = numpy.zeros(shape=chan.shape, dtype='uint8')
+    result = np.zeros(shape=chan.shape, dtype='uint8')
     for level in range(levels):
         lower_bound = perc[level]
         upper_bound = perc[level + 1]
         assert lower_bound < upper_bound
-        select = numpy.logical_and(chan >= lower_bound, chan <= upper_bound)
+        select = np.logical_and(chan >= lower_bound, chan <= upper_bound)
         target = (lower_bound + upper_bound) * 0.5
         result[select] = target
     return result

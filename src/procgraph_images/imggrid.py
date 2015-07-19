@@ -2,10 +2,9 @@ from .border import image_border
 from .compose import place_at  
 from .filters import torgb
 from contracts import contract
-from numpy import ceil, sqrt, zeros
 from procgraph import Block, BadConfig
 from procgraph.block_utils import input_check_convertible_to_rgb
-
+from . import np
 
 __all__ = ['ImageGrid', 'make_images_grid']
 
@@ -58,16 +57,16 @@ class ImageGrid(Block):
 def make_images_grid(images, cols=None, pad=0, bgcolor=[1, 1, 1]):
     n = len(images)
     if cols is None:
-        cols = int(ceil(sqrt(n)))
+        cols = int(np.ceil(np.sqrt(n)))
 
-    rows = int(ceil(n * 1.0 / cols))
+    rows = int(np.ceil(n * 1.0 / cols))
 
     assert cols > 0 and rows > 0
     assert n <= cols * rows
 
     # find width and height for the grid 
-    col_width = zeros(cols, dtype='int32')
-    row_height = zeros(rows, dtype='int32')
+    col_width = np.zeros(cols, dtype='int32')
+    row_height = np.zeros(rows, dtype='int32')
     for i in range(n):
         image = images[i]
         col = i % cols
@@ -92,18 +91,18 @@ def make_images_grid(images, cols=None, pad=0, bgcolor=[1, 1, 1]):
     canvas_height = sum(row_height)
 
     # find position for each col and row
-    col_x = zeros(cols, dtype='int32')
+    col_x = np.zeros(cols, dtype='int32')
     for col in range(1, cols):
         col_x[col] = col_x[col - 1] + col_width[col - 1]
 
     assert(canvas_width == col_x[-1] + col_width[-1])
 
-    row_y = zeros(rows, dtype='int32')
+    row_y = np.zeros(rows, dtype='int32')
     for row in range(1, rows):
         row_y[row] = row_y[row - 1] + row_height[row - 1]
     assert(canvas_height == row_y[-1] + row_height[-1])
 
-    canvas = zeros((canvas_height, canvas_width, 3), dtype='uint8')
+    canvas = np.zeros((canvas_height, canvas_width, 3), dtype='uint8')
     for k in range(3):
         canvas[:, :, k] = bgcolor[k] * 255
 

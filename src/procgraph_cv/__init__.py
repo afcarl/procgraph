@@ -18,7 +18,6 @@ from .cv_capture import *
 from .cv_display import *
 from .detection import *
 
-
 if not import_successful(cv):
     if False:
         from procgraph import logger
