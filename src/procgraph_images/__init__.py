@@ -16,6 +16,13 @@
 
 '''
 from procgraph import import_magic, import_successful
+
+
+procgraph_info = {
+    'requires': ['numpy'],
+}
+
+
 np = import_magic(__name__, 'numpy')
 
 
