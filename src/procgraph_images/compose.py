@@ -4,8 +4,6 @@ from procgraph import Block
 from procgraph.block_utils  import assert_rgb_image
 
 
-
-
 class Compose(Block):
     '''
     Compose several images in the same canvas.
