@@ -53,3 +53,37 @@ def simple_detector_demo(gray):
 
 
     return res
+
+
+
+@simple_block
+@contract(gray='array[HxW]')
+def detect_and_plot_orb(gray, nfeatures=30):
+    import cv2
+    gray = torgb(gray)
+
+    detector = cv2.ORB(nfeatures=nfeatures, edgeThreshold=0)  # @UndefinedVariable
+    r = detector.detect(gray)  # , None, useProvidedKeypoints=False)
+    print len(r)
+    keypoints = r
+
+#     print kps
+    res = cv2.drawKeypoints(gray, keypoints)
+#     print res[10, :, 0]
+#
+#     for kp in kps:
+#         x = kp.x
+#         y = kp.y
+#         img[y, x, 0] = 255
+
+#     kp = star.detect(imgg, None)
+
+    # compute the descriptors with BRIEF
+#     kp, des = brief.compute(rgb, kp)
+
+#     print kp
+#     print brief.getInt('bytes')
+#     print des
+
+
+    return res

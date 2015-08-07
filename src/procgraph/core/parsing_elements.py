@@ -270,8 +270,8 @@ class ParsedModel(ParsedElement):
         output_blocks = list(look_for_blocks(
             lambda x: isinstance(x, ParsedBlock) and x.operation == 'output'))
 
-        print input_blocks
-        print output_blocks
+        # print input_blocks
+        # print output_blocks
 
         for block in input_blocks:
             inputs_defined = [x.name for x in self.input]
