@@ -1,13 +1,12 @@
-import time
-
 from ..utils import indent
 from .block import Block, Generator
-from .constants import STRICT_CHECK_OF_DEFINED_IO, ETERNITY
-from .exceptions import (BadMethodCall, SemanticError, ModelExecutionError,
-    ModelWriterError)
+from .constants import ETERNITY, STRICT_CHECK_OF_DEFINED_IO
+from .exceptions import (BadMethodCall, ModelExecutionError, ModelWriterError,
+    SemanticError)
 from .model_io import ModelInput, ModelOutput
 from .model_stats import ExecutionStats, write_stats
 from .visualization import debug as debug_main, info, warning
+import time
 import warnings
 
 
@@ -247,7 +246,6 @@ class Model(Generator):
             raise Exception(s)  # XXX: which other exception?
 
     def update(self):
-        
         do_stats = True
 
         if do_stats:
@@ -330,6 +328,7 @@ class Model(Generator):
             timestamp = ETERNITY
 
         if do_stats:
+#             print('block: %s cpu: %s time: %s of %s' % (block, cpu, timestamp, block.get_output_signals_timestamps()))
             self.stats.add(block=block, cpu=cpu, wall=wall, timestamp=timestamp)
 
         # if the update is not finished, we put it back in the queue

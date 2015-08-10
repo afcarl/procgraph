@@ -35,7 +35,7 @@ class SemanticError(ModelWriterError):
     def __str__(self):
         s = self.error
         if self.element is not None:
-            s += '\n' + format_where(self.element)
+            s += '\n' + format_where(self.element).strip()
         return s
 
 
@@ -94,7 +94,7 @@ class BadMethodCall(ModelExecutionError):
              % (self.method, block.name))
         for b in self.blocks[::-1]:
             s += '\n- %s %s' % (b, id(b))
-        s += '\n' + indent(self.user_exception, '> ') 
+        s += '\n' + indent(str(self.user_exception).strip(), '> ')
         return s
 
 

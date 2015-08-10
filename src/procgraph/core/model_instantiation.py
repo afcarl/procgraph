@@ -214,6 +214,7 @@ def create_from_parsing_results(parsed_model, name=None, config={},
             package = x.package
             if not package in sys.modules:
                 info("Importing package %r..." % package)
+
                 try:
                     __import__(package)
                 except Exception as e:

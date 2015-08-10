@@ -1,10 +1,12 @@
 import traceback
 
-from contracts import describe_type
-from contracts.utils import indent
+from contracts import describe_type, indent
 
 
-__all__ = ['Library']
+__all__ = [
+    'Library',
+    'default_library',
+]
 
 
 class Library(object):

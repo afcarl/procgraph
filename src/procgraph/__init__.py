@@ -15,11 +15,14 @@ deny_pgc_cache = True
 from .core.exceptions import *
 
 from .core.block import Block, Generator
+from .core.model import Model
 
 from .core.model_loader import pg_add_this_package_models
 
 from .core.registrar_other import (register_model_spec,
                                     register_simple_block, simple_block)
+
+from .core.registrar import (Library, default_library)
 
 from .scripts import pg
 

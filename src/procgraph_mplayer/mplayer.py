@@ -143,12 +143,12 @@ class MPlayer(Generator):
                 else:
                     # empty file, not even one
                     self.error_once('Empty timestamp file? Starting at 0.')
-                    return 0
+                    return 0.0
             else:
                 return float(l)
         else:
             if self.state.timestamp is None:
-                return 0
+                return 0.0
             else:
                 return self.state.timestamp + self.delta
 
