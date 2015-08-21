@@ -12,6 +12,9 @@ def safe_write(filename, mode='wb', compresslevel=5):
         Also if the filename ends in ".gz", writes to a compressed stream.
         Yields a file descriptor.
     """
+    from procgraph.block_utils.file_io import make_sure_dir_exists
+    make_sure_dir_exists(filename)
+
     tmp_filename = '%s.tmp' % filename
     try:
         if is_gzip_filename(filename):

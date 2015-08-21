@@ -1,6 +1,8 @@
 ''' ProcGraph: what you would get if Simulink was written in python 
     and was actually useful for dealing with log data. '''
 
+# raise ValueError()
+
 __version__ = '1.7'
 
 import logging

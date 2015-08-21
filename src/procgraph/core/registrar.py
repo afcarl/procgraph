@@ -1,6 +1,6 @@
 import traceback
 
-from contracts import describe_type, indent
+from contracts import describe_type, indent, contract
 
 
 __all__ = [
@@ -74,6 +74,8 @@ class Library(object):
 
         if not self.exists(block_type):
             msg = 'Block %r does not exist.' % block_type
+
+            msg += '\n Known: %s' % self.get_known_blocks()
             raise ValueError(msg)
 
         if block_type in self.name2block:
@@ -83,6 +85,7 @@ class Library(object):
             assert self.parent
             return self.parent.get_generator_for_block_type(block_type)
 
+    @contract(returns='list(str)')
     def get_known_blocks(self):
         blocks = list(self.name2block.keys())
         if self.parent:
