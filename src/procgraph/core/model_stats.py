@@ -55,6 +55,7 @@ class ExecutionStats(object):
 
     @contract(timestamp='pg_timestamp_or_eternity')
     def add_signal_sample(self, block, cpu, wall, timestamp):
+        assert cpu > 0
         sample = dict(timestamp=timestamp, cpu=cpu, wall=wall)
         self.block2samples[block].append(sample)
     

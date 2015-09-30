@@ -317,9 +317,6 @@ class Model(Generator):
         except Exception as e:
             raise BadMethodCall('update', block, e)
 
-        cpu = time.clock() - start_cpu
-        wall = time.time() - start_wall
-
         if block.get_input_signals_timestamps():
             timestamp = max(block.get_input_signals_timestamps())
         elif block.get_output_signals_timestamps():
@@ -328,7 +325,15 @@ class Model(Generator):
             timestamp = ETERNITY
 
         if do_stats:
-#             print('block: %s cpu: %s time: %s of %s' % (block, cpu, timestamp, block.get_output_signals_timestamps()))
+            wall = time.time() - start_wall
+            stop_cpu = time.clock()
+            cpu = stop_cpu - start_cpu
+            if cpu == 0:
+                print('Low resolution clock() - start: %s stop: %s wall: %s - using wall time.' % (start_cpu, stop_cpu, wall))
+                cpu = wall
+                # raise ValueError('No CPU? wall = %s' % wall)
+
+            # print('block: %s cpu: %s time: %s of %s' % (block, cpu, timestamp, block.get_output_signals_timestamps()))
             self.stats.add(block=block, cpu=cpu, wall=wall, timestamp=timestamp)
 
         # if the update is not finished, we put it back in the queue
@@ -462,7 +467,6 @@ class Model(Generator):
 
                     s2['block2'] = '%s.%s' % (block.name, s2['block2'])
                     s['signals'].append(s2)
-
 
         return s
 

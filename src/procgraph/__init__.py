@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # If true, does not allow .pgc caches
-deny_pgc_cache = True
+deny_pgc_cache = False
 
 from .core.exceptions import *
 

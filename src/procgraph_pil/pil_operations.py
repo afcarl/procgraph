@@ -41,14 +41,15 @@ def resize(value, width=None, height=None):
     '''
     H, W = value.shape[:2]
 
+
     if width is None and height is None:
         msg = 'You should pass at least one of width or height.'
         raise ValueError(msg)
 
     if width is None and height is not None:
-        width = (height * H) / W
+        width = int((height * 1.0 / H) * W)
     elif height is None and width is not None:
-        height = (width * W) / H
+        height = int((width * 1.0 / W) * H)
 
     if width == W and height == H:
         # print('want: %s have: %s -- No resize necessary' % (value.shape, (width, height)))
@@ -62,6 +63,10 @@ def resize(value, width=None, height=None):
     assert result.shape[0] == height
     assert result.shape[1] == width
         
+    # ratio1 = value.shape[0] * 1.0 / value.shape[1]
+    # ratio2 = result.shape[0] * 1.0 / result.shape[1]
+    # print('ratio1 : %.2f  result %.2f' % (ratio1, ratio2))
+
     return result
 
 

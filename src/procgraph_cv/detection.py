@@ -26,12 +26,12 @@ def simple_detector_demo(gray):
 
 #     brief = cv2.DescriptorExtractor_create("BRIEF")  # @UndefinedVariable
 
-    surf = cv2.SIFT()
+    sift = cv2.SIFT()
 
     # find the keypoints with STAR
 #     gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
 
-    kps = surf.detect(gray)  # , None, useProvidedKeypoints=False)
+    kps = sift.detect(gray)  # , None, useProvidedKeypoints=False)
 
 #     print kps
     res = cv2.drawKeypoints(gray, kps)
@@ -55,20 +55,81 @@ def simple_detector_demo(gray):
     return res
 
 
+# Initiate STAR detector
+
 
 @simple_block
-@contract(gray='array[HxW]')
-def detect_and_plot_orb(gray, nfeatures=30):
+@contract(rgb='array[HxWx3]', returns='array[HxWx3]')
+def detect_and_plot_star(rgb, nfeatures=50):
     import cv2
-    gray = torgb(gray)
+    detector = cv2.FeatureDetector_create("STAR")
+
+    r = detector.detect(rgb)  # , None, useProvidedKeypoints=False)
+    print('Number of STAR kps: %s' % len(r))
+    keypoints = r
+
+    res = draw_keypoints(rgb, keypoints)
+    return res
+
+
+
+@simple_block
+@contract(rgb='array[HxWx3]', returns='array[HxWx3]')
+def detect_and_plot_dense(rgb, nfeatures=50):
+    import cv2
+    detector = cv2.FeatureDetector_create("Dense")
+
+    r = detector.detect(rgb)  # , None, useProvidedKeypoints=False)
+    print('Number of dense kps: %s' % len(r))
+    keypoints = r
+
+    res = draw_keypoints(rgb, keypoints)
+    return res
+
+
+@simple_block
+@contract(rgb='array[HxWx3]', returns='array[HxWx3]')
+def detect_and_plot_fast(rgb, nfeatures=50):
+    import cv2
+    detector = cv2.FeatureDetector_create("FAST")
+
+    r = detector.detect(rgb)  # , None, useProvidedKeypoints=False)
+    print('Number of FAST kps: %s' % len(r))
+    keypoints = r
+
+    res = draw_keypoints(rgb, keypoints)
+    return res
+
+
+
+
+def draw_keypoints(rgb, keypoints):
+    import cv2
+    try:
+        raise ValueError()
+        res = cv2.drawKeypoints(rgb, keypoints)
+    except:
+        res = rgb.copy()
+        for kp in keypoints:
+            x, y = kp.pt
+            res[y, x, :] = 255
+
+    return res
+
+
+@simple_block
+@contract(rgb='array[HxWx3]', returns='array[HxWx3]')
+def detect_and_plot_orb(rgb, nfeatures=50):
+    import cv2
+#     gray = torgb(gray)
 
     detector = cv2.ORB(nfeatures=nfeatures, edgeThreshold=0)  # @UndefinedVariable
-    r = detector.detect(gray)  # , None, useProvidedKeypoints=False)
-    print len(r)
+    r = detector.detect(rgb)  # , None, useProvidedKeypoints=False)
+    print('Number of ORB kps: %s' % len(r))
     keypoints = r
 
 #     print kps
-    res = cv2.drawKeypoints(gray, keypoints)
+    res = cv2.drawKeypoints(rgb, keypoints)
 #     print res[10, :, 0]
 #
 #     for kp in kps:

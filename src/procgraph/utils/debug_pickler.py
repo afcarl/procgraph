@@ -4,7 +4,7 @@ from pickle import (Pickler, SETITEM, MARK, SETITEMS, EMPTY_TUPLE, TUPLE, POP,
     _tuplesize2code, POP_MARK)
 import pickle
 import traceback
-from .. import logger
+# from .. import logger
 
 __all__ = ['find_pickling_error']
 
@@ -19,7 +19,7 @@ def find_pickling_error(obj, protocol=pickle.HIGHEST_PROTOCOL):
     else:
         msg = ('Strange! I could not reproduce the pickling error '
                 'for the object of class %s' % describe_type(obj))
-        logger.info(msg)
+        raise Exception(msg)
 
     pickler = MyPickler(sio, protocol)
     try:
