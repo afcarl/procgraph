@@ -44,15 +44,18 @@ class MEncoder(Block):
     Block.config('quiet', "If True, suppress mencoder's messages",
                  default=True)
     Block.config('timestamps', "If True, also writes <file>.timestamps that"
-                               " includes a line with the timestamp for each frame", default=True)
+                               " includes a line with the timestamp for"
+                               " each frame", default=True)
 
     Block.config('crop', "If true, the video will be "
                  "post-processed and cropped", default=False)
     
     Block.config('md', 'Metadata for the file.', default={})
 
-    Block.config('container', 'Which container to use; if None, it will be guessed.', default=None)
-    Block.config('vcodec', 'Codec to use. If None, it will be guessed', default=None)
+    Block.config('container', 'Which container to use; '
+                            'if None, it will be guessed.', default=None)
+    Block.config('vcodec', 'Codec to use. If None, it will be guessed',
+                 default=None)
     Block.config('vcodec_params', 'Codec-dependent params.', default={})
 
     Block.config('firstpass_bitrate', default=3 * 1000 * 1000)
@@ -66,7 +69,8 @@ class MEncoder(Block):
         
         from .programs_existence import check_programs_existence
 
-        self.programs = check_programs_existence(programs=['mencoder', 'ffmpeg'])
+        programs = ['mencoder', 'ffmpeg']
+        self.programs = check_programs_existence(programs=programs)
 
         for p in self.programs:
             self.info('Using %13s = %s' % (p, self.programs[p]))
@@ -248,9 +252,10 @@ class MEncoder(Block):
                          vcodec_params=vcodec_params,
                          timestamp=timestamp,
                          metadata=metadata)
-        
-        if os.path.exists(self.tmp_filename):
-            os.unlink(self.tmp_filename)
+
+        if False:  # XXX
+            if os.path.exists(self.tmp_filename):
+                os.unlink(self.tmp_filename)
 
         if True:
             T = self.first_frame_timestamp
@@ -272,8 +277,9 @@ class MEncoder(Block):
 #                 os.unlink(self.timestamps_filename)
 
         if 'tmp_filename' in self.__dict__:
-            if os.path.exists(self.tmp_filename):
-                os.unlink(self.tmp_filename)
+            if False:  # XXX
+                if os.path.exists(self.tmp_filename):
+                    os.unlink(self.tmp_filename)
 
 
         self.cleanup_mencoder()

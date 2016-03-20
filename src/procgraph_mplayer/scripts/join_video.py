@@ -39,7 +39,7 @@ def join_video(output, dirname, pattern, fps):
     """ 
         Note that the pattern is a Python regex:
         
-        pg-video-join -d anim-simple/ -p '.*.png' -o anim-simple-collate.mp4 --fps 1 
+        pg-video-join -d anim-simple/ -p '*.png' -o anim-simple-collate.mp4 --fps 1 
         
     """
     register_model_spec("""
@@ -61,6 +61,36 @@ rgb --> |mencoder quiet=1 file=$output timestamps=0 fps=$fps|
 
     pg('join_video_helper', dict(dirname=dirname, pattern=pattern, output=output,
                                  fps=fps))
+
+
+def join_video_29(output, dirname, pattern, fps):
+    """ 
+        Note that the pattern is a Python regex:
+        
+        pg-video-join -d anim-simple/ -p '*.png' -o anim-simple-collate.mp4 --fps 1 
+        
+    """
+    register_model_spec("""
+--- model join_video_helper_29
+config output
+config dirname
+config pattern
+config factor
+
+|files_from_dir dir=$dirname regexp=$pattern| -->file
+file --> |imread_rgb| --> rgb
+rgb --> |rewrite_timestamps interval=$factor| -> retimed
+retimed --> |info|
+# XXX this doesn't work
+#retimed -> |fix_frame_rate fps=29.97| -->  fill
+#fill --> |info|
+retimed -> |mencoder quiet=1 file=$output timestamps=0|
+    
+    """)
+    factor = 1.0 / fps
+    pg('join_video_helper_29', dict(dirname=dirname, pattern=pattern, output=output,
+                                 factor=factor))
+
 
 
 if __name__ == '__main__':

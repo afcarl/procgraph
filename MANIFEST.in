@@ -3,4 +3,4 @@ include *.md
 include *.txt
 include *.cfg
 include *.mk
-
+include *.pg
