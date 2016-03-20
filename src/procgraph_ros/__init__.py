@@ -16,7 +16,7 @@ procgraph_info = {
 
 
 # Smart dependency importing
-from procgraph import import_magic, import_succesful
+from procgraph import import_magic, import_succesful, logger
 
 rosbag = import_magic(__name__, 'ros', 'rosbag')
 rosbag_utils = import_magic(__name__, 'rosbag_utils')
@@ -25,6 +25,8 @@ if import_succesful(rosbag_utils):
     from .bagread import BagRead
     from .bagwrite import BagWrite
     from .conversions import *
+else:
+    logger.error('Could not import rosbag_utils; install from git@github.com:AndreaCensi/ros_node_utils.git')
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)

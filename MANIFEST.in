@@ -4,3 +4,5 @@ include *.txt
 include *.cfg
 include *.mk
 include *.pg
+
+recursive-include src *.pg
