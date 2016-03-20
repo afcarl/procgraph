@@ -253,9 +253,9 @@ class MEncoder(Block):
                          timestamp=timestamp,
                          metadata=metadata)
 
-        if False:  # XXX
-            if os.path.exists(self.tmp_filename):
-                os.unlink(self.tmp_filename)
+#         if False:  # XXX
+        if os.path.exists(self.tmp_filename):
+            os.unlink(self.tmp_filename)
 
         if True:
             T = self.first_frame_timestamp
@@ -277,9 +277,9 @@ class MEncoder(Block):
 #                 os.unlink(self.timestamps_filename)
 
         if 'tmp_filename' in self.__dict__:
-            if False:  # XXX
-                if os.path.exists(self.tmp_filename):
-                    os.unlink(self.tmp_filename)
+#             if False:  # XXX
+            if os.path.exists(self.tmp_filename):
+                os.unlink(self.tmp_filename)
 
 
         self.cleanup_mencoder()
@@ -351,7 +351,7 @@ class MEncoder(Block):
             raise Exception(msg)
 
         if self.config.timestamps:
-            self.timestamps_file.write('%s\n' % timestamp)
+            self.timestamps_file.write('%.4f\n' % timestamp)
             self.timestamps_file.flush()
 
 
