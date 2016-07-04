@@ -17,7 +17,7 @@ def main():
     parser.add_option("-d", dest='dirname', type="string", default='.',
                       help='Directory.')
 
-    parser.add_option("--fps", type="int", default=10,
+    parser.add_option("--fps", type="float", default=10.0,
                       help='Frames per second')
 
     parser.add_option("-p", dest='pattern', type="string",
@@ -31,7 +31,6 @@ def main():
     if options.output is None:
         options.output = os.path.join(options.dirname, 'output.mp4')
     
-
     return join_video(options.output, options.dirname, options.pattern, options.fps)
 
 

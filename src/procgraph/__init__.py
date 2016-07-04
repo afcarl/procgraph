@@ -3,7 +3,7 @@
 
 # raise ValueError()
 
-__version__ = '1.7'
+__version__ = '1.9'
 
 import logging
 logging.basicConfig()

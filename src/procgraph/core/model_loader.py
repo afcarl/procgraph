@@ -186,7 +186,10 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
 
         for parsed_model in models:
             if library.exists(parsed_model.name):
-                prev = library.name2block[parsed_model.name].parsed_model.where
+                if parsed_model.name in library.name2block:
+                    prev = library.name2block[parsed_model.name].parsed_model.where
+                else:
+                    prev = '?'
                 msg = ('Found model %r in file:\n %r, and already in\n %r. ' % 
                        (parsed_model.name, f, prev.filename))
                 raise SemanticError(msg, parsed_model)
