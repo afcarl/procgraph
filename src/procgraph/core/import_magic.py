@@ -7,7 +7,7 @@ from .constants import PROCGRAPH_INFO_VARIABLE, REQUIRES, REQUIRES_PARSED
 
 def import_magic(module_name, required, member=None):
     ''' Equivalent to "from required import member" or "import required".
-        Check that it was succesfull with import_succesful(). 
+        Check that it was succesfull with import_succesful().
     '''
     info_structure = get_module_info(module_name)
     # Check that it was mentioned in the structure
@@ -76,7 +76,7 @@ def get_module_info(module_name):
     ''' Returns dict   name -> list of possible modules '''
     parsed = {}
     if not REQUIRES in info:
-        #raise Exception('Please define a field %r in dict %s.%s.' % 
+        #raise Exception('Please define a field %r in dict %s.%s.' %
         #                (REQUIRES, module_name, PROCGRAPH_INFO_VARIABLE))
         pass
     else:

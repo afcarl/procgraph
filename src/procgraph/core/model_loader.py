@@ -67,18 +67,18 @@ def pg_add_this_package_models(filename, assign_to, subdir='models'):
     ''' Add the models for this package.
         Shortcut to put into the module ``__init__.py``.
         Call with filename = __file__, assign_to= __package__.
-        
+
         Example: ::
-        
+
             pg_add_this_package_models(filename__file__, assign_to=__package__)
-    
+
     '''
 
     if subdir is not None:
         dirname = os.path.join(os.path.dirname(filename), subdir)
     else:
         dirname = os.path.dirname(filename)
-        
+
     pg_look_for_models(default_library,
                        additional_paths=[dirname],
                        ignore_env=True,
@@ -89,18 +89,18 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
                        ignore_cache=False, assign_to_module=None):
     ''' Call this function at the beginning of the executions.
     It scans the disk for model definitions, and register
-    them as available block types. 
+    them as available block types.
     Other than the paths that are passed by argument,
     it looks into the ones in the PROCGRAPH_PATH environment
     variable (colon separated list of paths), unless ignore_env is True.
-    
+
     assign_to_module is a string that gives the nominal module the model
     is associated to -- this is only used for the documentation generation.
-    
+
     TODO: add global cache in user directory.
-    
+
     Honors global deny_pgc_cache to disable all caches.
-     
+
     '''
 
     paths = []
@@ -114,7 +114,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     if not paths:
         if False:
             # TODO: add verbose switch
-            warning("No paths given and environment var %r not defined." % 
+            warning("No paths given and environment var %r not defined." %
                      PATH_ENV_VAR)
 
     # enumerate each sub directory
@@ -132,7 +132,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
     for path, f in all_files:
         split = os.path.splitext(os.path.basename(f))
         base = split[0]
-        
+
         # logger.debug('Loading models from %r' % f)
 
         # Make sure we use an absolute filename
@@ -157,7 +157,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
                 models = pickle.load(open(cache))
             except Exception as e:
                 debug('Cannot unpickle file %r: %s' % (cache, e))
-                # XXX repeated code 
+                # XXX repeated code
                 # debug("Parsing %r." % os.path.relpath(f))
                 model_spec = open(f).read()
 
@@ -174,7 +174,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
                 pickle.dump(models, f)
         except Exception as e:
             # Cannot write on the cache for whatever reason
-            debug('Cannot write cache file: %s' % e)
+            # debug('Cannot write cache file: %s' % e)
             try:
                 if os.path.exists(cache):
                     os.unlink(cache)
@@ -190,7 +190,7 @@ def pg_look_for_models(library, additional_paths=None, ignore_env=False,
                     prev = library.name2block[parsed_model.name].parsed_model.where
                 else:
                     prev = '?'
-                msg = ('Found model %r in file:\n %r, and already in\n %r. ' % 
+                msg = ('Found model %r in file:\n %r, and already in\n %r. ' %
                        (parsed_model.name, f, prev.filename))
                 raise SemanticError(msg, parsed_model)
 
@@ -209,7 +209,7 @@ def pg_add_parsed_model_to_library(parsed_model, library, defined_in):
         #  and I do:
         #    pg -d . tutorials.pg
         # This will fail because it will try to read tutorials.pg twice
-        msg = ('I already have registered model %r from %r. ' % 
+        msg = ('I already have registered model %r from %r. ' %
               (parsed_model.name, prev.filename))
         raise SemanticError(msg, parsed_model)
 
@@ -225,14 +225,14 @@ def add_models_to_library(library, string, name=None,
     '''
     if filename is None and defined_in is not None:
         filename = __import__(defined_in, fromlist=['x']).__file__
-        
+
     models = parse_model(string, filename=filename)
     if models[0].name is None:
         assert name is not None
         models[0].name = name
 
     for model in models:
-        pg_add_parsed_model_to_library(parsed_model=model, 
+        pg_add_parsed_model_to_library(parsed_model=model,
                                        library=library,
                                        defined_in=defined_in)
 
@@ -240,11 +240,11 @@ def add_models_to_library(library, string, name=None,
 def model_from_string(model_spec, name=None, config=None,
                       library=None, filename=None):
     ''' Instances a model from a specification. Optional
-        attributes can be passed. Returns a Model object. 
-        
+        attributes can be passed. Returns a Model object.
+
         Additional models in the spec (after the first) are automatically
         added to the library (defined_in = calling module).
-        
+
     '''
     if config is None:
         config = {}
@@ -278,4 +278,3 @@ def model_from_string(model_spec, name=None, config=None,
                                         config=config, library=library)
 
     return model
-

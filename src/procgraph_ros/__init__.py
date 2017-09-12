@@ -26,7 +26,8 @@ if import_succesful(rosbag_utils):
     from .bagwrite import BagWrite
     from .conversions import *
 else:
-    logger.error('Could not import rosbag_utils; install from git@github.com:AndreaCensi/ros_node_utils.git')
+    msg = 'Could not import rosbag_utils; install from git@github.com:AndreaCensi/ros_node_utils.git'
+    logger.error(msg)
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)
