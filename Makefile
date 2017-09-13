@@ -9,4 +9,4 @@ bump-upload:
 	git push --all
 	rm -f dist/*
 	python setup.py sdist
-	twine upload dist/
+	twine upload dist/*
