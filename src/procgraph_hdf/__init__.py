@@ -24,7 +24,7 @@ if import_succesful(hdflogs):
     from .hdfread_many import *
 else:
     from procgraph import logger
-    logger.warning('Could not import hdflogs')
+#     logger.warning('Could not import hdflogs')
 
 from procgraph import pg_add_this_package_models
 pg_add_this_package_models(__file__, __package__)
