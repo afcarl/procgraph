@@ -8,5 +8,6 @@ bump-upload:
 	git push --tags
 	git push --all
 	rm -f dist/*
+	find src -name '*pgc' -delete
 	python setup.py sdist
 	twine upload dist/*
