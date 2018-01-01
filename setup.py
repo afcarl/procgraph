@@ -242,6 +242,7 @@ setup(name='procgraph',
 #       package_data={'': ['*.pg'],
 # 				'prograph_cv': ['models/cv_demo_feature.pg']},
 	  include_package_data=True,
+      zip_safe=False,
       install_requires=[
         'setuptools-git',
         'pyparsing',
