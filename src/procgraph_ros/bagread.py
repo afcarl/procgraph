@@ -1,30 +1,34 @@
-from contracts import contract
-from procgraph import BadConfig, Block, Generator
-from rosbag_utils import resolve_topics, rosbag_info_cached
-import warnings
 from pprint import pformat
+import warnings
 
+from contracts import contract
+from rosbag_utils import resolve_topics, rosbag_info_cached
+
+from procgraph import BadConfig, Block, Generator
 
 __all__ = ['BagRead']
 
+
 class BagRead(Generator):
-    ''' 
+    '''
         This block reads a bag file (ROS logging format).
     '''
     Block.alias('bagread')
     Block.output_is_defined_at_runtime('The signals read from the log.')
     Block.config('file', 'Bag file to read')
-    Block.config('limit', 'Limit in seconds on how much data we want. (0=no limit)', 
+    Block.config('limit', 'Limit in seconds on how much data we want. (0=no limit)',
                             default=0)
+    Block.config('t0', 'Relative start time', default=None)
+    Block.config('t1', 'Relative start time', default=None)
+
     Block.config('topics', 'Which signals to output (and in what order). '
                  'Should be a comma-separated list. If you do not specify it '
                  '(or if empty) it will be all signals.',
                  default=[])
- 
+
     Block.config('quiet', 'If true, disables advancements status messages.',
                  default=False)
-      
-              
+
     @contract(returns='list(str)')
     def get_topics(self):
         bagfile = self.config.file
@@ -32,7 +36,7 @@ class BagRead(Generator):
             given_topics = self.config.topics.strip()
         else:
             given_topics = None
-  
+
         if given_topics:
             topics = given_topics.split(',')
         else:
@@ -43,11 +47,11 @@ class BagRead(Generator):
         res, _, asked2resolved = resolve_topics(self.baginfo, topics)
         self.info('Resolving:\n%s' % pformat(asked2resolved))
         return res
-    
+
     def get_output_signals(self):
-        import rosbag 
+        import rosbag
         self.bag = rosbag.Bag(self.config.file)
-        
+
         self.topics = self.get_topics()
 
         self.topic2signal = {}
@@ -77,21 +81,35 @@ class BagRead(Generator):
             msg = 'I require a number; 0 for none.'
             raise BadConfig(msg, self, 'limit')
 
-        start_time, end_time = self._get_start_end_time(limit)
+        if self.config.t0 is not None or self.config.t1 is not None:
+            t0 = self.config.t0
+            t1 = self.config.t1
+            start_time, end_time = self._get_start_end_time_t0_t1(t0, t1)
+        else:
+            start_time, end_time = self._get_start_end_time(limit)
+
+        print('t0: %s' % self.config.t0)
+        print('t1: %s' % self.config.t1)
+        print('start_time: %s' % start_time)
+        print('end_time: %s' % end_time)
+        print('start_stamp: %s' % self.start_stamp)
+        print('end_stamp: %s' % self.end_stamp)
+
         params = dict(topics=topics, start_time=start_time, end_time=end_time)
+
         self.iterator = self.bag.read_messages(**params)
 
         return signals
-    
+
     @contract(limit='None|number')
     def _get_start_end_time(self, limit):
-        """ 
-            Returns the start and end time to use (rospy.Time).
-        
-            also sets self.start_stamp, self.end_stamp
-            
         """
-        from rospy.rostime import Time  # @UnresolvedImport
+            Returns the start and end time to use (rospy.Time).
+
+            also sets self.start_stamp, self.end_stamp
+
+        """
+        from rospy.rostime import Time  #@UnresolvedImport
         self.info('limit: %r' % limit)
         warnings.warn('Make better code for dealing with unindexed')
         if limit is not None and limit != 0:
@@ -108,14 +126,53 @@ class BagRead(Generator):
             #     raise
             #     start_time = None
             #     end_time = None
-            #      
+            #
             # self.info('start_stamp: %s' % self.start_stamp)
             # self.info('end_stamp: %s' % self.end_stamp)
         else:
             self.start_stamp = None
             self.end_stamp = None
             return None, None
-                
+
+    @contract(limit='None|number')
+    def _get_start_end_time_t0_t1(self, t0, t1):
+        """
+            Returns the start and end time to use (rospy.Time).
+
+            also sets self.start_stamp, self.end_stamp
+
+        """
+        warnings.warn('Make better code for dealing with unindexed')
+        from rospy.rostime import Time  #@UnresolvedImport
+        if t0 is not None or t1 is not None:
+            # try:
+            chunks = self.bag.__dict__['_chunks']
+            self.start_stamp = chunks[0].start_time.to_sec()
+            self.end_stamp = chunks[-1].end_time.to_sec()
+            if t0 is not None:
+                start_time = self.start_stamp + t0
+            else:
+                start_time = self.start_stamp
+            if t1 is not None:
+                end_time = self.start_stamp + t1
+            else:
+                end_time = self.end_stamp
+            start_time = Time.from_sec(start_time)
+            end_time = Time.from_sec(end_time)
+            return start_time, end_time
+            # except Exception as e:
+            #     self.error('Perhaps unindexed bag?')
+            #     self.error(traceback.format_exc(e))
+            #     raise
+            #     start_time = None
+            #     end_time = None
+            #
+            # self.info('start_stamp: %s' % self.start_stamp)
+            # self.info('end_stamp: %s' % self.end_stamp)
+        else:
+            self.start_stamp = None
+            self.end_stamp = None
+            return None, None
 
     def init(self):
         self._load_next()
@@ -149,5 +206,4 @@ class BagRead(Generator):
 
     def finish(self):
         self.bag.close()
-
 

@@ -141,7 +141,7 @@ def convert_to_mp4(filename, mp4=None, quiet=True, crf=18, preset='medium', time
     cmds += get_ffmpeg_metadata_args(metadata, timestamp)
     cmds += [tmp]
     
-    print cmds
+    # print cmds
     
     try:
         system_cmd_result('.', cmds,

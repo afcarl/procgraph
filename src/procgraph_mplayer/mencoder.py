@@ -160,7 +160,15 @@ class MEncoder(Block):
         n1 = self.width * self.height
         n0 = shape0[0] * shape0[1]
         vbitrate = vbitrate0 * n1 / n0
-        self.info('Using bitrate %r' % vbitrate)
+        
+        self.info('Estimated bitrate %r' % vbitrate)
+        
+        max_bitrate = 90*1000*1000
+        if vbitrate > max_bitrate:
+            
+            vbitrate = max_bitrate
+            self.info('Estimated bitrate too high, capping at %s' % vbitrate)
+            
 
         self.filename = expand(self.config.file)
         if os.path.exists(self.filename):
